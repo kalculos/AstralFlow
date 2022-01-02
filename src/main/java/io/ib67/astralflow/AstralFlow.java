@@ -28,6 +28,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
+import io.ib67.astralflow.listener.BlockListener;
+import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.manager.FactoryManagerImpl;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
@@ -58,7 +60,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Getter
     private IFactoryManager factories;
 
-    public static final AstralFlowAPI getInstance() {
+    public static AstralFlowAPI getInstance() {
         return AstralFlow.getPlugin(AstralFlow.class);
     }
 
@@ -73,13 +75,20 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         loadConfig();
         Log.info("Loading &aMachines");
         loadMachineManager();
+        loadAllMachines();
         new TickScheduler(machineManager).runTaskTimer(this, 0L, 1L); // Every tick.
+        loadListeners();
     }
 
     @Override
     public void onDisable() {
         // save data.
         machineManager.saveMachines();
+    }
+
+    private void loadListeners() {
+        getServer().getPluginManager().registerEvents(new BlockListener(this), this);
+        getServer().getPluginManager().registerEvents(new MachineListener(), this);
     }
 
     private void loadFactoryManager() {
@@ -90,6 +99,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         var machineStorage = configuration.getStorage();
         machineManager = new MachineManagerImpl(machineStorage);
         Log.info(machineManager.getAllMachines().size() + " machines were detected.");
+    }
+
+    private void loadAllMachines() {
+        machineManager.getAllMachines().forEach(machineManager::getMachine);
     }
 
     @SneakyThrows

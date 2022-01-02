@@ -26,7 +26,9 @@ package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.storage.IMachineStorage;
+import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import java.util.Collection;
@@ -41,7 +43,20 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public IMachine getMachine(UUID uuid) {
-        return cache.computeIfAbsent(uuid, k -> machineStorage.readMachine(k).orElse(null));
+        return cache.computeIfAbsent(uuid, k -> {
+            var machine = machineStorage.readMachine(k).orElse(null);
+            if (machine == null) {
+                Log.warn("Cannot load machine " + uuid + " because it's a null!");
+            } else {
+                machine.onLoad();
+            }
+            return machine;
+        });
+    }
+
+    @Override
+    public IMachine getMachine(Location location) {
+        return getLoadedMachines().stream().filter(e -> e.getLocation().distance(location) < 0.1).findFirst().orElse(null);
     }
 
     @Override
@@ -71,6 +86,9 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void saveMachines() {
-        getLoadedMachines().forEach(machineStorage::saveMachine);
+        getLoadedMachines().stream().filter(e -> {
+            e.onUnload();
+            return true;
+        }).forEach(machineStorage::saveMachine);
     }
 }

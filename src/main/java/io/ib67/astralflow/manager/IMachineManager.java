@@ -25,6 +25,7 @@
 package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import java.util.Collection;
@@ -32,6 +33,8 @@ import java.util.UUID;
 
 public interface IMachineManager {
     IMachine getMachine(UUID uuid);
+
+    IMachine getMachine(Location location);
 
     Collection<? extends IMachine> getLoadedMachines();
 

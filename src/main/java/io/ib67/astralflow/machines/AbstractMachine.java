@@ -30,6 +30,7 @@ import org.bukkit.Location;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -43,6 +44,11 @@ public abstract class AbstractMachine implements IMachine {
     protected AbstractMachine(UUID id, Location location) {
         this.id = id;
         this.location = location;
+    }
+
+    @Override
+    public boolean isActivated() {
+        return location.isWorldLoaded() && Objects.requireNonNull(location.getWorld()).isChunkLoaded(location.getBlockX() << 4, location.getBlockZ() << 4);
     }
 
     @Override
