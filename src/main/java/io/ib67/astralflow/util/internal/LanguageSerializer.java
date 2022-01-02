@@ -28,7 +28,6 @@ import com.google.gson.*;
 import io.ib67.Util;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.config.Language;
-import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -47,29 +46,28 @@ public class LanguageSerializer implements JsonSerializer<Language>, JsonDeseria
         var langName = json.getAsJsonPrimitive().getAsString();
         var lang = loadLang(langName);
         if (lang == null) {
-            Log.warn("Cannot load " + langName);
+            //Log.warn("Cannot load " + langName);
             lang = new Language();
         }
         return lang;
     }
 
     private Language loadLang(String langName) {
+        //TODO Better Fallback & load implementation.
         var lang = localeDir.resolve(langName).toFile();
         Language language = null;
         try (
                 var stream = lang.exists()
                         ? new FileInputStream(localeDir.resolve(langName + ".lang").toFile())
-                        : AstralFlow.class.getResourceAsStream(langName + ".lang")
+                        : AstralFlow.getPlugin(AstralFlow.class).getResource(langName + ".lang")
         ) {
             if (stream == null) {
-                Log.warn("Cannot load " + langName);
                 return null;
             }
             var context = new String(stream.readAllBytes());
             language = Util.BukkitAPI.gsonForBukkit().fromJson(context, Language.class);
 
         } catch (IOException | JsonParseException e) {
-            Log.warn("Cannot load " + langName);
             e.printStackTrace();
         }
         return language;

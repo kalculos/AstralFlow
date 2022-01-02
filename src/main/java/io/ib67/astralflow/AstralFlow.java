@@ -33,7 +33,9 @@ import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.MachineManagerImpl;
 import io.ib67.astralflow.scheduler.TickScheduler;
+import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.util.internal.LanguageSerializer;
+import io.ib67.astralflow.util.internal.MachineStorageSerializer;
 import io.ib67.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -95,6 +97,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         configSerializer = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
+                .registerTypeAdapter(IMachineStorage.class, new MachineStorageSerializer(machineDir, factories))
                 .create();
         // extract config.
         var confFile = new File(getDataFolder(), "config.json");

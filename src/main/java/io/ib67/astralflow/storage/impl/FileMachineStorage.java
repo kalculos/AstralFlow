@@ -34,14 +34,17 @@ import io.ib67.astralflow.util.internal.MachineDataSerializer;
 import io.ib67.astralflow.util.internal.MachineSerializer;
 import lombok.SneakyThrows;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileMachineStorage implements IMachineStorage {
     private transient final Path storage;
@@ -82,12 +85,13 @@ public class FileMachineStorage implements IMachineStorage {
     @SneakyThrows
     @Override
     public Collection<UUID> getMachines() {
-        return Files
-                .walk(storage, 1)
-                .map(e -> e.toFile().getName())
+        var a = storage.toFile().listFiles();
+        if (a != null) return Stream.of(a)
+                .map(File::getName)
                 .map(e -> e.substring(35))
                 .map(UUID::fromString)
                 .collect(Collectors.toList());
+        return Collections.emptyList();
     }
 
     public static class MachineStorageHelper {

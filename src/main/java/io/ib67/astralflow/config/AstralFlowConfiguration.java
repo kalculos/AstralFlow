@@ -27,16 +27,17 @@ package io.ib67.astralflow.config;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.impl.FileMachineStorage;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.nio.file.Path;
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AstralFlowConfiguration {
     private final Language locale;
-    private transient final IMachineStorage storage;
+    private final IMachineStorage storage;
 
     public static AstralFlowConfiguration defaultConfiguration(Path storageDir) {
         return new AstralFlowConfiguration(new Language(), new FileMachineStorage(storageDir, AstralFlow.getInstance().getFactories()));
