@@ -20,8 +20,8 @@ public class FactoryManagerImpl implements IFactoryManager {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends IMachine, S extends IMachineData> Collection<? extends IMachineFactory<T, S>> getMachineFactories() {
-        return (Collection<? extends IMachineFactory<T, S>>) factories.values();
+    public Collection<? extends IMachineFactory<?, ?>> getMachineFactories() {
+        return factories.values();
     }
 
     @Override

@@ -36,7 +36,7 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 public class AstralFlowConfiguration {
     private final Language locale;
-    private final IMachineStorage storage;
+    private transient final IMachineStorage storage;
 
     public static AstralFlowConfiguration defaultConfiguration(Path storageDir) {
         return new AstralFlowConfiguration(new Language(), new FileMachineStorage(storageDir, AstralFlow.getInstance().getFactories()));

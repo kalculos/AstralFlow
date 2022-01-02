@@ -38,6 +38,10 @@ public interface IMachine extends Tickable<IMachine> {
 
     IMachineData getState();
 
+    default void update() {
+        this.update(this);
+    }
+
     default Class<? extends IMachine> getType() {
         return this.getClass();
     }

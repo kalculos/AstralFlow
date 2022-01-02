@@ -41,8 +41,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class FileMachineStorage implements IMachineStorage {
-    private final Path storage;
-    private final MachineStorageHelper machineStorageHelper;
+    private transient final Path storage;
+    private transient final MachineStorageHelper machineStorageHelper;
 
     public FileMachineStorage(Path storage, IFactoryManager factoryManager) {
         this.storage = storage;
