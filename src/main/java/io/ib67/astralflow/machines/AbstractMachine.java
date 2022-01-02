@@ -25,6 +25,7 @@
 package io.ib67.astralflow.machines;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 
@@ -39,6 +40,7 @@ public abstract class AbstractMachine implements IMachine {
     private final UUID id;
     private final Location location;
     @Setter(AccessLevel.PRIVATE)
+    @Getter
     private IMachineData state = new IMachineData.EmptyMachineData();
 
     protected AbstractMachine(UUID id, Location location) {

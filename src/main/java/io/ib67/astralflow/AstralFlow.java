@@ -26,6 +26,7 @@ package io.ib67.astralflow;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.ib67.Util;
 import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
@@ -79,6 +80,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         loadAllMachines();
         new TickScheduler(machineManager).runTaskTimer(this, 0L, 1L); // Every tick.
         loadListeners();
+        // Load StorageLoader in other sourceset.
+        Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
     }
 
     @Override

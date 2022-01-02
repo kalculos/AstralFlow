@@ -3,7 +3,6 @@ package io.ib67.astralflow.manager;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IMachineData;
 import io.ib67.astralflow.machines.IMachineFactory;
-import net.jodah.typetools.TypeResolver;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,8 +25,7 @@ public class FactoryManagerImpl implements IFactoryManager {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends IMachine, S extends IMachineData> boolean register(IMachineFactory<T, S> factory) {
-        var claz = TypeResolver.resolveRawArguments(IMachineFactory.class, factory.getClass())[0];
+    public <T extends IMachine, S extends IMachineData> boolean register(Class<T> claz, IMachineFactory<T, S> factory) {
         if (factories.containsKey(claz)) {
             return false;
         }

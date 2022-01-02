@@ -23,5 +23,3 @@
  */
 
 rootProject.name = 'AstralFlow'
-include 'storage'
-

@@ -31,33 +31,26 @@ plugins {
 group = 'io.ib67'
 version = '0.0.1'
 
-allprojects {
-    apply plugin: 'java'
-    repositories {
-        mavenCentral()
-        maven {
-            name = 'spigotmc-repo'
-            url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
-        }
-        maven {
-            name = 'sonatype'
-            url = 'https://oss.sonatype.org/content/groups/public/'
-        }
-        maven {
-            url = "https://jitpack.io"
-        }
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
-    dependencies {
-        compileOnly 'org.projectlombok:lombok:1.18.20'
-        compileOnly 'org.jetbrains:annotations:23.0.0'
-        annotationProcessor 'org.projectlombok:lombok:1.18.20'
-        compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
-        implementation project(":storage")
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        url = "https://jitpack.io"
     }
 }
 dependencies {
     api 'com.github.iceBear67:tools:0.0.6'
-    implementation 'net.jodah:typetools:0.6.3'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.jetbrains:annotations:23.0.0'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
 }
 
 def targetJavaVersion = 11
@@ -83,4 +76,25 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+sourceSets {
+    storageModule {
+       compileClasspath += sourceSets.main.output
+       runtimeClasspath += sourceSets.main.output
+    }
+    main {
+        //compileClasspath += sourceSets.storageModule.output
+        //runtimeClasspath += sourceSets.storageModule.output
+    }
+}
+shadowJar {
+    from sourceSets.storageModule.output
+    dependsOn storageModuleClasses
+}
+configurations {
+    storageModuleImplementation.extendsFrom implementation
+    storageModuleApi.extendsFrom api
+    storageModuleCompileOnly.extendsFrom compileOnly
+    storageModuleAnnotationProcessor.extendsFrom annotationProcessor
 }
