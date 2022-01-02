@@ -23,7 +23,7 @@
  */
 
 package io.ib67.astralflow.util.internal;
- 
+
 import com.google.gson.*;
 import io.ib67.Util;
 import io.ib67.astralflow.machines.IMachineData;
