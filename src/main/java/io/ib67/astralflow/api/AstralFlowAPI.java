@@ -22,7 +22,7 @@
  *
  */
 
-package io.ib67.astralflow;
+package io.ib67.astralflow.api;
 
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;

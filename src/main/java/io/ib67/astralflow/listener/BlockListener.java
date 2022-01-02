@@ -1,6 +1,6 @@
 package io.ib67.astralflow.listener;
 
-import io.ib67.astralflow.AstralFlowAPI;
+import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
