@@ -74,7 +74,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        // save data.
+        machineManager.saveMachines();
     }
 
     private void loadFactoryManager() {

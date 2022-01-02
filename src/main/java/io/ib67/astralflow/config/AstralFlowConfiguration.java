@@ -39,6 +39,6 @@ public class AstralFlowConfiguration {
     private final IMachineStorage storage;
 
     public static AstralFlowConfiguration defaultConfiguration(Path storageDir) {
-        return new AstralFlowConfiguration(new Language(), new FileMachineStorage(storageDir, AstralFlow));
+        return new AstralFlowConfiguration(new Language(), new FileMachineStorage(storageDir, AstralFlow.getInstance().getFactories()));
     }
 }
