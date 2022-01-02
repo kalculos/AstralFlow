@@ -1,0 +1,79 @@
+/*
+ *
+ *
+ *  *
+ *  *     AstralFlow - Storage utilities for spigot servers.
+ *  *     Copyright (C) 2022 iceBear67
+ *  *
+ *  *     This library is free software; you can redistribute it and/or
+ *  *     modify it under the terms of the GNU Lesser General Public
+ *  *     License as published by the Free Software Foundation; either
+ *  *     version 2.1 of the License, or (at your option) any later version.
+ *  *
+ *  *     This library is distributed in the hope that it will be useful,
+ *  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  *     Lesser General Public License for more details.
+ *  *
+ *  *     You should have received a copy of the GNU Lesser General Public
+ *  *     License along with this library; if not, write to the Free Software
+ *  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
+ *  *     USA
+ *
+ */
+
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+group = 'io.ib67'
+version = '0.0.1'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    implementation 'com.github.iceBear67:tools:0.0.6'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.jetbrains:annotations:23.0.0'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+}
+
+def targetJavaVersion = 11
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

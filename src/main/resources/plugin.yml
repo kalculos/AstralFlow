@@ -1,0 +1,4 @@
+name: AstralFlow
+version: '${version}'
+main: io.ib67.astralflow.AstralFlow
+api-version: 1.18
