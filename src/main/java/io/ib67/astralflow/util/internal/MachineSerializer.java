@@ -64,7 +64,7 @@ public class MachineSerializer implements JsonSerializer<IMachine>, JsonDeserial
                         throw new JsonParseException("No factories have registered for this type: " + type);
                     }
                     return factory.createMachine(location, uuid, state);
-                });
+                }).getResult();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class MachineSerializer implements JsonSerializer<IMachine>, JsonDeserial
         jo.add(KEY_ID, context.serialize(src.getId()));
         jo.add(KEY_STATE, context.serialize(src.getState()));
         jo.add(KEY_LOCATION, context.serialize(src.getLocation()));
-        jo.addProperty(KEY_TYPE, src.getType().getCanonicalName());
+        jo.add(KEY_TYPE, context.serialize(src.getType().getName()));
         return jo;
     }
 }

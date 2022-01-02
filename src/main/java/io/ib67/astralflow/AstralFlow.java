@@ -61,7 +61,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private final Path languageDir = getDataFolder().toPath().resolve("locales");
     @Getter
     private IFactoryManager factories;
-
+    private TickScheduler scheduler;
     public static AstralFlowAPI getInstance() {
         return AstralFlow.getPlugin(AstralFlow.class);
     }
@@ -78,7 +78,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         Log.info("Loading &aMachines");
         loadMachineManager();
         loadAllMachines();
-        new TickScheduler(machineManager).runTaskTimer(this, 0L, 1L); // Every tick.
+        scheduler = new TickScheduler(machineManager);
+        scheduler.runTaskTimer(this, 0L, 1L); // Every tick.
         loadListeners();
         // Load StorageLoader in other sourceset.
         Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
@@ -114,7 +115,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         configSerializer = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
-                .registerTypeAdapter(IMachineStorage.class, new MachineStorageSerializer(machineDir, factories))
+                .registerTypeHierarchyAdapter(IMachineStorage.class, new MachineStorageSerializer(machineDir, factories))
                 .create();
         // extract config.
         var confFile = new File(getDataFolder(), "config.json");

@@ -99,8 +99,8 @@ public class FileMachineStorage implements IMachineStorage {
 
         public MachineStorageHelper(IFactoryManager factories) {
             MACHINE_SERIALIZER = Util.BukkitAPI.gsonBuilderForBukkit()
-                    .registerTypeAdapter(IMachine.class, new MachineSerializer(factories))
-                    .registerTypeAdapter(IMachineData.class, new MachineDataSerializer(Util.BukkitAPI.gsonForBukkit()))
+                    .registerTypeHierarchyAdapter(IMachine.class, new MachineSerializer(factories))
+                    .registerTypeHierarchyAdapter(IMachineData.class, new MachineDataSerializer(Util.BukkitAPI.gsonForBukkit()))
                     .create();
         }
 

@@ -42,20 +42,21 @@ public class MachineDataSerializer implements JsonSerializer<IMachineData>, Json
         // assertion 1. context is a bukkit compatible serializer
         var jo = json.getAsJsonObject();
         var clazName = jo.get(KEY_TYPE).getAsString();
-        return (IMachineData) Util.runCatching(() -> {
+        var result = Util.runCatching(() -> {
             return (Object) Class.forName(clazName);
-        }).onFailure(t -> {
-            if (true)
-                throw new JsonParseException("Can't find machine type: " + clazName, t); // constant if-condition fixes idea highlight rendering.
         }).onSuccess(claz -> {
             return defaultSerializer.fromJson(jo.getAsJsonObject(KEY_DATA), (Type) claz);
-        });
+        }).getResult();
+        if (result == null) {
+            throw new JsonParseException("Can't find machine type: " + clazName); // constant if-condition fixes idea highlight rendering.
+        }
+        return (IMachineData) result;
     }
 
     @Override
     public JsonElement serialize(IMachineData src, Type typeOfSrc, JsonSerializationContext context) {
         var jo = new JsonObject();
-        jo.addProperty(KEY_TYPE, src.getType().getCanonicalName());
+        jo.addProperty(KEY_TYPE, src.getType().getName());
         jo.add(KEY_DATA, defaultSerializer.toJsonTree(src));
         return jo;
     }
