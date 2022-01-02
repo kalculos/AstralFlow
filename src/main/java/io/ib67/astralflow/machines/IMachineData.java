@@ -28,4 +28,7 @@ public interface IMachineData {
     default Class<? extends IMachineData> getType() {
         return this.getClass();
     }
+
+    public static class EmptyMachineData implements IMachineData {
+    }
 }

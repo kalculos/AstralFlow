@@ -39,7 +39,7 @@ public abstract class AbstractMachine implements IMachine {
     private final UUID id;
     private final Location location;
     @Setter(AccessLevel.PRIVATE)
-    private IMachineData state;
+    private IMachineData state = new IMachineData.EmptyMachineData();
 
     protected AbstractMachine(UUID id, Location location) {
         this.id = id;

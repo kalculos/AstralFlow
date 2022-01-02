@@ -25,32 +25,38 @@
 plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'java-library'
 }
 
 group = 'io.ib67'
 version = '0.0.1'
 
-repositories {
-    mavenCentral()
-    maven {
-        name = 'spigotmc-repo'
-        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+allprojects {
+    apply plugin: 'java'
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'spigotmc-repo'
+            url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        }
+        maven {
+            name = 'sonatype'
+            url = 'https://oss.sonatype.org/content/groups/public/'
+        }
+        maven {
+            url = "https://jitpack.io"
+        }
     }
-    maven {
-        name = 'sonatype'
-        url = 'https://oss.sonatype.org/content/groups/public/'
-    }
-    maven {
-        url = "https://jitpack.io"
+    dependencies {
+        compileOnly 'org.projectlombok:lombok:1.18.20'
+        compileOnly 'org.jetbrains:annotations:23.0.0'
+        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+        compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+        implementation project(":storage")
     }
 }
-
 dependencies {
-    implementation 'com.github.iceBear67:tools:0.0.6'
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    compileOnly 'org.jetbrains:annotations:23.0.0'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+    api 'com.github.iceBear67:tools:0.0.6'
     implementation 'net.jodah:typetools:0.6.3'
 }
 
