@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
+import io.ib67.astralflow.manager.FactoryManagerImpl;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.MachineManagerImpl;
@@ -77,7 +78,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     private void loadFactoryManager() {
-        
+        factories = new FactoryManagerImpl();
     }
 
     private void loadMachineManager() {

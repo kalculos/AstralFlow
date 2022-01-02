@@ -34,4 +34,8 @@ public interface IFactoryManager {
     <T extends IMachine, S extends IMachineData> IMachineFactory<T, S> getMachineFactory(Class<T> type);
 
     <T extends IMachine, S extends IMachineData> Collection<? extends IMachineFactory<T, S>> getMachineFactories();
+
+    <T extends IMachine, S extends IMachineData> boolean register(IMachineFactory<T, S> factory);
+
+    <T extends IMachine, S extends IMachineData> boolean unregister(Class<T> type);
 }
