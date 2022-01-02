@@ -88,7 +88,7 @@ public class FileMachineStorage implements IMachineStorage {
         var a = storage.toFile().listFiles();
         if (a != null) return Stream.of(a)
                 .map(File::getName)
-                .map(e -> e.substring(35))
+                .map(e -> e.substring(0, 36))
                 .map(UUID::fromString)
                 .collect(Collectors.toList());
         return Collections.emptyList();
