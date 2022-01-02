@@ -48,10 +48,7 @@ public class LanguageSerializer implements JsonSerializer<Language>, JsonDeseria
         var lang = loadLang(langName);
         if (lang == null) {
             Log.warn("Cannot load " + langName);
-            lang = loadLang("zh_CN");
-            if (lang == null) {
-                throw new JsonParseException("Cannot load default locale");
-            }
+            lang = new Language();
         }
         return lang;
     }
@@ -64,6 +61,10 @@ public class LanguageSerializer implements JsonSerializer<Language>, JsonDeseria
                         ? new FileInputStream(localeDir.resolve(langName + ".lang").toFile())
                         : AstralFlow.class.getResourceAsStream(langName + ".lang")
         ) {
+            if (stream == null) {
+                Log.warn("Cannot load " + langName);
+                return null;
+            }
             var context = new String(stream.readAllBytes());
             language = Util.BukkitAPI.gsonForBukkit().fromJson(context, Language.class);
 

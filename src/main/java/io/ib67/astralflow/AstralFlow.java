@@ -63,14 +63,14 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        Log.info("Loading &aConfiguration");
+        Log.info("Loading &aConfigurations");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
         machineDir.toFile().mkdirs();
         languageDir.toFile().mkdirs();
+        loadFactoryManager(); // FileStorage needs.
         loadConfig();
         Log.info("Loading &aMachines");
         loadMachineManager();
-        loadFactoryManager();
         new TickScheduler(machineManager).runTaskTimer(this, 0L, 1L); // Every tick.
     }
 
@@ -86,7 +86,6 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadMachineManager() {
         var machineStorage = configuration.getStorage();
-        ;
         machineManager = new MachineManagerImpl(machineStorage);
         Log.info(machineManager.getAllMachines().size() + " machines were detected.");
     }
@@ -99,7 +98,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 .create();
         // extract config.
         var confFile = new File(getDataFolder(), "config.json");
-        if (!confFile.exists()) {
+        if (!confFile.exists() || confFile.length() == 0) {
             confFile.createNewFile();
             Files.write(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(machineDir)).getBytes(StandardCharsets.UTF_8));
         }
@@ -107,10 +106,14 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 var config = new FileInputStream(confFile)
         ) {
             configuration = configSerializer.fromJson(new String(config.readAllBytes()), AstralFlowConfiguration.class);
+            if (configuration == null) {
+                throw new IOException("Can't parse config");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             Log.warn("Cannot load configuration. Falling back to default values");
             configuration = AstralFlowConfiguration.defaultConfiguration(machineDir);
         }
+
     }
 }

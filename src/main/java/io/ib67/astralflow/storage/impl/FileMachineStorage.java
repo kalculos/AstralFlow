@@ -32,21 +32,24 @@ import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.util.internal.MachineDataSerializer;
 import io.ib67.astralflow.util.internal.MachineSerializer;
+import lombok.SneakyThrows;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class FileMachineStorage implements IMachineStorage {
     private transient final Path storage;
-    private transient final MachineStorageHelper machineStorageHelper;
+    private transient final MachineStorageHelper helper;
 
     public FileMachineStorage(Path storage, IFactoryManager factoryManager) {
         this.storage = storage;
-        machineStorageHelper = new MachineStorageHelper(factoryManager);
+        helper = new MachineStorageHelper(factoryManager);
     }
 
 
@@ -63,21 +66,28 @@ public class FileMachineStorage implements IMachineStorage {
         }
         try (var is = new FileInputStream(file)) {
             var s = new String(is.readAllBytes());
-            return Optional.of(machineStorageHelper.fromJson(s));
+            return Optional.of(helper.fromJson(s));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return Optional.empty();
     }
 
+    @SneakyThrows
     @Override
     public boolean saveMachine(IMachine machine) {
-        return false;
+        return Files.writeString(storage.resolve(machine.getId() + ".json"), helper.toJson(machine)) != null;
     }
 
+    @SneakyThrows
     @Override
     public Collection<UUID> getMachines() {
-        return null;
+        return Files
+                .walk(storage, 1)
+                .map(e -> e.toFile().getName())
+                .map(e -> e.substring(35))
+                .map(UUID::fromString)
+                .collect(Collectors.toList());
     }
 
     public static class MachineStorageHelper {
