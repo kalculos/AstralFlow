@@ -24,6 +24,7 @@
 
 package io.ib67.astralflow.config;
 
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.impl.FileMachineStorage;
 import lombok.Getter;
@@ -38,6 +39,6 @@ public class AstralFlowConfiguration {
     private final IMachineStorage storage;
 
     public static AstralFlowConfiguration defaultConfiguration(Path storageDir) {
-        return new AstralFlowConfiguration(new Language(), new FileMachineStorage(storageDir));
+        return new AstralFlowConfiguration(new Language(), new FileMachineStorage(storageDir, AstralFlow));
     }
 }

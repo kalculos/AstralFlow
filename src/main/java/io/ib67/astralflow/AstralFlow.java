@@ -28,7 +28,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
+import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
+import io.ib67.astralflow.manager.MachineManagerImpl;
 import io.ib67.astralflow.util.internal.LanguageSerializer;
 import io.ib67.util.bukkit.Log;
 import lombok.Getter;
@@ -40,21 +42,33 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private Gson configSerializer;
     private AstralFlowConfiguration configuration;
     @Getter
     private IMachineManager machineManager;
+    private final Path machineDir = getDataFolder().toPath().resolve("machines");
+    private final Path languageDir = getDataFolder().toPath().resolve("locales");
+    @Getter
+    private IFactoryManager factories;
+
+    public static final AstralFlowAPI getInstance() {
+        return AstralFlow.getPlugin(AstralFlow.class);
+    }
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         Log.info("Loading &aConfiguration");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
+        machineDir.toFile().mkdirs();
+        languageDir.toFile().mkdirs();
         loadConfig();
         Log.info("Loading &aMachines");
-
+        loadMachineManager();
+        loadFactoryManager();
     }
 
     @Override
@@ -62,21 +76,28 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         // Plugin shutdown logic
     }
 
+    private void loadFactoryManager() {
+        
+    }
+
     private void loadMachineManager() {
-        // determine machine storage
+        var machineStorage = configuration.getStorage();
+        ;
+        machineManager = new MachineManagerImpl(machineStorage);
+        Log.info(machineManager.getAllMachines().size() + " machines were detected.");
     }
 
     @SneakyThrows
     private void loadConfig() {
         configSerializer = new GsonBuilder()
                 .setPrettyPrinting()
-                .registerTypeAdapter(Language.class, new LanguageSerializer(getDataFolder().toPath().resolve("locale")))
+                .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
                 .create();
         // extract config.
         var confFile = new File(getDataFolder(), "config.json");
         if (!confFile.exists()) {
             confFile.createNewFile();
-            Files.write(confFile.toPath(), configSerializer.toJson(new AstralFlowConfiguration()).getBytes(StandardCharsets.UTF_8));
+            Files.write(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(machineDir)).getBytes(StandardCharsets.UTF_8));
         }
         try (
                 var config = new FileInputStream(confFile)
@@ -85,7 +106,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         } catch (IOException e) {
             e.printStackTrace();
             Log.warn("Cannot load configuration. Falling back to default values");
-            configuration = new AstralFlowConfiguration();
+            configuration = AstralFlowConfiguration.defaultConfiguration(machineDir);
         }
     }
 }

@@ -57,8 +57,7 @@ public class MachineSerializer implements JsonSerializer<IMachine>, JsonDeserial
 
         return (IMachine) Util.runCatching(() -> (Object) Class.forName(type)) // to be caught.
                 .onFailure(t -> {
-                    if (true)
-                        throw new JsonParseException("Can't find machine type: " + type, t); // constant if-condition fixes idea highlight rendering.
+                    throw new JsonParseException("Can't find machine type: " + type, t);
                 }).onSuccess(clazz -> {
                     var factory = factories.getMachineFactory((Class<? extends IMachine>) clazz);
                     if (factory == null) {
