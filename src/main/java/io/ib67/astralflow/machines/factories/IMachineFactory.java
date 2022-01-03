@@ -19,22 +19,33 @@
  *   USA
  */
 
-package io.ib67.astralflow.storage;
+package io.ib67.astralflow.machines.factories;
 
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.IMachineData;
+import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
-public interface IMachineStorage {
-    boolean isAvailable();
+@FunctionalInterface
+public interface IMachineFactory<T extends IMachine, S extends IMachineData> {
+    default T createMachine(Location location) {
+        return createMachine(location, null, null);
+    }
 
-    Optional<? extends IMachine> readMachine(UUID uuid);
+    default T createMachine(Location location, @Nullable UUID uuid) {
+        return createMachine(location, uuid, null);
+    }
 
-    boolean saveMachine(IMachine machine);
+    T createMachine(Location location, @Nullable UUID uuid, @Nullable S initialState);
 
-    Collection<UUID> getMachines();
+    default T createMachine(Location location, S initialState) {
+        return createMachine(location, null, initialState);
+    }
 
-    boolean removeMachine(UUID machine);
+    @SuppressWarnings("unchecked")
+    default T createMachine(T anotherMachine) {
+        return createMachine(anotherMachine.getLocation(), null, (S) anotherMachine.getState());
+    }
 }

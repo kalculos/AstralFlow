@@ -42,4 +42,6 @@ public interface IMachineManager {
     boolean isMachine(Block block);
 
     void saveMachines();
+
+    boolean removeMachine(IMachine machine);
 }

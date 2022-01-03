@@ -91,6 +91,12 @@ public class FileMachineStorage implements IMachineStorage {
         return Collections.emptyList();
     }
 
+    @Override
+    @SneakyThrows
+    public boolean removeMachine(UUID machine) {
+        return Files.deleteIfExists(storage.resolve(machine.toString() + ".json"));
+    }
+
     public static class MachineStorageHelper {
         private final Gson MACHINE_SERIALIZER;
 

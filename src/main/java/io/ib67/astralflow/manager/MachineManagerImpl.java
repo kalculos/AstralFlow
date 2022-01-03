@@ -41,7 +41,7 @@ public class MachineManagerImpl implements IMachineManager {
     public IMachine getMachine(UUID uuid) {
         return cache.computeIfAbsent(uuid, k -> {
             var machine = machineStorage.readMachine(k).orElseThrow();
-                machine.onLoad();
+            machine.onLoad();
             return machine;
         });
     }
@@ -82,5 +82,11 @@ public class MachineManagerImpl implements IMachineManager {
             e.onUnload();
             return true;
         }).forEach(machineStorage::saveMachine);
+    }
+
+    @Override
+    public boolean removeMachine(IMachine machine) {
+        cache.remove(machine.getId());
+        return machineStorage.removeMachine(machine.getId());
     }
 }

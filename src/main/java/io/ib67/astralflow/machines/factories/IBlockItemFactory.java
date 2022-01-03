@@ -19,20 +19,17 @@
  *   USA
  */
 
-package io.ib67.astralflow.machines;
+package io.ib67.astralflow.machines.factories;
 
-import org.bukkit.Location;
+import io.ib67.astralflow.machines.IMachine;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
+@FunctionalInterface
+public interface IBlockItemFactory<M extends IMachine> {
+    ItemStack generateTemplateBlockItem(@Nullable IMachine machine);
 
-public interface IMachineFactory<T extends IMachine, S extends IMachineData> {
-    T createMachine(Location location);
-
-    T createMachine(Location location, UUID uuid);
-
-    T createMachine(Location location, UUID uuid, S initialState);
-
-    T createMachine(Location location, S initialState);
-
-    T createMachine(T anotherMachine);
+    default ItemStack generateTemplateBlockItem() {
+        return generateTemplateBlockItem(null);
+    }
 }

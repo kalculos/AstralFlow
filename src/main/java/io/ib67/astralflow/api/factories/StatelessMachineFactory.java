@@ -23,7 +23,7 @@ package io.ib67.astralflow.api.factories;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IMachineData;
-import io.ib67.astralflow.machines.IMachineFactory;
+import io.ib67.astralflow.machines.factories.IMachineFactory;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 

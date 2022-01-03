@@ -23,39 +23,57 @@ package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IMachineData;
-import io.ib67.astralflow.machines.IMachineFactory;
+import io.ib67.astralflow.machines.factories.IBlockItemFactory;
+import io.ib67.astralflow.machines.factories.IMachineFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FactoryManagerImpl implements IFactoryManager {
-    private final Map<Class<? extends IMachine>, IMachineFactory<?, ?>> factories = new HashMap<>();
+    private final Map<Class<? extends IMachine>, IMachineFactory<?, ?>> machineFactories = new HashMap<>();
+    private final Map<Class<? extends IMachine>, IBlockItemFactory<?>> blockItemFactories = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     @Override
     public <T extends IMachine, S extends IMachineData> IMachineFactory<T, S> getMachineFactory(Class<T> type) {
-        return (IMachineFactory<T, S>) factories.get(type);
+        return (IMachineFactory<T, S>) machineFactories.get(type);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Collection<? extends IMachineFactory<?, ?>> getMachineFactories() {
-        return factories.values();
+        return machineFactories.values();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends IMachine> IBlockItemFactory<T> getBlockItemFactory(Class<T> type) {
+        return (IBlockItemFactory<T>) blockItemFactories.get(type);
+    }
+
+    @Override
+    public Collection<? extends IBlockItemFactory<?>> getBlockItemFactories() {
+        return blockItemFactories.values();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T extends IMachine, S extends IMachineData> boolean register(Class<T> claz, IMachineFactory<T, S> factory) {
-        if (factories.containsKey(claz)) {
+        if (machineFactories.containsKey(claz)) {
             return false;
         }
-        factories.put((Class<? extends IMachine>) claz, factory);
+        machineFactories.put(claz, factory);
         return true;
     }
 
     @Override
+    public <T extends IMachine> boolean register(Class<T> clazz, IBlockItemFactory<T> factory) {
+        return false;
+    }
+
+    @Override
     public <T extends IMachine, S extends IMachineData> boolean unregister(Class<T> type) {
-        return factories.containsKey(type) && factories.remove(type) != null;
+        return machineFactories.containsKey(type) && machineFactories.remove(type) != null;
     }
 }
