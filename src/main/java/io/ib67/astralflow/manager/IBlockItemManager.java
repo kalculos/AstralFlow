@@ -25,15 +25,18 @@ import io.ib67.astralflow.machines.IMachine;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * **此处所有的方法均不会对传入对象做写操作，需要自行管理销毁过程。**
  */
 @ApiStatus.Experimental
 public interface IBlockItemManager {
+    @Nullable
     ItemStack copyOf(IMachine machine);
 
     boolean isBlockItem(ItemStack itemStack);
 
+    @Nullable
     IMachine extractMachine(ItemStack itemStack, Location location);
 }

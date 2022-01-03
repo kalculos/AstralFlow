@@ -19,20 +19,8 @@
  *   USA
  */
 
-package io.ib67.astralflow.api;
+package io.ib67.astralflow.hook;
 
-import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.manager.IMachineManager;
-
-import java.util.Collection;
-
-public interface AstralFlowAPI {
-    IMachineManager getMachineManager();
-
-    IFactoryManager getFactories();
-
-    void addHook(HookType type, Runnable runnable);
-
-    Collection<? extends Runnable> getHooks(HookType hook);
+public enum HookType {
+    PLUGIN_SHUTDOWN
 }

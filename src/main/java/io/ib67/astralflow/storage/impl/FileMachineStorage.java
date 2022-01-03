@@ -108,10 +108,14 @@ public class FileMachineStorage implements IMachineStorage {
         }
 
         public IMachine fromJson(String json) {
-            return MACHINE_SERIALIZER.fromJson(json, IMachine.class);
+            return fromJson(json, IMachine.class);
         }
 
-        public String toJson(IMachine machine) {
+        public <T> T fromJson(String json, Class<T> tClass) {
+            return MACHINE_SERIALIZER.fromJson(json, tClass);
+        }
+
+        public String toJson(Object machine) {
             return MACHINE_SERIALIZER.toJson(machine);
         }
     }

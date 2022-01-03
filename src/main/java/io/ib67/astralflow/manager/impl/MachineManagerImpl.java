@@ -21,9 +21,12 @@
 
 package io.ib67.astralflow.manager.impl;
 
+import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.storage.IMachineStorage;
+import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -37,6 +40,11 @@ import java.util.UUID;
 public class MachineManagerImpl implements IMachineManager {
     private final IMachineStorage machineStorage;
     private final Map<UUID, IMachine> cache = new HashMap<>(64);
+
+    {
+        Log.info("test");
+        AstralFlow.getInstance().addHook(HookType.PLUGIN_SHUTDOWN, this::saveMachines);
+    }
 
     @Override
     public IMachine getMachine(UUID uuid) {

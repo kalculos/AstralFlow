@@ -27,6 +27,7 @@ import io.ib67.Util;
 import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
+import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.manager.IFactoryManager;
@@ -48,7 +49,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.*;
 
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private Gson configSerializer;
@@ -60,9 +61,12 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Getter
     private IFactoryManager factories;
     private TickScheduler scheduler;
+
     public static AstralFlowAPI getInstance() {
         return AstralFlow.getPlugin(AstralFlow.class);
     }
+
+    private static final Map<HookType, List<Runnable>> HOOKS = new EnumMap<>(HookType.class);
 
     @Override
     public void onEnable() {
@@ -86,7 +90,9 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Override
     public void onDisable() {
         // save data.
-        machineManager.saveMachines();
+        for (Runnable hook : getHooks(HookType.PLUGIN_SHUTDOWN)) {
+            hook.run();
+        }
     }
 
     private void loadListeners() {
@@ -136,5 +142,14 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             configuration = AstralFlowConfiguration.defaultConfiguration(machineDir);
         }
 
+    }
+
+    @Override
+    public void addHook(HookType type, Runnable runnable) {
+        HOOKS.computeIfAbsent(type, k -> new ArrayList<>()).add(runnable);
+    }
+
+    public Collection<? extends Runnable> getHooks(HookType hook) {
+        return HOOKS.get(hook);
     }
 }
