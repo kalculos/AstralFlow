@@ -51,6 +51,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private Gson configSerializer;
@@ -77,12 +78,12 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         loadConfig();
         Log.info("Loading &aMachines");
         loadMachineManager();
-        loadAllMachines();
         scheduler = new TickScheduler(machineManager);
         scheduler.runTaskTimer(this, 0L, 1L); // Every tick.
         loadListeners();
         // Load StorageLoader in other sourceset.
         Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
+        loadAllMachines();
     }
 
     @Override
@@ -107,7 +108,9 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     private void loadAllMachines() {
-        machineManager.getAllMachines().forEach(machineManager::getMachine);
+        var machines = new ArrayList<>(machineManager.getAllMachines());
+        machines.forEach(machineManager::getMachine);
+        Log.info(machineManager.getLoadedMachines().size() + " machines were loaded");
     }
 
     @SneakyThrows

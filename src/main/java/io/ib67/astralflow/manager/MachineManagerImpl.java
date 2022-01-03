@@ -26,30 +26,25 @@ package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.storage.IMachineStorage;
-import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 public class MachineManagerImpl implements IMachineManager {
     private final IMachineStorage machineStorage;
-    private final Map<UUID, IMachine> cache = new ConcurrentHashMap<>(64);
+    private final Map<UUID, IMachine> cache = new HashMap<>(64);
 
     @Override
     public IMachine getMachine(UUID uuid) {
         return cache.computeIfAbsent(uuid, k -> {
-            var machine = machineStorage.readMachine(k).orElse(null);
-            if (machine == null) {
-                Log.warn("Cannot load machine " + uuid + " because it's a null!");
-            } else {
+            var machine = machineStorage.readMachine(k).orElseThrow();
                 machine.onLoad();
-            }
             return machine;
         });
     }
