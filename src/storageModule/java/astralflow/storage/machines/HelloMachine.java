@@ -8,11 +8,10 @@ import org.bukkit.Particle;
 
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class HelloMachine extends AbstractMachine {
-    private static final Material[] WOOL = Arrays.stream(Material.values()).filter(e -> e.name().endsWith("_WOOL")).collect(Collectors.toList()).toArray(new Material[0]);
-    private volatile int ticks = 0;
+    private static final Material[] WOOL = Arrays.stream(Material.values()).filter(e -> e.name().endsWith("_WOOL")).toArray(Material[]::new);
+    private int ticks = 0;
     private int pointer = 0;
 
     public HelloMachine(UUID uuid, Location location) {
