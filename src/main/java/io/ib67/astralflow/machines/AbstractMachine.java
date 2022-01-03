@@ -38,8 +38,9 @@ import java.util.function.Function;
 
 public abstract class AbstractMachine implements IMachine {
     private final UUID id;
-    private final Location location;
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PROTECTED)
+    private Location location;
+    @Setter(AccessLevel.PROTECTED)
     @Getter
     private IMachineData state = new IMachineData.EmptyMachineData();
 
