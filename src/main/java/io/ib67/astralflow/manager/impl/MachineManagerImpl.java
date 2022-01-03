@@ -19,9 +19,10 @@
  *   USA
  */
 
-package io.ib67.astralflow.manager;
+package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;

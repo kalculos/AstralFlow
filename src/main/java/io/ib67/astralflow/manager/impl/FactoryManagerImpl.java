@@ -19,12 +19,13 @@
  *   USA
  */
 
-package io.ib67.astralflow.manager;
+package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IMachineData;
 import io.ib67.astralflow.machines.factories.IBlockItemFactory;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
+import io.ib67.astralflow.manager.IFactoryManager;
 
 import java.util.Collection;
 import java.util.HashMap;
