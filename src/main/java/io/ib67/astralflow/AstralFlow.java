@@ -28,6 +28,7 @@ import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.manager.IFactoryManager;
@@ -50,6 +51,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Consumer;
 
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private Gson configSerializer;
@@ -66,7 +68,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         return AstralFlow.getPlugin(AstralFlow.class);
     }
 
-    private static final Map<HookType, List<Runnable>> HOOKS = new EnumMap<>(HookType.class);
+    private static final Map<HookType<?>, List<Consumer<?>>> HOOKS = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -90,8 +92,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Override
     public void onDisable() {
         // save data.
-        for (Runnable hook : getHooks(HookType.PLUGIN_SHUTDOWN)) {
-            hook.run();
+        for (Consumer<?> hook : getHooks(HookType.PLUGIN_SHUTDOWN)) {
+            hook.accept(null);
         }
     }
 
@@ -145,11 +147,16 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     @Override
-    public void addHook(HookType type, Runnable runnable) {
+    public <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable) {
+        addHook(type, t -> runnable.run());
+    }
+
+    @Override
+    public <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable) {
         HOOKS.computeIfAbsent(type, k -> new ArrayList<>()).add(runnable);
     }
 
-    public Collection<? extends Runnable> getHooks(HookType hook) {
-        return HOOKS.get(hook);
+    public <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook) {
+        return (Collection<? extends Consumer<T>>) HOOKS.get(hook);
     }
 }

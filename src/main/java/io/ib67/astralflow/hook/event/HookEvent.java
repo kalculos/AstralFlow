@@ -19,24 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.api;
+package io.ib67.astralflow.hook.event;
 
-import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.HookEvent;
-import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.manager.IMachineManager;
-
-import java.util.Collection;
-import java.util.function.Consumer;
-
-public interface AstralFlowAPI {
-    IMachineManager getMachineManager();
-
-    IFactoryManager getFactories();
-
-    <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
-
-    <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable);
-
-    <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
+public abstract class HookEvent {
 }

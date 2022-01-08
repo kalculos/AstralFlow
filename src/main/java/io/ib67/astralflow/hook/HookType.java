@@ -21,6 +21,9 @@
 
 package io.ib67.astralflow.hook;
 
-public enum HookType {
-    PLUGIN_SHUTDOWN
+import io.ib67.astralflow.hook.event.HookEvent;
+
+// Constants.
+public final class HookType<T extends HookEvent> {
+    public static final HookType<?> PLUGIN_SHUTDOWN = new HookType<>();
 }
