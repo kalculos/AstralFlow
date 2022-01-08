@@ -27,7 +27,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.item.block.MachineItemTag;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IMachineData;
+import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IBlockItemManager;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.impl.FileMachineStorage;
@@ -119,7 +119,7 @@ public class BlockItemManagerImpl implements IBlockItemManager {
     @RequiredArgsConstructor
     @Getter
     public class CachedMachine {
-        private final IMachineData state;
+        private final IState state;
         private final String type;
 
         public IMachine buildMachine(Location location) {

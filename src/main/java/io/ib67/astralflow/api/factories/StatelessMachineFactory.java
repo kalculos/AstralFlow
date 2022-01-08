@@ -22,7 +22,7 @@
 package io.ib67.astralflow.api.factories;
 
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IMachineData;
+import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
@@ -31,7 +31,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 
 @RequiredArgsConstructor
-public class StatelessMachineFactory<T extends IMachine> implements IMachineFactory<T, IMachineData> {
+public class StatelessMachineFactory<T extends IMachine> implements IMachineFactory<T, IState> {
     private final BiFunction<Location, UUID, T> factory;
 
     @Override
@@ -50,12 +50,12 @@ public class StatelessMachineFactory<T extends IMachine> implements IMachineFact
     }
 
     @Override
-    public T createMachine(Location location, IMachineData initialState) {
+    public T createMachine(Location location, IState initialState) {
         return createMachine(location);
     }
 
     @Override
-    public T createMachine(Location location, UUID uuid, IMachineData initialState) {
+    public T createMachine(Location location, UUID uuid, IState initialState) {
         return createMachine(location, uuid);
     }
 }

@@ -23,19 +23,19 @@ package io.ib67.astralflow.util.internal;
 
 import com.google.gson.*;
 import io.ib67.Util;
-import io.ib67.astralflow.machines.IMachineData;
+import io.ib67.astralflow.machines.IState;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Type;
 
 @RequiredArgsConstructor
-public class MachineDataSerializer implements JsonSerializer<IMachineData>, JsonDeserializer<IMachineData> {
+public class MachineDataSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {
     private static final String KEY_TYPE = "type";
     private static final String KEY_DATA = "data";
     private final Gson defaultSerializer;
 
     @Override
-    public IMachineData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public IState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         // assertion 1. context is a bukkit compatible serializer
         var jo = json.getAsJsonObject();
         var clazName = jo.get(KEY_TYPE).getAsString();
@@ -47,11 +47,11 @@ public class MachineDataSerializer implements JsonSerializer<IMachineData>, Json
         if (result == null) {
             throw new JsonParseException("Can't find machine type: " + clazName); // constant if-condition fixes idea highlight rendering.
         }
-        return (IMachineData) result;
+        return (IState) result;
     }
 
     @Override
-    public JsonElement serialize(IMachineData src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(IState src, Type typeOfSrc, JsonSerializationContext context) {
         var jo = new JsonObject();
         jo.addProperty(KEY_TYPE, src.getType().getName());
         jo.add(KEY_DATA, defaultSerializer.toJsonTree(src));

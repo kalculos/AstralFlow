@@ -24,7 +24,7 @@ package io.ib67.astralflow.util.internal;
 import com.google.gson.*;
 import io.ib67.Util;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IMachineData;
+import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
@@ -48,7 +48,7 @@ public class MachineSerializer implements JsonSerializer<IMachine>, JsonDeserial
         // assertion 1. context is a bukkit compatible serializer
         var jo = json.getAsJsonObject(); // assertion.
         UUID uuid = context.deserialize(jo.get(KEY_ID), UUID.class);
-        IMachineData state = context.deserialize(jo.get(KEY_STATE), IMachineData.class);
+        IState state = context.deserialize(jo.get(KEY_STATE), IState.class);
         Location location = context.deserialize(jo.get(KEY_LOCATION), Location.class);
         var type = jo.getAsJsonPrimitive(KEY_TYPE).getAsString();
 

@@ -21,11 +21,11 @@
 
 package io.ib67.astralflow.machines;
 
-public interface IMachineData {
-    default Class<? extends IMachineData> getType() {
+public interface IState {
+    default Class<? extends IState> getType() {
         return this.getClass();
     }
 
-    public static class EmptyMachineData implements IMachineData {
+    public static class EmptyState implements IState {
     }
 }

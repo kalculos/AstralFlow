@@ -22,14 +22,14 @@
 package io.ib67.astralflow.machines.factories;
 
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IMachineData;
+import io.ib67.astralflow.machines.IState;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 @FunctionalInterface
-public interface IMachineFactory<T extends IMachine, S extends IMachineData> {
+public interface IMachineFactory<T extends IMachine, S extends IState> {
     default T createMachine(Location location) {
         return createMachine(location, null, null);
     }

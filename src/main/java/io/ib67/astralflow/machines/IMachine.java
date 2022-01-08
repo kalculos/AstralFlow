@@ -33,7 +33,7 @@ public interface IMachine extends Tickable<IMachine>, LifeCycle {
 
     Location getLocation();
 
-    IMachineData getState();
+    IState getState();
 
     default void update() {
         this.update(this);

@@ -39,7 +39,7 @@ public abstract class AbstractMachine implements IMachine {
     private Location location;
     @Setter(AccessLevel.PROTECTED)
     @Getter
-    private IMachineData state = new IMachineData.EmptyMachineData();
+    private IState state = new IState.EmptyState();
 
     protected AbstractMachine(UUID id, Location location) {
         this.id = id;
@@ -61,7 +61,7 @@ public abstract class AbstractMachine implements IMachine {
         return location;
     }
 
-    public static class SimpleMachineState<V> implements IMachineData {
+    public static class SimpleMachineState<V> implements IState {
         private final Map<String, V> values = new HashMap<>();
 
         public V get(String s) {

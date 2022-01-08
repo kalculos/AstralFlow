@@ -22,14 +22,14 @@
 package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IMachineData;
+import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.machines.factories.IBlockItemFactory;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
 
 import java.util.Collection;
 
 public interface IFactoryManager {
-    <T extends IMachine, S extends IMachineData> IMachineFactory<T, S> getMachineFactory(Class<T> type);
+    <T extends IMachine, S extends IState> IMachineFactory<T, S> getMachineFactory(Class<T> type);
 
     Collection<? extends IMachineFactory<?, ?>> getMachineFactories();
 
@@ -37,9 +37,9 @@ public interface IFactoryManager {
 
     Collection<? extends IBlockItemFactory<?>> getBlockItemFactories();
 
-    <T extends IMachine, S extends IMachineData> boolean register(Class<T> clazz, IMachineFactory<T, S> factory);
+    <T extends IMachine, S extends IState> boolean register(Class<T> clazz, IMachineFactory<T, S> factory);
 
     <T extends IMachine> boolean register(Class<T> clazz, IBlockItemFactory<T> factory);
 
-    <T extends IMachine, S extends IMachineData> boolean unregister(Class<T> type);
+    <T extends IMachine, S extends IState> boolean unregister(Class<T> type);
 }
