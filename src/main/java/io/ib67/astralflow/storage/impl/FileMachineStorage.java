@@ -27,8 +27,8 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.IMachineStorage;
-import io.ib67.astralflow.util.internal.MachineDataSerializer;
 import io.ib67.astralflow.util.internal.MachineSerializer;
+import io.ib67.astralflow.util.internal.StateSerializer;
 import lombok.SneakyThrows;
 
 import java.io.File;
@@ -103,7 +103,7 @@ public class FileMachineStorage implements IMachineStorage {
         public MachineStorageHelper(IFactoryManager factories) {
             MACHINE_SERIALIZER = Util.BukkitAPI.gsonBuilderForBukkit()
                     .registerTypeHierarchyAdapter(IMachine.class, new MachineSerializer(factories))
-                    .registerTypeHierarchyAdapter(IState.class, new MachineDataSerializer(Util.BukkitAPI.gsonForBukkit()))
+                    .registerTypeHierarchyAdapter(IState.class, new StateSerializer(Util.BukkitAPI.gsonForBukkit()))
                     .create();
         }
 

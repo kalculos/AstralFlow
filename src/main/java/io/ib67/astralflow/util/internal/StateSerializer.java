@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 import java.lang.reflect.Type;
 
 @RequiredArgsConstructor
-public class MachineDataSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {
+public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {
     private static final String KEY_TYPE = "type";
     private static final String KEY_DATA = "data";
     private final Gson defaultSerializer;
@@ -45,7 +45,7 @@ public class MachineDataSerializer implements JsonSerializer<IState>, JsonDeseri
             return defaultSerializer.fromJson(jo.getAsJsonObject(KEY_DATA), (Type) claz);
         }).getResult();
         if (result == null) {
-            throw new JsonParseException("Can't find machine type: " + clazName); // constant if-condition fixes idea highlight rendering.
+            throw new JsonParseException("Can't find state type: " + clazName); // constant if-condition fixes idea highlight rendering.
         }
         return (IState) result;
     }
