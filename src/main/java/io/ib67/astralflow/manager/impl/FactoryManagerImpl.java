@@ -23,7 +23,6 @@ package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
-import io.ib67.astralflow.machines.factories.IBlockItemFactory;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
 import io.ib67.astralflow.manager.IFactoryManager;
 
@@ -33,7 +32,6 @@ import java.util.Map;
 
 public class FactoryManagerImpl implements IFactoryManager {
     private final Map<Class<? extends IMachine>, IMachineFactory<?, ?>> machineFactories = new HashMap<>();
-    private final Map<Class<? extends IMachine>, IBlockItemFactory<?>> blockItemFactories = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     @Override
@@ -47,17 +45,6 @@ public class FactoryManagerImpl implements IFactoryManager {
         return machineFactories.values();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends IMachine> IBlockItemFactory<T> getBlockItemFactory(Class<T> type) {
-        return (IBlockItemFactory<T>) blockItemFactories.get(type);
-    }
-
-    @Override
-    public Collection<? extends IBlockItemFactory<?>> getBlockItemFactories() {
-        return blockItemFactories.values();
-    }
-
     @Override
     @SuppressWarnings("unchecked")
     public <T extends IMachine, S extends IState> boolean register(Class<T> claz, IMachineFactory<T, S> factory) {
@@ -66,11 +53,6 @@ public class FactoryManagerImpl implements IFactoryManager {
         }
         machineFactories.put(claz, factory);
         return true;
-    }
-
-    @Override
-    public <T extends IMachine> boolean register(Class<T> clazz, IBlockItemFactory<T> factory) {
-        return false;
     }
 
     @Override
