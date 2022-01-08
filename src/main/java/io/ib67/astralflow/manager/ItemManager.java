@@ -19,32 +19,25 @@
  *   USA
  */
 
-package io.ib67.astralflow.api;
+package io.ib67.astralflow.manager;
 
-import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.HookEvent;
-import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.astralflow.manager.ItemManager;
-import org.bukkit.plugin.Plugin;
+import io.ib67.astralflow.item.IOreDict;
+import io.ib67.astralflow.item.Item;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
-import java.util.function.Consumer;
+import java.util.Optional;
 
-public interface AstralFlowAPI {
-    IMachineManager getMachineManager();
+public interface ItemManager {
+    void registerItem(Item item);
 
-    IFactoryManager getFactories();
+    IOreDict getOreDict();
 
-    ItemManager getItemManager();
+    Collection<? extends Item> getItems();
 
-    <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
+    Item getItem(String key);
 
-    <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable);
+    Optional<Item> getItem(ItemStack itemStack);
 
-    <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
-
-    default Plugin asPlugin() {
-        return (Plugin) this;
-    }
+    ItemStack createItem(String key);
 }

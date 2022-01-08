@@ -19,32 +19,22 @@
  *   USA
  */
 
-package io.ib67.astralflow.api;
+package io.ib67.astralflow.hook.event.item;
 
-import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.HookEvent;
-import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.astralflow.manager.ItemManager;
-import org.bukkit.plugin.Plugin;
+import io.ib67.astralflow.item.Item;
+import lombok.Getter;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 
-import java.util.Collection;
-import java.util.function.Consumer;
+@Getter
+public class ItemInteractBlockEvent extends ItemEvent {
+    private final Action clickType;
+    private final Block clickedBlock;
 
-public interface AstralFlowAPI {
-    IMachineManager getMachineManager();
-
-    IFactoryManager getFactories();
-
-    ItemManager getItemManager();
-
-    <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
-
-    <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable);
-
-    <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
-
-    default Plugin asPlugin() {
-        return (Plugin) this;
+    public ItemInteractBlockEvent(Item item, Player player, Action clickType, Block clickedBlock) {
+        super(item, player);
+        this.clickType = clickType;
+        this.clickedBlock = clickedBlock;
     }
 }

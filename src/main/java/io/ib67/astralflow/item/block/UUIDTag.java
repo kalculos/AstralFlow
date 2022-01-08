@@ -22,17 +22,21 @@
 package io.ib67.astralflow.item.block;
 
 import io.ib67.astralflow.AstralFlow;
+import lombok.Getter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-public class MachineItemTag implements PersistentDataType<byte[], UUID> { // 此处的 UUID 指的是 BlockItemManagerImpl 里的缓存 KEY
-    public static final NamespacedKey MACHINE_TAG_KEY = new NamespacedKey((Plugin) AstralFlow.getInstance(), "blockitem");
-    public static final MachineItemTag MACHINE_ITEM_TAG = new MachineItemTag();
+public class UUIDTag implements PersistentDataType<byte[], UUID> { // 此处的 UUID 指的是 BlockItemManagerImpl 里的缓存 KEY
+    @Getter
+    public final NamespacedKey tagKey;
+
+    public UUIDTag(String key) {
+        tagKey = new NamespacedKey(AstralFlow.getInstance().asPlugin(), key);
+    }
 
     @Override
     public Class<byte[]> getPrimitiveType() {

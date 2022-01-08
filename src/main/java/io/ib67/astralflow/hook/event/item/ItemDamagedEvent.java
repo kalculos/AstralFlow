@@ -19,32 +19,18 @@
  *   USA
  */
 
-package io.ib67.astralflow.api;
+package io.ib67.astralflow.hook.event.item;
 
-import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.HookEvent;
-import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.astralflow.manager.ItemManager;
-import org.bukkit.plugin.Plugin;
+import io.ib67.astralflow.item.Item;
+import lombok.Getter;
+import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.function.Consumer;
+@Getter
+public class ItemDamagedEvent extends ItemEvent {
+    private final int damage;
 
-public interface AstralFlowAPI {
-    IMachineManager getMachineManager();
-
-    IFactoryManager getFactories();
-
-    ItemManager getItemManager();
-
-    <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
-
-    <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable);
-
-    <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
-
-    default Plugin asPlugin() {
-        return (Plugin) this;
+    public ItemDamagedEvent(Item item, Player player, int damage) {
+        super(item, player);
+        this.damage = damage;
     }
 }

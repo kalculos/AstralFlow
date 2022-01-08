@@ -19,32 +19,20 @@
  *   USA
  */
 
-package io.ib67.astralflow.api;
+package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.HookEvent;
-import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.astralflow.manager.ItemManager;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.inventory.RecipeChoice;
 
-import java.util.Collection;
-import java.util.function.Consumer;
+public interface IOreDict {
+    /**
+     * 插件完成初始化后将会封锁所有的 registerItem 请求以减小维护成本
+     *
+     * @param prototype
+     * @param dictKey
+     * @return
+     * @throws IllegalStateException if locked
+     */
+    IOreDict registerItem(Item prototype, String dictKey);
 
-public interface AstralFlowAPI {
-    IMachineManager getMachineManager();
-
-    IFactoryManager getFactories();
-
-    ItemManager getItemManager();
-
-    <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
-
-    <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable);
-
-    <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
-
-    default Plugin asPlugin() {
-        return (Plugin) this;
-    }
+    RecipeChoice.ExactChoice getChoices(String dictKey);
 }

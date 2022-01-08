@@ -33,7 +33,9 @@ import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
+import io.ib67.astralflow.manager.ItemManager;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
+import io.ib67.astralflow.manager.impl.ItemManagerImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.scheduler.TickScheduler;
 import io.ib67.astralflow.storage.IMachineStorage;
@@ -63,6 +65,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Getter
     private IFactoryManager factories;
     private TickScheduler scheduler;
+    @Getter
+    private ItemManager itemManager = new ItemManagerImpl();
 
     public static AstralFlowAPI getInstance() {
         return AstralFlow.getPlugin(AstralFlow.class);

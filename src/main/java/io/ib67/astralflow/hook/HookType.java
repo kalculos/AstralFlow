@@ -21,9 +21,32 @@
 
 package io.ib67.astralflow.hook;
 
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.event.HookEvent;
+import io.ib67.astralflow.hook.event.item.ItemConsumeEvent;
+import io.ib67.astralflow.hook.event.item.ItemDamagedEvent;
+import io.ib67.astralflow.hook.event.item.ItemInteractBlockEvent;
+import io.ib67.astralflow.hook.event.item.ItemInteractEntityEvent;
 
-// Constants.
+import java.util.function.Consumer;
+
+// Constants. 提供一个统一一的监听系统
+@SuppressWarnings("unused")
 public final class HookType<T extends HookEvent> {
     public static final HookType<?> PLUGIN_SHUTDOWN = new HookType<>();
+    public static final HookType<?> SERVER_STARTUP_COMPLETED = new HookType<>();
+
+    // For items
+    public static final HookType<ItemConsumeEvent> ITEM_CONSUME = new HookType<>();
+    public static final HookType<ItemDamagedEvent> ITEM_DAMAGE = new HookType<>();
+    public static final HookType<ItemInteractBlockEvent> ITEM_INTERACT_BLOCK = new HookType<>();
+    public static final HookType<ItemInteractEntityEvent> ITEM_INTERACT_ENTITY = new HookType<>();
+
+    public void register(Consumer<T> acceptor) {
+        AstralFlow.getInstance().addHook(this, acceptor);
+    }
+
+    public void register(Runnable acceptor) {
+        AstralFlow.getInstance().addHook(this, t -> acceptor.run());
+    }
 }
