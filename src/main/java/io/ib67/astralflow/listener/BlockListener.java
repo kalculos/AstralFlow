@@ -22,18 +22,21 @@
 package io.ib67.astralflow.listener;
 
 import io.ib67.astralflow.api.AstralFlowAPI;
+import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 @RequiredArgsConstructor
 public class BlockListener implements Listener {
     private final AstralFlowAPI flow;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH) // plugins like resident may cancell this event
     public void onBlockInteraction(PlayerInteractEvent event) {
         if (!event.hasBlock()) {
             return;
@@ -48,6 +51,23 @@ public class BlockListener implements Listener {
                     .player(event.getPlayer())
                     .build();
             Bukkit.getPluginManager().callEvent(evt);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockBreak(BlockBreakEvent event) {
+        var clickedBlock = event.getBlock();
+        if (flow.getMachineManager().isMachine(clickedBlock)) {
+            var evt = MachineBlockBreakEvent.builder()
+                    .cancelled(false)
+                    .block(clickedBlock)
+                    .player(event.getPlayer())
+                    .machine(flow.getMachineManager().getMachine(clickedBlock.getLocation()))
+                    .build();
+            Bukkit.getPluginManager().callEvent(evt);
+            if (evt.isCancelled()) {
+                event.setCancelled(true);
+            }
         }
     }
 }

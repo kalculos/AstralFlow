@@ -25,31 +25,34 @@ import io.ib67.astralflow.machines.IMachine;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.block.Action;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-@Getter
 @Builder
-public class PlayerInteractMachineEvent extends MachineEvent implements Cancellable {
+public class MachineBlockBreakEvent extends MachineEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
+    @Getter
+    private final Block block;
+    @Getter
     private final IMachine machine;
-    private final Player player;
-    private final ItemStack itemInHand;
-    private final Action clickType;
+    @Getter
     @Setter
     private boolean cancelled;
+    @Getter
+    @Nullable
+    private Player player;
+
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
+    }
 
     @NotNull
     @Override
     public HandlerList getHandlers() {
-        return HANDLER_LIST;
-    }
-
-    public static HandlerList getHandlerList() {
         return HANDLER_LIST;
     }
 }
