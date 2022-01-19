@@ -21,16 +21,53 @@
 
 package io.ib67.astralflow.listener;
 
+import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
-import io.ib67.astralflow.machines.Interactive;
+import io.ib67.astralflow.exception.ItemPrototypeNotFound;
+import io.ib67.astralflow.machines.blockitem.MachineItemState;
+import io.ib67.astralflow.machines.blockitem.trait.BlockItemSupport;
+import io.ib67.astralflow.machines.trait.Interactive;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public class MachineListener implements Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST) // latest to know
     private void onInteract(PlayerInteractMachineEvent event) {
-        if (!event.isCancelled() && event.getMachine() instanceof Interactive) {
+        if (event.getMachine() instanceof Interactive) {
             ((Interactive) event.getMachine()).onInteract(event.getClickType(), event.getPlayer(), event.getItemInHand());
         }
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void onBreak_blockItem(MachineBlockBreakEvent event) {
+        if (event.getMachine() instanceof BlockItemSupport) {
+            event.setDropItem(false);
+            var protoId = ((BlockItemSupport) event.getMachine()).itemPrototypeId();
+            var im = AstralFlow.getInstance().getItemManager();
+            if (im.getItem(protoId) == null) {
+                // wow.
+                throw new ItemPrototypeNotFound(protoId); // won't drop anything.
+            }
+            var is = im.createItem(protoId);
+            var state = im.extractState(is);
+            if (state instanceof MachineItemState) {
+                // deactivate machine.
+                var machine = event.getMachine();
+                var ms = ((MachineItemState) state);
+                ms.setType(machine.getType().getName());
+                ms.setMachineState(machine.getState());
+                AstralFlow.getInstance().getMachineManager().removeAndTerminateMachine(machine);
+            } else {
+                throw new UnsupportedOperationException("item state of " + protoId + " is not a MachineItemState.");
+            }
+            Bukkit.getScheduler().runTask(AstralFlow.getInstance().asPlugin(), () -> {
+                event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), is);
+            });
+        }
+    }
+
+    //todo onPlace
 }
