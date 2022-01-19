@@ -56,7 +56,6 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
-    private Gson configSerializer;
     private AstralFlowConfiguration configuration;
     @Getter
     private IMachineManager machineManager;
@@ -138,7 +137,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     @SneakyThrows
     private void loadConfig() {
-        configSerializer = new GsonBuilder()
+        Gson configSerializer = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
                 .registerTypeHierarchyAdapter(IMachineStorage.class, new MachineStorageSerializer(machineDir, factories))
