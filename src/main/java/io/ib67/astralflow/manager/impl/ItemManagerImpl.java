@@ -28,12 +28,10 @@ import io.ib67.astralflow.item.OreDictImpl;
 import io.ib67.astralflow.item.block.UUIDTag;
 import io.ib67.astralflow.manager.ItemManager;
 import io.ib67.astralflow.storage.ItemStateStorage;
-import io.ib67.util.Functional;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 public class ItemManagerImpl implements ItemManager {
@@ -94,12 +92,18 @@ public class ItemManagerImpl implements ItemManager {
             throw new IllegalStateException("The prototype of " + key + " is null or AIR");
         // pack item.
         var state = item.getStatePrototype();
-        var uuid = state == null ? UUID.nameUUIDFromBytes(key.getBytes()) : Functional.also(UUID.randomUUID(), (Consumer<UUID>) uui -> states.saveState(uui, state.clone()));
+        UUID uuid = null;
+        if (state == null) {
+            uuid = UUID.nameUUIDFromBytes(key.getBytes());
+        } else {
+            uuid = UUID.randomUUID();
+            state = state.clone();
+            states.saveState(uuid, state);
+        }
         var itemStack = prototype.clone();
         var im = itemStack.getItemMeta();
 
         im.getPersistentDataContainer().set(TAG.getTagKey(), TAG, uuid);
-
         itemStack.setItemMeta(im);
         return itemStack;
     }

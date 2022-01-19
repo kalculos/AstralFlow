@@ -37,6 +37,8 @@ import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemManagerImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.storage.IMachineStorage;
+import io.ib67.astralflow.storage.ItemStateStorage;
+import io.ib67.astralflow.util.internal.ItemStorageSerializer;
 import io.ib67.astralflow.util.internal.LanguageSerializer;
 import io.ib67.astralflow.util.internal.MachineStorageSerializer;
 import io.ib67.util.bukkit.Log;
@@ -60,6 +62,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private IMachineManager machineManager;
     private final Path machineDir = getDataFolder().toPath().resolve("machines");
     private final Path languageDir = getDataFolder().toPath().resolve("locales");
+    private final Path itemDir = getDataFolder().toPath().resolve("items");
     @Getter
     private IFactoryManager factories;
     private ITickManager tickManager;
@@ -79,6 +82,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
         machineDir.toFile().mkdirs();
         languageDir.toFile().mkdirs();
+        itemDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
         loadConfig();
         Log.info("Loading &aMachines");
@@ -138,6 +142,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 .setPrettyPrinting()
                 .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
                 .registerTypeHierarchyAdapter(IMachineStorage.class, new MachineStorageSerializer(machineDir, factories))
+                .registerTypeHierarchyAdapter(ItemStateStorage.class, new ItemStorageSerializer(itemDir, factories))
                 .create();
         // extract config.
         var confFile = new File(getDataFolder(), "config.json");
