@@ -33,7 +33,7 @@ public interface ItemStateStorage {
 
     Collection<? extends UUID> getStates();
 
-    void saveState(UUID uuid); // flush cache
+    void saveState(UUID uuid, ItemState state); // flush cache
 
     void removeState(UUID uuid);
 }

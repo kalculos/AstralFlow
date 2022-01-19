@@ -26,7 +26,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class ItemState implements IState {
+public abstract class ItemState implements IState, Cloneable {
     @Getter
     private final String prototypeKey;
+
+    @Override
+    public ItemState clone() {
+        try {
+            ItemState clone = (ItemState) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

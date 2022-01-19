@@ -22,6 +22,8 @@
 package io.ib67.astralflow.item;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Item 所有的动作都通过 Hook 系统实现。
@@ -36,8 +38,10 @@ public interface Item {
      *
      * @return
      */
+    @NotNull
     ItemStack getPrototype();
 
+    @Nullable // stateless item
     ItemState getStatePrototype();
 
     /**
