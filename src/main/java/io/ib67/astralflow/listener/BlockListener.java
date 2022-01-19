@@ -48,7 +48,6 @@ public class BlockListener implements Listener {
                     .player(event.getPlayer())
                     .build();
             Bukkit.getPluginManager().callEvent(evt);
-            event.setCancelled(true);
         }
     }
 }
