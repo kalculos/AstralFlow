@@ -31,7 +31,6 @@ import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
-import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.*;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemManagerImpl;
@@ -128,10 +127,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadAllMachines() {
         var machines = new ArrayList<>(machineManager.getAllMachines());
-        machines.forEach(machineManager::getMachine);
-        for (IMachine loadedMachine : machineManager.getLoadedMachines()) {
+        machines.forEach(machineManager::getAndLoadMachine);
+     /*   for (IMachine loadedMachine : machineManager.getLoadedMachines()) {
             tickManager.registerTickable(loadedMachine).requires(IMachine::isActivated);
-        }
+        } */
         Log.info(machineManager.getLoadedMachines().size() + " machines were loaded");
     }
 
@@ -162,6 +161,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             configuration = AstralFlowConfiguration.defaultConfiguration(machineDir);
         }
 
+    }
+
+    @Override
+    public ITickManager getTickManager() {
+        return tickManager;
     }
 
     @Override

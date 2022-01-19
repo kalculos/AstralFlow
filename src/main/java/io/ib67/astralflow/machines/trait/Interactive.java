@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.machines;
+package io.ib67.astralflow.machines.trait;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;

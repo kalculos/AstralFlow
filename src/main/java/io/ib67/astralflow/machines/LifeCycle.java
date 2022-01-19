@@ -22,9 +22,29 @@
 package io.ib67.astralflow.machines;
 
 public interface LifeCycle {
+
+    /**
+     * Called when your machine is created and ready for initialization. IT IS NOT onLoad, which calls at chunk loading, WE'LL CALL THIS ON, e.g ENABLE
+     */
+    default void init() {
+    }
+
+    /**
+     * Due to undefined motivation of your machine instance created, you should ONLY *LOAD* YOUR MACHINE HERE!
+     * do things such as set block.
+     */
     default void onLoad() {
     }
 
+    /**
+     * Called when chunk is unloading.
+     */
     default void onUnload() {
+    }
+
+    /**
+     * Called when the machine should be terminated immediately.
+     */
+    default void terminate() {
     }
 }

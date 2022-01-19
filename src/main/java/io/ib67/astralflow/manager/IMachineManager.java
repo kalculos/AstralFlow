@@ -29,9 +29,13 @@ import java.util.Collection;
 import java.util.UUID;
 
 public interface IMachineManager {
-    IMachine getMachine(UUID uuid);
+    IMachine getAndLoadMachine(UUID uuid);
 
-    IMachine getMachine(Location location);
+    IMachine getAndLoadMachine(Location location);
+
+    void deactivateMachine(IMachine machine);
+
+    void activateMachine(IMachine machine);
 
     Collection<? extends IMachine> getLoadedMachines();
 
@@ -43,5 +47,5 @@ public interface IMachineManager {
 
     void saveMachines();
 
-    boolean removeMachine(IMachine machine);
+    boolean removeAndTerminateMachine(IMachine machine);
 }

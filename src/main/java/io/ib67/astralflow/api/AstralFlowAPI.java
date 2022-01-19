@@ -25,6 +25,7 @@ import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
+import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.manager.ItemManager;
 import org.bukkit.plugin.Plugin;
 
@@ -37,6 +38,8 @@ public interface AstralFlowAPI {
     IFactoryManager getFactories();
 
     ItemManager getItemManager();
+
+    ITickManager getTickManager();
 
     <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
 

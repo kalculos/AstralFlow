@@ -25,7 +25,9 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IMachineManager;
+import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.storage.IMachineStorage;
+import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -39,23 +41,42 @@ import java.util.UUID;
 public class MachineManagerImpl implements IMachineManager {
     private final IMachineStorage machineStorage;
     private final Map<UUID, IMachine> cache = new HashMap<>(64);
+    private final Map<UUID, TickReceipt<IMachine>> receiptMap = new HashMap<>(64);
 
     {
         AstralFlow.getInstance().addHook(HookType.PLUGIN_SHUTDOWN, this::saveMachines);
     }
 
     @Override
-    public IMachine getMachine(UUID uuid) {
+    public IMachine getAndLoadMachine(UUID uuid) {
         return cache.computeIfAbsent(uuid, k -> {
             var machine = machineStorage.readMachine(k).orElseThrow();
-            machine.onLoad();
+            machine.init();
+            // submit to ... scheduler
+            activateMachine(machine);
             return machine;
         });
     }
 
     @Override
-    public IMachine getMachine(Location location) {
+    public IMachine getAndLoadMachine(Location location) {
         return getLoadedMachines().stream().filter(e -> e.getLocation().distance(location) < 0.1).findFirst().orElse(null);
+    }
+
+    @Override
+    public void deactivateMachine(IMachine machine) {
+        var receipt = receiptMap.get(machine.getId());
+        if (receipt == null) {
+            Log.warn("Machine " + machine.getId() + " is already deactivated. Won't do anything.");
+            return;
+        }
+        receipt.drop();
+        receiptMap.remove(machine.getId());
+    }
+
+    @Override
+    public void activateMachine(IMachine machine) {
+        receiptMap.computeIfAbsent(machine.getId(), k -> AstralFlow.getInstance().getTickManager().registerTickable(machine));
     }
 
     @Override
@@ -92,7 +113,9 @@ public class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public boolean removeMachine(IMachine machine) {
+    public boolean removeAndTerminateMachine(IMachine machine) {
+        deactivateMachine(machine);
+        machine.terminate();
         cache.remove(machine.getId());
         return machineStorage.removeMachine(machine.getId());
     }
