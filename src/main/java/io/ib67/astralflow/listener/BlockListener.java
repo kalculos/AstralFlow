@@ -47,7 +47,7 @@ public class BlockListener implements Listener {
                     .cancelled(false)
                     .itemInHand(event.getItem())
                     .clickType(event.getAction())
-                    .machine(flow.getMachineManager().getMachine(event.getClickedBlock().getLocation()))
+                    .machine(flow.getMachineManager().getAndLoadMachine(event.getClickedBlock().getLocation()))
                     .player(event.getPlayer())
                     .build();
             Bukkit.getPluginManager().callEvent(evt);
@@ -60,14 +60,16 @@ public class BlockListener implements Listener {
         if (flow.getMachineManager().isMachine(clickedBlock)) {
             var evt = MachineBlockBreakEvent.builder()
                     .cancelled(false)
+                    .dropItem(false)
                     .block(clickedBlock)
                     .player(event.getPlayer())
-                    .machine(flow.getMachineManager().getMachine(clickedBlock.getLocation()))
+                    .machine(flow.getMachineManager().getAndLoadMachine(clickedBlock.getLocation()))
                     .build();
             Bukkit.getPluginManager().callEvent(evt);
             if (evt.isCancelled()) {
                 event.setCancelled(true);
             }
+            event.setDropItems(evt.isDropItem());
         }
     }
 }

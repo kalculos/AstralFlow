@@ -69,6 +69,11 @@ public class ItemManagerImpl implements ItemManager {
         return Optional.ofNullable(itemMap.get(state.getPrototypeKey()));
     }
 
+    @Override
+    public ItemState extractState(ItemStack itemStack) {
+        return getState(itemStack);
+    }
+
     private ItemState getState(ItemStack itemStack) {
         if (!itemStack.hasItemMeta()) return null;
         var im = itemStack.getItemMeta();

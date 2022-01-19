@@ -19,28 +19,16 @@
  *   USA
  */
 
-package io.ib67.astralflow.manager;
+package io.ib67.astralflow.exception;
 
-import io.ib67.astralflow.item.IOreDict;
-import io.ib67.astralflow.item.Item;
-import io.ib67.astralflow.item.ItemState;
-import org.bukkit.inventory.ItemStack;
+import lombok.Getter;
 
-import java.util.Collection;
-import java.util.Optional;
+@Getter
+public class ItemPrototypeNotFound extends UnsupportedOperationException {
+    private final String protoId;
 
-public interface ItemManager {
-    void registerItem(Item item);
-
-    IOreDict getOreDict();
-
-    Collection<? extends Item> getItems();
-
-    Item getItem(String key);
-
-    Optional<Item> getItem(ItemStack itemStack);
-
-    ItemStack createItem(String key);
-
-    ItemState extractState(ItemStack itemStack);
+    public ItemPrototypeNotFound(String protoId) {
+        super(protoId + " is not a valid item prototype id.");
+        this.protoId = protoId;
+    }
 }

@@ -33,18 +33,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Builder
+@Getter
 public class MachineBlockBreakEvent extends MachineEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    @Getter
     private final Block block;
-    @Getter
     private final IMachine machine;
-    @Getter
     @Setter
     private boolean cancelled;
-    @Getter
+    @Setter
+    private boolean dropItem;
     @Nullable
     private Player player;
+
 
     public static HandlerList getHandlerList() {
         return HANDLER_LIST;
