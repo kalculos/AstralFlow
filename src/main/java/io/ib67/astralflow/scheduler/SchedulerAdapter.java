@@ -19,13 +19,17 @@
  *   USA
  */
 
-package io.ib67.astralflow;
+package io.ib67.astralflow.scheduler;
 
-public interface Tickable<T extends Tickable<T>> {
-    void update(T self);
+import lombok.RequiredArgsConstructor;
+import org.bukkit.scheduler.BukkitRunnable;
 
-    @SuppressWarnings("unchecked")
-    default void update() {
-        update((T) this);
+@RequiredArgsConstructor
+public class SchedulerAdapter extends BukkitRunnable {
+    private final Scheduler delegatedScheduler;
+
+    @Override
+    public void run() {
+        delegatedScheduler.tick();
     }
 }

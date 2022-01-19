@@ -21,17 +21,18 @@
 
 package io.ib67.astralflow.scheduler;
 
-import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.manager.IMachineManager;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.scheduler.BukkitRunnable;
+import io.ib67.astralflow.Tickable;
+import lombok.AllArgsConstructor;
 
-@RequiredArgsConstructor
-public class TickScheduler extends BukkitRunnable {
-    private final IMachineManager machineManager;
+@AllArgsConstructor
+public class AwaitingTickable<T extends Tickable<T>> {
+    public Tickable<T> tickable;
+    public TickReceipt<T> receipt;
 
-    @Override
-    public void run() {
-        machineManager.getLoadedMachines().stream().filter(IMachine::isActivated).forEach(IMachine::update);
+    @SuppressWarnings("all")
+    public void tick() {
+        if (receipt.tick(tickable)) {
+            tickable.update();
+        }
     }
 }
