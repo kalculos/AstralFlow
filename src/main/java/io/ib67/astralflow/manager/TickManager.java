@@ -72,6 +72,11 @@ public final class TickManager implements ITickManager {
         }, 0L, 300 * 20L);
     }
 
+    @Override
+    public <T extends Tickable<T>> TickReceipt<T> registerTickable(Tickable<T> tickable) {
+        return scheduler.add(tickable);
+    }
+
     /**
      * 添加一个 Tick 回执，弱引用储存，请自行注意GC
      * Also see {@link TickReceipt}

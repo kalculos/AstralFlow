@@ -21,10 +21,12 @@
 
 package io.ib67.astralflow.scheduler;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.scheduler.BukkitRunnable;
 
 @RequiredArgsConstructor
+@Getter
 public class SchedulerAdapter extends BukkitRunnable {
     private final Scheduler delegatedScheduler;
 

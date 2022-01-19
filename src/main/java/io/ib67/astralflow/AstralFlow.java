@@ -31,9 +31,8 @@ import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
-import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.astralflow.manager.ItemManager;
+import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.manager.*;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemManagerImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
@@ -63,9 +62,9 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private final Path languageDir = getDataFolder().toPath().resolve("locales");
     @Getter
     private IFactoryManager factories;
-    private TickScheduler scheduler;
+    private ITickManager tickManager;
     @Getter
-    private ItemManager itemManager = new ItemManagerImpl();
+    private ItemManager itemManager;
 
     public static AstralFlowAPI getInstance() {
         return AstralFlow.getPlugin(AstralFlow.class);
@@ -84,8 +83,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         loadConfig();
         Log.info("Loading &aMachines");
         loadMachineManager();
-        scheduler = new TickScheduler(machineManager);
-        scheduler.runTaskTimer(this, 0L, 1L); // Every tick.
+        //scheduler = new TickScheduler(machineManager);
+        //scheduler.runTaskTimer(this, 0L, 1L); // Every tick.
+        tickManager = new TickManager();
+        Log.info("Loading &aItems");
+        loadItemManager();
         loadListeners();
         // Load StorageLoader in other sourceset.
         Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
@@ -112,12 +114,21 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private void loadMachineManager() {
         var machineStorage = configuration.getStorage();
         machineManager = new MachineManagerImpl(machineStorage);
-        Log.info(machineManager.getAllMachines().size() + " machines were detected.");
+        Log.info(machineManager.getAllMachines().size() + " machines were found.");
+    }
+
+    private void loadItemManager() {
+        var itemStorage = configuration.getItemStorage();
+        itemManager = new ItemManagerImpl(itemStorage);
+        Log.info(itemStorage.getStates().size() + " items were found.");
     }
 
     private void loadAllMachines() {
         var machines = new ArrayList<>(machineManager.getAllMachines());
         machines.forEach(machineManager::getMachine);
+        for (IMachine loadedMachine : machineManager.getLoadedMachines()) {
+            tickManager.registerTickable(loadedMachine).requires(IMachine::isActivated);
+        }
         Log.info(machineManager.getLoadedMachines().size() + " machines were loaded");
     }
 

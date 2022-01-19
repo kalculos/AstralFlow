@@ -161,7 +161,7 @@ public class TickReceipt<T extends Tickable<T>> {
                 alway.tick();
             }
         }
-        if (requirement == null || requirement.apply(t)) {
+        if (requirement == null || requirement.apply((T) t)) {
             if (syncs.size() != 0) {
                 for (AwaitingTickable<?> sync : syncs) {
                     sync.tick();

@@ -30,6 +30,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface ITickManager {
+    <T extends Tickable<T>> TickReceipt<T> registerTickable(Tickable<T> tickable);
+
     /**
      * 添加一个 Tick 回执，弱引用储存，请自行注意GC
      * Also see {@link TickReceipt}

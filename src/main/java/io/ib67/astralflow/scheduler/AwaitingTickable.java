@@ -35,4 +35,12 @@ public class AwaitingTickable<T extends Tickable<T>> {
             tickable.update();
         }
     }
+
+    public boolean tickAlsoClean() {
+        if (receipt.isDropped()) {
+            return true;
+        }
+        tick();
+        return false;
+    }
 }

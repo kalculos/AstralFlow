@@ -23,6 +23,7 @@ package io.ib67.astralflow.config;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.storage.IMachineStorage;
+import io.ib67.astralflow.storage.ItemStateStorage;
 import io.ib67.astralflow.storage.impl.FileMachineStorage;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,6 +36,7 @@ import java.nio.file.Path;
 public class AstralFlowConfiguration {
     private final Language locale;
     private final IMachineStorage storage;
+    private final ItemStateStorage itemStorage;
 
     public static AstralFlowConfiguration defaultConfiguration(Path storageDir) {
         return new AstralFlowConfiguration(new Language(), new FileMachineStorage(storageDir, AstralFlow.getInstance().getFactories()));
