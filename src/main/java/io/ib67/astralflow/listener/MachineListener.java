@@ -47,12 +47,12 @@ public class MachineListener implements Listener {
             event.setDropItem(false);
             var protoId = ((BlockItemSupport) event.getMachine()).itemPrototypeId();
             var im = AstralFlow.getInstance().getItemManager();
-            if (im.getItem(protoId) == null) {
+            if (im.getRegistry(protoId) == null) {
                 // wow.
                 throw new ItemPrototypeNotFound(protoId); // won't drop anything.
             }
             var is = im.createItem(protoId);
-            var state = im.extractState(is);
+            var state = im.getState(is);
             if (state instanceof MachineItemState) {
                 // deactivate machine.
                 var machine = event.getMachine();

@@ -21,18 +21,16 @@
 
 package io.ib67.astralflow.item;
 
-import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ItemStack;
 
-public interface IOreDict {
-    /**
-     * 插件完成初始化后将会封锁所有的 registerItem 请求以减小维护成本
-     *
-     * @param prototype
-     * @param dictKey
-     * @return
-     * @throws IllegalStateException if locked
-     */
-    IOreDict registerItem(ItemRegistry prototype, String dictKey);
+import java.util.Map;
+import java.util.WeakHashMap;
 
-    RecipeChoice.ExactChoice getChoices(String dictKey);
+public class SimpleItemFactory implements AstralItemFactory {
+    private final Map<ItemStack, AstralItem> itemCache = new WeakHashMap<>(64); // todo: should we?
+
+    @Override
+    public AstralItem produce(ItemStack item) {
+        return itemCache.computeIfAbsent(item, AstralItem::new); // definitely not null.
+    }
 }

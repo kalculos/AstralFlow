@@ -21,18 +21,34 @@
 
 package io.ib67.astralflow.item;
 
-import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface IOreDict {
+/**
+ * Item 所有的动作都通过 Hook 系统实现。
+ * 如果需要添加功能可以委托到现有的实现类中
+ * <p>
+ * 身兼二职: 工厂 & Item
+ */
+public interface ItemRegistry {
+
     /**
-     * 插件完成初始化后将会封锁所有的 registerItem 请求以减小维护成本
+     * 返回物品原型供矿物辞典和物品创建使用。
      *
-     * @param prototype
-     * @param dictKey
      * @return
-     * @throws IllegalStateException if locked
      */
-    IOreDict registerItem(ItemRegistry prototype, String dictKey);
+    @NotNull
+    ItemStack getPrototype();
 
-    RecipeChoice.ExactChoice getChoices(String dictKey);
+    @Nullable // stateless item
+    ItemState getStatePrototype();
+
+    /**
+     * 物品的标识 ID。
+     * 虽然不强制，但是请尽量使用 `命名空间:命名` 的做法来取ID.
+     *
+     * @return
+     */
+    String getId();
 }

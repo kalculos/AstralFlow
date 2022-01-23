@@ -21,34 +21,28 @@
 
 package io.ib67.astralflow.item;
 
+import io.ib67.astralflow.AstralFlow;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-/**
- * Item 所有的动作都通过 Hook 系统实现。
- * 如果需要添加功能可以委托到现有的实现类中
- * <p>
- * 身兼二职: 工厂 & Item
- */
-public interface Item {
+import java.util.Optional;
 
-    /**
-     * 返回物品原型供矿物辞典和物品创建使用。
-     *
-     * @return
-     */
+@RequiredArgsConstructor
+public class AstralItem {
+    private final ItemStack originalItemStack;
+
     @NotNull
-    ItemStack getPrototype();
+    public ItemStack asItemStack() {
+        return originalItemStack;
+    }
 
-    @Nullable // stateless item
-    ItemState getStatePrototype();
+    public Optional<ItemState> getState() {
+        return Optional.ofNullable(AstralFlow.getInstance().getItemManager().getState(originalItemStack));
+    }
 
-    /**
-     * 物品的标识 ID。
-     * 虽然不强制，但是请尽量使用 `命名空间:命名` 的做法来取ID.
-     *
-     * @return
-     */
-    String getId();
+    @Override
+    public int hashCode() {
+        return originalItemStack.hashCode();
+    }
 }

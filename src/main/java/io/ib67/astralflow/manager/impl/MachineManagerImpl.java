@@ -44,7 +44,7 @@ public class MachineManagerImpl implements IMachineManager {
     private final Map<UUID, TickReceipt<IMachine>> receiptMap = new HashMap<>(64);
 
     {
-        AstralFlow.getInstance().addHook(HookType.PLUGIN_SHUTDOWN, this::saveMachines);
+        AstralFlow.getInstance().addHook(HookType.SAVE_DATA, this::saveMachines);
     }
 
     @Override

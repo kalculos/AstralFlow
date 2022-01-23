@@ -29,6 +29,8 @@ import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
+import io.ib67.astralflow.item.OreDictImpl;
+import io.ib67.astralflow.item.SimpleItemFactory;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.manager.*;
@@ -121,7 +123,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadItemManager() {
         var itemStorage = configuration.getItemStorage();
-        itemManager = new ItemManagerImpl(itemStorage);
+        itemManager = new ItemManagerImpl(itemStorage, new OreDictImpl(), new SimpleItemFactory());
         Log.info(itemStorage.getStates().size() + " items were found.");
     }
 
