@@ -33,6 +33,7 @@ import io.ib67.astralflow.item.OreDictImpl;
 import io.ib67.astralflow.item.SimpleItemFactory;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
+import io.ib67.astralflow.listener.WorldListener;
 import io.ib67.astralflow.manager.*;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemManagerImpl;
@@ -109,6 +110,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private void loadListeners() {
         getServer().getPluginManager().registerEvents(new BlockListener(this), this);
         getServer().getPluginManager().registerEvents(new MachineListener(), this);
+        getServer().getPluginManager().registerEvents(new WorldListener(), this);
     }
 
     private void loadFactoryManager() {
