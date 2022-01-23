@@ -34,6 +34,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public final class HookType<T extends HookEvent> {
     public static final HookType<?> PLUGIN_SHUTDOWN = new HookType<>();
+    public static final HookType<?> SAVE_DATA = new HookType<>();
     public static final HookType<?> SERVER_STARTUP_COMPLETED = new HookType<>();
 
     // For items

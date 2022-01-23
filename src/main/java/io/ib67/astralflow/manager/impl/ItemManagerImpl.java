@@ -21,27 +21,38 @@
 
 package io.ib67.astralflow.manager.impl;
 
+import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.item.AstralItemFactory;
 import io.ib67.astralflow.item.IOreDict;
-import io.ib67.astralflow.item.Item;
+import io.ib67.astralflow.item.ItemRegistry;
 import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.OreDictImpl;
 import io.ib67.astralflow.item.block.UUIDTag;
 import io.ib67.astralflow.manager.ItemManager;
 import io.ib67.astralflow.storage.ItemStateStorage;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-@RequiredArgsConstructor
 public class ItemManagerImpl implements ItemManager {
     private static final UUIDTag TAG = new UUIDTag("custom_item");
-    private final IOreDict oreDict = new OreDictImpl();
-    private final Map<String, Item> itemMap = new HashMap<>();
+    private final IOreDict oreDict;
+    private final Map<String, ItemRegistry> itemMap = new HashMap<>();
+    private final Map<UUID, ItemState> stateCache = new HashMap<>();
+    private final AstralItemFactory itemFactory;
     private final ItemStateStorage states;
 
+    public ItemManagerImpl(ItemStateStorage states, IOreDict oreDict, AstralItemFactory itemFactory) {
+        this.states = states;
+        this.oreDict = oreDict;
+        this.itemFactory = itemFactory;
+        AstralFlow.getInstance().addHook(HookType.SAVE_DATA, () -> {
+            stateCache.forEach(states::saveState);
+        });
+    }
+
     @Override
-    public void registerItem(Item item) {
+    public void registerItem(ItemRegistry item) {
         itemMap.put(item.getId(), item);
     }
 
@@ -51,17 +62,22 @@ public class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public Collection<? extends Item> getItems() {
+    public AstralItemFactory getItemFactory() {
+        return itemFactory;
+    }
+
+    @Override
+    public Collection<? extends ItemRegistry> getItemRegistries() {
         return itemMap.values();
     }
 
     @Override
-    public Item getItem(String key) {
+    public ItemRegistry getRegistry(String key) {
         return itemMap.get(key);
     }
 
     @Override
-    public Optional<Item> getItem(ItemStack itemStack) {
+    public Optional<ItemRegistry> getRegistry(ItemStack itemStack) {
         var state = getState(itemStack);
         if (state == null) {
             return Optional.empty();
@@ -69,27 +85,26 @@ public class ItemManagerImpl implements ItemManager {
         return Optional.ofNullable(itemMap.get(state.getPrototypeKey()));
     }
 
-    @Override
-    public ItemState extractState(ItemStack itemStack) {
-        return getState(itemStack);
-    }
 
-    private ItemState getState(ItemStack itemStack) {
+    @Override
+    public ItemState getState(ItemStack itemStack) {
         if (!itemStack.hasItemMeta()) return null;
         var im = itemStack.getItemMeta();
         if (!im.getPersistentDataContainer().has(TAG.getTagKey(), TAG)) {
             return null;
         }
         var uuid = im.getPersistentDataContainer().get(TAG.getTagKey(), TAG);
-        if (!states.hasState(uuid)) {
-            return null;
-        }
-        return states.getState(uuid);
+        return stateCache.computeIfAbsent(uuid, u -> {
+            if (!states.hasState(uuid)) {
+                return null;
+            }
+            return states.getState(uuid);
+        });
     }
 
     @Override
     public ItemStack createItem(String key) {
-        var item = getItem(key);
+        var item = getRegistry(key);
         if (item == null) return null;
         // validation
         var prototype = item.getPrototype();
@@ -103,7 +118,8 @@ public class ItemManagerImpl implements ItemManager {
         } else {
             uuid = UUID.randomUUID();
             state = state.clone();
-            states.saveState(uuid, state);
+            stateCache.put(uuid, state);
+            //states.saveState(uuid, state);
         }
         var itemStack = prototype.clone();
         var im = itemStack.getItemMeta();

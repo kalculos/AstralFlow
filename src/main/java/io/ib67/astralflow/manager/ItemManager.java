@@ -21,8 +21,9 @@
 
 package io.ib67.astralflow.manager;
 
+import io.ib67.astralflow.item.AstralItemFactory;
 import io.ib67.astralflow.item.IOreDict;
-import io.ib67.astralflow.item.Item;
+import io.ib67.astralflow.item.ItemRegistry;
 import io.ib67.astralflow.item.ItemState;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,17 +31,19 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ItemManager {
-    void registerItem(Item item);
+    void registerItem(ItemRegistry item);
 
     IOreDict getOreDict();
 
-    Collection<? extends Item> getItems();
+    AstralItemFactory getItemFactory();
 
-    Item getItem(String key);
+    Collection<? extends ItemRegistry> getItemRegistries();
 
-    Optional<Item> getItem(ItemStack itemStack);
+    ItemRegistry getRegistry(String key);
+
+    Optional<ItemRegistry> getRegistry(ItemStack itemStack);
 
     ItemStack createItem(String key);
 
-    ItemState extractState(ItemStack itemStack);
+    ItemState getState(ItemStack itemStack);
 }
