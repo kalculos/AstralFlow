@@ -23,6 +23,7 @@ package io.ib67.astralflow.item.factory;
 
 import io.ib67.astralflow.item.ItemState;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,9 +39,16 @@ public interface ItemRegistry {
      *
      * @return
      */
+    @Contract(pure = true)
     @NotNull
     ItemStack getPrototype();
 
+    /**
+     * 物品状态原型
+     *
+     * @return
+     */
+    @Contract(pure = true)
     @Nullable // stateless item
     ItemState getStatePrototype();
 
@@ -50,5 +58,16 @@ public interface ItemRegistry {
      *
      * @return
      */
+    @Contract(pure = true)
     String getId();
+
+    /**
+     * 物品的注册源。一个注册源可能会被多个注册源装饰以完成对原型的修饰,因此用户需要使用 getRegistry 来解除周围的装饰者。
+     *
+     * @return
+     * @implSpec 装饰者必须返回被装饰者的注册源。
+     */
+    default ItemRegistry getRegistry() {
+        return this;
+    }
 }
