@@ -28,6 +28,7 @@ import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemRegistry;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.block.UUIDTag;
+import io.ib67.astralflow.item.internal.NullItemState;
 import io.ib67.astralflow.manager.ItemManager;
 import io.ib67.astralflow.storage.ItemStateStorage;
 import org.bukkit.inventory.ItemStack;
@@ -115,6 +116,7 @@ public class ItemManagerImpl implements ItemManager {
         UUID uuid = null;
         if (state == null) {
             uuid = UUID.nameUUIDFromBytes(key.getBytes());
+            state = new NullItemState(key);
         } else {
             uuid = UUID.randomUUID();
             state = state.clone();
