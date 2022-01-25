@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.block;
+package io.ib67.astralflow.item.tag;
 
 import io.ib67.astralflow.AstralFlow;
 import lombok.Getter;

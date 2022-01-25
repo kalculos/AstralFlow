@@ -19,31 +19,19 @@
  *   USA
  */
 
-package io.ib67.astralflow.manager;
+package io.ib67.astralflow.item.factory;
 
-import io.ib67.astralflow.item.IOreDict;
-import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.factory.AstralItemFactory;
-import io.ib67.astralflow.item.factory.ItemRegistry;
+import io.ib67.astralflow.item.AstralItem;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.Map;
+import java.util.WeakHashMap;
 
-public interface ItemManager {
-    void registerItem(ItemRegistry item);
+public class SimpleItemFactory implements AstralItemFactory {
+    private final Map<ItemStack, AstralItem> itemCache = new WeakHashMap<>(64); // todo: should we?
 
-    IOreDict getOreDict();
-
-    AstralItemFactory getItemFactory();
-
-    Collection<? extends ItemRegistry> getItemRegistries();
-
-    ItemRegistry getRegistry(String key);
-
-    Optional<ItemRegistry> getRegistry(ItemStack itemStack);
-
-    ItemStack createItem(String key);
-
-    ItemState getState(ItemStack itemStack);
+    @Override
+    public AstralItem produce(ItemStack item) {
+        return itemCache.computeIfAbsent(item, AstralItem::new); // definitely not null.
+    }
 }

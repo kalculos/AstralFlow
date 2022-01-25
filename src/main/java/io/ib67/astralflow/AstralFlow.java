@@ -30,7 +30,7 @@ import io.ib67.astralflow.config.Language;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.item.OreDictImpl;
-import io.ib67.astralflow.item.SimpleItemFactory;
+import io.ib67.astralflow.item.factory.SimpleItemFactory;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.listener.WorldListener;

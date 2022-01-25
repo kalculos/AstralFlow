@@ -19,18 +19,11 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.item.factory;
 
+import io.ib67.astralflow.item.AstralItem;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
-public class SimpleItemFactory implements AstralItemFactory {
-    private final Map<ItemStack, AstralItem> itemCache = new WeakHashMap<>(64); // todo: should we?
-
-    @Override
-    public AstralItem produce(ItemStack item) {
-        return itemCache.computeIfAbsent(item, AstralItem::new); // definitely not null.
-    }
+public interface AstralItemFactory {
+    AstralItem produce(ItemStack item);
 }

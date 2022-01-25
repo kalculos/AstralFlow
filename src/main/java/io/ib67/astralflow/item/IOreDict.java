@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.item;
 
+import io.ib67.astralflow.item.factory.ItemRegistry;
 import org.bukkit.inventory.RecipeChoice;
 
 public interface IOreDict {

@@ -19,8 +19,9 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.item.factory;
 
+import io.ib67.astralflow.item.ItemState;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
  * Item 所有的动作都通过 Hook 系统实现。
  * 如果需要添加功能可以委托到现有的实现类中
  * <p>
- * 身兼二职: 工厂 & Item
  */
 public interface ItemRegistry {
 

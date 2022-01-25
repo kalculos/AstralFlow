@@ -23,12 +23,12 @@ package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.item.AstralItemFactory;
 import io.ib67.astralflow.item.IOreDict;
-import io.ib67.astralflow.item.ItemRegistry;
 import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.block.UUIDTag;
+import io.ib67.astralflow.item.factory.AstralItemFactory;
+import io.ib67.astralflow.item.factory.ItemRegistry;
 import io.ib67.astralflow.item.internal.NullItemState;
+import io.ib67.astralflow.item.tag.UUIDTag;
 import io.ib67.astralflow.manager.ItemManager;
 import io.ib67.astralflow.storage.ItemStateStorage;
 import org.bukkit.inventory.ItemStack;

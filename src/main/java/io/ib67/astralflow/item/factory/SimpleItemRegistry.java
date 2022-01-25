@@ -19,10 +19,17 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.item.factory;
 
+import io.ib67.astralflow.item.ItemState;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 
-public interface AstralItemFactory {
-    AstralItem produce(ItemStack item);
+@RequiredArgsConstructor
+@Getter
+public class SimpleItemRegistry implements ItemRegistry {
+    private final ItemStack prototype;
+    private final ItemState statePrototype;
+    private final String id;
 }

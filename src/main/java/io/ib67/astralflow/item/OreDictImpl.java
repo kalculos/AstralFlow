@@ -24,6 +24,7 @@ package io.ib67.astralflow.item;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.item.factory.ItemRegistry;
 import org.bukkit.inventory.RecipeChoice;
 
 import java.util.HashMap;
