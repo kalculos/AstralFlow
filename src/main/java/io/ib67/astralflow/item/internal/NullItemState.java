@@ -27,4 +27,9 @@ public class NullItemState extends ItemState {
     public NullItemState(String prototypeKey) {
         super(prototypeKey);
     }
+
+    @Override
+    public ItemState clone() {
+        return new NullItemState(getPrototypeKey());
+    }
 }
