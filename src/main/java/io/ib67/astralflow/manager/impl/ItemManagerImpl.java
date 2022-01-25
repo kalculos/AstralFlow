@@ -120,9 +120,9 @@ public class ItemManagerImpl implements ItemManager {
         } else {
             uuid = UUID.randomUUID();
             state = state.clone();
-            stateCache.put(uuid, state);
             //states.saveState(uuid, state);
         }
+        stateCache.put(uuid, state);
         var itemStack = prototype.clone();
         var im = itemStack.getItemMeta();
 
