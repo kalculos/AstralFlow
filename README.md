@@ -6,6 +6,11 @@
 
 只支持最新的 Spigot.
 
+# Contributing
+
+此项目实施来自 SaltedFish Club 的[代码贡献指南](https://github.com/saltedfishclub/documents/blob/main/CONTRIBUTING.md)
+以及 [版本迭代方案](https://github.com/saltedfishclub/documents/blob/main/Evolution.md)
+
 # Feature
 
 1. 良好且易用的设计
