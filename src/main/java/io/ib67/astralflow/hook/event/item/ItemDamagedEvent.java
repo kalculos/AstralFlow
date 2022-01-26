@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.hook.event.item;
 
-import io.ib67.astralflow.item.Item;
+import io.ib67.astralflow.item.AstralItem;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 public class ItemDamagedEvent extends ItemEvent {
     private final int damage;
 
-    public ItemDamagedEvent(Item item, Player player, int damage) {
+    public ItemDamagedEvent(AstralItem item, Player player, int damage) {
         super(item, player);
         this.damage = damage;
     }

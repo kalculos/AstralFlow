@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.hook.event.item;
 
-import io.ib67.astralflow.item.Item;
+import io.ib67.astralflow.item.AstralItem;
 import lombok.Getter;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class ItemInteractBlockEvent extends ItemEvent {
     private final Action clickType;
     private final Block clickedBlock;
 
-    public ItemInteractBlockEvent(Item item, Player player, Action clickType, Block clickedBlock) {
+    public ItemInteractBlockEvent(AstralItem item, Player player, Action clickType, Block clickedBlock) {
         super(item, player);
         this.clickType = clickType;
         this.clickedBlock = clickedBlock;

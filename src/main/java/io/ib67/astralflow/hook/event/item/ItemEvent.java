@@ -22,7 +22,7 @@
 package io.ib67.astralflow.hook.event.item;
 
 import io.ib67.astralflow.hook.event.HookEvent;
-import io.ib67.astralflow.item.Item;
+import io.ib67.astralflow.item.AstralItem;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
@@ -30,6 +30,6 @@ import org.bukkit.entity.Player;
 @RequiredArgsConstructor
 @Getter
 public class ItemEvent extends HookEvent {
-    private final Item item;
+    private final AstralItem item;
     private final Player player;
 }

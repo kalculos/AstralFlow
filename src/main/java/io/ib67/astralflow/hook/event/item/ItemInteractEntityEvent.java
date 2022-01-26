@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.hook.event.item;
 
-import io.ib67.astralflow.item.Item;
+import io.ib67.astralflow.item.AstralItem;
 import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
 public class ItemInteractEntityEvent extends ItemEvent {
     private final Entity target;
 
-    public ItemInteractEntityEvent(Item item, Player player, Entity target) {
+    public ItemInteractEntityEvent(AstralItem item, Player player, Entity target) {
         super(item, player);
         this.target = target;
     }

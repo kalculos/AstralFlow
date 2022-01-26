@@ -21,11 +21,11 @@
 
 package io.ib67.astralflow.hook.event.item;
 
-import io.ib67.astralflow.item.Item;
+import io.ib67.astralflow.item.AstralItem;
 import org.bukkit.entity.Player;
 
 public class ItemConsumeEvent extends ItemEvent {
-    public ItemConsumeEvent(Item item, Player player) {
+    public ItemConsumeEvent(AstralItem item, Player player) {
         super(item, player);
     }
 }
