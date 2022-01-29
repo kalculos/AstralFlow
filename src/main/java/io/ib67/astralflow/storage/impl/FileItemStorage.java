@@ -21,62 +21,59 @@
 
 package io.ib67.astralflow.storage.impl;
 
-import io.ib67.Util;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.ItemStateStorage;
+import io.ib67.astralflow.storage.KeyedStorage;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FileItemStorage implements ItemStateStorage {
-    private transient final Path storage;
-    private transient final IFactoryManager factory;
-    private transient final FileMachineStorage.MachineStorageHelper serializer;
-    private transient final Map<UUID, ItemState> states = new HashMap<>();
+    private final KeyedStorage<String, ItemState> storage;
+    private final FileMachineStorage.MachineStorageHelper helper;
 
-    public FileItemStorage(Path storage, IFactoryManager factory) {
-        this.storage = storage;
-        this.factory = factory;
-        serializer = new FileMachineStorage.MachineStorageHelper(factory);
+    public FileItemStorage(Path storageDir, IFactoryManager factoryManager) {
+        helper = new FileMachineStorage.MachineStorageHelper(factoryManager);
+        storage = FileBasedKeyedStorage.<ItemState>builder()
+                .storageDir(storageDir)
+                .valueInMapper(this::fromBytes)
+                .valueOutMapper(this::toBytes)
+                .build();
+    }
+
+    public ItemState fromBytes(byte[] bytes) {
+        return helper.fromJson(new String(bytes), ItemState.class);
+    }
+
+    public byte[] toBytes(ItemState itemState) {
+        return helper.toJson(itemState).getBytes();
     }
 
     @Override
-    public boolean hasState(UUID uuid) {
-        return storage.resolve(uuid.toString() + ".json").toFile().exists();
+    public boolean has(UUID uuid) {
+        return storage.has(uuid.toString());
     }
 
     @Override
-    public ItemState getState(UUID uuid) {
-        return states.computeIfAbsent(uuid, u -> Util.runCatching(() -> serializer.fromJson(Files.readString(storage.resolve(uuid.toString() + ".json")), ItemState.class)).getResult());
+    public ItemState get(UUID uuid) {
+        return storage.get(uuid.toString());
     }
 
     @Override
-    public Collection<? extends UUID> getStates() {
-        var a = storage.toFile().listFiles();
-        if (a != null) return Stream.of(a)
-                .map(File::getName)
-                .map(e -> e.substring(0, 36))
-                .map(UUID::fromString)
-                .collect(Collectors.toList());
-        return Collections.emptyList();
+    public Collection<? extends UUID> getKeys() {
+        return storage.getKeys().stream().map(e -> UUID.nameUUIDFromBytes(e.getBytes())).collect(Collectors.toList());
     }
 
     @Override
-    public void saveState(UUID uuid, ItemState state) {
-        Util.runCatching(() -> Files.writeString(storage.resolve(uuid.toString() + ".json"), serializer.toJson(state)));
+    public void save(UUID uuid, ItemState state) {
+        storage.save(uuid.toString(), state);
     }
 
     @Override
-    public void removeState(UUID uuid) {
-        states.remove(uuid);
-        Util.runCatching(() -> {
-            Files.delete(storage.resolve(uuid.toString() + ".json"));
-            return null;
-        });
+    public void remove(UUID uuid) {
+        storage.remove(uuid.toString());
     }
 }

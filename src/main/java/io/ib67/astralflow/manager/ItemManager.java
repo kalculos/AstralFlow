@@ -23,9 +23,11 @@ package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.factory.AstralItemFactory;
 import io.ib67.astralflow.item.factory.ItemRegistry;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -45,5 +47,10 @@ public interface ItemManager {
 
     ItemStack createItem(String key);
 
-    ItemState getState(ItemStack itemStack);
+    @ApiStatus.Experimental
+    ItemState getState(ItemStack itemStack, StateScope stateScope);
+
+    default ItemState getState(ItemStack itemStack) {
+        return getState(itemStack, StateScope.USER_ITEM);
+    }
 }

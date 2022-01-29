@@ -23,17 +23,7 @@ package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.item.ItemState;
 
-import java.util.Collection;
 import java.util.UUID;
 
-public interface ItemStateStorage {
-    boolean hasState(UUID uuid);
-
-    ItemState getState(UUID uuid);
-
-    Collection<? extends UUID> getStates();
-
-    void saveState(UUID uuid, ItemState state); // flush cache
-
-    void removeState(UUID uuid);
+public interface ItemStateStorage extends KeyedStorage<UUID, ItemState> {
 }

@@ -23,78 +23,63 @@ package io.ib67.astralflow.storage.impl;
 
 import com.google.gson.Gson;
 import io.ib67.Util;
+import io.ib67.astralflow.internal.MachineSerializer;
+import io.ib67.astralflow.internal.StateSerializer;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.IMachineStorage;
-import io.ib67.astralflow.util.internal.MachineSerializer;
-import io.ib67.astralflow.util.internal.StateSerializer;
-import lombok.SneakyThrows;
+import io.ib67.astralflow.storage.KeyedStorage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FileMachineStorage implements IMachineStorage {
-    private transient final Path storage;
-    private transient final MachineStorageHelper helper;
+    private final KeyedStorage<String, IMachine> storage;
+    private final MachineStorageHelper helper;
 
-    public FileMachineStorage(Path storage, IFactoryManager factoryManager) {
-        this.storage = storage;
+    public FileMachineStorage(Path storageDir, IFactoryManager factoryManager) {
         helper = new MachineStorageHelper(factoryManager);
+        storage = FileBasedKeyedStorage.<IMachine>builder()
+                .storageDir(storageDir)
+                .valueInMapper(this::fromBytes)
+                .valueOutMapper(this::toBytes)
+                .build();
     }
 
-
-    @Override
-    public boolean isAvailable() {
-        return true; // should we check for availability?
+    public byte[] toBytes(IMachine machine) {
+        return helper.toJson(machine).getBytes();
     }
 
-    @Override
-    public Optional<? extends IMachine> readMachine(UUID uuid) {
-        var file = storage.resolve(uuid.toString() + ".json").toFile();
-        if (!file.exists()) {
-            return Optional.empty();
-        }
-        try (var is = new FileInputStream(file)) {
-            var s = new String(is.readAllBytes());
-            return Optional.of(helper.fromJson(s));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
-    }
-
-    @SneakyThrows
-    @Override
-    public boolean saveMachine(IMachine machine) {
-        return Files.writeString(storage.resolve(machine.getId() + ".json"), helper.toJson(machine)) != null;
-    }
-
-    @SneakyThrows
-    @Override
-    public Collection<UUID> getMachines() {
-        var a = storage.toFile().listFiles();
-        if (a != null) return Stream.of(a)
-                .map(File::getName)
-                .map(e -> e.substring(0, 36))
-                .map(UUID::fromString)
-                .collect(Collectors.toList());
-        return Collections.emptyList();
+    public IMachine fromBytes(byte[] data) {
+        return helper.fromJson(new String(data));
     }
 
     @Override
-    @SneakyThrows
-    public boolean removeMachine(UUID machine) {
-        return Files.deleteIfExists(storage.resolve(machine.toString() + ".json"));
+    public boolean has(UUID uuid) {
+        return storage.has(uuid.toString());
+    }
+
+    @Override
+    public IMachine get(UUID uuid) {
+        return storage.get(uuid.toString());
+    }
+
+    @Override
+    public Collection<? extends UUID> getKeys() {
+        return storage.getKeys().stream().map(UUID::fromString).collect(Collectors.toList());
+    }
+
+    @Override
+    public void save(UUID uuid, IMachine state) {
+        storage.save(uuid.toString(), state);
+    }
+
+    @Override
+    public void remove(UUID uuid) {
+        storage.remove(uuid.toString());
     }
 
     public static class MachineStorageHelper {

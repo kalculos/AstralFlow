@@ -25,6 +25,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.factory.AstralItemFactory;
 import io.ib67.astralflow.item.factory.ItemRegistry;
 import io.ib67.astralflow.item.internal.NullItemState;
@@ -36,7 +37,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class ItemManagerImpl implements ItemManager {
-    private static final UUIDTag TAG = new UUIDTag("custom_item");
+    private static final UUIDTag TAG = new UUIDTag();
     private final IOreDict oreDict;
     private final Map<String, ItemRegistry> itemMap = new HashMap<>();
     private final Map<UUID, ItemState> stateCache = new HashMap<>();
@@ -45,10 +46,11 @@ public class ItemManagerImpl implements ItemManager {
 
     public ItemManagerImpl(ItemStateStorage states, IOreDict oreDict, AstralItemFactory itemFactory) {
         this.states = states;
+
         this.oreDict = oreDict;
         this.itemFactory = itemFactory;
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, () -> {
-            stateCache.forEach(states::saveState);
+            stateCache.forEach(states::save);
         });
     }
 
@@ -88,18 +90,18 @@ public class ItemManagerImpl implements ItemManager {
 
 
     @Override
-    public ItemState getState(ItemStack itemStack) {
+    public ItemState getState(ItemStack itemStack, StateScope scope) {
         if (!itemStack.hasItemMeta()) return null;
         var im = itemStack.getItemMeta();
-        if (!im.getPersistentDataContainer().has(TAG.getTagKey(), TAG)) {
+        if (!im.getPersistentDataContainer().has(scope.getTagKey(), TAG)) {
             return null;
         }
-        var uuid = im.getPersistentDataContainer().get(TAG.getTagKey(), TAG);
+        var uuid = im.getPersistentDataContainer().get(scope.getTagKey(), TAG);
         return stateCache.computeIfAbsent(uuid, u -> {
-            if (!states.hasState(uuid)) {
+            if (!states.has(uuid)) {
                 return null;
             }
-            return states.getState(uuid);
+            return states.get(uuid);
         });
     }
 
@@ -113,7 +115,7 @@ public class ItemManagerImpl implements ItemManager {
             throw new IllegalStateException("The prototype of " + key + " is null or AIR");
         // pack item.
         var state = item.getStatePrototype();
-        UUID uuid = null;
+        UUID uuid;
         if (state == null) {
             uuid = UUID.nameUUIDFromBytes(key.getBytes());
             state = new NullItemState(key);
@@ -123,10 +125,11 @@ public class ItemManagerImpl implements ItemManager {
             //states.saveState(uuid, state);
         }
         stateCache.put(uuid, state);
+        // state done
         var itemStack = prototype.clone();
         var im = itemStack.getItemMeta();
 
-        im.getPersistentDataContainer().set(TAG.getTagKey(), TAG, uuid);
+        im.getPersistentDataContainer().set(StateScope.USER_ITEM.getTagKey(), TAG, uuid);
         itemStack.setItemMeta(im);
         return itemStack;
     }

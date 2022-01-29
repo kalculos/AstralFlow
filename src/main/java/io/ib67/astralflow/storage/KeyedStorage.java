@@ -21,9 +21,16 @@
 
 package io.ib67.astralflow.storage;
 
-import io.ib67.astralflow.machines.IMachine;
+import java.util.Collection;
 
-import java.util.UUID;
+public interface KeyedStorage<K, V> {
+    boolean has(K uuid);
 
-public interface IMachineStorage extends KeyedStorage<UUID, IMachine> {
+    V get(K uuid);
+
+    Collection<? extends K> getKeys();
+
+    void save(K uuid, V state); // flush cache
+
+    void remove(K uuid);
 }

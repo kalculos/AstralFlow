@@ -126,7 +126,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private void loadItemManager() {
         var itemStorage = configuration.getItemStorage();
         itemManager = new ItemManagerImpl(itemStorage, new OreDictImpl(), new SimpleItemFactory());
-        Log.info(itemStorage.getStates().size() + " items were found.");
+        Log.info(itemStorage.getKeys().size() + " items were found.");
     }
 
     private void loadAllMachines() {
