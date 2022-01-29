@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.util.internal;
+package io.ib67.astralflow.internal;
 
 /**
  * Internal utilities for AstralFlow.

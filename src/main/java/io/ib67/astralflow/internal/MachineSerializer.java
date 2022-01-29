@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.util.internal;
+package io.ib67.astralflow.internal;
 
 import com.google.gson.*;
 import io.ib67.Util;
