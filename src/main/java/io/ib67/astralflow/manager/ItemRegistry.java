@@ -19,31 +19,38 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.manager;
 
-import io.ib67.astralflow.manager.ItemRegistry;
-import lombok.RequiredArgsConstructor;
+import io.ib67.astralflow.item.IOreDict;
+import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.item.StateScope;
+import io.ib67.astralflow.item.factory.AstralItemFactory;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.ApiStatus;
 
+import java.util.Collection;
 import java.util.Optional;
 
-@RequiredArgsConstructor
-public class AstralItem {
-    private final ItemStack originalItemStack;
-    private final ItemRegistry itemRegistry;
+public interface ItemRegistry {
+    void registerItem(ItemPrototypeFactory item);
 
-    @NotNull
-    public ItemStack asItemStack() {
-        return originalItemStack;
-    }
+    IOreDict getOreDict();
 
-    public Optional<ItemState> getState() {
-        return Optional.ofNullable(itemRegistry.getState(originalItemStack));
-    }
+    AstralItemFactory getItemFactory();
 
-    @Override
-    public int hashCode() {
-        return originalItemStack.hashCode();
+    Collection<? extends ItemPrototypeFactory> getItemRegistries();
+
+    ItemPrototypeFactory getRegistry(String key);
+
+    Optional<ItemPrototypeFactory> getRegistry(ItemStack itemStack);
+
+    ItemStack createItem(String key);
+
+    @ApiStatus.Experimental
+    ItemState getState(ItemStack itemStack, StateScope stateScope);
+
+    default ItemState getState(ItemStack itemStack) {
+        return getState(itemStack, StateScope.USER_ITEM);
     }
 }

@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
  * 如果需要添加功能可以委托到现有的实现类中
  * <p>
  */
-public interface ItemRegistry {
+public interface ItemPrototypeFactory {
 
     /**
      * 返回物品原型供矿物辞典和物品创建使用。
@@ -62,12 +62,12 @@ public interface ItemRegistry {
     String getId();
 
     /**
-     * 物品的注册源。一个注册源可能会被多个注册源装饰以完成对原型的修饰,因此用户需要使用 getRegistry 来解除周围的装饰者。
+     * 物品的注册源。一个注册源可能会被多个注册源装饰以完成对原型的修饰,因此用户需要使用 getRegistry 来获取最内层的注册源
      *
      * @return
      * @implSpec 装饰者必须返回被装饰者的注册源。
      */
-    default ItemRegistry getRegistry() {
+    default ItemPrototypeFactory getRegistry() {
         return this;
     }
 }

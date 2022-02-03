@@ -39,7 +39,7 @@ import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.listener.WorldListener;
 import io.ib67.astralflow.manager.*;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
-import io.ib67.astralflow.manager.impl.ItemManagerImpl;
+import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.ItemStateStorage;
@@ -68,7 +68,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private IFactoryManager factories;
     private ITickManager tickManager;
     @Getter
-    private ItemManager itemManager;
+    private ItemRegistry itemRegistry;
 
     public static AstralFlowAPI getInstance() {
         return AstralFlow.getPlugin(AstralFlow.class);
@@ -125,7 +125,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadItemManager() {
         var itemStorage = configuration.getItemStorage();
-        itemManager = new ItemManagerImpl(itemStorage, new OreDictImpl(), new SimpleItemFactory());
+        itemRegistry = new ItemRegistryImpl(itemStorage, new OreDictImpl(), new SimpleItemFactory());
         Log.info(itemStorage.getKeys().size() + " items were found.");
     }
 

@@ -19,21 +19,11 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.internal;
 
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import org.bukkit.inventory.RecipeChoice;
+import org.jetbrains.annotations.ApiStatus;
 
-public interface IOreDict {
-    /**
-     * 插件完成初始化后将会封锁所有的 registerItem 请求以减小维护成本
-     *
-     * @param prototype
-     * @param dictKey
-     * @return
-     * @throws IllegalStateException if locked
-     */
-    IOreDict registerItem(ItemPrototypeFactory prototype, String dictKey);
+@ApiStatus.Internal
+public class AstralConstants {
 
-    RecipeChoice.ExactChoice getChoices(String dictKey);
 }

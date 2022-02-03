@@ -24,7 +24,7 @@ package io.ib67.astralflow.item;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.item.factory.ItemRegistry;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.bukkit.inventory.RecipeChoice;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 public class OreDictImpl implements IOreDict {
     private final Map<String, RecipeChoice.ExactChoice> choiceMap = new HashMap<>();
-    private Multimap<String, ItemRegistry> items = ArrayListMultimap.create();
+    private Multimap<String, ItemPrototypeFactory> items = ArrayListMultimap.create();
     private volatile boolean locked = false;
 
     {
@@ -43,13 +43,13 @@ public class OreDictImpl implements IOreDict {
     private void compile() {
         locked = true;
         for (String s : items.keySet()) {
-            choiceMap.put(s, new RecipeChoice.ExactChoice(items.get(s).stream().map(ItemRegistry::getPrototype).collect(Collectors.toList())));
+            choiceMap.put(s, new RecipeChoice.ExactChoice(items.get(s).stream().map(ItemPrototypeFactory::getPrototype).collect(Collectors.toList())));
         }
         items = null; // remove unnecessary references.
     }
 
     @Override
-    public IOreDict registerItem(ItemRegistry prototype, String dictKey) {
+    public IOreDict registerItem(ItemPrototypeFactory prototype, String dictKey) {
         if (locked) throw new IllegalStateException("OreDict is locked due to server startup completed.");
         if (items.containsKey(dictKey)) throw new IllegalArgumentException(dictKey + " is already registered.");
         items.put(dictKey, prototype);

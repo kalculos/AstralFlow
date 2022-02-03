@@ -27,24 +27,24 @@ import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.factory.AstralItemFactory;
-import io.ib67.astralflow.item.factory.ItemRegistry;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.internal.NullItemState;
 import io.ib67.astralflow.item.tag.UUIDTag;
-import io.ib67.astralflow.manager.ItemManager;
+import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.storage.ItemStateStorage;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class ItemManagerImpl implements ItemManager {
+public class ItemRegistryImpl implements ItemRegistry {
     private static final UUIDTag TAG = new UUIDTag();
     private final IOreDict oreDict;
-    private final Map<String, ItemRegistry> itemMap = new HashMap<>();
+    private final Map<String, ItemPrototypeFactory> itemMap = new HashMap<>();
     private final Map<UUID, ItemState> stateCache = new HashMap<>();
     private final AstralItemFactory itemFactory;
     private final ItemStateStorage states;
 
-    public ItemManagerImpl(ItemStateStorage states, IOreDict oreDict, AstralItemFactory itemFactory) {
+    public ItemRegistryImpl(ItemStateStorage states, IOreDict oreDict, AstralItemFactory itemFactory) {
         this.states = states;
 
         this.oreDict = oreDict;
@@ -55,7 +55,7 @@ public class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public void registerItem(ItemRegistry item) {
+    public void registerItem(ItemPrototypeFactory item) {
         itemMap.put(item.getId(), item);
     }
 
@@ -70,17 +70,17 @@ public class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public Collection<? extends ItemRegistry> getItemRegistries() {
+    public Collection<? extends ItemPrototypeFactory> getItemRegistries() {
         return itemMap.values();
     }
 
     @Override
-    public ItemRegistry getRegistry(String key) {
+    public ItemPrototypeFactory getRegistry(String key) {
         return itemMap.get(key);
     }
 
     @Override
-    public Optional<ItemRegistry> getRegistry(ItemStack itemStack) {
+    public Optional<ItemPrototypeFactory> getRegistry(ItemStack itemStack) {
         var state = getState(itemStack);
         if (state == null) {
             return Optional.empty();

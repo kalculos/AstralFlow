@@ -19,17 +19,21 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.factory;
+package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.AstralFlow;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.ApiStatus;
 
 @RequiredArgsConstructor
 @Getter
-public class SimpleItemRegistry implements ItemRegistry {
-    private final ItemStack prototype;
-    private final ItemState statePrototype;
-    private final String id;
+@ApiStatus.Internal
+public enum StateScope {
+    INTERNAL_ITEM(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "internal.item.state")),
+    USER_ITEM(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "user.item.state")),
+    USER_MACHINE(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "user.machine.state")),
+    INTERNAL_MACHINE(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "internal.machine.state"));
+    private final NamespacedKey tagKey;
 }

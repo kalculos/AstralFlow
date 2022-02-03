@@ -19,38 +19,17 @@
  *   USA
  */
 
-package io.ib67.astralflow.manager;
+package io.ib67.astralflow.item.factory;
 
-import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.StateScope;
-import io.ib67.astralflow.item.factory.AstralItemFactory;
-import io.ib67.astralflow.item.factory.ItemRegistry;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.ApiStatus;
 
-import java.util.Collection;
-import java.util.Optional;
-
-public interface ItemManager {
-    void registerItem(ItemRegistry item);
-
-    IOreDict getOreDict();
-
-    AstralItemFactory getItemFactory();
-
-    Collection<? extends ItemRegistry> getItemRegistries();
-
-    ItemRegistry getRegistry(String key);
-
-    Optional<ItemRegistry> getRegistry(ItemStack itemStack);
-
-    ItemStack createItem(String key);
-
-    @ApiStatus.Experimental
-    ItemState getState(ItemStack itemStack, StateScope stateScope);
-
-    default ItemState getState(ItemStack itemStack) {
-        return getState(itemStack, StateScope.USER_ITEM);
-    }
+@RequiredArgsConstructor
+@Getter
+public class SimpleItemPrototypeFactory implements ItemPrototypeFactory {
+    private final ItemStack prototype;
+    private final ItemState statePrototype;
+    private final String id;
 }
