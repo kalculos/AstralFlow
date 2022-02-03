@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.manager.ItemManager;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +31,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AstralItem {
     private final ItemStack originalItemStack;
+    private final ItemManager itemRegistry;
 
     @NotNull
     public ItemStack asItemStack() {
@@ -38,7 +39,7 @@ public class AstralItem {
     }
 
     public Optional<ItemState> getState() {
-        return Optional.ofNullable(AstralFlow.getInstance().getItemManager().getState(originalItemStack));
+        return Optional.ofNullable(itemRegistry.getState(originalItemStack));
     }
 
     @Override
