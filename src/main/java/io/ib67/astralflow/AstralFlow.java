@@ -74,6 +74,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     private static final Map<HookType<?>, List<Consumer<?>>> HOOKS = new HashMap<>();
+    private volatile boolean initialized = false; // volatile to prevent opcode reshuffle
 
     @Override
     public void onEnable() {
@@ -96,11 +97,16 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         // Load StorageLoader in other sourceset.
         Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
         loadAllMachines();
+        initialized = true;
     }
 
     @Override
     public void onDisable() {
         // save data.
+        if (!initialized) {
+            Log.warn("We're not initialized! Won't do anything.");
+            return;
+        }
         for (Consumer<?> hook : getHooks(HookType.PLUGIN_SHUTDOWN)) {
             hook.accept(null);
         }
