@@ -25,6 +25,7 @@ import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.ItemStateStorage;
 import io.ib67.astralflow.storage.KeyedStorage;
+import io.ib67.util.bukkit.Log;
 
 import java.nio.file.Path;
 import java.util.Collection;
@@ -64,7 +65,11 @@ public class FileItemStorage implements ItemStateStorage {
 
     @Override
     public Collection<? extends UUID> getKeys() {
-        return storage.getKeys().stream().map(e -> e.substring(0, 36)).map(e -> UUID.nameUUIDFromBytes(e.getBytes())).collect(Collectors.toList());
+        return storage.getKeys().stream().filter(e -> {
+            boolean result = e.length() == 36;
+            if (!result) Log.warn("[SKIPPED] Invalid UUID Len: " + e);
+            return result;
+        }).map(e -> UUID.nameUUIDFromBytes(e.getBytes())).collect(Collectors.toList());
     }
 
     @Override

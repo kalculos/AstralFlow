@@ -33,13 +33,15 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static io.ib67.astralflow.machines.IState.EMPTY_STATE;
+
 public abstract class AbstractMachine implements IMachine {
     private final UUID id;
     @Setter(AccessLevel.PROTECTED)
     private Location location;
     @Setter(AccessLevel.PROTECTED)
     @Getter
-    private IState state = new IState.EmptyState();
+    private IState state = EMPTY_STATE;
 
     protected AbstractMachine(UUID id, Location location) {
         this.id = id;

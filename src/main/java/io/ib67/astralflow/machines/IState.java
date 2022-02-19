@@ -22,6 +22,7 @@
 package io.ib67.astralflow.machines;
 
 public interface IState {
+    public static final IState EMPTY_STATE = new IState.EmptyState();
     default Class<? extends IState> getType() {
         return this.getClass();
     }

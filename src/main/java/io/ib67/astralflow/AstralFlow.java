@@ -47,6 +47,7 @@ import io.ib67.astralflow.storage.ItemStateStorage;
 import io.ib67.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -101,6 +102,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         // Load StorageLoader in other sourceset.
         Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
         loadAllMachines();
+        Bukkit.getScheduler().runTask(this, () -> {
+            for (Consumer<?> hook : getHooks(HookType.SERVER_STARTUP_COMPLETED)) {
+                hook.accept(null);
+            }
+        });
         initialized = true;
     }
 
@@ -111,7 +117,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             Log.warn("We're not initialized! Won't do anything.");
             return;
         }
+        Log.info("Saving Data");
         for (Consumer<?> hook : getHooks(HookType.PLUGIN_SHUTDOWN)) {
+            hook.accept(null);
+        }
+        for (Consumer<?> hook : getHooks(HookType.SAVE_DATA)) {
             hook.accept(null);
         }
     }
@@ -209,7 +219,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     @SuppressWarnings("unchecked")
     public <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook) {
-        Object o = HOOKS.get(hook);
+        Object o = HOOKS.getOrDefault(hook, Collections.emptyList());
         return (List<? extends Consumer<T>>) o;
     }
 }

@@ -30,6 +30,7 @@ import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.KeyedStorage;
+import io.ib67.util.bukkit.Log;
 
 import java.nio.file.Path;
 import java.util.Collection;
@@ -69,7 +70,11 @@ public class FileMachineStorage implements IMachineStorage {
 
     @Override
     public Collection<? extends UUID> getKeys() {
-        return storage.getKeys().stream().map(e -> e.substring(0, 36)).map(UUID::fromString).collect(Collectors.toList());
+        return storage.getKeys().stream().filter(e -> {
+            boolean result = e.length() == 36;
+            if (!result) Log.warn("[SKIPPED] Invalid UUID Len: " + e);
+            return result;
+        }).map(UUID::fromString).collect(Collectors.toList());
     }
 
     @Override

@@ -48,22 +48,35 @@ public class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
+    public void setupMachine(IMachine machine) {
+        if (!isRegistered(machine.getId())) {
+            registerMachine(machine);
+        }
+        //registerMachine(machine);
+        machine.init();
+        activateMachine(machine);
+    }
+
+    @Override
+    public boolean isRegistered(UUID uuid) {
+        return cache.containsKey(uuid);
+    }
+
+    @Override
     public IMachine getAndLoadMachine(UUID uuid) {
         return cache.computeIfAbsent(uuid, k -> {
             var machine = machineStorage.get(k);
             if (machine == null) {
                 throw new IllegalArgumentException("Machine with id " + k + " is not registered.");
             }
-            machine.init();
-            // submit to ... scheduler
-            activateMachine(machine);
+            setupMachine(machine);
             return machine;
         });
     }
 
     @Override
     public IMachine getAndLoadMachine(Location location) {
-        return getLoadedMachines().stream().filter(e -> e.getLocation().distance(location) < 0.1).findFirst().orElse(null);
+        return getLoadedMachines().stream().filter(e -> e.getLocation().distance(location) < 0.1).findFirst().orElse(null); //todo FIXME
     }
 
     @Override
@@ -110,7 +123,7 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public void saveMachines() {
         getLoadedMachines().stream().filter(e -> {
-            e.onUnload();
+            e.terminate();
             return true;
         }).forEach(e -> machineStorage.save(e.getId(), e));
     }
