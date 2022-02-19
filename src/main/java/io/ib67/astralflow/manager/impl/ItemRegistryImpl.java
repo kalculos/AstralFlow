@@ -27,7 +27,6 @@ import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.StateScope;
-import io.ib67.astralflow.item.factory.AstralItemFactory;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.internal.NullItemState;
 import io.ib67.astralflow.item.tag.UUIDTag;
@@ -42,14 +41,12 @@ public class ItemRegistryImpl implements ItemRegistry {
     private final IOreDict oreDict;
     private final Map<String, ItemPrototypeFactory> itemMap = new HashMap<>();
     private final Map<UUID, ItemState> stateCache = new HashMap<>();
-    private final AstralItemFactory itemFactory;
     private final ItemStateStorage states;
 
-    public ItemRegistryImpl(ItemStateStorage states, IOreDict oreDict, AstralItemFactory itemFactory) {
+    public ItemRegistryImpl(ItemStateStorage states, IOreDict oreDict) {
         this.states = states;
 
         this.oreDict = oreDict;
-        this.itemFactory = itemFactory;
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, () -> {
             stateCache.forEach(states::save);
         });
@@ -63,11 +60,6 @@ public class ItemRegistryImpl implements ItemRegistry {
     @Override
     public IOreDict getOreDict() {
         return oreDict;
-    }
-
-    @Override
-    public AstralItemFactory getItemFactory() {
-        return itemFactory;
     }
 
     @Override

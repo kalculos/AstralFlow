@@ -25,7 +25,6 @@ import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.StateScope;
-import io.ib67.astralflow.item.factory.AstralItemFactory;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
@@ -37,8 +36,6 @@ public interface ItemRegistry {
     void registerItem(ItemPrototypeFactory item);
 
     IOreDict getOreDict();
-
-    AstralItemFactory getItemFactory();
 
     Collection<? extends ItemPrototypeFactory> getItemPrototypes();
 
