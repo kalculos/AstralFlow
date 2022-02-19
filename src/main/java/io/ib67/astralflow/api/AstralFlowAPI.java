@@ -37,7 +37,7 @@ public interface AstralFlowAPI {
 
     IFactoryManager getFactories();
 
-    ItemRegistry getItemManager();
+    ItemRegistry getItemRegistry();
 
     ITickManager getTickManager();
 

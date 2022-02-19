@@ -33,7 +33,6 @@ import io.ib67.astralflow.internal.ItemStorageSerializer;
 import io.ib67.astralflow.internal.LanguageSerializer;
 import io.ib67.astralflow.internal.MachineStorageSerializer;
 import io.ib67.astralflow.item.OreDictImpl;
-import io.ib67.astralflow.item.factory.SimpleItemFactory;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.listener.WorldListener;
@@ -125,7 +124,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadItemManager() {
         var itemStorage = configuration.getItemStorage();
-        itemRegistry = new ItemRegistryImpl(itemStorage, new OreDictImpl(), new SimpleItemFactory());
+        itemRegistry = new ItemRegistryImpl(itemStorage, new OreDictImpl());
         Log.info(itemStorage.getKeys().size() + " items were found.");
     }
 
@@ -182,7 +181,9 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         HOOKS.computeIfAbsent(type, k -> new ArrayList<>()).add(runnable);
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook) {
-        return (Collection<? extends Consumer<T>>) HOOKS.get(hook);
+        Object o = HOOKS.get(hook);
+        return (List<? extends Consumer<T>>) o;
     }
 }
