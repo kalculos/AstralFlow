@@ -23,6 +23,7 @@ package io.ib67.astralflow;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 import io.ib67.Util;
 import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
@@ -32,6 +33,7 @@ import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.internal.ItemStorageSerializer;
 import io.ib67.astralflow.internal.LanguageSerializer;
 import io.ib67.astralflow.internal.MachineStorageSerializer;
+import io.ib67.astralflow.internal.config.ConfigMigrator;
 import io.ib67.astralflow.item.OreDictImpl;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
@@ -55,6 +57,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
+
+import static io.ib67.astralflow.config.AstralFlowConfiguration.CONFIG_CURRENT_VERSION;
 
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private AstralFlowConfiguration configuration;
@@ -155,19 +159,35 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         var confFile = new File(getDataFolder(), "config.json");
         if (!confFile.exists() || confFile.length() == 0) {
             confFile.createNewFile();
-            Files.write(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(machineDir)).getBytes(StandardCharsets.UTF_8));
+            Files.write(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir)).getBytes(StandardCharsets.UTF_8));
         }
         try (
                 var config = new FileInputStream(confFile)
         ) {
-            configuration = configSerializer.fromJson(new String(config.readAllBytes()), AstralFlowConfiguration.class);
+            var confString = new String(config.readAllBytes());
+            configuration = configSerializer.fromJson(confString, AstralFlowConfiguration.class);
             if (configuration == null) {
                 throw new IOException("Can't parse config");
+            }
+            if (configuration.getVersion() != CONFIG_CURRENT_VERSION) {
+                Log.warn("Configuration version mismatch! Expected " + CONFIG_CURRENT_VERSION + " but got " + configuration.getVersion());
+                Log.warn("Looking for automatic solutions..");
+                if (configuration.getVersion() > CONFIG_CURRENT_VERSION) {
+                    Log.warn("Launching Configuration migrator.");
+                    var migrator = new ConfigMigrator(new JsonParser().parse(confString).getAsJsonObject());
+                    var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir));
+                    Log.info("Migration complete.");
+                    Files.write(confFile.toPath(), configSerializer.toJson(conf).getBytes(StandardCharsets.UTF_8));
+                    configuration = conf;
+                } else {
+                    // higher.
+                    Log.warn("Can't migrate configuration. Please update AstralFlow.");
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
             Log.warn("Cannot load configuration. Falling back to default values");
-            configuration = AstralFlowConfiguration.defaultConfiguration(machineDir);
+            configuration = AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir);
         }
 
     }

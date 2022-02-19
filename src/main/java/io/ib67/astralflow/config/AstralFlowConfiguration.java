@@ -35,11 +35,18 @@ import java.nio.file.Path;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AstralFlowConfiguration {
+    public static final int CONFIG_CURRENT_VERSION = 1;
+
+    private final int version = CONFIG_CURRENT_VERSION;
     private final Language locale;
     private final IMachineStorage storage;
     private final ItemStateStorage itemStorage;
 
-    public static AstralFlowConfiguration defaultConfiguration(Path storageDir) {
-        return new AstralFlowConfiguration(new Language(), new FileMachineStorage(storageDir, AstralFlow.getInstance().getFactories()), new FileItemStorage(storageDir, AstralFlow.getInstance().getFactories()));
+    public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageDir) {
+        return new AstralFlowConfiguration(
+                new Language(),
+                new FileMachineStorage(machineStorageDir, AstralFlow.getInstance().getFactories()),
+                new FileItemStorage(itemStorageDir, AstralFlow.getInstance().getFactories())
+        );
     }
 }
