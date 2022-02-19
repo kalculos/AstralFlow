@@ -69,7 +69,9 @@ public class MachineManagerImpl implements IMachineManager {
             if (machine == null) {
                 throw new IllegalArgumentException("Machine with id " + k + " is not registered.");
             }
-            setupMachine(machine);
+            //setupMachine(machine);
+            machine.init();
+            activateMachine(machine);
             return machine;
         });
     }
