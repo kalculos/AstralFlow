@@ -19,11 +19,11 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.factory;
+package io.ib67.astralflow.item.builder;
 
-import io.ib67.astralflow.item.AstralItem;
 import org.bukkit.inventory.ItemStack;
 
-public interface AstralItemFactory {
-    AstralItem produce(ItemStack item);
+import java.util.function.Function;
+
+public interface PrototypeSupplier<E extends Enum<E>> extends Function<E, ItemStack> {
 }
