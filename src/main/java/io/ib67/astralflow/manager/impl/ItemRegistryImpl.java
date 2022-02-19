@@ -23,6 +23,7 @@ package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.StateScope;
@@ -70,7 +71,7 @@ public class ItemRegistryImpl implements ItemRegistry {
     }
 
     @Override
-    public Collection<? extends ItemPrototypeFactory> getItemRegistries() {
+    public Collection<? extends ItemPrototypeFactory> getItemPrototypes() {
         return itemMap.values();
     }
 
@@ -106,7 +107,7 @@ public class ItemRegistryImpl implements ItemRegistry {
     }
 
     @Override
-    public ItemStack createItem(String key) {
+    public AstralItem createItem(String key) {
         var item = getRegistry(key);
         if (item == null) return null;
         // validation
@@ -131,6 +132,6 @@ public class ItemRegistryImpl implements ItemRegistry {
 
         im.getPersistentDataContainer().set(StateScope.USER_ITEM.getTagKey(), TAG, uuid);
         itemStack.setItemMeta(im);
-        return itemStack;
+        return new AstralItem(itemStack, this);
     }
 }
