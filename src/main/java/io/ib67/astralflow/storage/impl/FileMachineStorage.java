@@ -69,7 +69,7 @@ public class FileMachineStorage implements IMachineStorage {
 
     @Override
     public Collection<? extends UUID> getKeys() {
-        return storage.getKeys().stream().map(UUID::fromString).collect(Collectors.toList());
+        return storage.getKeys().stream().map(e -> e.substring(0, 36)).map(UUID::fromString).collect(Collectors.toList());
     }
 
     @Override

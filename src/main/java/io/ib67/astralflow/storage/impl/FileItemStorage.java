@@ -64,7 +64,7 @@ public class FileItemStorage implements ItemStateStorage {
 
     @Override
     public Collection<? extends UUID> getKeys() {
-        return storage.getKeys().stream().map(e -> UUID.nameUUIDFromBytes(e.getBytes())).collect(Collectors.toList());
+        return storage.getKeys().stream().map(e -> e.substring(0, 36)).map(e -> UUID.nameUUIDFromBytes(e.getBytes())).collect(Collectors.toList());
     }
 
     @Override
