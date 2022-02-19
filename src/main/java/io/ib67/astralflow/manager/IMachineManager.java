@@ -29,6 +29,11 @@ import java.util.Collection;
 import java.util.UUID;
 
 public interface IMachineManager {
+    /**
+     * @param uuid
+     * @return
+     * @throws IllegalArgumentException if uuid not registered.
+     */
     IMachine getAndLoadMachine(UUID uuid);
 
     IMachine getAndLoadMachine(Location location);
@@ -39,7 +44,7 @@ public interface IMachineManager {
 
     Collection<? extends IMachine> getLoadedMachines();
 
-    Collection<UUID> getAllMachines();
+    Collection<? extends UUID> getAllMachines();
 
     void registerMachine(IMachine machine);
 

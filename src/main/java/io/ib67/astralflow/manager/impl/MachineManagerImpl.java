@@ -50,7 +50,10 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public IMachine getAndLoadMachine(UUID uuid) {
         return cache.computeIfAbsent(uuid, k -> {
-            var machine = machineStorage.readMachine(k).orElseThrow();
+            var machine = machineStorage.get(k);
+            if (machine == null) {
+                throw new IllegalArgumentException("Machine with id " + k + " is not registered.");
+            }
             machine.init();
             // submit to ... scheduler
             activateMachine(machine);
@@ -85,8 +88,8 @@ public class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public Collection<UUID> getAllMachines() {
-        return machineStorage.getMachines();
+    public Collection<? extends UUID> getAllMachines() {
+        return machineStorage.getKeys();
     }
 
     @Override
@@ -109,7 +112,7 @@ public class MachineManagerImpl implements IMachineManager {
         getLoadedMachines().stream().filter(e -> {
             e.onUnload();
             return true;
-        }).forEach(machineStorage::saveMachine);
+        }).forEach(e -> machineStorage.save(e.getId(), e));
     }
 
     @Override
@@ -117,6 +120,7 @@ public class MachineManagerImpl implements IMachineManager {
         deactivateMachine(machine);
         machine.terminate();
         cache.remove(machine.getId());
-        return machineStorage.removeMachine(machine.getId());
+        machineStorage.remove(machine.getId());
+        return true;
     }
 }

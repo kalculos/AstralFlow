@@ -46,25 +46,25 @@ public class MachineListener implements Listener {
         if (event.getMachine() instanceof BlockItemSupport) {
             event.setDropItem(false);
             var protoId = ((BlockItemSupport) event.getMachine()).itemPrototypeId();
-            var im = AstralFlow.getInstance().getItemManager();
+            var im = AstralFlow.getInstance().getItemRegistry();
             if (im.getRegistry(protoId) == null) {
                 // wow.
                 throw new ItemPrototypeNotFound(protoId); // won't drop anything.
             }
             var is = im.createItem(protoId);
-            var state = im.getState(is);
+            var state = is.getState().orElseThrow(IllegalStateException::new);
             if (state instanceof MachineItemState) {
                 // deactivate machine.
                 var machine = event.getMachine();
                 var ms = ((MachineItemState) state);
-                ms.setType(machine.getType().getName());
+                ms.setPrototype(machine.getType().getName());
                 ms.setMachineState(machine.getState());
                 AstralFlow.getInstance().getMachineManager().removeAndTerminateMachine(machine);
             } else {
                 throw new UnsupportedOperationException("item state of " + protoId + " is not a MachineItemState.");
             }
             Bukkit.getScheduler().runTask(AstralFlow.getInstance().asPlugin(), () -> {
-                event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), is);
+                event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), is.asItemStack());
             });
         }
     }

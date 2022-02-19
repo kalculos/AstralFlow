@@ -34,29 +34,29 @@ import org.bukkit.Location;
  * Use null machine when you're defining item prototype, we'll replace it with actual item state.
  */
 @Setter
-@Getter
 public class MachineItemState extends ItemState {
 
-    private String type;
+    private String prototype;
+    @Getter
     private IState machineState;
 
     public MachineItemState(String prototype, String machineType, IState machineState) {
         super(prototype);
-        this.type = machineType;
+        this.prototype = machineType;
         this.machineState = machineState;
     }
 
     @SuppressWarnings("unchecked")
     public IMachine createMachine(Location location) {
         try {
-            return AstralFlow.getInstance().getFactories().getMachineFactory((Class<? extends IMachine>) Class.forName(type)).createMachine(location, machineState);
+            return AstralFlow.getInstance().getFactories().getMachineFactory((Class<? extends IMachine>) Class.forName(prototype)).createMachine(location, machineState);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            Log.warn("Machine type " + type + " not found!");
+            Log.warn("Machine type " + prototype + " not found!");
         } catch (ClassCastException e) {
             e.printStackTrace();
             ;
-            Log.warn("Machine type " + type + " is not a machine!");
+            Log.warn("Machine type " + prototype + " is not a machine!");
         }
         return null;
     }
