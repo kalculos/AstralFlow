@@ -25,7 +25,6 @@ import io.ib67.astralflow.machines.AbstractMachine;
 import io.ib67.astralflow.machines.IMachine;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -50,7 +49,7 @@ public class HelloMachine extends AbstractMachine {
                 pointer = 0;
             }
             getLocation().getBlock().setType(WOOL[pointer]);
-            getLocation().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, getLocation(), 5);
+            //getLocation().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, getLocation(), 5);
         }
     }
 }

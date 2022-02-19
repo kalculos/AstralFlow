@@ -32,7 +32,8 @@ public class BlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getItemInHand().hasItemMeta() && event.getItemInHand().getItemMeta().getDisplayName().equals("jeb_")) {
             var mech = AstralFlow.getInstance().getFactories().getMachineFactory(HelloMachine.class).createMachine(event.getBlock().getLocation());
-            AstralFlow.getInstance().getMachineManager().registerMachine(mech);
+            var mm = AstralFlow.getInstance().getMachineManager();
+            mm.setupMachine(mech);
             event.getPlayer().sendMessage("Magics will come...");
         }
     }
