@@ -44,6 +44,7 @@ import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.ItemStateStorage;
+import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -205,6 +206,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Override
     public ITickManager getTickManager() {
         return tickManager;
+    }
+
+    @Override
+    public ITextureRegistry getTextureRegistry() {
+        return null; // // TODO: 2022/2/20
     }
 
     @Override

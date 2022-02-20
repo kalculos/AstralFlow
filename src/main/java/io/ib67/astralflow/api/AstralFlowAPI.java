@@ -27,6 +27,7 @@ import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.manager.ItemRegistry;
+import io.ib67.astralflow.texture.ITextureRegistry;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
@@ -40,6 +41,8 @@ public interface AstralFlowAPI {
     ItemRegistry getItemRegistry();
 
     ITickManager getTickManager();
+
+    ITextureRegistry getTextureRegistry();
 
     <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
 
