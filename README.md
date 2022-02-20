@@ -11,12 +11,15 @@
 此项目实施来自 SaltedFish Club 的[代码贡献指南](https://github.com/saltedfishclub/documents/blob/main/CONTRIBUTING.md)
 以及 [版本迭代方案](https://github.com/saltedfishclub/documents/blob/main/Evolution.md)
 
+除此之外，本项目推广使用 Lombok.
+
 # Feature
 
-1. 良好且易用的设计
+1. 强大，高性能且易用的设计
 2. (StorageModule) 所有的游戏机制均可以不通过指令交互，使你的玩家充分沉浸在游戏中。
 3. (StorageModule) 解决了原版储存的痛点
 4. 自带数据持久化
+5. 支持材质资源的自动生成与处理
 
 # Getting Started
 
