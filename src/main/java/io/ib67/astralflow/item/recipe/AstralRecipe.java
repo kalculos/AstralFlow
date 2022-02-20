@@ -21,8 +21,9 @@
 
 package io.ib67.astralflow.item.recipe;
 
+import org.bukkit.Keyed;
 import org.bukkit.inventory.ItemStack;
 
-public interface AstralRecipe {
+public interface AstralRecipe extends Keyed {
     ItemStack getResult();
 }
