@@ -21,13 +21,16 @@
 
 package io.ib67.astralflow.item.builder;
 
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import org.bukkit.inventory.Recipe;
+import io.ib67.astralflow.item.recipe.AstralRecipe;
+import io.ib67.astralflow.texture.Texture;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public class ItemBuilder
         <T extends Enum<T>,
@@ -35,10 +38,10 @@ public class ItemBuilder
                 P extends ItemPrototypeFactory,
                 S extends PrototypeSupplier<T>> {
     private final ItemCategory<T, P, S> category;
-    private String textureId;
-    private boolean oreDictId;
+    private Texture texture;
+    private String oreDictId;
     private P registry;
-    private List<Recipe> recipes = new ArrayList<>();
+    private List<AstralRecipe> recipes = new ArrayList<>();
 
     private ItemBuilder(ItemCategory<T, P, S> category) {
         this.category = category;
@@ -54,16 +57,22 @@ public class ItemBuilder
 
     @ApiStatus.Experimental
     public ItemBuilder<T, C, P, S> bind(String textureId) {
-        this.textureId = textureId;
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    public ItemBuilder<T, C, P, S> oreDict(boolean enable) {
-        this.oreDictId = enable;
+        this.texture = AstralFlow.getInstance().getTextureRegistry().getTexture(textureId).orElseThrow(); // FIXME: default fallback texture
         return this;
     }
 
-    public ItemBuilder<T, C, P, S> recipe(Recipe recipe) {
+    public ItemBuilder<T, C, P, S> bind(Texture texture) {
+        texture.getModelId(); // ensure it is valid registered.
+        this.texture = texture;
+        return this;
+    }
+
+    public ItemBuilder<T, C, P, S> oreDict(String oreDictId) {
+        this.oreDictId = oreDictId;
+        return this;
+    }
+
+    public ItemBuilder<T, C, P, S> recipe(AstralRecipe recipe) {
         recipes.add(recipe);
         return this;
     }
@@ -75,7 +84,23 @@ public class ItemBuilder
     }
 
     private void register() {
-        //todo
+        ItemPrototypeFactory p = registry;
+        p = new PrototypeDecorator(p, i -> {
+            var item = i.clone();
+            var im = item.getItemMeta();
+            if (im == null) {
+                throw new IllegalStateException("ItemMeta is null or AIR! " + registry.getId());
+            }
+            im.setCustomModelData(texture.getModelId());
+            i.setItemMeta(im);
+            return i;
+        }, UnaryOperator.identity());
+        // process item.
+        if (oreDictId != null) {
+            var od = AstralFlow.getInstance().getItemRegistry().getOreDict();
+            od.registerItem(p, oreDictId);
+        }
+        //todo register recipes.
     }
 
     public class WrappedBuilder {
