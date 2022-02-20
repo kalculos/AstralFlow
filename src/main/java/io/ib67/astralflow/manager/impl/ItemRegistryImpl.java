@@ -53,8 +53,16 @@ public class ItemRegistryImpl implements ItemRegistry {
     }
 
     @Override
-    public void registerItem(ItemPrototypeFactory item) {
+    public void registerItem(ItemPrototypeFactory item, String oreDictId) {
         itemMap.put(item.getId(), item);
+        if (oreDictId != null) {
+            oreDict.registerItem(item, oreDictId);
+        }
+    }
+
+    @Override
+    public boolean isItem(ItemStack item) {
+        return getState(item) != null;
     }
 
     @Override

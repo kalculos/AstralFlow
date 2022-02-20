@@ -33,7 +33,13 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ItemRegistry {
-    void registerItem(ItemPrototypeFactory item);
+    default void registerItem(ItemPrototypeFactory item) {
+        registerItem(item, null);
+    }
+
+    void registerItem(ItemPrototypeFactory item, String oredict);
+
+    boolean isItem(ItemStack item);
 
     IOreDict getOreDict();
 

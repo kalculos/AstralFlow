@@ -36,4 +36,6 @@ public interface IOreDict {
     IOreDict registerItem(ItemPrototypeFactory prototype, String dictKey);
 
     RecipeChoice.ExactChoice getChoices(String dictKey);
+
+
 }
