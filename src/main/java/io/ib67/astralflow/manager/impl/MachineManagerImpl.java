@@ -22,6 +22,7 @@
 package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IMachineManager;
@@ -119,7 +120,9 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public boolean isMachine(Block block) {
-        return getLoadedMachines().stream().anyMatch(machine -> block.getLocation().distance(machine.getLocation()) < 0.1); // for some moving entities
+        // FIX: https://github.com/iceBear67/AstralFlow/issues/2
+        //return getLoadedMachines().stream().anyMatch(machine -> block.getLocation().distance(machine.getLocation()) < 0.1); // for some moving entities
+        return getLoadedMachines().stream().anyMatch(machine -> AstralHelper.equalsLocationFuzzily(machine.getLocation(), block.getLocation()));
     }
 
     @Override
