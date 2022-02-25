@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 public interface IMachineManager {
-    void setupMachine(IMachine machine);
+    void setupMachine(IMachine machine, boolean update);
 
     boolean isRegistered(UUID uuid);
 

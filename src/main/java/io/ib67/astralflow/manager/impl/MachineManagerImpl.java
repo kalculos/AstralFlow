@@ -48,13 +48,13 @@ public class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public void setupMachine(IMachine machine) {
+    public void setupMachine(IMachine machine, boolean update) {
         if (!isRegistered(machine.getId())) {
             registerMachine(machine);
         }
         //registerMachine(machine);
         machine.init();
-        activateMachine(machine);
+        if (update) activateMachine(machine);
     }
 
     @Override
