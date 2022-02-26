@@ -47,7 +47,7 @@ public class Shapeless implements AstralRecipe {
     }
 
     public static ShapelessBuilder of(Plugin plugin, String key, Supplier<ItemStack> result) {
-        return new ShapelessBuilder(new NamespacedKey(plugin, key));
+        return new ShapelessBuilder(new NamespacedKey(plugin, key)).setResult(result);
     }
 
     public static ShapelessBuilder of(Plugin plugin, String key, ItemStack result) {
@@ -72,14 +72,22 @@ public class Shapeless implements AstralRecipe {
     public static final class ShapelessBuilder {
         private final NamespacedKey key;
         private final List<IngredientChoice> choices = new ArrayList<>();
+        private Supplier<ItemStack> supplier;
 
         public ShapelessBuilder addIngredients(IngredientChoice... choices) {
             this.choices.addAll(List.of(choices));
             return this;
         }
 
+        public ShapelessBuilder setResult(Supplier<ItemStack> supplier) {
+            this.supplier = supplier;
+            return this;
+        }
+
         public Shapeless build() {
-            return new Shapeless(choices, key);
+            var r = new Shapeless(choices, key);
+            r.setResult(supplier);
+            return r;
         }
     }
 }
