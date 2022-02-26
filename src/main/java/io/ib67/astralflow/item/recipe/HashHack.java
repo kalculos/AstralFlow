@@ -21,23 +21,28 @@
 
 package io.ib67.astralflow.item.recipe;
 
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Contract;
+import lombok.RequiredArgsConstructor;
 
-import java.util.List;
+/**
+ * This class allow us to access keys in hashmap by a key, which benefits ShapedRecipes
+ */
+@RequiredArgsConstructor
+final class HashHack {
+    private final int hashValue;
 
-public interface IRecipeRegistry {
-    @Contract(pure = true, value = "_->this")
-    IRecipeRegistry registerRecipe(AstralRecipe recipe);
+    @Override
+    public int hashCode() {
+        return hashValue;
+    }
 
-    @Contract(pure = true, value = "_->this")
-    IRecipeRegistry unregisterRecipe(AstralRecipe recipe);
-
-    AstralRecipe getRecipeByKey(NamespacedKey key);
-
-    @Contract(value = " -> new")
-    List<? extends AstralRecipe> getRecipes();
-
-    AstralRecipe matchRecipe(ItemStack[] recipe);
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof HashHack) {
+            return ((HashHack) obj).hashValue == this.hashValue;
+        }
+        return obj.hashCode() == hashValue;
+    }
 }
