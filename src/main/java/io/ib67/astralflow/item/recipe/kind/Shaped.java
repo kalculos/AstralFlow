@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Shaped implements AstralRecipe {
@@ -169,11 +170,19 @@ public class Shaped implements AstralRecipe {
 
         public Shaped build() {
             // compiles matrix.
+            if (stringMatrix == null) {
+                throw new NullPointerException("Matrix is null. " + key);
+            }
             IngredientChoice[] matrix = new IngredientChoice[9];
             for (int i = 0; i < stringMatrix.length; i++) {
                 var row = stringMatrix[i].toCharArray();
                 for (int i1 = 0; i1 < row.length; i1++) {
-                    matrix[i * 3 + i1] = itemMap.getOrDefault(row[i1], null);
+                    if (row[i1] == ' ') {
+                        matrix[i * 3 + i1] = null;
+                        continue;
+                    }
+                    int finalI = i1;
+                    matrix[i * 3 + i1] = Optional.ofNullable(itemMap.getOrDefault(row[i1], null)).orElseThrow(() -> new IllegalArgumentException("Invalid ingredient " + row[finalI] + " for " + key));
                 }
             }
             var r = new Shaped(key, matrix);
