@@ -23,6 +23,7 @@ plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id 'java-library'
+    id 'io.franzbecker.gradle-lombok' version '5.0.0'
 }
 
 group = 'io.ib67'
@@ -44,15 +45,34 @@ repositories {
 }
 dependencies {
     api 'com.github.iceBear67:tools:f731f7d'
-    compileOnly 'org.projectlombok:lombok:1.18.20'
     compileOnly 'org.jetbrains:annotations:23.0.0'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
     compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
     testImplementation 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
     testImplementation("junit:junit:4.13.2")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
 }
+lombok {
+    version = "1.18.20"
+}
+import io.franzbecker.gradle.lombok.task.DelombokTask
 
+task delombok(type: DelombokTask, dependsOn: compileJava) {
+    ext.outputDir = file("$buildDir/delombok")
+    outputs.dir(outputDir)
+    sourceSets.main.java.srcDirs.each {
+        inputs.dir(it)
+        args(it, "-d", outputDir)
+    }
+    doFirst {
+        outputDir.deleteDir()
+    }
+}
+
+javadoc {
+    dependsOn delombok
+    source = delombok.outputDir
+    failOnError = false
+}
 def targetJavaVersion = 11
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
