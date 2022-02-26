@@ -23,7 +23,7 @@ package io.ib67.astralflow.item.recipe.kind;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
-import io.ib67.astralflow.item.recipe.AstralRecipeChoice;
+import io.ib67.astralflow.item.recipe.IngredientChoice;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +37,11 @@ import java.util.function.Supplier;
 
 @Getter
 public class Shapeless implements AstralRecipe {
-    private final List<AstralRecipeChoice> choices;
+    private final List<IngredientChoice> choices;
     private final NamespacedKey key;
     private Supplier<ItemStack> resultSupplier;
 
-    private Shapeless(List<AstralRecipeChoice> choices, NamespacedKey key) {
+    private Shapeless(List<IngredientChoice> choices, NamespacedKey key) {
         this.choices = choices;
         this.key = key;
     }
@@ -71,9 +71,9 @@ public class Shapeless implements AstralRecipe {
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class ShapelessBuilder {
         private final NamespacedKey key;
-        private final List<AstralRecipeChoice> choices = new ArrayList<>();
+        private final List<IngredientChoice> choices = new ArrayList<>();
 
-        public ShapelessBuilder addIngredients(AstralRecipeChoice... choices) {
+        public ShapelessBuilder addIngredients(IngredientChoice... choices) {
             this.choices.addAll(List.of(choices));
             return this;
         }

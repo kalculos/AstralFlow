@@ -23,19 +23,57 @@ package io.ib67.astralflow.item.recipe;
 
 import io.ib67.astralflow.AstralFlow;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public interface AstralRecipeChoice extends Predicate<ItemStack> {
+// actually this should be abstract class but thats too late when I found that
+public interface IngredientChoice extends Predicate<ItemStack>, Consumer<ItemStack> {
+    short getCount();
+
+    short getDurability();
+
+    @Override
+    default void accept(ItemStack itemStack) {
+        var result = itemStack.getAmount() - getCount();
+        if (result == 0) {
+            itemStack.setType(Material.AIR);
+        } else {
+            itemStack.setAmount(result);
+        }
+
+        if (itemStack.hasItemMeta()) {
+            var im = itemStack.getItemMeta();
+            if (im instanceof Damageable) {
+                var dm = ((Damageable) im);
+                if (dm.getDamage() - getDurability() <= 0) {
+                    itemStack.setType(Material.AIR);
+                    // broken!
+                } else {
+                    dm.setDamage(dm.getDamage() - getDurability());
+                }
+            }
+        }
+    }
 
     @Getter
-    public final class MaterialChoice implements AstralRecipeChoice {
+    public final class MaterialChoice implements IngredientChoice {
         private final Set<Material> material;
+        private final short count;
+        private final short durability;
 
         public MaterialChoice(Material... material) {
+            this((short) 1, (short) 0, material);
+        }
+
+        public MaterialChoice(short count, short durability, Material... material) {
+            this.count = count;
+            this.durability = durability;
             this.material = Set.of(material);
         }
 
@@ -45,12 +83,15 @@ public interface AstralRecipeChoice extends Predicate<ItemStack> {
         }
     }
 
+    @RequiredArgsConstructor
     @Getter
-    public final class ExactItemChoice implements AstralRecipeChoice {
+    public final class ExactItemChoice implements IngredientChoice {
+        private final short count;
+        private final short durability;
         private final Set<ItemStack> material;
 
         public ExactItemChoice(ItemStack... material) {
-            this.material = Set.of(material);
+            this((short) 1, (short) 0, Set.of(material));
         }
 
         @Override
@@ -60,10 +101,18 @@ public interface AstralRecipeChoice extends Predicate<ItemStack> {
     }
 
     @Getter
-    public final class AstralItemChoice implements AstralRecipeChoice {
+    public final class AstralItemChoice implements IngredientChoice {
+        private final short count;
+        private final short durability;
         private final Set<String> materials;
 
         public AstralItemChoice(String... oredictIds) {
+            this((short) 1, (short) 0, oredictIds);
+        }
+
+        public AstralItemChoice(short durability, short count, String... oredictIds) {
+            this.durability = durability;
+            this.count = count;
             materials = Set.of(oredictIds);
         }
 
