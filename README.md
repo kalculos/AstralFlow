@@ -6,7 +6,7 @@
 
 *汝身听吾号令，吾与汝同在，应曉星之召，从寰宇之源，于此起誓，吾是治狱世间物类之人，吾是肃清世间浊物之人。*
 
-AstralFlow is a lightweight bukkit plugin that provides a framework to create modpack-like experience.
+AstralFlow is a lightweight bukkit plugin that provides a framework to create a modpack-like experience.
 
 Based on Spigot API.
 
@@ -19,11 +19,11 @@ And we recommend Lombok.
 
 # Feature
 
-1. Easy to use, for Developers and for Server Operators.
-2. Providing immersive experience for players.
+1. Easy to use, for Developers and Server Operators.
+2. Providing an immersive experience for players.
 3. Active Maintained.
-4. Data driven, easier to make extensions.
-5. Texture generate and auto publish
+4. Data-driven, easier to make extensions.
+5. Texture generate and auto-publish
 
 # Getting Started
 
