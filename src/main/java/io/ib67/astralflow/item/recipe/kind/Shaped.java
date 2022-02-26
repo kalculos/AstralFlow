@@ -54,9 +54,17 @@ public class Shaped implements AstralRecipe {
     );
     private Supplier<ItemStack> factory;
 
-    public Shaped(NamespacedKey key, IngredientChoice[] originMatrix) {
+    private Shaped(NamespacedKey key, IngredientChoice[] originMatrix) {
         this.key = key;
         this.originMatrix = originMatrix;
+    }
+
+    public static ShapedBuilder of(NamespacedKey key, Supplier<ItemStack> supplier) {
+        return new ShapedBuilder(key).setResult(supplier);
+    }
+
+    public static ShapedBuilder of(NamespacedKey key) {
+        return new ShapedBuilder(key);
     }
 
     @Override
