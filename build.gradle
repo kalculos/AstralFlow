@@ -49,6 +49,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
     testCompileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+    testImplementation("junit:junit:4.13.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
 }
 
 def targetJavaVersion = 11
@@ -59,6 +61,11 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
+}
+
+test {
+    useJUnit()
+
 }
 
 tasks.withType(JavaCompile).configureEach {
