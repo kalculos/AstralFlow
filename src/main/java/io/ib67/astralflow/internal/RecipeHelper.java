@@ -147,7 +147,8 @@ public class RecipeHelper {
         }
         return list.toArray(new String[0]);
     }
-    public static long generateMatrixPatternHash(String... _matrix) {
+
+    public static int generateMatrixPatternHash(String... _matrix) {
         var matrix = populateEmptyRows(_matrix);
 
         boolean[] ingredients = new boolean[3 * 3];
@@ -160,7 +161,11 @@ public class RecipeHelper {
             }
         }
 
-        return combineInt2Long(Arrays.hashCode(ingredients), getIngredientKindCount(_matrix));
+        //return combineInt2Long(Arrays.hashCode(ingredients), getIngredientKindCount(_matrix));
+        int i = 1;
+        i = i + Arrays.hashCode(ingredients) * 34;
+        i = i + getIngredientKindCount(_matrix) * 34;
+        return i;
     }
 
     private static long combineInt2Long(int low, int high) {

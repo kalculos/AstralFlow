@@ -43,7 +43,7 @@ public class Shaped implements AstralRecipe {
     private static final ItemStack PLACEHOLDER = new ItemStack(Material.STONE);
     private final NamespacedKey key;
     private final IngredientChoice[] originMatrix; // todo: performance issues.
-    private final Lazy<IngredientChoice[], Long> compiledHash = Lazy.by(t ->
+    private final Lazy<IngredientChoice[], Integer> compiledHash = Lazy.by(t ->
             RecipeHelper.generateMatrixPatternHash(
                     RecipeHelper.toStringMatrix(
                             Arrays.stream(t).map(e ->
@@ -65,6 +65,11 @@ public class Shaped implements AstralRecipe {
     }
 
     @Override
+    public IngredientChoice[] getMatrix() {
+        return originMatrix;
+    }
+
+    @Override
     public void setResult(Supplier<ItemStack> prototype) {
         this.factory = prototype;
     }
@@ -75,12 +80,16 @@ public class Shaped implements AstralRecipe {
         return key;
     }
 
+    public int getCompiledHash() {
+        return compiledHash.get(originMatrix);
+    }
+
     @Override
     public boolean test(ItemStack[] itemStacks) {
         // check for patterns.
 
         var paramHash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.toStringMatrix(itemStacks));
-        if (paramHash != compiledHash.get()) {
+        if (paramHash != compiledHash.get(originMatrix)) {
             return false;
         }
         if (originMatrix.length != itemStacks.length) {
