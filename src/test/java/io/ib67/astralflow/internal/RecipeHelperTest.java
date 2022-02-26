@@ -21,6 +21,8 @@
 
 package io.ib67.astralflow.internal;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -150,10 +152,56 @@ public class RecipeHelperTest {
 
     @Test
     public void generateMatrixPatternHash() {
-        System.out.println(RecipeHelper.generateMatrixPatternHash(
-                "aaa",
-                " b ",
-                "aaa"
-        ));
+        //todo: valid test
+    }
+
+    @Test
+    public void toStringMatrix() {
+        ItemStack[] itemMatrix = new ItemStack[]{
+                new ItemStack(Material.STONE),
+                new ItemStack(Material.STONE),
+                new ItemStack(Material.STONE),
+                null,
+                new ItemStack(Material.STICK),
+                null,
+                new ItemStack(Material.STONE),
+                new ItemStack(Material.STONE),
+                new ItemStack(Material.STONE)
+        };
+        Assert.assertArrayEquals(
+                "Test Regular Matrix #1",
+                new String[]{
+                        "aaa",
+                        " b ",
+                        "aaa"
+                },
+                RecipeHelper.toStringMatrix(itemMatrix)
+        );
+        ItemStack[] itemMatrix2 = new ItemStack[]{
+                new ItemStack(Material.STONE)
+        };
+        Assert.assertArrayEquals(
+                "Test Regular Matrix #2",
+                new String[]{
+                        "a"
+                },
+                RecipeHelper.toStringMatrix(itemMatrix2)
+        );
+        ItemStack[] itemMatrix3 = new ItemStack[]{
+                null, null, null,
+                null, new ItemStack(Material.STONE), null,
+                null, null, null
+        };
+        Assert.assertArrayEquals(
+                "Test Regular Matrix #3",
+                new String[]{
+                        "   ",
+                        " a ",
+                        "   "
+                },
+                RecipeHelper.toStringMatrix(itemMatrix3)
+        );
+
+
     }
 }

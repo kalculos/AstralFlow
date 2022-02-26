@@ -21,9 +21,11 @@
 
 package io.ib67.astralflow.internal;
 
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -105,6 +107,46 @@ public class RecipeHelper {
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).keySet().size();
     }
 
+    public static String[] toStringMatrix(ItemStack... items) {
+        int base = 'a';
+        var set = new ArrayList<>(8);
+        char[] matrix = new char[items.length];
+        for (int i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (item == null) {
+                matrix[i] = ' ';
+                continue;
+            }
+            if (!set.contains(item.getType())) {
+                set.add(item.getType());
+            }
+            var index = set.indexOf(item.getType());
+            matrix[i] = (char) (base + index);
+        }
+        // todo: fix this?
+//        var delta = matrix.length % 3;
+//        var len = matrix.length - delta;
+        var list = new ArrayList<String>();
+//        for (int i = 0; i < len; i++) {
+//            list.add(String.valueOf(Arrays.copyOfRange(matrix,i*3,i*3+3)));
+//        }
+//        if(delta != 0){
+//            list.add(String.valueOf(Arrays.copyOfRange(matrix,len,delta)));
+//        }
+
+        var sb = new StringBuilder();
+        for (int i = 0; i < matrix.length; i++) {
+            sb.append(matrix[i]);
+            if ((i + 1) % 3 == 0) {
+                list.add(sb.toString());
+                sb = new StringBuilder();
+            }
+        }
+        if (sb.length() != 0) {
+            list.add(sb.toString());
+        }
+        return list.toArray(new String[0]);
+    }
     public static long generateMatrixPatternHash(String... _matrix) {
         var matrix = populateEmptyRows(_matrix);
 
