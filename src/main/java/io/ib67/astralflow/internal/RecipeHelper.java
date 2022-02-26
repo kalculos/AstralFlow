@@ -25,6 +25,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @ApiStatus.Internal
 public class RecipeHelper {
@@ -97,4 +99,29 @@ public class RecipeHelper {
         return newMatrix;
     }
 
+    public static int getIngredientKindCount(String... matrix) {
+        return Arrays.stream(matrix).flatMapToInt(String::chars)
+                .boxed() // looking for a better implementation. This might be slow.
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).keySet().size();
+    }
+
+    public static long generateMatrixPatternHash(String... _matrix) {
+        var matrix = populateEmptyRows(_matrix);
+
+        boolean[] ingredients = new boolean[3 * 3];
+        for (int i = 0; i < matrix.length; i++) {
+            var row = matrix[i].toCharArray();
+            for (int i1 = 0; i1 < row.length; i1++) {
+                if (row[i1] != ' ') {
+                    ingredients[i * 3 + i1] = true;
+                }
+            }
+        }
+
+        return combineInt2Long(Arrays.hashCode(ingredients), getIngredientKindCount(_matrix));
+    }
+
+    private static long combineInt2Long(int low, int high) {
+        return ((long) low & 0xFFFFFFFFL) | (((long) high << 32) & 0xFFFFFFFF00000000L);
+    }
 }

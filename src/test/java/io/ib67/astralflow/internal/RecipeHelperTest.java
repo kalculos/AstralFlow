@@ -147,4 +147,13 @@ public class RecipeHelperTest {
                 RecipeHelper.leftAlignMatrix("", "", "")
         );
     }
+
+    @Test
+    public void generateMatrixPatternHash() {
+        System.out.println(RecipeHelper.generateMatrixPatternHash(
+                "aaa",
+                " b ",
+                "aaa"
+        ));
+    }
 }
