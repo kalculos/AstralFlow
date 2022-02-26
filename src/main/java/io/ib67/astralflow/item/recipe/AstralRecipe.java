@@ -23,10 +23,12 @@ package io.ib67.astralflow.item.recipe;
 
 import org.bukkit.Keyed;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 
 import java.util.function.Supplier;
 
 public interface AstralRecipe extends Keyed {
+    @Contract(" -> new")
     ItemStack produceResult();
 
     default void setResult(ItemStack is) {
