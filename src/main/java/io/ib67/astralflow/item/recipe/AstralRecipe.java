@@ -24,6 +24,14 @@ package io.ib67.astralflow.item.recipe;
 import org.bukkit.Keyed;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.function.Supplier;
+
 public interface AstralRecipe extends Keyed {
     ItemStack getResult();
+
+    default void setResult(ItemStack is) {
+        setResult(() -> is);
+    }
+
+    void setResult(Supplier<ItemStack> prototype); // use supplier for instantiation from ItemRegistry.
 }

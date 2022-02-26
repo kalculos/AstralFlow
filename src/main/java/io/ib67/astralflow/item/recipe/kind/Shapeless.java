@@ -39,6 +39,7 @@ import java.util.function.Supplier;
 public class Shapeless implements AstralRecipe {
     private final List<AstralRecipeChoice> choices;
     private final NamespacedKey key;
+    private Supplier<ItemStack> resultSupplier;
 
     private Shapeless(List<AstralRecipeChoice> choices, NamespacedKey key) {
         this.choices = choices;
@@ -59,7 +60,12 @@ public class Shapeless implements AstralRecipe {
 
     @Override
     public ItemStack getResult() {
-        return null;
+        return resultSupplier.get();
+    }
+
+    @Override
+    public void setResult(Supplier<ItemStack> prototype) {
+        this.resultSupplier = prototype;
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
