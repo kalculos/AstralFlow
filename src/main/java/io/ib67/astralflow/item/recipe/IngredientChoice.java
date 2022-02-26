@@ -62,7 +62,7 @@ public interface IngredientChoice extends Predicate<ItemStack>, Consumer<ItemSta
     }
 
     @Getter
-    public final class MaterialChoice implements IngredientChoice {
+    final class MaterialChoice implements IngredientChoice {
         private final Set<Material> material;
         private final short count;
         private final short durability;
@@ -85,7 +85,7 @@ public interface IngredientChoice extends Predicate<ItemStack>, Consumer<ItemSta
 
     @RequiredArgsConstructor
     @Getter
-    public final class ExactItemChoice implements IngredientChoice {
+    final class ExactItemChoice implements IngredientChoice {
         private final short count;
         private final short durability;
         private final Set<ItemStack> material;
@@ -101,7 +101,7 @@ public interface IngredientChoice extends Predicate<ItemStack>, Consumer<ItemSta
     }
 
     @Getter
-    public final class AstralItemChoice implements IngredientChoice {
+    final class AstralItemChoice implements IngredientChoice {
         private final short count;
         private final short durability;
         private final Set<String> materials;
