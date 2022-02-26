@@ -92,7 +92,7 @@ public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<It
 
         @Override
         public List<ItemStack> getRepresentativeItems() {
-            return compiledRItems.get();
+            return compiledRItems.get(material);
         }
     }
 
