@@ -105,6 +105,29 @@ public class Shaped implements AstralRecipe {
         return true;
     }
 
+    @Override
+    public ItemStack[] apply(ItemStack[] itemStacks) {
+        if (!test(itemStacks)) {
+            throw new IllegalArgumentException("Invalid item stacks for this recipe.");
+        }
+        var tran = Arrays.copyOf(itemStacks, itemStacks.length);
+        for (int i = 0; i < originMatrix.length; i++) {
+            var choice = originMatrix[i];
+            var item = tran[i];
+            if (choice == null) {
+                if (item != null) {
+                    throw new IllegalArgumentException("Invalid item stacks for this recipe.");
+                }
+                continue;
+            }
+            if (!choice.test(item)) {
+                throw new IllegalArgumentException("Invalid item stacks for this recipe.");
+            }
+            item = choice.apply(item);
+        }
+        return tran; // todo: @BEFORE_RELEASE@ TEST @SECURITY@
+    }
+
     @RequiredArgsConstructor
     public static class ShapedBuilder {
         private final NamespacedKey key;

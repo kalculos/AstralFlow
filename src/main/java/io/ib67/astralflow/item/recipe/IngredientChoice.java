@@ -32,12 +32,12 @@ import org.bukkit.inventory.meta.Damageable;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 // actually this should be abstract class but thats too late when I found that
-public interface IngredientChoice extends Predicate<ItemStack>, Consumer<ItemStack> {
+public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<ItemStack> {
     short getCount();
 
     short getDurability();
@@ -45,7 +45,7 @@ public interface IngredientChoice extends Predicate<ItemStack>, Consumer<ItemSta
     List<? extends ItemStack> getRepresentativeItems();
 
     @Override
-    default void accept(ItemStack itemStack) {
+    default ItemStack apply(ItemStack itemStack) {
         var result = itemStack.getAmount() - getCount();
         if (result == 0) {
             itemStack.setType(Material.AIR);
@@ -65,6 +65,7 @@ public interface IngredientChoice extends Predicate<ItemStack>, Consumer<ItemSta
                 }
             }
         }
+        return itemStack;
     }
 
     @Getter

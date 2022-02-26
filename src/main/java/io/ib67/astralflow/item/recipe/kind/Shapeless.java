@@ -102,12 +102,19 @@ public class Shapeless implements AstralRecipe {
         }
         var tran = Arrays.copyOf(itemStacks, itemStacks.length);
         var copy = new ArrayList<>(choices);
-        for (ItemStack cleanItemStack : tran) {
-            var choice = copy.stream().filter(e -> e.test(cleanItemStack)).findFirst().orElse(null);
-            if (choice == null) throw new IllegalArgumentException("itemStacks does not match choices");
+        for (int i = 0; i < tran.length; i++) {
+            var cleanItemStack = cleanItemStacks.get(i);
+
+            ItemStack finalCleanItemStack = cleanItemStack;
+            var choice = copy.stream().filter(e -> e.test(finalCleanItemStack)).findFirst().orElse(null);
+            
+            if (choice == null) throw new IllegalArgumentException("itemStacks does not match choices ,key: " + key);
             copy.remove(choice);
-            choice.accept(cleanItemStack); //TODO: Require test. @BEFORE_RELEASE@ @SECURITY@
+            if (!choice.test(cleanItemStack))
+                throw new IllegalArgumentException("THE itemStack does not match choices ,key: " + key);
+            cleanItemStack = choice.apply(cleanItemStack); //TODO: Require test. @BEFORE_RELEASE@ @SECURITY@
         }
+
         return tran;
     }
 
