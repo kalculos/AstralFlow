@@ -40,12 +40,12 @@ import java.util.stream.Collectors;
 
 @Getter
 public class Shapeless implements AstralRecipe {
-    private final List<IngredientChoice> choices;
+    private final IngredientChoice[] choices;
     private final NamespacedKey key;
     private Supplier<ItemStack> resultSupplier;
 
     private Shapeless(List<IngredientChoice> choices, NamespacedKey key) {
-        this.choices = choices;
+        this.choices = choices.toArray(new IngredientChoice[0]);
         this.key = key;
     }
 
@@ -67,6 +67,11 @@ public class Shapeless implements AstralRecipe {
     }
 
     @Override
+    public IngredientChoice[] getMatrix() {
+        return choices;
+    }
+
+    @Override
     public void setResult(Supplier<ItemStack> prototype) {
         this.resultSupplier = prototype;
     }
@@ -78,10 +83,11 @@ public class Shapeless implements AstralRecipe {
         }
         // clean itemStack array
         List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).collect(Collectors.toList());
-        if (cleanItemStacks.size() != choices.size()) {
+        if (cleanItemStacks.size() != choices.length) {
             return false;
         }
-        var copy = new ArrayList<>(choices);
+        var copy = new ArrayList<IngredientChoice>();
+        copy.addAll(List.of(choices));
         for (ItemStack cleanItemStack : cleanItemStacks) {
             var choice = copy.stream().filter(e -> e.test(cleanItemStack)).findFirst().orElse(null);
             if (choice == null) return false;
@@ -97,17 +103,18 @@ public class Shapeless implements AstralRecipe {
         }
         // clean itemStack array
         List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).collect(Collectors.toList());
-        if (cleanItemStacks.size() != choices.size()) {
+        if (cleanItemStacks.size() != choices.length) {
             throw new IllegalArgumentException("itemStacks size does not match choices size");
         }
         var tran = Arrays.copyOf(itemStacks, itemStacks.length);
-        var copy = new ArrayList<>(choices);
+        var copy = new ArrayList<IngredientChoice>();
+        copy.addAll(List.of(choices));
         for (int i = 0; i < tran.length; i++) {
             var cleanItemStack = cleanItemStacks.get(i);
 
             ItemStack finalCleanItemStack = cleanItemStack;
             var choice = copy.stream().filter(e -> e.test(finalCleanItemStack)).findFirst().orElse(null);
-            
+
             if (choice == null) throw new IllegalArgumentException("itemStacks does not match choices ,key: " + key);
             copy.remove(choice);
             if (!choice.test(cleanItemStack))

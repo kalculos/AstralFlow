@@ -33,6 +33,8 @@ public interface AstralRecipe extends Keyed, Predicate<ItemStack[]>, UnaryOperat
     @Contract(" -> new")
     ItemStack produceResult();
 
+    IngredientChoice[] getMatrix();
+
     default void setResult(ItemStack is) {
         setResult(() -> is);
     }
