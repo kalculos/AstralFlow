@@ -27,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Supplier;
 
 public interface AstralRecipe extends Keyed {
-    ItemStack getResult();
+    ItemStack produceResult();
 
     default void setResult(ItemStack is) {
         setResult(() -> is);
