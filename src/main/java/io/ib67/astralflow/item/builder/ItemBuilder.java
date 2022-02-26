@@ -62,7 +62,8 @@ public class ItemBuilder
     }
 
     public ItemBuilder<T, C, P, S> bind(Texture texture) {
-        texture.getModelId(); // ensure it is valid registered.
+        texture.getModelId(); //TODO: @BEFORE_RELEASE@ Unstable behaviour
+        // ensure it is valid registered.
         this.texture = texture;
         return this;
     }
@@ -91,7 +92,7 @@ public class ItemBuilder
             if (im == null) {
                 throw new IllegalStateException("ItemMeta is null or AIR! " + registry.getId());
             }
-            im.setCustomModelData(texture.getModelId());
+            im.setCustomModelData(texture.getModelId()); //todo: @BEFORE_RELEASE@ @BREAKING_CHANGE@ Textures should be dynamic generated from the texture registry and updated via packet modification when the texture is changed.
             i.setItemMeta(im);
             return i;
         }, UnaryOperator.identity());

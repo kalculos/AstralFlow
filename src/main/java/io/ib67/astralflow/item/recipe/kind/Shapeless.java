@@ -32,8 +32,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Getter
 public class Shapeless implements AstralRecipe {
@@ -59,7 +62,7 @@ public class Shapeless implements AstralRecipe {
     }
 
     @Override
-    public ItemStack getResult() {
+    public ItemStack produceResult() {
         return resultSupplier.get();
     }
 
@@ -68,6 +71,47 @@ public class Shapeless implements AstralRecipe {
         this.resultSupplier = prototype;
     }
 
+    @Override
+    public boolean test(ItemStack[] itemStacks) {
+        if (itemStacks == null) {
+            return false;
+        }
+        // clean itemStack array
+        List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).collect(Collectors.toList());
+        if (cleanItemStacks.size() != choices.size()) {
+            return false;
+        }
+        var copy = new ArrayList<>(choices);
+        for (ItemStack cleanItemStack : cleanItemStacks) {
+            var choice = copy.stream().filter(e -> e.test(cleanItemStack)).findFirst().orElse(null);
+            if (choice == null) return false;
+            copy.remove(choice);
+        }
+        return true;
+    }
+
+    @Override
+    public ItemStack[] apply(ItemStack[] itemStacks) {
+        if (itemStacks == null) {
+            throw new NullPointerException("itemStacks cannot be null");
+        }
+        // clean itemStack array
+        List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).collect(Collectors.toList());
+        if (cleanItemStacks.size() != choices.size()) {
+            throw new IllegalArgumentException("itemStacks size does not match choices size");
+        }
+        var tran = Arrays.copyOf(itemStacks, itemStacks.length);
+        var copy = new ArrayList<>(choices);
+        for (ItemStack cleanItemStack : tran) {
+            var choice = copy.stream().filter(e -> e.test(cleanItemStack)).findFirst().orElse(null);
+            if (choice == null) throw new IllegalArgumentException("itemStacks does not match choices");
+            copy.remove(choice);
+            choice.accept(cleanItemStack); //TODO: Require test. @BEFORE_RELEASE@ @SECURITY@
+        }
+        return tran;
+    }
+
+
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class ShapelessBuilder {
         private final NamespacedKey key;
@@ -75,6 +119,11 @@ public class Shapeless implements AstralRecipe {
         private Supplier<ItemStack> supplier;
 
         public ShapelessBuilder addIngredients(IngredientChoice... choices) {
+            for (IngredientChoice choice : choices) {
+                if (choice == null) {
+                    throw new NullPointerException("IngredientChoice cannot be null");
+                }
+            }
             this.choices.addAll(List.of(choices));
             return this;
         }

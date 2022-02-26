@@ -21,21 +21,15 @@
 
 package io.ib67.astralflow.item.recipe;
 
-import org.bukkit.Keyed;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
+public interface IRecipeRegistry {
+    @Contract(pure = true, value = "_->this")
+    IRecipeRegistry registerRecipe(AstralRecipe recipe);
 
-public interface AstralRecipe extends Keyed, Predicate<ItemStack[]>, UnaryOperator<ItemStack[]> {
-    @Contract(" -> new")
-    ItemStack produceResult();
+    @Contract(pure = true, value = "_->this")
+    IRecipeRegistry unregisterRecipe(AstralRecipe recipe);
 
-    default void setResult(ItemStack is) {
-        setResult(() -> is);
-    }
-
-    void setResult(Supplier<ItemStack> prototype); // use supplier for instantiation from ItemRegistry.
+    AstralRecipe matchRecipe(ItemStack[] recipe);
 }
