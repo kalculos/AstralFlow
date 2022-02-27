@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -95,7 +95,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void activateMachine(IMachine machine) {
-        receiptMap.computeIfAbsent(machine.getId(), k -> AstralFlow.getInstance().getTickManager().registerTickable(machine));
+        receiptMap.computeIfAbsent(machine.getId(), k -> AstralFlow.getInstance().getTickManager().registerTickable(machine).requires(IMachine::isActivated));
     }
 
     @Override
