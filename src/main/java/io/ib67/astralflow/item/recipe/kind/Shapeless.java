@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -47,6 +47,10 @@ public class Shapeless implements AstralRecipe {
     private Shapeless(List<IngredientChoice> choices, NamespacedKey key) {
         this.choices = choices.toArray(new IngredientChoice[0]);
         this.key = key;
+    }
+
+    public static ShapelessBuilder of(NamespacedKey key, Supplier<ItemStack> result) { // for unit tests
+        return new ShapelessBuilder(key).setResult(result);
     }
 
     public static ShapelessBuilder of(Plugin plugin, String key, Supplier<ItemStack> result) {
