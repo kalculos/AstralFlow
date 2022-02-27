@@ -123,7 +123,7 @@ public class Shaped implements AstralRecipe {
                 }
                 continue;
             }
-            if (!choice.test(item)) { //todo: mismatch
+            if (!choice.test(item)) {
                 return false;
             }
         }
@@ -150,7 +150,7 @@ public class Shaped implements AstralRecipe {
             }
             tran[i] = choice.apply(item);
         }
-        return tran; // todo: @BEFORE_RELEASE@ TEST @SECURITY@
+        return tran;
     }
 
     @RequiredArgsConstructor

@@ -123,7 +123,7 @@ public class Shapeless implements AstralRecipe {
             copy.remove(choice);
             if (!choice.test(cleanItemStack))
                 throw new IllegalArgumentException("THE itemStack does not match choices ,key: " + key);
-            cleanItemStack = choice.apply(cleanItemStack); //TODO: Require test. @BEFORE_RELEASE@ @SECURITY@
+            cleanItemStack = choice.apply(cleanItemStack);
         }
 
         return tran;
