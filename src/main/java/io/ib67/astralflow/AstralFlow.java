@@ -24,7 +24,6 @@ package io.ib67.astralflow;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
-import io.ib67.Util;
 import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
@@ -104,8 +103,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         Log.info("Loading &aItems");
         loadItemManager();
         loadListeners();
-        // Load StorageLoader in other sourceset.
-        Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
+        //todo Load StorageLoader in other sourceset.
+        //Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
         loadAllMachines();
         Bukkit.getScheduler().runTask(this, () -> {
             for (Consumer<?> hook : getHooks(HookType.SERVER_STARTUP_COMPLETED)) {

@@ -106,22 +106,13 @@ processResources {
 }
 
 sourceSets {
-    storageModule {
-       compileClasspath += sourceSets.main.output
-       runtimeClasspath += sourceSets.main.output
-    }
     main {
         //compileClasspath += sourceSets.storageModule.output
         //runtimeClasspath += sourceSets.storageModule.output
     }
 }
 shadowJar {
-    from sourceSets.storageModule.output
-    dependsOn storageModuleClasses
 }
 configurations {
-    storageModuleImplementation.extendsFrom implementation
-    storageModuleApi.extendsFrom api
-    storageModuleCompileOnly.extendsFrom compileOnly
-    storageModuleAnnotationProcessor.extendsFrom annotationProcessor
+
 }
