@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -87,6 +87,9 @@ public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<It
 
         @Override
         public boolean test(ItemStack itemStack) {
+            if (itemStack == null) {
+                return false;
+            }
             return material.contains(itemStack.getType());
         }
 
@@ -109,6 +112,9 @@ public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<It
 
         @Override
         public boolean test(ItemStack itemStack) {
+            if (itemStack == null) {
+                return false;
+            }
             return material.stream().anyMatch(e -> e.isSimilar(itemStack));
         }
 
@@ -140,6 +146,9 @@ public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<It
 
         @Override
         public boolean test(ItemStack itemStack) {
+            if (itemStack == null) {
+                return false;
+            }
             var ir = AstralFlow.getInstance().getItemRegistry();
             var state = ir.getState(itemStack);
             if (state != null) {
