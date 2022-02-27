@@ -146,9 +146,9 @@ public class Shaped implements AstralRecipe {
                 continue;
             }
             if (!choice.test(item)) {
-                throw new IllegalArgumentException("Invalid item stacks for this recipe.");
+                throw new IllegalArgumentException("Invalid item stacks for this recipe. Exception: " + choice.getRepresentativeItems().get(0) + " but got " + item);
             }
-            item = choice.apply(item);
+            tran[i] = choice.apply(item);
         }
         return tran; // todo: @BEFORE_RELEASE@ TEST @SECURITY@
     }

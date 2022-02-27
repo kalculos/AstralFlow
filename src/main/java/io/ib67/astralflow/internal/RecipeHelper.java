@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.internal;
 
+import io.ib67.util.Functional;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -79,7 +80,7 @@ public class RecipeHelper {
         for (int i = 0; i < alignedMatrix.length; i++) {
             var chars = alignedMatrix[i].toCharArray();
             for (int q = 0; q < chars.length; q++) {
-                newMatrix[i * 3 + q] = map.get(chars[q]);
+                newMatrix[i * 3 + q] = Functional.alsoMap(map.get(chars[q]), t -> t == null ? null : t.clone());
             }
         }
         return newMatrix;
