@@ -21,26 +21,31 @@
 
 package io.ib67.astralflow.item.recipe;
 
+import be.seeseemelk.mockbukkit.MockBukkit;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import io.ib67.astralflow.item.recipe.kind.Shapeless;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RecipeRegistryTest {
     private static final NamespacedKey KEY_SHAPED = new NamespacedKey("astralflow", "shaped");
     private static final NamespacedKey KEY_SHAPELESS = new NamespacedKey("astralflow", "shapeless");
 
     private IRecipeRegistry registry;
 
-    @Before
+    @BeforeAll
     public void setup() {
+        if (!MockBukkit.isMocked()) {
+            MockBukkit.mock();
+        }
         registry = new RecipeRegistryImpl();
     }
 
@@ -54,37 +59,37 @@ public class RecipeRegistryTest {
                 .setIngredient('B', new IngredientChoice.MaterialChoice(Material.STICK))
                 .build();
         registry.registerRecipe(recipe);
-        Assert.assertEquals(recipe, registry.getRecipeByKey(KEY_SHAPED));
-        assertTrue("Test Recipe REGULAR Match #1", recipe.test(new ItemStack[]{
+        assertEquals(recipe, registry.getRecipeByKey(KEY_SHAPED));
+        assertTrue(recipe.test(new ItemStack[]{
                 null, new ItemStack(Material.COAL), null,
                 null, new ItemStack(Material.STICK), null,
                 null, null, null
-        }));
-        assertTrue("Test Recipe MORPH Match #2", recipe.test(new ItemStack[]{
+        }), "Test Recipe REGULAR Match #1");
+        assertTrue(recipe.test(new ItemStack[]{
                 new ItemStack(Material.COAL), null, null,
                 new ItemStack(Material.STICK), null, null,
                 null, null, null
-        }));
-        assertTrue("Test Recipe MORPH Match #3", recipe.test(new ItemStack[]{
+        }), "Test Recipe MORPH Match #2");
+        assertTrue(recipe.test(new ItemStack[]{
                 null, null, null,
                 new ItemStack(Material.COAL), null, null,
                 new ItemStack(Material.STICK), null, null
-        }));
-        assertTrue("Test Recipe MORPH Match #4", recipe.test(new ItemStack[]{
+        }), "Test Recipe MORPH Match #3");
+        assertTrue(recipe.test(new ItemStack[]{
                 null, null, null,
                 null, null, new ItemStack(Material.COAL),
                 null, null, new ItemStack(Material.STICK)
-        }));
-        assertTrue("Test Recipe Regular REGISTRY Match #5", recipe.test(new ItemStack[]{
+        }), "Test Recipe MORPH Match #4");
+        assertTrue(recipe.test(new ItemStack[]{
                 null, new ItemStack(Material.COAL), null,
                 null, new ItemStack(Material.STICK), null,
                 null, null, null
-        }));
-        assertEquals("Test Recipe MORPH REGISTRY Match #6", recipe, registry.matchRecipe(new ItemStack[]{
+        }), "Test Recipe Regular REGISTRY Match #5");
+        assertEquals(recipe, registry.matchRecipe(new ItemStack[]{
                 null, null, null,
                 null, null, new ItemStack(Material.COAL),
                 null, null, new ItemStack(Material.STICK)
-        }));
+        }), "Test Recipe MORPH REGISTRY Match #6");
     }
 
     @Test
@@ -95,14 +100,58 @@ public class RecipeRegistryTest {
                 .setResult(() -> new ItemStack(Material.FIREWORK_ROCKET))
                 .build();
         registry.registerRecipe(recipe);
-        assertTrue("Test Shapeless Match #1", recipe.test(new ItemStack[]{
+        assertTrue(recipe.test(new ItemStack[]{
                 new ItemStack(Material.PAPER), new ItemStack(Material.GUNPOWDER)
-        }));
-        assertTrue("Test Shapeless Match #2", recipe.test(new ItemStack[]{
+        }), "Test Shapeless Match #1");
+        assertTrue(recipe.test(new ItemStack[]{
                 new ItemStack(Material.GUNPOWDER), new ItemStack(Material.PAPER)
-        }));
-        assertEquals("Test Shapeless Match #3", recipe, registry.matchRecipe(new ItemStack[]{
+        }), "Test Shapeless Match #2");
+        assertEquals(recipe, registry.matchRecipe(new ItemStack[]{
                 new ItemStack(Material.GUNPOWDER), new ItemStack(Material.PAPER)
-        }));
+        }), "Test Shapeless Match #3");
+    }
+
+    @Test
+    @Tag("later")
+    public void testShapelessConsumeItem() {
+        var recipe = Shapeless.of(KEY_SHAPELESS, null)
+                .addIngredients(new IngredientChoice.MaterialChoice(Material.CACTUS))
+                .addIngredients(new IngredientChoice.MaterialChoice(Material.GUNPOWDER))
+                .setResult(() -> new ItemStack(Material.FIREWORK_ROCKET))
+                .build();
+        registry.registerRecipe(recipe);
+        var newItems = new ItemStack[]{
+                new ItemStack(Material.CACTUS), new ItemStack(Material.GUNPOWDER)
+        };
+        recipe = (Shapeless) registry.matchRecipe(newItems);
+        var expectedResult = new ItemStack(Material.FIREWORK_ROCKET);
+        assertEquals(expectedResult, recipe.produceResult(), "Test Shapeless Consume #1");
+        var expectedArray = new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR)};
+        assertArrayEquals(expectedArray, recipe.apply(newItems), "Test Shapeless Consume #1");
+    }
+
+    @Test
+    public void testShapedConsume() {
+        var shaped = Shaped.of(KEY_SHAPED)
+                .shape(
+                        " a ",
+                        "aba",
+                        " a"
+                )
+                .setIngredient('a', new IngredientChoice.MaterialChoice(Material.CACTUS))
+                .setIngredient('b', new IngredientChoice.MaterialChoice(Material.GUNPOWDER)).setResult(() -> new ItemStack(Material.FIREWORK_ROCKET))
+                .build();
+        var matrix = new ItemStack[]{
+                null, new ItemStack(Material.CACTUS), null,
+                new ItemStack(Material.CACTUS), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.CACTUS),
+                null, new ItemStack(Material.CACTUS), null
+        };
+        var excepted = new ItemStack[]{
+                null, new ItemStack(Material.AIR), null,
+                new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR),
+                null, new ItemStack(Material.AIR), null
+        };
+        matrix = shaped.apply(matrix);
+        assertArrayEquals(excepted, matrix, "Test Shaped Consume #1");
     }
 }
