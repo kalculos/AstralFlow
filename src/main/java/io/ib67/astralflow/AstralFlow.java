@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -35,6 +35,8 @@ import io.ib67.astralflow.internal.LanguageSerializer;
 import io.ib67.astralflow.internal.MachineStorageSerializer;
 import io.ib67.astralflow.internal.config.ConfigMigrator;
 import io.ib67.astralflow.item.OreDictImpl;
+import io.ib67.astralflow.item.recipe.IRecipeRegistry;
+import io.ib67.astralflow.item.recipe.RecipeRegistryImpl;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.listener.WorldListener;
@@ -74,6 +76,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private ITickManager tickManager;
     @Getter
     private ItemRegistry itemRegistry;
+    @Getter
+    private final IRecipeRegistry recipeRegistry = new RecipeRegistryImpl();
 
     public static AstralFlowAPI getInstance() {
         return AstralFlow.getPlugin(AstralFlow.class);
