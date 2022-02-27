@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@ package io.ib67.astralflow.api;
 
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
+import io.ib67.astralflow.item.recipe.IRecipeRegistry;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
@@ -43,6 +44,8 @@ public interface AstralFlowAPI {
     ITickManager getTickManager();
 
     ITextureRegistry getTextureRegistry();
+
+    IRecipeRegistry getRecipeRegistry();
 
     <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
 
