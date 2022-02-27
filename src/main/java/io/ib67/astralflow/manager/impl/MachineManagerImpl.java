@@ -79,7 +79,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public IMachine getAndLoadMachine(Location location) {
-        return getLoadedMachines().stream().filter(e -> e.getLocation().distance(location) < 0.1).findFirst().orElse(null); //todo FIXME
+        return getLoadedMachines().stream().filter(machine -> AstralHelper.equalsLocationFuzzily(machine.getLocation(), location)).findFirst().orElse(null); //todo FIXME
     }
 
     @Override
