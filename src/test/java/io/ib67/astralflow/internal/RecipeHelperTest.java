@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -26,14 +26,16 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
+
 @SuppressWarnings("unused")
 public class RecipeHelperTest {
 
     @Test
     public void populateEmptyRows() {
-        Assert.assertArrayEquals("Empty input #1", new String[]{"   ", "   ", "   "}, RecipeHelper.populateEmptyRows(""));
-        Assert.assertArrayEquals("Empty input #2", new String[]{"   ", "   ", "   "}, RecipeHelper.populateEmptyRows());
-        Assert.assertArrayEquals("Test Regular Matrix #1",
+        assertArrayEquals("Empty input #1", new String[]{"   ", "   ", "   "}, RecipeHelper.populateEmptyRows(""));
+        assertArrayEquals("Empty input #2", new String[]{"   ", "   ", "   "}, RecipeHelper.populateEmptyRows());
+        assertArrayEquals("Test Regular Matrix #1",
                 new String[]{
                         "   ",
                         "AA ",
@@ -43,7 +45,7 @@ public class RecipeHelperTest {
                         " ",
                         "AA",
                         "B"));
-        Assert.assertArrayEquals("Test Regular Matrix #2",
+        assertArrayEquals("Test Regular Matrix #2",
                 new String[]{
                         "  A",
                         " B ",
@@ -53,7 +55,7 @@ public class RecipeHelperTest {
                         "  A",
                         " B",
                         "C"));
-        Assert.assertArrayEquals("Test Regular Matrix #3",
+        assertArrayEquals("Test Regular Matrix #3",
                 new String[]{
                         "AAA",
                         "BBB",
@@ -64,7 +66,7 @@ public class RecipeHelperTest {
                         "BBB",
                         "CCC")
         );
-        Assert.assertArrayEquals("Test Regular Matrix #4",
+        assertArrayEquals("Test Regular Matrix #4",
                 new String[]{
                         "   ",
                         "   ",
@@ -84,56 +86,56 @@ public class RecipeHelperTest {
 
     @Test
     public void leftAlignMatrix() {
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular 3 ROW Matrix #1",
                 new String[]{
                         "AA",
                         "BB",
                         "CC"
                 },
-                RecipeHelper.leftAlignMatrix(" AA",
+                RecipeHelper.leftAndUpAlignMatrix(" AA",
                         " BB",
                         " CC")
         );
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular 2 ROW Matrix #2",
                 new String[]{
                         "AA",
                         "BB",
                 },
-                RecipeHelper.leftAlignMatrix(" AA",
+                RecipeHelper.leftAndUpAlignMatrix(" AA",
                         " BB")
         );
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular 2 ROW Matrix #3",
                 new String[]{
                         "A",
                         "B",
                 },
-                RecipeHelper.leftAlignMatrix(" A",
+                RecipeHelper.leftAndUpAlignMatrix(" A",
                         " B")
         );
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular 3 Row Matrix #4",
                 new String[]{
                         "A  ",
                         "B  ",
                         " C "
                 },
-                RecipeHelper.leftAlignMatrix(
+                RecipeHelper.leftAndUpAlignMatrix(
                         "A  ",
                         "B  ",
                         " C "
                 )
         );
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular 3 Row Matrix #5",
                 new String[]{
                         "A ",
                         " B",
                         "C "
                 },
-                RecipeHelper.leftAlignMatrix(
+                RecipeHelper.leftAndUpAlignMatrix(
                         " A ",
                         "  B",
                         " C "
@@ -141,21 +143,62 @@ public class RecipeHelperTest {
         );
         Assert.assertThrows("Test Exceptional ElementMoreThanThree Matrix #6", ArrayIndexOutOfBoundsException.class, () -> RecipeHelper.populateEmptyRows("", "", "", ""));
 
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular EMPTY Matrix #7",
                 new String[]{
                         "", "", ""
                 },
-                RecipeHelper.leftAlignMatrix("", "", "")
+                RecipeHelper.leftAndUpAlignMatrix("", "", "")
         );
     }
 
     @Test
     public void generateMatrixPatternHash() {
-        //todo: valid test
+        var matrixA = new String[]{
+                "A  ",
+                "B  ",
+                "C C"
+        };
+        var matrixB = new String[]{
+                "c  ",
+                "a  ",
+                "D D"
+        };
+        Assert.assertEquals(RecipeHelper.generateMatrixPatternHash(matrixA), RecipeHelper.generateMatrixPatternHash(matrixB));
 
     }
 
+    @Test
+    public void testMatrixUp() {
+        var matrixA = new String[]{
+                "   ",
+                " A ",
+                " B "
+        };
+        var matrixB = new String[]{
+                "A ",
+                "B "
+        };
+        var mc = RecipeHelper.leftAndUpAlignMatrix(matrixA);
+        assertArrayEquals("Test Matrix Up Align", matrixB, mc);
+        var pop = RecipeHelper.populateEmptyRows(mc);
+        var matrixD = new String[]{
+                "A  ",
+                "B  ",
+                "   "
+        };
+        assertArrayEquals("Test Matrix Up Align AND POPULATE", matrixD, pop);
+
+        var d = new String[]{
+                " A ",
+                " B "
+        };
+        var v = new String[]{
+                "A ",
+                "B "
+        };
+        assertArrayEquals("Text Matrix up align", v, RecipeHelper.leftAndUpAlignMatrix(d));
+    }
     @Test
     public void toStringMatrix() {
         ItemStack[] itemMatrix = new ItemStack[]{
@@ -169,7 +212,7 @@ public class RecipeHelperTest {
                 new ItemStack(Material.STONE),
                 new ItemStack(Material.STONE)
         };
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular Matrix #1",
                 new String[]{
                         "aaa",
@@ -181,7 +224,7 @@ public class RecipeHelperTest {
         ItemStack[] itemMatrix2 = new ItemStack[]{
                 new ItemStack(Material.STONE)
         };
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular Matrix #2",
                 new String[]{
                         "a"
@@ -193,7 +236,7 @@ public class RecipeHelperTest {
                 null, new ItemStack(Material.STONE), null,
                 null, null, null
         };
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 "Test Regular Matrix #3",
                 new String[]{
                         "   ",

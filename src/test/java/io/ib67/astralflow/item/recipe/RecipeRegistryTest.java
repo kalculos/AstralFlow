@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -22,7 +22,9 @@
 package io.ib67.astralflow.item.recipe;
 
 import io.ib67.astralflow.item.recipe.kind.Shaped;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,11 +44,30 @@ public class RecipeRegistryTest {
                         " A ",
                         " B "
                 )
-                .setIngredient()
+                .setIngredient('A', new IngredientChoice.MaterialChoice(Material.COAL))
+                .setIngredient('B', new IngredientChoice.MaterialChoice(Material.STICK))
                 .build();
         registry.registerRecipe(recipe);
         Assert.assertEquals(recipe, registry.getRecipeByKey(KEY_SHAPED));
-
-
+        Assert.assertTrue("Test Recipe REGULAR Match #1", recipe.test(new ItemStack[]{
+                null, new ItemStack(Material.COAL), null,
+                null, new ItemStack(Material.STICK), null,
+                null, null, null
+        }));
+        Assert.assertTrue("Test Recipe MORPH Match #2", recipe.test(new ItemStack[]{
+                new ItemStack(Material.COAL), null, null,
+                new ItemStack(Material.STICK), null, null,
+                null, null, null
+        }));
+        Assert.assertTrue("Test Recipe MORPH Match #3", recipe.test(new ItemStack[]{
+                null, null, null,
+                new ItemStack(Material.COAL), null, null,
+                new ItemStack(Material.STICK), null, null
+        }));
+        Assert.assertTrue("Test Recipe MORPH Match #4", recipe.test(new ItemStack[]{
+                null, null, null,
+                null, null, new ItemStack(Material.COAL),
+                null, null, new ItemStack(Material.STICK)
+        }));
     }
 }

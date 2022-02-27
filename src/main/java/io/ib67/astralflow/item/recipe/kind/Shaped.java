@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
 
 package io.ib67.astralflow.item.recipe.kind;
 
-import io.ib67.Util;
 import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
@@ -46,10 +45,16 @@ public class Shaped implements AstralRecipe {
     private final IngredientChoice[] originMatrix; // todo: performance issues.
     private final Lazy<IngredientChoice[], Integer> compiledHash = Lazy.by(t ->
             RecipeHelper.generateMatrixPatternHash(
-                    RecipeHelper.toStringMatrix(
-                            Arrays.stream(t).map(e ->
-                                    Util.or(Randomly.pickOrNull(e.getRepresentativeItems()), PLACEHOLDER)
-                            ).toArray(ItemStack[]::new)
+                    RecipeHelper.leftAndUpAlignMatrix(
+                            RecipeHelper.toStringMatrix(
+                                    Arrays.stream(t).map(e -> {
+                                                if (e == null) {
+                                                    return null;
+                                                }
+                                                return Randomly.pickOrNull(e.getRepresentativeItems());
+                                            }
+                                    ).toArray(ItemStack[]::new)
+                            )
                     )
             )
     );
@@ -96,8 +101,9 @@ public class Shaped implements AstralRecipe {
     @Override
     public boolean test(ItemStack[] itemStacks) {
         // check for patterns.
-
-        var paramHash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.toStringMatrix(itemStacks));
+        //var matrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(itemStacks)));
+        var matrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(itemStacks)));
+        var paramHash = RecipeHelper.generateMatrixPatternHash(matrix);
         if (paramHash != compiledHash.get(originMatrix)) {
             return false;
         }
@@ -107,16 +113,17 @@ public class Shaped implements AstralRecipe {
             return false;
         }
         // check for ingredients.
+        var aligned = RecipeHelper.leftAlignMatrixItems(itemStacks);
         for (int i = 0; i < originMatrix.length; i++) {
             var choice = originMatrix[i];
-            var item = itemStacks[i];
+            var item = aligned[i];
             if (choice == null) {
                 if (item != null) {
                     return false;
                 }
                 continue;
             }
-            if (!choice.test(item)) {
+            if (!choice.test(item)) { //todo: mismatch
                 return false;
             }
         }
@@ -128,7 +135,7 @@ public class Shaped implements AstralRecipe {
         if (!test(itemStacks)) {
             throw new IllegalArgumentException("Invalid item stacks for this recipe.");
         }
-        var tran = Arrays.copyOf(itemStacks, itemStacks.length);
+        var tran = RecipeHelper.leftAlignMatrixItems(Arrays.copyOf(itemStacks, itemStacks.length));
         for (int i = 0; i < originMatrix.length; i++) {
             var choice = originMatrix[i];
             var item = tran[i];
@@ -154,7 +161,7 @@ public class Shaped implements AstralRecipe {
         private Supplier<ItemStack> result;
 
         public ShapedBuilder shape(String... matrix) {
-            stringMatrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAlignMatrix(matrix));
+            stringMatrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(matrix));
             return this;
         }
 
@@ -173,6 +180,7 @@ public class Shaped implements AstralRecipe {
             if (stringMatrix == null) {
                 throw new NullPointerException("Matrix is null. " + key);
             }
+            stringMatrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(stringMatrix));
             IngredientChoice[] matrix = new IngredientChoice[9];
             for (int i = 0; i < stringMatrix.length; i++) {
                 var row = stringMatrix[i].toCharArray();

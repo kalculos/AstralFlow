@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -62,7 +63,29 @@ public class RecipeHelper {
         return realMatrix;
     }
 
-    public static String[] leftAlignMatrix(String... matrix) {
+    public static ItemStack[] leftAlignMatrixItems(ItemStack... _matrix) {
+        //FIXME: looking for a better way to do this.
+        var stringMatrix = toStringMatrix(_matrix);
+        var map = new HashMap<Character, ItemStack>();
+        for (int a = 0; a < stringMatrix.length; a++) {
+            var chars = stringMatrix[a].toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                var item = _matrix[a * 3 + i];
+                map.put(chars[i], item);
+            }
+        }
+        var newMatrix = new ItemStack[9];
+        var alignedMatrix = leftAndUpAlignMatrix(stringMatrix);
+        for (int i = 0; i < alignedMatrix.length; i++) {
+            var chars = alignedMatrix[i].toCharArray();
+            for (int q = 0; q < chars.length; q++) {
+                newMatrix[i * 3 + q] = map.get(chars[q]);
+            }
+        }
+        return newMatrix;
+    }
+
+    public static String[] leftAndUpAlignMatrix(String... matrix) {
         //String[] populatedMatrix = populateEmptyRows(matrix);
         int leftOffset;
         if (matrix.length > 3) {
@@ -88,16 +111,30 @@ public class RecipeHelper {
         }
         Arrays.sort(lengths);
         leftOffset = lengths[0];
-        if (leftOffset == 0) {
-            return matrix;
-        }
-        assert leftOffset != 4;
         String[] newMatrix = new String[matrix.length];
-        for (int i = 0; i < matrix.length; i++) {
-            if (leftOffset < matrix.length) {
-                newMatrix[i] = matrix[i].substring(leftOffset);
+        if (leftOffset != 0) {
+            assert leftOffset != 4;
+            for (int i = 0; i < matrix.length; i++) {
+                if (leftOffset < matrix.length) {
+                    newMatrix[i] = matrix[i].substring(leftOffset);
+                }
             }
+        } else {
+            newMatrix = matrix;
         }
+        // up
+        int upOffset = 0;
+        for (String s : newMatrix) {
+            if (!s.trim().isEmpty()) {
+                break;
+            }
+            upOffset++;
+        }
+        if (upOffset == 0) {
+            return newMatrix;
+        }
+        newMatrix = Arrays.copyOfRange(newMatrix, upOffset, newMatrix.length);
+
         return newMatrix;
     }
 
