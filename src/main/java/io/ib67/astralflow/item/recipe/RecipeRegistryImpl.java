@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     @Override
     public AstralRecipe matchRecipe(ItemStack[] matrix) {
         // match shaped recipes first.
-        int hash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.toStringMatrix(matrix));
+        int hash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(matrix))));
         var shaped = shapedRecipes.get(new HashHack(hash));
         if (shaped != null) {
             for (Shaped recipe : shaped) {

@@ -30,6 +30,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RecipeRegistryTest {
@@ -74,6 +75,16 @@ public class RecipeRegistryTest {
                 null, null, new ItemStack(Material.COAL),
                 null, null, new ItemStack(Material.STICK)
         }));
+        assertTrue("Test Recipe Regular REGISTRY Match #5", recipe.test(new ItemStack[]{
+                null, new ItemStack(Material.COAL), null,
+                null, new ItemStack(Material.STICK), null,
+                null, null, null
+        }));
+        assertEquals("Test Recipe MORPH REGISTRY Match #6", recipe, registry.matchRecipe(new ItemStack[]{
+                null, null, null,
+                null, null, new ItemStack(Material.COAL),
+                null, null, new ItemStack(Material.STICK)
+        }));
     }
 
     @Test
@@ -84,8 +95,14 @@ public class RecipeRegistryTest {
                 .setResult(() -> new ItemStack(Material.FIREWORK_ROCKET))
                 .build();
         registry.registerRecipe(recipe);
-        assertTrue("Test Shapeless #1", recipe.test(new ItemStack[]{
+        assertTrue("Test Shapeless Match #1", recipe.test(new ItemStack[]{
                 new ItemStack(Material.PAPER), new ItemStack(Material.GUNPOWDER)
+        }));
+        assertTrue("Test Shapeless Match #2", recipe.test(new ItemStack[]{
+                new ItemStack(Material.GUNPOWDER), new ItemStack(Material.PAPER)
+        }));
+        assertEquals("Test Shapeless Match #3", recipe, registry.matchRecipe(new ItemStack[]{
+                new ItemStack(Material.GUNPOWDER), new ItemStack(Material.PAPER)
         }));
     }
 }
