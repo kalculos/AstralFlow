@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -96,12 +96,15 @@ public class ItemBuilder
             i.setItemMeta(im);
             return i;
         }, UnaryOperator.identity());
-        // process item.
-        if (oreDictId != null) {
-            var od = AstralFlow.getInstance().getItemRegistry().getOreDict();
-            od.registerItem(p, oreDictId);
+        // register item.
+        AstralFlow.getInstance().getItemRegistry().registerItem(p, oreDictId);
+        // recipes
+        for (AstralRecipe recipe : recipes) {
+            ItemPrototypeFactory finalP = p;
+            recipe.setResult(() -> AstralFlow.getInstance().getItemRegistry().createItem(finalP.getId()).asItemStack());
+            recipe.setPrototype(p.getPrototype().clone());
+            AstralFlow.getInstance().getRecipeRegistry().registerRecipe(recipe);
         }
-        //todo register recipes.
     }
 
     public class WrappedBuilder {
