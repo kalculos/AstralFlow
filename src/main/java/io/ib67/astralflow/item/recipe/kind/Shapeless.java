@@ -27,6 +27,8 @@ import io.ib67.astralflow.item.recipe.IngredientChoice;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -43,6 +45,8 @@ public class Shapeless implements AstralRecipe {
     private final IngredientChoice[] choices;
     private final NamespacedKey key;
     private Supplier<ItemStack> resultSupplier;
+    @Setter
+    private ItemStack prototype;
 
     private Shapeless(List<IngredientChoice> choices, NamespacedKey key) {
         this.choices = choices.toArray(new IngredientChoice[0]);
@@ -135,6 +139,7 @@ public class Shapeless implements AstralRecipe {
         private final NamespacedKey key;
         private final List<IngredientChoice> choices = new ArrayList<>();
         private Supplier<ItemStack> supplier;
+        private ItemStack prototype;
 
         public ShapelessBuilder addIngredients(IngredientChoice... choices) {
             for (IngredientChoice choice : choices) {
@@ -151,9 +156,15 @@ public class Shapeless implements AstralRecipe {
             return this;
         }
 
+        public ShapelessBuilder demoItem(ItemStack itemStack) {
+            this.prototype = itemStack;
+            return this;
+        }
+
         public Shapeless build() {
             var r = new Shapeless(choices, key);
             r.setResult(supplier);
+            r.setPrototype(prototype == null ? new ItemStack(Material.STONE) : prototype);
             return r;
         }
     }

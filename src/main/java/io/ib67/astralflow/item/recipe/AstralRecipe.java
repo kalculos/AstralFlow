@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -32,6 +32,10 @@ import java.util.function.UnaryOperator;
 public interface AstralRecipe extends Keyed, Predicate<ItemStack[]>, UnaryOperator<ItemStack[]> {
     @Contract(" -> new")
     ItemStack produceResult();
+
+    ItemStack getPrototype();
+
+    void setPrototype(ItemStack itemStack);
 
     IngredientChoice[] getMatrix();
 

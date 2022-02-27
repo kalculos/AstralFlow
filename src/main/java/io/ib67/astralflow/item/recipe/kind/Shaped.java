@@ -59,6 +59,7 @@ public class Shaped implements AstralRecipe {
             )
     );
     private Supplier<ItemStack> factory;
+    private ItemStack demo;
 
     private Shaped(NamespacedKey key, IngredientChoice[] originMatrix) {
         this.key = key;
@@ -76,6 +77,16 @@ public class Shaped implements AstralRecipe {
     @Override
     public ItemStack produceResult() {
         return factory.get();
+    }
+
+    @Override
+    public ItemStack getPrototype() {
+        return demo;
+    }
+
+    @Override
+    public void setPrototype(ItemStack itemStack) {
+        this.demo = itemStack;
     }
 
     @Override
@@ -159,6 +170,7 @@ public class Shaped implements AstralRecipe {
         private String[] stringMatrix;
         private Map<Character, IngredientChoice> itemMap = new HashMap<>(8); // most recipes matches.
         private Supplier<ItemStack> result;
+        private ItemStack demo;
 
         public ShapedBuilder shape(String... matrix) {
             stringMatrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(matrix));
@@ -167,6 +179,11 @@ public class Shaped implements AstralRecipe {
 
         public ShapedBuilder setResult(Supplier<ItemStack> result) {
             this.result = result;
+            return this;
+        }
+
+        public ShapedBuilder demoItem(ItemStack item) {
+            this.demo = item;
             return this;
         }
 
@@ -180,6 +197,7 @@ public class Shaped implements AstralRecipe {
             if (stringMatrix == null) {
                 throw new NullPointerException("Matrix is null. " + key);
             }
+
             stringMatrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(stringMatrix));
             IngredientChoice[] matrix = new IngredientChoice[9];
             for (int i = 0; i < stringMatrix.length; i++) {
@@ -195,6 +213,7 @@ public class Shaped implements AstralRecipe {
             }
             var r = new Shaped(key, matrix);
             r.setResult(result);
+            r.setPrototype(demo == null ? new ItemStack(Material.STONE) : demo);
             return r;
         }
     }
