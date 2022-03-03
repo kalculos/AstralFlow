@@ -51,7 +51,7 @@ dependencies {
     testImplementation 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
     testImplementation(platform('org.junit:junit-bom:5.8.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
-    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.15.5' // mock-buukkit 1.18 has some problem
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.18.1' // mock-buukkit 1.18 has some problem
 }
 lombok {
     version = "1.18.20"
