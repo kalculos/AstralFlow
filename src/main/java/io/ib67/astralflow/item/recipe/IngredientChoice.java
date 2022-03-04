@@ -21,20 +21,13 @@
 
 package io.ib67.astralflow.item.recipe;
 
-import io.ib67.astralflow.AstralFlow;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import io.ib67.util.Lazy;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 // actually this should be abstract class but thats too late when I found that
 public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<ItemStack> {
@@ -68,98 +61,4 @@ public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<It
         return itemStack;
     }
 
-    @Getter
-    final class MaterialChoice implements IngredientChoice {
-        private final Set<Material> material;
-        private final Lazy<Set<Material>, List<ItemStack>> compiledRItems = Lazy.by(t -> t.stream().map(ItemStack::new).collect(Collectors.toUnmodifiableList()));
-        private final short count;
-        private final short durability;
-
-        public MaterialChoice(Material... material) {
-            this((short) 1, (short) 0, material);
-        }
-
-        public MaterialChoice(short count, short durability, Material... material) {
-            this.count = count;
-            this.durability = durability;
-            this.material = Set.of(material);
-        }
-
-        @Override
-        public boolean test(ItemStack itemStack) {
-            if (itemStack == null) {
-                return false;
-            }
-            return material.contains(itemStack.getType());
-        }
-
-        @Override
-        public List<ItemStack> getRepresentativeItems() {
-            return compiledRItems.get(material);
-        }
-    }
-
-    @RequiredArgsConstructor
-    @Getter
-    final class ExactItemChoice implements IngredientChoice {
-        private final short count;
-        private final short durability;
-        private final List<ItemStack> material;
-
-        public ExactItemChoice(ItemStack... material) {
-            this((short) 1, (short) 0, List.of(material));
-        }
-
-        @Override
-        public boolean test(ItemStack itemStack) {
-            if (itemStack == null) {
-                return false;
-            }
-            return material.stream().anyMatch(e -> e.isSimilar(itemStack));
-        }
-
-        @Override
-        public List<? extends ItemStack> getRepresentativeItems() {
-            return material;
-        }
-    }
-
-    @Getter
-    final class AstralItemChoice implements IngredientChoice {
-        private final short count;
-        private final short durability;
-        private final Set<String> materials;
-        private Lazy<Set<String>, List<ItemStack>> compiledRItems = Lazy.by(t ->
-                t.stream().map(e -> AstralFlow.getInstance().getItemRegistry().getRegistry(e))
-                        .map(ItemPrototypeFactory::getPrototype).collect(Collectors.toList())
-        );
-
-        public AstralItemChoice(String... oredictIds) {
-            this((short) 1, (short) 0, oredictIds);
-        }
-
-        public AstralItemChoice(short durability, short count, String... oredictIds) {
-            this.durability = durability;
-            this.count = count;
-            materials = Set.of(oredictIds);
-        }
-
-        @Override
-        public boolean test(ItemStack itemStack) {
-            if (itemStack == null) {
-                return false;
-            }
-            var ir = AstralFlow.getInstance().getItemRegistry();
-            var state = ir.getState(itemStack);
-            if (state != null) {
-                return materials.contains(state.getPrototypeKey());
-            }
-            return false;
-        }
-
-        @Override
-        public List<? extends ItemStack> getRepresentativeItems() {
-            return compiledRItems.get();
-        }
-    }
 }

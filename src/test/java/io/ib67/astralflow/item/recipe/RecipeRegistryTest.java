@@ -55,8 +55,8 @@ public class RecipeRegistryTest {
                         " A ",
                         " B "
                 )
-                .setIngredient('A', new IngredientChoice.MaterialChoice(Material.COAL))
-                .setIngredient('B', new IngredientChoice.MaterialChoice(Material.STICK))
+                .setIngredient('A', new MaterialChoice(Material.COAL))
+                .setIngredient('B', new MaterialChoice(Material.STICK))
                 .build();
         registry.registerRecipe(recipe);
         assertEquals(recipe, registry.getRecipeByKey(KEY_SHAPED));
@@ -95,8 +95,8 @@ public class RecipeRegistryTest {
     @Test
     public void testShapelessMatch() {
         var recipe = Shapeless.of(KEY_SHAPELESS, null)
-                .addIngredients(new IngredientChoice.MaterialChoice(Material.PAPER))
-                .addIngredients(new IngredientChoice.MaterialChoice(Material.GUNPOWDER))
+                .addIngredients(new MaterialChoice(Material.PAPER))
+                .addIngredients(new MaterialChoice(Material.GUNPOWDER))
                 .setResult(() -> new ItemStack(Material.FIREWORK_ROCKET))
                 .build();
         registry.registerRecipe(recipe);
@@ -115,8 +115,8 @@ public class RecipeRegistryTest {
     @Tag("later")
     public void testShapelessConsumeItem() {
         var recipe = Shapeless.of(KEY_SHAPELESS, null)
-                .addIngredients(new IngredientChoice.MaterialChoice(Material.CACTUS))
-                .addIngredients(new IngredientChoice.MaterialChoice(Material.GUNPOWDER))
+                .addIngredients(new MaterialChoice(Material.CACTUS))
+                .addIngredients(new MaterialChoice(Material.GUNPOWDER))
                 .setResult(() -> new ItemStack(Material.FIREWORK_ROCKET))
                 .build();
         registry.registerRecipe(recipe);
@@ -138,8 +138,8 @@ public class RecipeRegistryTest {
                         "aba",
                         " a"
                 )
-                .setIngredient('a', new IngredientChoice.MaterialChoice(Material.CACTUS))
-                .setIngredient('b', new IngredientChoice.MaterialChoice(Material.GUNPOWDER)).setResult(() -> new ItemStack(Material.FIREWORK_ROCKET))
+                .setIngredient('a', new MaterialChoice(Material.CACTUS))
+                .setIngredient('b', new MaterialChoice(Material.GUNPOWDER)).setResult(() -> new ItemStack(Material.FIREWORK_ROCKET))
                 .build();
         var matrix = new ItemStack[]{
                 null, new ItemStack(Material.CACTUS), null,
