@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.api;
 
+import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
@@ -44,6 +45,8 @@ public interface AstralFlowAPI {
     ITickManager getTickManager();
 
     ITextureRegistry getTextureRegistry();
+
+    AstralFlowConfiguration getSettings();
 
     IRecipeRegistry getRecipeRegistry();
 

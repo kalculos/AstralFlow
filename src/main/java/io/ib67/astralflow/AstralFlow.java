@@ -39,6 +39,7 @@ import io.ib67.astralflow.item.recipe.RecipeRegistryImpl;
 import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.listener.WorldListener;
+import io.ib67.astralflow.listener.crafts.RecipeListener;
 import io.ib67.astralflow.manager.*;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
@@ -106,12 +107,20 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         //todo Load StorageLoader in other sourceset.
         //Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
         loadAllMachines();
+        if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
+            injectVanillaCraft();
+        }
         Bukkit.getScheduler().runTask(this, () -> {
             for (Consumer<?> hook : getHooks(HookType.SERVER_STARTUP_COMPLETED)) {
                 hook.accept(null);
             }
         });
         initialized = true;
+    }
+
+    private void injectVanillaCraft() {
+        Log.info("Injecting vanilla crafting table");
+        Bukkit.getPluginManager().registerEvents(new RecipeListener(recipeRegistry), this);
     }
 
     @Override
@@ -214,6 +223,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Override
     public ITextureRegistry getTextureRegistry() {
         return null; // // TODO: 2022/2/20
+    }
+
+    @Override
+    public AstralFlowConfiguration getSettings() {
+        return configuration;
     }
 
     @Override

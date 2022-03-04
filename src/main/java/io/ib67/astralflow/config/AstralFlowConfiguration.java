@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.config;
 
+import com.google.gson.annotations.SerializedName;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.ItemStateStorage;
@@ -39,14 +40,28 @@ public class AstralFlowConfiguration {
 
     private final int version = CONFIG_CURRENT_VERSION;
     private final Language locale;
+    @SerializedName("machine-storage-type")
     private final IMachineStorage storage;
+    @SerializedName("item-storage-type")
     private final ItemStateStorage itemStorage;
+
+    @SerializedName("recipe-settings")
+    private final RecipeSetting recipeSetting;
 
     public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageDir) {
         return new AstralFlowConfiguration(
                 new Language(),
                 new FileMachineStorage(machineStorageDir, AstralFlow.getInstance().getFactories()),
-                new FileItemStorage(itemStorageDir, AstralFlow.getInstance().getFactories())
+                new FileItemStorage(itemStorageDir, AstralFlow.getInstance().getFactories()),
+                new RecipeSetting()
         );
+    }
+
+    @Getter
+    public static class RecipeSetting {
+        @SerializedName("inject-vanilla-crafting")
+        private final boolean injectVanillaCraftingTable = true;
+        @SerializedName("override-vanilla-recipe")
+        private final boolean overrideVanillaRecipe = true;
     }
 }
