@@ -20,7 +20,7 @@ And we recommend Lombok.
 
 1. Easy to use, for Developers and Server Operators.
 2. Providing an immersive experience for players.
-3. Active Maintained.
+3. Actively maintained.
 4. Data-driven, easier to make extensions.
 5. Texture generate and auto-publish
 

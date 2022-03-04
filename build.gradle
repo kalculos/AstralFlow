@@ -45,13 +45,13 @@ repositories {
 }
 dependencies {
     api 'com.github.iceBear67:tools:f731f7d'
-    implementation 'junit:junit:4.13.1'
+    implementation 'junit:junit:4.13.2'
     compileOnly 'org.jetbrains:annotations:23.0.0'
-    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
-    testImplementation 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
+    testImplementation 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     testImplementation(platform('org.junit:junit-bom:5.8.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
-    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.15.5' // mock-buukkit 1.18 has some problem
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.18.1' // mock-buukkit 1.18 has some problem
 }
 lombok {
     version = "1.18.20"
