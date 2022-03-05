@@ -21,7 +21,6 @@
 
 package io.ib67.astralflow.item.recipe;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import io.ib67.astralflow.item.recipe.kind.Shapeless;
 import org.bukkit.Material;
@@ -32,6 +31,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import static io.ib67.astralflow.test.TestUtil.init;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -43,9 +43,7 @@ public class RecipeRegistryTest {
 
     @BeforeAll
     public void setup() {
-        if (!MockBukkit.isMocked()) {
-            MockBukkit.mock();
-        }
+        init();
         registry = new RecipeRegistryImpl();
     }
 
