@@ -28,6 +28,8 @@ public class TestUtil {
     public static void init() {
         if (!MockBukkit.isMocked()) {
             MockBukkit.mock();
+        }
+        if(AstralFlow.getInstance() == null){
             MockBukkit.load(AstralFlow.class);
         }
     }

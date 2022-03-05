@@ -21,13 +21,13 @@
 
 package io.ib67.astralflow.internal;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import static io.ib67.astralflow.test.TestUtil.init;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("unused")
@@ -36,9 +36,7 @@ public class RecipeHelperTest {
 
     @BeforeAll
     public void setup() {
-        if (!MockBukkit.isMocked()) {
-            MockBukkit.mock();
-        }
+        init();
     }
 
     @Test
