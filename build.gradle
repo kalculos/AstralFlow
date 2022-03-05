@@ -47,12 +47,12 @@ dependencies {
     api('com.github.iceBear67:tools:0.2.0') {
         exclude module: 'testplug'
     }
-    testImplementation 'junit:junit:4.13.2'
+
     compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     testImplementation 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
-    testImplementation(platform('org.junit:junit-bom:5.8.2'))
-    testImplementation('org.junit.jupiter:junit-jupiter')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.18.1' // mock-buukkit 1.18 has some problem
 }
 lombok {

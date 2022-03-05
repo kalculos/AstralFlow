@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
 
 package io.ib67.astralflow.item.recipe;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -31,6 +31,6 @@ public class HashHackTest {
     public void hashHackTest() {
         var map = Map.of("abcabc", true);
         var hashObj = new HashHack("abcabc".hashCode());
-        Assert.assertTrue(map.get(hashObj));
+        Assertions.assertTrue(map.get(hashObj));
     }
 }
