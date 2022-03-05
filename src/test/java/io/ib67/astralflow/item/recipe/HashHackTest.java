@@ -32,5 +32,6 @@ public class HashHackTest {
         var map = Map.of("abcabc", true);
         var hashObj = new HashHack("abcabc".hashCode());
         Assertions.assertTrue(map.get(hashObj));
+        Assertions.fail();
     }
 }
