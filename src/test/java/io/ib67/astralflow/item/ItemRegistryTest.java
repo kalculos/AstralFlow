@@ -51,7 +51,7 @@ public class ItemRegistryTest {
 
         var item = registry.createItem(p.getId());
         assertNotEquals(null, item, "Item should not be null");
-        assertNotEquals(item.asItemStack(), p.getPrototype(), "ItemRegistry can't modify the prototype");
+        assertNotSame(item.asItemStack(), p.getPrototype(), "ItemRegistry can't modify the prototype");
         assertTrue(item.getState().isEmpty(), "Stateless states must be empty");
 
         // let's see uuid allocation.
