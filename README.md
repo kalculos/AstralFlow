@@ -9,6 +9,8 @@ AstralFlow is a lightweight bukkit plugin that provides a framework to create a 
 
 Based on Spigot API.
 
+[Discuss @ Telegram](https://t.me/AstralFlows) or click `@AstralFlows` directly in Telegram.
+
 # Contributing
 
 We use [contribute guide](https://github.com/saltedfishclub/documents/blob/main/CONTRIBUTING.md)
@@ -25,5 +27,5 @@ And we recommend Lombok.
 5. Texture generate and auto-publish
 
 # Getting Started
-
+(deprecated)
 [Example `HelloMachine`](./src/storageModule/java/astralflow/storage/machines/HelloMachine.java)
