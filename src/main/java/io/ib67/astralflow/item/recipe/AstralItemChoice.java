@@ -36,19 +36,19 @@ public final class AstralItemChoice implements IngredientChoice {
     private final short count;
     private final short durability;
     private final Set<String> materials;
-    private Lazy<Set<String>, List<ItemStack>> compiledRItems = Lazy.by(t ->
+    private final Lazy<Set<String>, List<ItemStack>> compiledRItems = Lazy.by(t ->
             t.stream().map(e -> AstralFlow.getInstance().getItemRegistry().getRegistry(e))
                     .map(ItemPrototypeFactory::getPrototype).collect(Collectors.toList())
     );
 
-    public AstralItemChoice(String... oredictIds) {
-        this((short) 1, (short) 0, oredictIds);
+    public AstralItemChoice(String... itemIds) {
+        this((short) 1, (short) 0, itemIds);
     }
 
-    public AstralItemChoice(short durability, short count, String... oredictIds) {
+    public AstralItemChoice(short durability, short count, String... itemIds) {
         this.durability = durability;
         this.count = count;
-        materials = Set.of(oredictIds);
+        materials = Set.of(itemIds);
     }
 
     @Override

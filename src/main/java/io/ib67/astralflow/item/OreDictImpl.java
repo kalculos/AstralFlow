@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -24,16 +24,15 @@ package io.ib67.astralflow.item;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import org.bukkit.inventory.RecipeChoice;
+import io.ib67.util.Pair;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class OreDictImpl implements IOreDict {
-    private final Map<String, RecipeChoice.ExactChoice> choiceMap = new HashMap<>();
-    private Multimap<String, ItemPrototypeFactory> items = ArrayListMultimap.create();
+    private Multimap<String, Pair<ItemStack, Predicate<ItemStack>>> items = ArrayListMultimap.create();
     private volatile boolean locked = false;
 
     {
@@ -42,22 +41,23 @@ public class OreDictImpl implements IOreDict {
 
     private void compile() {
         locked = true;
-        for (String s : items.keySet()) {
-            choiceMap.put(s, new RecipeChoice.ExactChoice(items.get(s).stream().map(ItemPrototypeFactory::getPrototype).collect(Collectors.toList())));
-        }
-        items = null; // remove unnecessary references.
     }
 
     @Override
-    public IOreDict registerItem(ItemPrototypeFactory prototype, String dictKey) {
+    public IOreDict registerItem(String dictKey, ItemStack prototype, Predicate<ItemStack> itemStackPredicate) {
         if (locked) throw new IllegalStateException("OreDict is locked due to server startup completed.");
         if (items.containsKey(dictKey)) throw new IllegalArgumentException(dictKey + " is already registered.");
-        items.put(dictKey, prototype);
+        items.put(dictKey, Pair.of(prototype, itemStackPredicate));
         return this;
     }
 
     @Override
-    public RecipeChoice.ExactChoice getChoices(String dictKey) {
-        return choiceMap.get(dictKey);
+    public boolean matchItem(String oredictId, ItemStack itemStack) {
+        return items.get(oredictId).stream().anyMatch(e -> e.value.test(itemStack));
+    }
+
+    @Override
+    public Collection<? extends ItemStack> getItems(String dictKey) {
+        return items.get(dictKey).stream().map(e -> e.key).collect(Collectors.toList()); // should we defensive-copy here?
     }
 }

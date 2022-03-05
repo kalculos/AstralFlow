@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -56,7 +56,11 @@ public class ItemRegistryImpl implements ItemRegistry {
     public void registerItem(ItemPrototypeFactory item, String oreDictId) {
         itemMap.put(item.getId(), item);
         if (oreDictId != null) {
-            oreDict.registerItem(item, oreDictId);
+            oreDict.registerItem(oreDictId, item.getPrototype().clone(), t -> {
+                var state = getState(t);
+                if (state == null) return false;
+                return state.getPrototypeKey().equals(item.getId());
+            });
         }
     }
 

@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -21,8 +21,10 @@
 
 package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
+import java.util.function.Predicate;
 
 public interface IOreDict {
     /**
@@ -33,9 +35,16 @@ public interface IOreDict {
      * @return
      * @throws IllegalStateException if locked
      */
-    IOreDict registerItem(ItemPrototypeFactory prototype, String dictKey);
+    IOreDict registerItem(String dictKey, ItemStack prototype, Predicate<ItemStack> tester);
 
-    RecipeChoice.ExactChoice getChoices(String dictKey);
+    boolean matchItem(String oredictId, ItemStack itemStack);
 
+    /**
+     * This method will return a collection of all the registered items. Only for being shown to player
+     *
+     * @param oredictId
+     * @return
+     */
+    Collection<? extends ItemStack> getItems(String oredictId);
 
 }
