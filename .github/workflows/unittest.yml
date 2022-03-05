@@ -29,3 +29,10 @@ jobs:
         uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
         with:
           arguments: test
+      - name: Notification
+        if: cancelled() == false
+        uses: xinthink/action-telegram@v1.1
+        with:
+          botToken: ${{ secrets.BOT_TOKEN }}
+          chatId: ${{ secrets.CHATID }}
+          jobStatus: ${{ job.status }}
