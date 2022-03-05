@@ -22,6 +22,8 @@
 package io.ib67.astralflow.item.recipe;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.internal.item.state.InternalItemState;
+import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.util.Lazy;
 import lombok.Getter;
@@ -57,8 +59,9 @@ public final class AstralItemChoice implements IngredientChoice {
             return false;
         }
         var ir = AstralFlow.getInstance().getItemRegistry();
-        var state = ir.getState(itemStack);
-        if (state != null) {
+        var isItem = ir.isItem(itemStack);
+        if (isItem) {
+            var state = (InternalItemState) ir.getState(itemStack, StateScope.INTERNAL_ITEM);
             return materials.contains(state.getPrototypeKey());
         }
         return false;

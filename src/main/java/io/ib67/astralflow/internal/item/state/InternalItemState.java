@@ -19,18 +19,19 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.internal;
+package io.ib67.astralflow.internal.item.state;
 
 import io.ib67.astralflow.item.ItemState;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public class NullItemState extends ItemState {
-    public static final NullItemState NULL_ITEM_STATE = new NullItemState();
-
-    private NullItemState() {
-    }
+@RequiredArgsConstructor
+@Getter
+public class InternalItemState extends ItemState implements Cloneable {
+    private final String prototypeKey;
 
     @Override
     public ItemState clone() {
-        return NULL_ITEM_STATE;
+        return super.clone();
     }
 }

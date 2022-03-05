@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -40,8 +40,7 @@ public class MachineItemState extends ItemState {
     @Getter
     private IState machineState;
 
-    public MachineItemState(String prototype, String machineType, IState machineState) {
-        super(prototype);
+    public MachineItemState(String machineType, IState machineState) {
         this.prototype = machineType;
         this.machineState = machineState;
     }

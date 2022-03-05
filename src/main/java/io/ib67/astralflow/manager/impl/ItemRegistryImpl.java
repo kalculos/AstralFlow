@@ -23,12 +23,12 @@ package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.internal.item.state.InternalItemState;
 import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.IOreDict;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import io.ib67.astralflow.item.internal.NullItemState;
 import io.ib67.astralflow.item.tag.UUIDTag;
 import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.storage.ItemStateStorage;
@@ -36,11 +36,14 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+import static org.bukkit.Material.AIR;
+
 public class ItemRegistryImpl implements ItemRegistry {
     private static final UUIDTag TAG = new UUIDTag();
     private final IOreDict oreDict;
     private final Map<String, ItemPrototypeFactory> itemMap = new HashMap<>();
-    private final Map<UUID, ItemState> stateCache = new HashMap<>();
+    private final Map<UUID, ItemState> userStateCache = new HashMap<>();
+    private final Map<UUID, ItemState> internalStateCache = new HashMap<>();
     private final ItemStateStorage states;
 
     public ItemRegistryImpl(ItemStateStorage states, IOreDict oreDict) {
@@ -48,7 +51,8 @@ public class ItemRegistryImpl implements ItemRegistry {
 
         this.oreDict = oreDict;
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, () -> {
-            stateCache.forEach(states::save);
+            userStateCache.forEach(states::save);
+            internalStateCache.forEach(states::save);
         });
     }
 
@@ -57,7 +61,7 @@ public class ItemRegistryImpl implements ItemRegistry {
         itemMap.put(item.getId(), item);
         if (oreDictId != null) {
             oreDict.registerItem(oreDictId, item.getPrototype().clone(), t -> {
-                var state = getState(t);
+                var state = (InternalItemState) getState(t, StateScope.INTERNAL_ITEM);
                 if (state == null) return false;
                 return state.getPrototypeKey().equals(item.getId());
             });
@@ -66,7 +70,7 @@ public class ItemRegistryImpl implements ItemRegistry {
 
     @Override
     public boolean isItem(ItemStack item) {
-        return getState(item) != null;
+        return getState(item, StateScope.INTERNAL_ITEM) != null;
     }
 
     @Override
@@ -86,7 +90,7 @@ public class ItemRegistryImpl implements ItemRegistry {
 
     @Override
     public Optional<ItemPrototypeFactory> getRegistry(ItemStack itemStack) {
-        var state = getState(itemStack);
+        var state = (InternalItemState) getState(itemStack, StateScope.INTERNAL_ITEM);
         if (state == null) {
             return Optional.empty();
         }
@@ -102,7 +106,8 @@ public class ItemRegistryImpl implements ItemRegistry {
             return null;
         }
         var uuid = im.getPersistentDataContainer().get(scope.getTagKey(), TAG);
-        return stateCache.computeIfAbsent(uuid, u -> {
+        var cache = scope == StateScope.INTERNAL_ITEM ? internalStateCache : userStateCache;
+        return cache.computeIfAbsent(uuid, u -> {
             if (!states.has(uuid)) {
                 return null;
             }
@@ -116,20 +121,21 @@ public class ItemRegistryImpl implements ItemRegistry {
         if (item == null) return null;
         // validation
         var prototype = item.getPrototype();
-        if (prototype == null || !prototype.hasItemMeta())
+        if (prototype == null || prototype.getType() == AIR)
             throw new IllegalStateException("The prototype of " + key + " is null or AIR");
         // pack item.
-        var state = item.getStatePrototype();
+        var userState = item.getStatePrototype();
+        var afState = new InternalItemState(key); // store prototype info to this
         UUID uuid;
-        if (state == null) {
+        if (userState == null) {
             uuid = UUID.nameUUIDFromBytes(key.getBytes());
-            state = new NullItemState(key);
         } else {
             uuid = UUID.randomUUID();
-            state = state.clone();
+            userState = userState.clone();
             //states.saveState(uuid, state);
         }
-        stateCache.put(uuid, state);
+        userStateCache.put(uuid, userState);
+        internalStateCache.put(uuid, afState);
         // state done
         var itemStack = prototype.clone();
         var im = itemStack.getItemMeta();

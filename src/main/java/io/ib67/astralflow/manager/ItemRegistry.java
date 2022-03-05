@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@ import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -52,8 +53,10 @@ public interface ItemRegistry {
     AstralItem createItem(String key);
 
     @ApiStatus.Experimental
+    @Nullable
     ItemState getState(ItemStack itemStack, StateScope stateScope);
 
+    @Nullable
     default ItemState getState(ItemStack itemStack) {
         return getState(itemStack, StateScope.USER_ITEM);
     }

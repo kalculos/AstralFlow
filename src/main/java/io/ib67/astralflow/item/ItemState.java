@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -22,13 +22,10 @@
 package io.ib67.astralflow.item;
 
 import io.ib67.astralflow.machines.IState;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class ItemState implements IState, Cloneable {
-    @Getter
-    private final String prototypeKey;
 
     @Override
     public ItemState clone() {
