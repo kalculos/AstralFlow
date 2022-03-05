@@ -33,5 +33,6 @@ public class HashHackTest {
         var hashObj = new HashHack("abcabc".hashCode());
         Assertions.assertTrue(map.get(hashObj));
         Assertions.fail();
+        
     }
 }
