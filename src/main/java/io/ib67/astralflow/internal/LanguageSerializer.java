@@ -56,7 +56,7 @@ public class LanguageSerializer implements JsonSerializer<Language>, JsonDeseria
         try (
                 var stream = lang.exists()
                         ? new FileInputStream(localeDir.resolve(langName + ".lang").toFile())
-                        : AstralFlow.getPlugin(AstralFlow.class).getResource(langName + ".lang")
+                        : AstralFlow.getInstance().asPlugin().getResource(langName + ".lang")
         ) {
             if (stream == null) {
                 return null;

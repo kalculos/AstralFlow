@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -21,9 +21,17 @@
 
 package io.ib67.astralflow.internal;
 
+import io.ib67.util.Functional;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class AstralConstants {
-
+    public static final boolean MOCKING = Functional.from(() -> {
+        try {
+            Class.forName("org.junit.jupiter.api.Test");
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    });
 }

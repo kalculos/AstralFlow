@@ -51,7 +51,9 @@ import io.ib67.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,16 +81,23 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Getter
     private final IRecipeRegistry recipeRegistry = new RecipeRegistryImpl();
 
-    public static AstralFlowAPI getInstance() {
-        return AstralFlow.getPlugin(AstralFlow.class);
+    private static AstralFlow instance;
+
+    protected AstralFlow(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file); // for mock bukkit
     }
 
     private static final Map<HookType<?>, List<Consumer<?>>> HOOKS = new HashMap<>();
     private volatile boolean initialized = false; // volatile to prevent opcode reshuffle
 
+    public static AstralFlowAPI getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
+        instance = this;
         Log.info("Loading &aConfigurations");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
         machineDir.toFile().mkdirs();
