@@ -1,6 +1,6 @@
 /*
  *
- *   AstralFlow - Storage utilities for spigot servers.
+ *   AstralFlow - The plugin who is turning bukkit into mod-pack
  *   Copyright (C) 2022 iceBear67
  *
  *   This library is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ import java.util.function.Function;
 
 /**
  * 函数组合工具，适用于不使用 Function#compose/andThen 的场景（只在这一种情况才 andThen）
- * Also see {@link cc.sfclub.game.module.scheduler.TickReceipt#requires(Function)}
+ * Also see {@link io.ib67.astralflow.scheduler.TickReceipt#requires(Function)}
  *
  * @param <T>
  */
