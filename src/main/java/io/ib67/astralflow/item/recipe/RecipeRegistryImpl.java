@@ -30,7 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class RecipeRegistryImpl implements IRecipeRegistry {
-    private final Map<HashHack, List<Shaped>> shapedRecipes = new HashMap<>(32);
+    private final Map<Integer, List<Shaped>> shapedRecipes = new HashMap<>(32);
     private final Map<NamespacedKey, AstralRecipe> recipesMap = new WeakHashMap<>();
     private final List<AstralRecipe> recipes = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
         if (recipe instanceof Shaped) {
             var shaped = (Shaped) recipe;
             var hash = shaped.getCompiledHash();
-            shapedRecipes.compute(new HashHack(hash), (k, v) -> {
+            shapedRecipes.compute(hash, (k, v) -> {
                 if (v != null) {
                     v.add(shaped);
                     return v;
@@ -57,7 +57,7 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     public IRecipeRegistry unregisterRecipe(AstralRecipe recipe) {
         recipesMap.remove(recipe.getKey());
         if (recipe instanceof Shaped) {
-            shapedRecipes.remove(new HashHack(((Shaped) recipe).getCompiledHash()));
+            shapedRecipes.remove(((Shaped) recipe).getCompiledHash());
             return this;
         }
         recipes.remove(recipe);
@@ -80,7 +80,7 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     public AstralRecipe matchRecipe(ItemStack[] matrix) {
         // match shaped recipes first.
         int hash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(matrix))));
-        var shaped = shapedRecipes.get(new HashHack(hash));
+        var shaped = shapedRecipes.get(hash);
         if (shaped != null) {
             for (Shaped recipe : shaped) {
                 if (recipe.test(matrix)) return recipe;
