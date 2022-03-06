@@ -141,6 +141,7 @@ public class ItemRegistryImpl implements ItemRegistry {
         var im = itemStack.getItemMeta();
 
         im.getPersistentDataContainer().set(StateScope.USER_ITEM.getTagKey(), TAG, uuid);
+        im.getPersistentDataContainer().set(StateScope.INTERNAL_ITEM.getTagKey(), TAG, uuid);
         itemStack.setItemMeta(im);
         return new AstralItem(itemStack, this);
     }
