@@ -19,20 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.builder;
+package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.LogicalHolder;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import lombok.Builder;
-import lombok.Getter;
-import org.bukkit.inventory.ItemStack;
-
-@Getter
-@Builder
-public class ItemPrototype implements ItemPrototypeFactory {
-    private final ItemStack prototype;
-    private final ItemState statePrototype;
-    private final String id;
-    private final LogicalHolder holder;
+public interface LogicalHolder {
 }

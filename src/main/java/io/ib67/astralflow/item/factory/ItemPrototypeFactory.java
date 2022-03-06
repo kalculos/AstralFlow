@@ -22,6 +22,7 @@
 package io.ib67.astralflow.item.factory;
 
 import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.item.LogicalHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -69,5 +70,9 @@ public interface ItemPrototypeFactory {
      */
     default ItemPrototypeFactory getRegistry() {
         return this;
+    }
+
+    default LogicalHolder getHolder() {
+        return null;
     }
 }
