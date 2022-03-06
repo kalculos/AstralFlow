@@ -78,7 +78,6 @@ public class ItemBuilder<C extends ItemCategory<T>, T> {
     }
 
     private void register() {
-        //todo ItemPrototypeFactory p = registry;
         var p = category.getFactory(itemPrototype);
         p = new PrototypeDecorator(p, i -> {
             var item = i.clone();
