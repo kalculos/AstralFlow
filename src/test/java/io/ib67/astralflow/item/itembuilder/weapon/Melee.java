@@ -19,25 +19,19 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.recipe;
+package io.ib67.astralflow.item.itembuilder.weapon;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Contract;
 
-import java.util.List;
+public abstract non-sealed class Melee extends WeaponItems {
+    private final float damage;
 
-public interface IRecipeRegistry {
-    @Contract(pure = true, value = "_->this")
-    IRecipeRegistry registerRecipe(AstralRecipe recipe);
+    public Melee(String id, ItemStack prototype, float damage) {
+        super(id, prototype);
+        this.damage = damage;
+    }
 
-    @Contract(pure = true, value = "_->this")
-    IRecipeRegistry unregisterRecipe(AstralRecipe recipe);
+    public void onAttack(String usingPlayer, String victim) {
 
-    AstralRecipe getRecipeByKey(NamespacedKey key);
-
-    @Contract(value = " -> new")
-    List<? extends AstralRecipe> getRecipes();
-
-    AstralRecipe matchRecipe(ItemStack... recipe);
+    }
 }

@@ -19,17 +19,23 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.factory;
+package io.ib67.astralflow.item.itembuilder;
 
-import io.ib67.astralflow.item.ItemState;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.inventory.ItemStack;
+import io.ib67.astralflow.item.builder.ItemCategory;
+import io.ib67.astralflow.item.builder.ItemPrototype;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.itembuilder.weapon.WeaponItems;
 
-@RequiredArgsConstructor
-@Getter
-public class SimpleItemPrototypeFactory implements ItemPrototypeFactory {
-    private final ItemStack prototype;
-    private final ItemState statePrototype;
-    private final String id;
+public enum Weapon implements ItemCategory<WeaponItems> {
+    INSTANCE;
+
+    @Override
+    public ItemPrototypeFactory getFactory(WeaponItems item) {
+        return ItemPrototype.builder()
+                .id(item.getId())
+                .prototype(item.getPrototype())
+                .statePrototype(null)
+                .holder(item)
+                .build();
+    }
 }

@@ -77,6 +77,7 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
 
     @Override
     public AstralRecipe matchRecipe(ItemStack[] matrix) {
+
         // match shaped recipes first.
         int hash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(matrix))));
         var shaped = shapedRecipes.get(hash);

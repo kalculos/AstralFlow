@@ -19,25 +19,16 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.recipe;
+package io.ib67.astralflow.item.itembuilder.weapon;
 
-import org.bukkit.NamespacedKey;
+import io.ib67.astralflow.item.LogicalHolder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Contract;
 
-import java.util.List;
-
-public interface IRecipeRegistry {
-    @Contract(pure = true, value = "_->this")
-    IRecipeRegistry registerRecipe(AstralRecipe recipe);
-
-    @Contract(pure = true, value = "_->this")
-    IRecipeRegistry unregisterRecipe(AstralRecipe recipe);
-
-    AstralRecipe getRecipeByKey(NamespacedKey key);
-
-    @Contract(value = " -> new")
-    List<? extends AstralRecipe> getRecipes();
-
-    AstralRecipe matchRecipe(ItemStack... recipe);
+@RequiredArgsConstructor
+@Getter
+public abstract sealed class WeaponItems implements LogicalHolder permits Melee {
+    private final String id;
+    private final ItemStack prototype;
 }

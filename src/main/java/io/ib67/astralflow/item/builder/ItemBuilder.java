@@ -86,7 +86,9 @@ public class ItemBuilder<C extends ItemCategory<T>, T> {
                     if (im == null) {
                         throw new IllegalStateException("ItemMeta is null or AIR! " + category);
                     }
-                    im.setCustomModelData(texture.getModelId()); //todo: @BEFORE_RELEASE@ @BREAKING_CHANGE@ Textures should be dynamic generated from the texture registry and updated via packet modification when the texture is changed.
+                    if (texture != null) {
+                        im.setCustomModelData(texture.getModelId()); //todo: @BEFORE_RELEASE@ @BREAKING_CHANGE@ Textures should be dynamic generated from the texture registry and updated via packet modification when the texture is changed.
+                    }
                     i.setItemMeta(im);
                     return i;
                 })
