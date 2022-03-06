@@ -24,7 +24,7 @@ package io.ib67.astralflow.item.itembuilder;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.item.itembuilder.weapon.Melee;
-import io.ib67.astralflow.item.recipe.MaterialChoice;
+import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

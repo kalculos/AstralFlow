@@ -19,23 +19,33 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.recipe;
+package io.ib67.astralflow.item.recipe.choices;
 
+import io.ib67.astralflow.item.recipe.IngredientChoice;
+import io.ib67.util.Lazy;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Getter
-public final class ExactItemChoice implements IngredientChoice {
+public final class MaterialChoice implements IngredientChoice {
+    private final Set<Material> material;
+    private final Lazy<Set<Material>, List<ItemStack>> compiledRItems = Lazy.by(t -> t.stream().map(ItemStack::new).collect(Collectors.toUnmodifiableList()));
     private final short count;
     private final short durability;
-    private final List<ItemStack> material;
 
-    public ExactItemChoice(ItemStack... material) {
-        this((short) 1, (short) 0, List.of(material));
+    public MaterialChoice(Material... material) {
+        this((short) 1, (short) 0, material);
+    }
+
+    public MaterialChoice(short count, short durability, Material... material) {
+        this.count = count;
+        this.durability = durability;
+        this.material = Set.of(material);
     }
 
     @Override
@@ -43,11 +53,11 @@ public final class ExactItemChoice implements IngredientChoice {
         if (itemStack == null) {
             return false;
         }
-        return material.stream().anyMatch(e -> e.isSimilar(itemStack));
+        return material.contains(itemStack.getType());
     }
 
     @Override
-    public List<? extends ItemStack> getRepresentativeItems() {
-        return material;
+    public List<ItemStack> getRepresentativeItems() {
+        return compiledRItems.get(material);
     }
 }

@@ -19,35 +19,39 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.recipe;
+package io.ib67.astralflow.item.recipe.choices;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.internal.item.state.InternalItemState;
+import io.ib67.astralflow.item.StateScope;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.recipe.IngredientChoice;
 import io.ib67.util.Lazy;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
-public final class OreDictChoice implements IngredientChoice {
+public final class AstralItemChoice implements IngredientChoice {
     private final short count;
     private final short durability;
     private final Set<String> materials;
     private final Lazy<Set<String>, List<ItemStack>> compiledRItems = Lazy.by(t ->
-            t.stream().map(e -> AstralFlow.getInstance().getItemRegistry().getOreDict().getItems(e)).flatMap(Collection::stream).collect(Collectors.toList())
+            t.stream().map(e -> AstralFlow.getInstance().getItemRegistry().getRegistry(e))
+                    .map(ItemPrototypeFactory::getPrototype).collect(Collectors.toList())
     );
 
-    public OreDictChoice(String... itemIds) {
+    public AstralItemChoice(String... itemIds) {
         this((short) 1, (short) 0, itemIds);
     }
 
-    public OreDictChoice(short durability, short count, String... oredictIds) {
+    public AstralItemChoice(short durability, short count, String... itemIds) {
         this.durability = durability;
         this.count = count;
-        materials = Set.of(oredictIds);
+        materials = Set.of(itemIds);
     }
 
     @Override
@@ -56,7 +60,12 @@ public final class OreDictChoice implements IngredientChoice {
             return false;
         }
         var ir = AstralFlow.getInstance().getItemRegistry();
-        return materials.stream().anyMatch(e -> ir.getOreDict().matchItem(e, itemStack));
+        var isItem = ir.isItem(itemStack);
+        if (isItem) {
+            var state = (InternalItemState) ir.getState(itemStack, StateScope.INTERNAL_ITEM);
+            return materials.contains(state.getPrototypeKey());
+        }
+        return false;
     }
 
     @Override

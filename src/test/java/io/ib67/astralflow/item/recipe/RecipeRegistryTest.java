@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.item.recipe;
 
+import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import io.ib67.astralflow.item.recipe.kind.Shapeless;
 import org.bukkit.Material;
