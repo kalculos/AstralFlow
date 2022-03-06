@@ -45,6 +45,6 @@ public class DummyStatefulItem implements ItemPrototypeFactory {
 
     @Override
     public String getId() {
-        return null;
+        return "astralflow:test_dummy_stateful_item";
     }
 }

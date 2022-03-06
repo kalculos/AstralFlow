@@ -33,6 +33,7 @@ import io.ib67.astralflow.item.tag.UUIDTag;
 import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.storage.ItemStateStorage;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -47,8 +48,9 @@ public class ItemRegistryImpl implements ItemRegistry {
     private final ItemStateStorage states;
 
     public ItemRegistryImpl(ItemStateStorage states, IOreDict oreDict) {
+        Objects.requireNonNull(states);
+        Objects.requireNonNull(oreDict);
         this.states = states;
-
         this.oreDict = oreDict;
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, () -> {
             userStateCache.forEach(states::save);
@@ -57,7 +59,10 @@ public class ItemRegistryImpl implements ItemRegistry {
     }
 
     @Override
-    public void registerItem(ItemPrototypeFactory item, String oreDictId) {
+    public void registerItem(@NotNull ItemPrototypeFactory item, String oreDictId) {
+        Objects.requireNonNull(item, "ItemPrototypeFactory cannot be null");
+        Objects.requireNonNull(item.getId(), "ItemPrototypeFactory id cannot be null");
+
         itemMap.put(item.getId(), item);
         if (oreDictId != null) {
             oreDict.registerItem(oreDictId, item.getPrototype().clone(), t -> {
@@ -70,6 +75,7 @@ public class ItemRegistryImpl implements ItemRegistry {
 
     @Override
     public boolean isItem(ItemStack item) {
+        Objects.requireNonNull(item);
         return getState(item, StateScope.INTERNAL_ITEM) != null;
     }
 
@@ -85,11 +91,13 @@ public class ItemRegistryImpl implements ItemRegistry {
 
     @Override
     public ItemPrototypeFactory getRegistry(String key) {
+        Objects.requireNonNull(key);
         return itemMap.get(key);
     }
 
     @Override
     public Optional<ItemPrototypeFactory> getRegistry(ItemStack itemStack) {
+        Objects.requireNonNull(itemStack);
         var state = (InternalItemState) getState(itemStack, StateScope.INTERNAL_ITEM);
         if (state == null) {
             return Optional.empty();
@@ -100,6 +108,8 @@ public class ItemRegistryImpl implements ItemRegistry {
 
     @Override
     public ItemState getState(ItemStack itemStack, StateScope scope) {
+        Objects.requireNonNull(itemStack);
+        Objects.requireNonNull(scope);
         if (!itemStack.hasItemMeta()) return null;
         var im = itemStack.getItemMeta();
         if (!im.getPersistentDataContainer().has(scope.getTagKey(), TAG)) {
@@ -117,6 +127,7 @@ public class ItemRegistryImpl implements ItemRegistry {
 
     @Override
     public AstralItem createItem(String key) {
+        Objects.requireNonNull(key);
         var item = getRegistry(key);
         if (item == null) return null;
         // validation
