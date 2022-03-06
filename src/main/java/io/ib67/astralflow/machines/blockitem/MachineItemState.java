@@ -54,7 +54,6 @@ public class MachineItemState extends ItemState {
             Log.warn("Machine type " + prototype + " not found!");
         } catch (ClassCastException e) {
             e.printStackTrace();
-            ;
             Log.warn("Machine type " + prototype + " is not a machine!");
         }
         return null;

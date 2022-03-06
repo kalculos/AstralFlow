@@ -39,14 +39,12 @@ public class FactoryManagerImpl implements IFactoryManager {
         return (IMachineFactory<T, S>) machineFactories.get(type);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Collection<? extends IMachineFactory<?, ?>> getMachineFactories() {
         return machineFactories.values();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends IMachine, S extends IState> boolean register(Class<T> claz, IMachineFactory<T, S> factory) {
         if (machineFactories.containsKey(claz)) {
             return false;

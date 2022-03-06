@@ -33,8 +33,6 @@ public class WorldListener implements Listener {
     private void onWorldSave(WorldSaveEvent event) {
         // save data.
         // TODO: WIP configuration delay
-        Bukkit.getScheduler().runTaskLater(AstralFlow.getInstance().asPlugin(), () -> {
-            AstralFlow.getInstance().getHooks(HookType.SAVE_DATA).forEach(e -> e.accept(null));
-        }, 10L);
+        Bukkit.getScheduler().runTaskLater(AstralFlow.getInstance().asPlugin(), () -> AstralFlow.getInstance().getHooks(HookType.SAVE_DATA).forEach(e -> e.accept(null)), 10L);
     }
 }

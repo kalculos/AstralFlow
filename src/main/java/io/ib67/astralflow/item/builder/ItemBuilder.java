@@ -41,7 +41,7 @@ public class ItemBuilder
     private Texture texture;
     private String oreDictId;
     private P registry;
-    private List<AstralRecipe> recipes = new ArrayList<>();
+    private final List<AstralRecipe> recipes = new ArrayList<>();
 
     private ItemBuilder(ItemCategory<T, P, S> category) {
         this.category = category;

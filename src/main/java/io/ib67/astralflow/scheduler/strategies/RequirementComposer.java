@@ -60,6 +60,7 @@ public class RequirementComposer<T> implements Function<T, Boolean> {
      * @param <T>     the type of ticking object
      * @return it
      */
+    @SafeVarargs
     public static <T> RequirementComposer<T> of(Class<T> classOf, Function<T, Boolean>... func) {
         Validate.notNull(func);
         return new RequirementComposer<>(Lists.newArrayList(func));

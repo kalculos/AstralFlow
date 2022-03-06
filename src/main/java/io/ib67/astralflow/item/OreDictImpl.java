@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class OreDictImpl implements IOreDict {
-    private Multimap<String, Pair<ItemStack, Predicate<ItemStack>>> items = ArrayListMultimap.create();
+    private final Multimap<String, Pair<ItemStack, Predicate<ItemStack>>> items = ArrayListMultimap.create();
     private volatile boolean locked = false;
 
     {

@@ -53,19 +53,16 @@ public class MachineListener implements Listener {
             }
             var is = im.createItem(protoId);
             var state = is.getState().orElseThrow(IllegalStateException::new);
-            if (state instanceof MachineItemState) {
+            if (state instanceof MachineItemState ms) {
                 // deactivate machine.
                 var machine = event.getMachine();
-                var ms = ((MachineItemState) state);
                 ms.setPrototype(machine.getType().getName());
                 ms.setMachineState(machine.getState());
                 AstralFlow.getInstance().getMachineManager().removeAndTerminateMachine(machine);
             } else {
                 throw new UnsupportedOperationException("item state of " + protoId + " is not a MachineItemState.");
             }
-            Bukkit.getScheduler().runTask(AstralFlow.getInstance().asPlugin(), () -> {
-                event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), is.asItemStack());
-            });
+            Bukkit.getScheduler().runTask(AstralFlow.getInstance().asPlugin(), () -> event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), is.asItemStack()));
         }
     }
 

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-// actually this should be abstract class but thats too late when I found that
+// actually this should be abstract class but that's too late when I found that
 public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<ItemStack> {
     short getCount();
 
@@ -48,8 +48,7 @@ public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<It
 
         if (itemStack.hasItemMeta()) {
             var im = itemStack.getItemMeta();
-            if (im instanceof Damageable) {
-                var dm = ((Damageable) im);
+            if (im instanceof Damageable dm) {
                 if (dm.getDamage() - getDurability() <= 0) {
                     itemStack.setType(Material.AIR);
                     // broken!

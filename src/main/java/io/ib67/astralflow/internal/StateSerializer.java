@@ -39,9 +39,7 @@ public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer
         // assertion 1. context is a bukkit compatible serializer
         var jo = json.getAsJsonObject();
         var clazName = jo.get(KEY_TYPE).getAsString();
-        var result = Util.runCatching(() -> {
-            return (Object) Class.forName(clazName);
-        }).onSuccess(claz -> {
+        var result = Util.runCatching(() -> (Object) Class.forName(clazName)).onSuccess(claz -> {
             return defaultSerializer.fromJson(jo.getAsJsonObject(KEY_DATA), (Type) claz);
         }).getResult();
         if (result == null) {

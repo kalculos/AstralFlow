@@ -58,7 +58,6 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -83,7 +82,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private static AstralFlow instance;
 
-    protected AstralFlow(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+    AstralFlow(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file); // for mock bukkit
     }
 
@@ -191,7 +190,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         var confFile = new File(getDataFolder(), "config.json");
         if (!confFile.exists() || confFile.length() == 0) {
             confFile.createNewFile();
-            Files.write(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir)).getBytes(StandardCharsets.UTF_8));
+            Files.writeString(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir)));
         }
         try (
                 var config = new FileInputStream(confFile)
@@ -209,7 +208,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                     var migrator = new ConfigMigrator(new JsonParser().parse(confString).getAsJsonObject());
                     var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir));
                     Log.info("Migration complete.");
-                    Files.write(confFile.toPath(), configSerializer.toJson(conf).getBytes(StandardCharsets.UTF_8));
+                    Files.writeString(confFile.toPath(), configSerializer.toJson(conf));
                     configuration = conf;
                 } else {
                     // higher.

@@ -22,11 +22,11 @@
 package io.ib67.astralflow.machines;
 
 public interface IState {
-    public static final IState EMPTY_STATE = new IState.EmptyState();
+    IState EMPTY_STATE = new IState.EmptyState();
     default Class<? extends IState> getType() {
         return this.getClass();
     }
 
-    public static class EmptyState implements IState {
+    class EmptyState implements IState {
     }
 }

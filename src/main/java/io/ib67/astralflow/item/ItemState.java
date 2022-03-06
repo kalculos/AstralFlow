@@ -23,6 +23,10 @@ package io.ib67.astralflow.item;
 
 import io.ib67.astralflow.machines.IState;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Delegate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public abstract class ItemState implements IState, Cloneable {
@@ -30,10 +34,14 @@ public abstract class ItemState implements IState, Cloneable {
     @Override
     public ItemState clone() {
         try {
-            ItemState clone = (ItemState) super.clone();
-            return clone;
+            return (ItemState) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public static class SimpleItemState extends ItemState implements Map<String, Object> {
+        @Delegate
+        private final Map<String, Object> theRealData = new HashMap<>();
     }
 }

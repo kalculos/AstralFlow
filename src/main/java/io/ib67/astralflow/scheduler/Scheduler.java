@@ -39,7 +39,7 @@ public interface Scheduler {
     void tick();
 
     /**
-     * Add a ticking target, throws {@link IllegalArgumentException} when you're attempting to add a object which already exists.
+     * Add a ticking target, throws {@link IllegalArgumentException} when you're attempting to add an object which already exists.
      * Always invoke tick( itself )
      *
      * @param tickable target.

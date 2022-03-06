@@ -168,7 +168,7 @@ public class Shaped implements AstralRecipe {
     public static class ShapedBuilder {
         private final NamespacedKey key;
         private String[] stringMatrix;
-        private Map<Character, IngredientChoice> itemMap = new HashMap<>(8); // most recipes matches.
+        private final Map<Character, IngredientChoice> itemMap = new HashMap<>(8); // most recipes matches.
         private Supplier<ItemStack> result;
         private ItemStack demo;
 

@@ -37,8 +37,7 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     @Override
     public IRecipeRegistry registerRecipe(AstralRecipe recipe) {
         recipesMap.put(recipe.getKey(), recipe);
-        if (recipe instanceof Shaped) {
-            var shaped = (Shaped) recipe;
+        if (recipe instanceof Shaped shaped) {
             var hash = shaped.getCompiledHash();
             shapedRecipes.compute(hash, (k, v) -> {
                 if (v != null) {

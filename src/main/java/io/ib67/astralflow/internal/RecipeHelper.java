@@ -52,9 +52,7 @@ public class RecipeHelper {
                     throw new ArrayIndexOutOfBoundsException("Row " + row + " is too long.(" + i + " chars), except <=3");
                 }
                 if (row.length() < 3) {
-                    for (int i1 = 0; i1 < 3 - row.length(); i1++) {
-                        rowBuilder.append(" ");
-                    }
+                    rowBuilder.append(" ".repeat(3 - row.length()));
                 }
                 realMatrix[i] = rowBuilder.toString();
             } else {
