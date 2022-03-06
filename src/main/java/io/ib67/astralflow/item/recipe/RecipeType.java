@@ -21,27 +21,8 @@
 
 package io.ib67.astralflow.item.recipe;
 
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Contract;
-
-import java.util.List;
-
-public interface IRecipeRegistry {
-    @Contract(pure = true, value = "_->this")
-    IRecipeRegistry registerRecipe(AstralRecipe recipe);
-
-    @Contract(pure = true, value = "_->this")
-    IRecipeRegistry unregisterRecipe(AstralRecipe recipe);
-
-    AstralRecipe getRecipeByKey(NamespacedKey key);
-
-    @Contract(value = " -> new")
-    List<? extends AstralRecipe> getRecipes();
-
-    AstralRecipe matchRecipe(RecipeType type, ItemStack... recipe);
-
-    default AstralRecipe matchRecipe(ItemStack... recipe) {
-        return matchRecipe(RecipeType.CRAFTING, recipe);
-    }
+public enum RecipeType {
+    CRAFTING,
+    FURNACE,
+    POTION
 }

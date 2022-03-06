@@ -76,23 +76,26 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     }
 
     @Override
-    public AstralRecipe matchRecipe(ItemStack[] matrix) {
+    public AstralRecipe matchRecipe(RecipeType type, ItemStack[] matrix) {
+        return switch (type) {
+            case CRAFTING -> {
+                int hash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(matrix))));
+                var shaped = shapedRecipes.get(hash);
+                if (shaped != null) {
+                    for (Shaped recipe : shaped) {
+                        if (recipe.test(matrix)) yield recipe;
+                    }
+                }
 
-        // match shaped recipes first.
-        int hash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(matrix))));
-        var shaped = shapedRecipes.get(hash);
-        if (shaped != null) {
-            for (Shaped recipe : shaped) {
-                if (recipe.test(matrix)) return recipe;
+                // match shapeless.
+                for (AstralRecipe recipe : recipes) {
+                    if (recipe.test(matrix)) {
+                        yield recipe;
+                    }
+                }
+                yield null;
             }
-        }
-
-        // match shapeless.
-        for (AstralRecipe recipe : recipes) {
-            if (recipe.test(matrix)) {
-                return recipe;
-            }
-        }
-        return null;
+            default -> throw new UnsupportedOperationException("Currently Unsupported recipe type: " + type); //todo
+        };
     }
 }
