@@ -32,48 +32,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public class ItemBuilder
-        <T extends Enum<T>,
-                C extends ItemCategory<T, P, S>,
-                P extends ItemPrototypeFactory,
-                S extends PrototypeSupplier<T>> {
-    private final ItemCategory<T, P, S> category;
+public class ItemBuilder<C extends ItemCategory<P>, P extends ItemPrototypeFactory> {
+    private final ItemCategory<P> category;
     private Texture texture;
     private String oreDictId;
     private P registry;
     private final List<AstralRecipe> recipes = new ArrayList<>();
 
-    private ItemBuilder(ItemCategory<T, P, S> category) {
+    private ItemBuilder(ItemCategory<P> category) {
         this.category = category;
     }
 
-    public static <T extends Enum<T>,
-            P extends ItemPrototypeFactory,
-            C extends ItemCategory<T, P, S>,
-            S extends PrototypeSupplier<T>>
-    ItemBuilder<T, C, P, S> of(@NotNull ItemCategory<T, P, S> category) {
+    public static <C extends ItemCategory<P>, P extends ItemPrototypeFactory>
+    ItemBuilder<C, P> of(@NotNull ItemCategory<P> category) {
         return new ItemBuilder<>(category);
     }
 
     @ApiStatus.Experimental
-    public ItemBuilder<T, C, P, S> bind(String textureId) {
+    public ItemBuilder<C, P> bind(String textureId) {
         this.texture = AstralFlow.getInstance().getTextureRegistry().getTexture(textureId).orElseThrow(); // FIXME: default fallback texture
         return this;
     }
 
-    public ItemBuilder<T, C, P, S> bind(Texture texture) {
+    public ItemBuilder<C, P> bind(Texture texture) {
         texture.getModelId(); //TODO: @BEFORE_RELEASE@ Unstable behaviour
         // ensure it is valid registered.
         this.texture = texture;
         return this;
     }
 
-    public ItemBuilder<T, C, P, S> oreDict(String oreDictId) {
+    public ItemBuilder<C, P> oreDict(String oreDictId) {
         this.oreDictId = oreDictId;
         return this;
     }
 
-    public ItemBuilder<T, C, P, S> recipe(AstralRecipe recipe) {
+    public ItemBuilder<C, P> recipe(AstralRecipe recipe) {
         recipes.add(recipe);
         return this;
     }
@@ -108,9 +101,9 @@ public class ItemBuilder
     }
 
     public class WrappedBuilder {
-        private final ItemBuilder<T, C, P, S> builder;
+        private final ItemBuilder<C, P> builder;
 
-        private WrappedBuilder(ItemBuilder<T, C, P, S> builder) {
+        private WrappedBuilder(ItemBuilder<C, P> builder) {
             this.builder = builder;
         }
 

@@ -23,6 +23,6 @@ package io.ib67.astralflow.item.builder;
 
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 
-public interface ItemCategory<T extends Enum<T>, P extends ItemPrototypeFactory, S extends PrototypeSupplier<T>> {
+public interface ItemCategory<P extends ItemPrototypeFactory> {
 
 }
