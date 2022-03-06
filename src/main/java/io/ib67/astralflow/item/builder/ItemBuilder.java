@@ -32,58 +32,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public class ItemBuilder<C extends ItemCategory<P>, P extends ItemPrototypeFactory> {
-    private final ItemCategory<P> category;
+public class ItemBuilder<C extends ItemCategory<T>, T> {
+    private final ItemCategory<T> category;
     private Texture texture;
     private String oreDictId;
-    private P registry;
+    private T itemPrototype;
     private final List<AstralRecipe> recipes = new ArrayList<>();
 
-    private ItemBuilder(ItemCategory<P> category) {
+    private ItemBuilder(ItemCategory<T> category) {
         this.category = category;
     }
 
-    public static <C extends ItemCategory<P>, P extends ItemPrototypeFactory>
+    public static <C extends ItemCategory<P>, P>
     ItemBuilder<C, P> of(@NotNull ItemCategory<P> category) {
         return new ItemBuilder<>(category);
     }
 
     @ApiStatus.Experimental
-    public ItemBuilder<C, P> bind(String textureId) {
+    public ItemBuilder<C, T> bind(String textureId) {
         this.texture = AstralFlow.getInstance().getTextureRegistry().getTexture(textureId).orElseThrow(); // FIXME: default fallback texture
         return this;
     }
 
-    public ItemBuilder<C, P> bind(Texture texture) {
+    public ItemBuilder<C, T> bind(Texture texture) {
         texture.getModelId(); //TODO: @BEFORE_RELEASE@ Unstable behaviour
         // ensure it is valid registered.
         this.texture = texture;
         return this;
     }
 
-    public ItemBuilder<C, P> oreDict(String oreDictId) {
+    public ItemBuilder<C, T> oreDict(String oreDictId) {
         this.oreDictId = oreDictId;
         return this;
     }
 
-    public ItemBuilder<C, P> recipe(AstralRecipe recipe) {
+    public ItemBuilder<C, T> recipe(AstralRecipe recipe) {
         recipes.add(recipe);
         return this;
     }
 
 
-    public WrappedBuilder prototype(P prototypeRegistry) {
-        this.registry = prototypeRegistry;
+    public WrappedBuilder prototype(T prototypeRegistry) {
+        this.itemPrototype = prototypeRegistry;
         return new WrappedBuilder(this);
     }
 
     private void register() {
-        ItemPrototypeFactory p = registry;
+        //todo ItemPrototypeFactory p = registry;
+        var p = category.getFactory(itemPrototype);
         p = new PrototypeDecorator(p, i -> {
             var item = i.clone();
             var im = item.getItemMeta();
             if (im == null) {
-                throw new IllegalStateException("ItemMeta is null or AIR! " + registry.getId());
+                throw new IllegalStateException("ItemMeta is null or AIR! " + category);
             }
             im.setCustomModelData(texture.getModelId()); //todo: @BEFORE_RELEASE@ @BREAKING_CHANGE@ Textures should be dynamic generated from the texture registry and updated via packet modification when the texture is changed.
             i.setItemMeta(im);
@@ -101,9 +102,9 @@ public class ItemBuilder<C extends ItemCategory<P>, P extends ItemPrototypeFacto
     }
 
     public class WrappedBuilder {
-        private final ItemBuilder<C, P> builder;
+        private final ItemBuilder<C, T> builder;
 
-        private WrappedBuilder(ItemBuilder<C, P> builder) {
+        private WrappedBuilder(ItemBuilder<C, T> builder) {
             this.builder = builder;
         }
 

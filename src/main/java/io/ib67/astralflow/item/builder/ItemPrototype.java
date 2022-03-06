@@ -21,10 +21,16 @@
 
 package io.ib67.astralflow.item.builder;
 
+import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import lombok.Builder;
+import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
-public interface ItemCategory<I> {
-
-    ItemPrototypeFactory getFactory(I item);
-
+@Getter
+@Builder
+public class ItemPrototype implements ItemPrototypeFactory {
+    private final ItemStack prototype;
+    private final ItemState statePrototype;
+    private final String id;
 }
