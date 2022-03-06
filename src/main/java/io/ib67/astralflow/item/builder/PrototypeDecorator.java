@@ -22,6 +22,7 @@
 package io.ib67.astralflow.item.builder;
 
 import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import lombok.Builder;
 import org.bukkit.inventory.ItemStack;
@@ -37,6 +38,8 @@ class PrototypeDecorator implements ItemPrototypeFactory {
     private final UnaryOperator<ItemStack> itemMapper = UnaryOperator.identity();
     @Builder.Default
     private final UnaryOperator<ItemState> stateMapper = UnaryOperator.identity();
+    @Builder.Default
+    private final UnaryOperator<LogicalHolder> holderMapper = UnaryOperator.identity(); // To Contributor: DO NOT USE THIS UNLESS YOU KNOW WHAT IS IT
 
     @Override
     public @NotNull ItemStack getPrototype() {
@@ -51,5 +54,10 @@ class PrototypeDecorator implements ItemPrototypeFactory {
     @Override
     public String getId() {
         return registry.getId();
+    }
+
+    @Override
+    public LogicalHolder getHolder() {
+        return holderMapper.apply(registry.getHolder());
     }
 }

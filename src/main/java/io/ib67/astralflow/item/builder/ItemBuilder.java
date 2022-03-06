@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 public class ItemBuilder<C extends ItemCategory<T>, T> {
     private final ItemCategory<T> category;
@@ -79,16 +78,19 @@ public class ItemBuilder<C extends ItemCategory<T>, T> {
 
     private void register() {
         var p = category.getFactory(itemPrototype);
-        p = new PrototypeDecorator(p, i -> {
-            var item = i.clone();
-            var im = item.getItemMeta();
-            if (im == null) {
-                throw new IllegalStateException("ItemMeta is null or AIR! " + category);
-            }
-            im.setCustomModelData(texture.getModelId()); //todo: @BEFORE_RELEASE@ @BREAKING_CHANGE@ Textures should be dynamic generated from the texture registry and updated via packet modification when the texture is changed.
-            i.setItemMeta(im);
-            return i;
-        }, UnaryOperator.identity());
+        p = PrototypeDecorator.builder()
+                .registry(p)
+                .itemMapper(i -> {
+                    var item = i.clone();
+                    var im = item.getItemMeta();
+                    if (im == null) {
+                        throw new IllegalStateException("ItemMeta is null or AIR! " + category);
+                    }
+                    im.setCustomModelData(texture.getModelId()); //todo: @BEFORE_RELEASE@ @BREAKING_CHANGE@ Textures should be dynamic generated from the texture registry and updated via packet modification when the texture is changed.
+                    i.setItemMeta(im);
+                    return i;
+                })
+                .build();
         // register item.
         AstralFlow.getInstance().getItemRegistry().registerItem(p, oreDictId);
         // recipes
