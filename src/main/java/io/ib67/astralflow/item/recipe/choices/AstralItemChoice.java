@@ -63,6 +63,9 @@ public final class AstralItemChoice implements IngredientChoice {
         var isItem = ir.isItem(itemStack);
         if (isItem) {
             var state = (InternalItemState) ir.getState(itemStack, StateScope.INTERNAL_ITEM);
+            if (state.getPrototypeKey() == null) {
+                return false;
+            }
             return materials.contains(state.getPrototypeKey());
         }
         return false;

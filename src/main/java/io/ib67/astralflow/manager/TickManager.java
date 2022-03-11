@@ -37,6 +37,7 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -93,8 +94,8 @@ public final class TickManager implements ITickManager {
      *
      * @return
      */
-    public Stream<WeakReference<TickReceipt<?>>> receiptStream() {
-        return receipts.stream().filter(e -> !e.get().isDropped());
+    public Stream<? extends TickReceipt<?>> receiptStream() {
+        return receipts.stream().map(e -> e.get()).filter(Objects::nonNull).filter(TickReceipt::isDropped);
 
     }
 

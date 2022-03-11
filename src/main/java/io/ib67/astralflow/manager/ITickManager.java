@@ -24,7 +24,6 @@ package io.ib67.astralflow.manager;
 import io.ib67.astralflow.Tickable;
 import io.ib67.astralflow.scheduler.TickReceipt;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -46,7 +45,7 @@ public interface ITickManager {
      *
      * @return
      */
-    Stream<WeakReference<TickReceipt<?>>> receiptStream();
+    Stream<? extends TickReceipt<?>> receiptStream();
 
     /**
      * 可能导致 {@link ClassCastException}.

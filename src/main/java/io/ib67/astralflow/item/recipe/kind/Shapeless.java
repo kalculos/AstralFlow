@@ -94,8 +94,7 @@ public class Shapeless implements AstralRecipe {
         if (cleanItemStacks.size() != choices.length) {
             return false;
         }
-        var copy = new ArrayList<IngredientChoice>();
-        copy.addAll(List.of(choices));
+        var copy = new ArrayList<IngredientChoice>(List.of(choices));
         for (ItemStack cleanItemStack : cleanItemStacks) {
             var choice = copy.stream().filter(e -> e.test(cleanItemStack)).findFirst().orElse(null);
             if (choice == null) return false;
@@ -115,8 +114,7 @@ public class Shapeless implements AstralRecipe {
             throw new IllegalArgumentException("itemStacks size does not match choices size");
         }
         var tran = Arrays.copyOf(itemStacks, itemStacks.length);
-        var copy = new ArrayList<IngredientChoice>();
-        copy.addAll(List.of(choices));
+        var copy = new ArrayList<IngredientChoice>(List.of(choices));
         for (int i = 0; i < tran.length; i++) {
             var cleanItemStack = cleanItemStacks.get(i);
 

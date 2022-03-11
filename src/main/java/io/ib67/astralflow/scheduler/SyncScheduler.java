@@ -48,6 +48,6 @@ public class SyncScheduler implements Scheduler {
 
     @Override
     public void remove(Tickable<?> tickable) {
-        tickTargets.remove(tickable);
+        tickTargets.removeIf(e -> e.tickable == tickable);
     }
 }
