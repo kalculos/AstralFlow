@@ -31,5 +31,5 @@ And we recommend Lombok.
 [Example `HelloMachine`](./src/storageModule/java/astralflow/storage/machines/HelloMachine.java)
 
 # Sponsor
-Proudly sponsored by JetBrains. It's worthy to try their products!  
+Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!  
 ![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png)
