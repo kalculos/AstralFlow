@@ -21,13 +21,16 @@
 
 package io.ib67.astralflow.storage.impl;
 
+import com.google.common.collect.HashBiMap;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import io.ib67.astralflow.api.AstralHelper;
+import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.util.Pair;
 import io.ib67.util.Util;
+import io.ib67.util.bukkit.Log;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +54,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class ChunkBasedMachineStorage implements IMachineStorage {
     private static final Gson SERIALIZER = Util.BukkitAPI.gsonForBukkit();
     private final Map<UUID, Location> cachedMachineLocations;
+    private final Map<Location, UUID> reversedCachedMachineLocations;
+
+
+    /// --- Runtime Caches --- ///
+
     private final Set<Location> cachedLocations = new HashSet<>();
+
     private final Map<Chunk, Pair<ChunkMachineIndex, MachineData>> chunks = new WeakHashMap<>();
 
     private final Map<Location, WeakReference<IMachine>> machineCache = new HashMap<>();
@@ -59,17 +68,36 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     private final NamespacedKey chunkIndexMetaKey;
     private final NamespacedKey chunkDataMetaKey;
 
+    private final MachineStorageType defaultStorageType;
+
     @SneakyThrows
-    public ChunkBasedMachineStorage(Path dataPath, NamespacedKey chunkMetaKey, NamespacedKey chunkDataMetaKey) {
-        //todo add hooks for chunk load and unload.
+    public ChunkBasedMachineStorage(Path dataPath, NamespacedKey chunkMetaKey, NamespacedKey chunkDataMetaKey, MachineStorageType defaultStorageType) {
+        this.defaultStorageType = defaultStorageType;
+        //todo add hooks for chunk load and unload. And its data saving
         if (Files.isDirectory(dataPath)) {
             throw new IllegalArgumentException("The provided data path is a directory");
         }
         cachedMachineLocations = SERIALIZER.fromJson(Files.readString(dataPath), new TypeToken<HashMap<UUID, Location>>() {
         }.getType());
+        reversedCachedMachineLocations = HashBiMap.create(cachedMachineLocations).inverse();
         cachedLocations.addAll(cachedMachineLocations.values());
         this.chunkIndexMetaKey = chunkMetaKey;
         this.chunkDataMetaKey = chunkDataMetaKey;
+        HookType.CHUNK_LOAD.register(chunk -> initChunk(chunk.getChunk()));
+        HookType.CHUNK_UNLOAD.register(event -> chunks.get(event.getChunk()).key.machines.forEach((location, machType) -> {
+            if (location.getChunk() == event.getChunk()) {
+                var machine = get(location);
+
+                save(location, machine);
+                // deactivate
+                machine.onUnload();
+
+                // write data
+                var pdc = location.getChunk().getPersistentDataContainer();
+                pdc.set(chunkIndexMetaKey, MachineIndexTag.INSTANCE, chunks.get(location.getChunk()).key);
+                pdc.set(chunkDataMetaKey, MachineDataTag.INSTANCE, chunks.get(location.getChunk()).value);
+            }
+        }));
     }
 
     @Override
@@ -78,8 +106,22 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     }
 
     @Override
+    public UUID getUUIDByLocation(Location location) {
+        return reversedCachedMachineLocations.get(location);
+    }
+
+    @Override
     public boolean has(Location loc) {
         return cachedLocations.contains(AstralHelper.purifyLocation(loc));
+    }
+
+    public boolean initChunk(Chunk chunk) {
+        var pdc = chunk.getPersistentDataContainer();
+        if (!pdc.has(chunkIndexMetaKey, MachineIndexTag.INSTANCE) || !pdc.has(chunkIndexMetaKey, MachineDataTag.INSTANCE)) {
+            return false;
+        }
+        chunks.put(chunk, Pair.of(pdc.get(chunkIndexMetaKey, MachineIndexTag.INSTANCE), pdc.get(chunkDataMetaKey, MachineDataTag.INSTANCE)));
+        return true;
     }
 
     @Override
@@ -91,40 +133,57 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         if (machineCache.containsKey(loc) && cachedMachine != null) {
             return cachedMachine;
         }
-
-        // this will load chunk.
-        if (!loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4)) {
-            // load data....
-            var chunk = loc.getChunk();
-            var pdc = loc.getChunk().getPersistentDataContainer();
-            if (!pdc.has(chunkIndexMetaKey, MachineIndexTag.INSTANCE) || !pdc.has(chunkIndexMetaKey, MachineDataTag.INSTANCE)) {
-                return null;
-            }
-            chunks.put(chunk, Pair.of(pdc.get(chunkIndexMetaKey, MachineIndexTag.INSTANCE), pdc.get(chunkDataMetaKey, MachineDataTag.INSTANCE)));
-        }
         var index = chunks.get(loc.getChunk());
-        // initialization.
-        var type = index.key.machines.get(loc);
 
+        if (!index.key.hasMachines) {
+            return null;
+        }
         // read machine data.
         var dataPair = index.value.machineDatas.get(AstralHelper.purifyLocation(loc));
-        machineCache.put(loc, new WeakReference<>(dataPair.key.apply(dataPair.value)));
+        machineCache.put(loc, new WeakReference<>(dataPair.key.fromBytes(dataPair.value)));
         return machineCache.get(loc).get();
     }
 
     @Override
     public Collection<? extends Location> getKeys() {
-        return null;
+        return new ArrayList<>(cachedLocations); // defensive-copy.
     }
 
     @Override
-    public void save(Location uuid, IMachine state) {
+    public void save(Location locc, IMachine state) {
+        var loc = AstralHelper.purifyLocation(locc);
+        cachedLocations.add(loc);
+        cachedMachineLocations.put(state.getId(), loc);
+        machineCache.put(loc, new WeakReference<>(state));
 
+        boolean chunkLoaded = locc.getWorld().isChunkLoaded(locc.getBlockX() >> 4, locc.getBlockZ() >> 4);
+        if (!chunkLoaded) {
+            Log.warn("ChunkBasedMachineStorage", "Chunk not loaded when saving machine. This is a potential bug!");
+        }
+        loc.getChunk();
+        var v = chunks.get(loc.getChunk()).value;
+        var originalMachineData = v.machineDatas.get(loc);
+
+        if (originalMachineData == null) {
+            originalMachineData = Pair.of(defaultStorageType, defaultStorageType.toBytes(state));
+        } else {
+            originalMachineData.value = originalMachineData.key.toBytes(state);
+        }
+        v.machineDatas.put(loc, originalMachineData);
     }
 
     @Override
-    public void remove(Location uuid) {
+    public void remove(Location locc) {
+        var loc = AstralHelper.purifyLocation(locc);
+        var machine = get(loc);
+        if (machine == null) return;
+        cachedLocations.remove(loc);
+        machineCache.remove(loc);
+        cachedMachineLocations.remove(machine.getId());
 
+        var indexAndData = chunks.get(loc.getChunk());
+        indexAndData.value.machineDatas.remove(loc);
+        indexAndData.key.removeMachine(loc);
     }
 
     @ApiStatus.Internal

@@ -25,16 +25,21 @@ import io.ib67.astralflow.machines.IMachine;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
 import static io.ib67.astralflow.internal.MachineStorageHelper.HELPER;
 
 @RequiredArgsConstructor
 @Getter
-public enum MachineStorageType implements Function<byte[], IMachine> {
-    JSON(0, bytes -> HELPER.fromJson(new String(bytes)));
+public enum MachineStorageType {
+    JSON(0,
+            bytes -> HELPER.fromJson(new String(bytes)),
+            machine -> HELPER.toJson(machine).getBytes(StandardCharsets.UTF_8);
+    );
     private final int typeIndex;
-    private final Function<byte[], IMachine> function;
+    private final Function<byte[], IMachine> deserializer;
+    private final Function<IMachine, byte[]> serializer;
 
     public static MachineStorageType getType(int index) {
         return switch (index) {
@@ -43,8 +48,11 @@ public enum MachineStorageType implements Function<byte[], IMachine> {
         };
     }
 
-    @Override
-    public IMachine apply(byte[] bytes) {
-        return function.apply(bytes);
+    public IMachine fromBytes(byte[] bytes) {
+        return deserializer.apply(bytes);
+    }
+
+    public byte[] toBytes(IMachine machine) {
+        return serializer.apply(machine);
     }
 }

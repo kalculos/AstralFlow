@@ -19,15 +19,15 @@
  *   USA
  */
 
-package io.ib67.astralflow.storage;
+package io.ib67.astralflow.hook.event.chunk;
 
-import io.ib67.astralflow.machines.IMachine;
-import org.bukkit.Location;
+import io.ib67.astralflow.hook.event.HookEvent;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.Chunk;
 
-import java.util.UUID;
-
-public interface IMachineStorage extends KeyedStorage<Location, IMachine> {
-    Location getLocationByUUID(UUID uuid);
-
-    UUID getUUIDByLocation(Location location);
+@Getter
+@RequiredArgsConstructor
+public class ChunkLoadHook extends HookEvent {
+    private final Chunk chunk;
 }

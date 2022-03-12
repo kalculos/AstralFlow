@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class MachineManagerImpl implements IMachineManager {
@@ -66,7 +67,7 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public IMachine getAndLoadMachine(UUID uuid) {
         return cache.computeIfAbsent(uuid, k -> {
-            var machine = machineStorage.get(k);
+            var machine = machineStorage.get(machineStorage.getLocationByUUID(k));
             if (machine == null) {
                 throw new IllegalArgumentException("Machine with id " + k + " is not registered.");
             }
@@ -105,7 +106,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public Collection<? extends UUID> getAllMachines() {
-        return machineStorage.getKeys();
+        return machineStorage.getKeys().stream().map(machineStorage::getUUIDByLocation).collect(Collectors.toList());
     }
 
     @Override
@@ -130,7 +131,7 @@ public class MachineManagerImpl implements IMachineManager {
         getLoadedMachines().stream().filter(e -> {
             e.terminate();
             return true;
-        }).forEach(e -> machineStorage.save(e.getId(), e));
+        }).forEach(e -> machineStorage.save(e.getLocation(), e));
     }
 
     @Override
@@ -138,7 +139,7 @@ public class MachineManagerImpl implements IMachineManager {
         deactivateMachine(machine);
         machine.terminate();
         cache.remove(machine.getId());
-        machineStorage.remove(machine.getId());
+        machineStorage.remove(machine.getLocation());
         return true;
     }
 }

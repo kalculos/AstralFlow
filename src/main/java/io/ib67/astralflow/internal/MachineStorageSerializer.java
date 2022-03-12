@@ -37,7 +37,7 @@ public class MachineStorageSerializer implements JsonDeserializer<IMachineStorag
 
     @Override
     public IMachineStorage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new FileMachineStorage(storage, factory);
+        return null; // todo
     }
 
     @Override

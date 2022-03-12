@@ -50,7 +50,7 @@ public class AstralFlowConfiguration {
     public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageDir) {
         return new AstralFlowConfiguration(
                 new Language(),
-                new FileMachineStorage(machineStorageDir, AstralFlow.getInstance().getFactories()),
+                null, //todo
                 new FileItemStorage(itemStorageDir, AstralFlow.getInstance().getFactories()),
                 new RecipeSetting()
         );

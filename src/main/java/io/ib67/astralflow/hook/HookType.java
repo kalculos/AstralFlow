@@ -23,6 +23,8 @@ package io.ib67.astralflow.hook;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.event.HookEvent;
+import io.ib67.astralflow.hook.event.chunk.ChunkLoadHook;
+import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
 import io.ib67.astralflow.hook.event.item.ItemConsumeEvent;
 import io.ib67.astralflow.hook.event.item.ItemDamagedEvent;
 import io.ib67.astralflow.hook.event.item.ItemInteractBlockEvent;
@@ -42,6 +44,9 @@ public final class HookType<T extends HookEvent> {
     public static final HookType<ItemDamagedEvent> ITEM_DAMAGE = new HookType<>();
     public static final HookType<ItemInteractBlockEvent> ITEM_INTERACT_BLOCK = new HookType<>();
     public static final HookType<ItemInteractEntityEvent> ITEM_INTERACT_ENTITY = new HookType<>();
+
+    public static final HookType<ChunkLoadHook> CHUNK_LOAD = new HookType<>();
+    public static final HookType<ChunkUnloadHook> CHUNK_UNLOAD = new HookType<>();
 
     public void register(Consumer<T> acceptor) {
         AstralFlow.getInstance().addHook(this, acceptor);
