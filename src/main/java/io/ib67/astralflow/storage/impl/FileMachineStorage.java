@@ -21,15 +21,11 @@
 
 package io.ib67.astralflow.storage.impl;
 
-import com.google.gson.Gson;
-import io.ib67.astralflow.internal.MachineSerializer;
-import io.ib67.astralflow.internal.StateSerializer;
+import io.ib67.astralflow.internal.MachineStorageHelper;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.KeyedStorage;
-import io.ib67.util.Util;
 import io.ib67.util.bukkit.Log;
 
 import java.nio.file.Path;
@@ -37,6 +33,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class FileMachineStorage implements IMachineStorage {
     private final KeyedStorage<String, IMachine> storage;
     private final MachineStorageHelper helper;
@@ -87,26 +84,4 @@ public class FileMachineStorage implements IMachineStorage {
         storage.remove(uuid.toString());
     }
 
-    public static class MachineStorageHelper {
-        private final Gson MACHINE_SERIALIZER;
-
-        public MachineStorageHelper(IFactoryManager factories) {
-            MACHINE_SERIALIZER = Util.BukkitAPI.gsonBuilderForBukkit()
-                    .registerTypeHierarchyAdapter(IMachine.class, new MachineSerializer(factories))
-                    .registerTypeHierarchyAdapter(IState.class, new StateSerializer(Util.BukkitAPI.gsonForBukkit()))
-                    .create();
-        }
-
-        public IMachine fromJson(String json) {
-            return fromJson(json, IMachine.class);
-        }
-
-        public <T> T fromJson(String json, Class<T> tClass) {
-            return MACHINE_SERIALIZER.fromJson(json, tClass);
-        }
-
-        public String toJson(Object machine) {
-            return MACHINE_SERIALIZER.toJson(machine);
-        }
-    }
 }

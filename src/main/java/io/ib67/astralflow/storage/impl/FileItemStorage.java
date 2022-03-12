@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.storage.impl;
 
+import io.ib67.astralflow.internal.MachineStorageHelper;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.ItemStateStorage;
@@ -34,10 +35,10 @@ import java.util.stream.Collectors;
 
 public class FileItemStorage implements ItemStateStorage {
     private final KeyedStorage<String, ItemState> storage;
-    private final FileMachineStorage.MachineStorageHelper helper;
+    private final MachineStorageHelper helper;
 
     public FileItemStorage(Path storageDir, IFactoryManager factoryManager) {
-        helper = new FileMachineStorage.MachineStorageHelper(factoryManager);
+        helper = new MachineStorageHelper(factoryManager);
         storage = FileBasedKeyedStorage.<ItemState>builder()
                 .storageDir(storageDir)
                 .valueInMapper(this::fromBytes)
