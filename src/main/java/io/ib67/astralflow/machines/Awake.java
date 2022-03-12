@@ -19,27 +19,18 @@
  *   USA
  */
 
-package io.ib67.astralflow.listener;
+package io.ib67.astralflow.machines;
 
-import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
-import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
-import io.ib67.astralflow.machines.trait.Interactive;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class MachineListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST) // latest to know
-    private void onInteract(PlayerInteractMachineEvent event) {
-        if (event.getMachine() instanceof Interactive) {
-            ((Interactive) event.getMachine()).onInteract(event.getClickType(), event.getPlayer(), event.getItemInHand());
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    private void onBreak_blockItem(MachineBlockBreakEvent event) {
-// todo onBreak
-    }
-
-    //todo onPlace
+/**
+ * This annotation is for machines, to make them able to keep unloaded even though chunk is unloaded.
+ */
+@Target(java.lang.annotation.ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Awake {
 }
