@@ -22,12 +22,14 @@
 package io.ib67.astralflow.internal;
 
 import com.google.gson.Gson;
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.util.Util;
 
 public class MachineStorageHelper {
+    public static final MachineStorageHelper HELPER = new MachineStorageHelper(AstralFlow.getInstance().getFactories());
     private final Gson MACHINE_SERIALIZER;
 
     public MachineStorageHelper(IFactoryManager factories) {
