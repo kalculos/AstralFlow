@@ -48,6 +48,7 @@ dependencies {
     api('com.github.iceBear67:tools:0.2.0') {
         exclude module: 'testplug'
     }
+    compileOnly 'io.netty:netty-all:4.1.68.Final'
 
     compileOnly 'org.jetbrains:annotations:23.0.0'
     testCompileOnly 'org.jetbrains:annotations:23.0.0'

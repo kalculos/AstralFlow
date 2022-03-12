@@ -47,6 +47,10 @@ public enum AstralHelper {
         return AstralFlow.getInstance().getMachineManager().isMachine(block);
     }
 
+    public static Location purifyLocation(Location location) {
+        return new Location(location.getWorld(), Location.locToBlock(location.getX()), Location.locToBlock(location.getY()), Location.locToBlock(location.getZ()));
+    }
+
     // Only compares for block x-y-z
     public static boolean equalsLocationFuzzily(Location l1, Location l2) {
         return l1 != null && l2 != null
