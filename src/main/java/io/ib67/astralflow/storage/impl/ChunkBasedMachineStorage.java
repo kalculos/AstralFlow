@@ -23,15 +23,19 @@ package io.ib67.astralflow.storage.impl;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.storage.IMachineStorage;
+import io.ib67.util.Pair;
 import io.ib67.util.Util;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
@@ -47,15 +51,19 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     private static final Gson SERIALIZER = Util.BukkitAPI.gsonForBukkit();
     private final Map<UUID, Location> cachedMachineLocations;
     private final Set<Location> cachedLocations = new HashSet<>();
+    private final Map<Chunk, ChunkMachineIndex> chunks = new WeakHashMap<>();
+
+    private final NamespacedKey chunkMetaKey;
 
     @SneakyThrows
-    public ChunkBasedMachineStorage(Path dataPath) {
+    public ChunkBasedMachineStorage(Path dataPath, NamespacedKey chunkMetaKey) {
         if (Files.isDirectory(dataPath)) {
             throw new IllegalArgumentException("The provided data path is a directory");
         }
         cachedMachineLocations = SERIALIZER.fromJson(Files.readString(dataPath), new TypeToken<HashMap<UUID, Location>>() {
         }.getType());
         cachedLocations.addAll(cachedMachineLocations.values());
+        this.chunkMetaKey = chunkMetaKey;
     }
 
     @Override
@@ -220,6 +228,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
             }
             var count = buf.readInt();
             var entries = readEntries(chunkX, chunkZ, count, buf);
+            buf.release();
             return new ChunkMachineIndex(entries, chunkX, chunkZ);
         }
     }
