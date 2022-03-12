@@ -22,8 +22,10 @@
 package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.machines.IMachine;
+import org.bukkit.Location;
 
 import java.util.UUID;
 
-public interface IMachineStorage extends KeyedStorage<UUID, IMachine> {
+public interface IMachineStorage extends KeyedStorage<Location, IMachine> {
+    Location getLocationByUUID(UUID uuid);
 }
