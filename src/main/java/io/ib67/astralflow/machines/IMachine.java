@@ -27,7 +27,7 @@ import org.bukkit.Location;
 import java.util.UUID;
 
 public interface IMachine extends Tickable<IMachine>, LifeCycle {
-    boolean isActivated();
+    boolean canTick();
 
     UUID getId();
 

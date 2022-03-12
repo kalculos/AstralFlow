@@ -95,7 +95,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void activateMachine(IMachine machine) {
-        receiptMap.computeIfAbsent(machine.getId(), k -> AstralFlow.getInstance().getTickManager().registerTickable(machine).requires(IMachine::isActivated));
+        receiptMap.computeIfAbsent(machine.getId(), k -> AstralFlow.getInstance().getTickManager().registerTickable(machine).requires(IMachine::canTick));
     }
 
     @Override

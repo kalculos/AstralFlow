@@ -49,7 +49,7 @@ public abstract class AbstractMachine implements IMachine {
     }
 
     @Override
-    public boolean isActivated() {
+    public boolean canTick() {
         return location.isWorldLoaded() && Objects.requireNonNull(location.getWorld()).isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 
