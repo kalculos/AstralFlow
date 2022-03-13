@@ -26,15 +26,16 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
+import io.ib67.astralflow.storage.MachineSerializer;
 import io.ib67.util.Util;
 
-public class MachineStorageHelper {
+public class MachineStorageHelper implements MachineSerializer<String> {
     public static final MachineStorageHelper HELPER = new MachineStorageHelper(AstralFlow.getInstance().getFactories());
     private final Gson MACHINE_SERIALIZER;
 
     public MachineStorageHelper(IFactoryManager factories) {
         MACHINE_SERIALIZER = Util.BukkitAPI.gsonBuilderForBukkit()
-                .registerTypeHierarchyAdapter(IMachine.class, new MachineSerializer(factories))
+                .registerTypeHierarchyAdapter(IMachine.class, new JsonMachineSerializer(factories))
                 .registerTypeHierarchyAdapter(IState.class, new StateSerializer(Util.BukkitAPI.gsonForBukkit()))
                 .create();
     }
@@ -49,5 +50,15 @@ public class MachineStorageHelper {
 
     public String toJson(Object machine) {
         return MACHINE_SERIALIZER.toJson(machine);
+    }
+
+    @Override
+    public IMachine fromData(String o) {
+        return fromJson((String) o);
+    }
+
+    @Override
+    public String toData(IMachine machine) {
+        return toJson(machine);
     }
 }

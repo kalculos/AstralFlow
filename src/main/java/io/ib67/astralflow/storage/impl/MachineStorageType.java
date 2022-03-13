@@ -21,25 +21,21 @@
 
 package io.ib67.astralflow.storage.impl;
 
-import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.internal.MachineStorageHelper;
+import io.ib67.astralflow.manager.IFactoryManager;
+import io.ib67.astralflow.storage.MachineSerializer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
-
-import static io.ib67.astralflow.internal.MachineStorageHelper.HELPER;
 
 @RequiredArgsConstructor
 @Getter
-public enum MachineStorageType {
-    JSON(0,
-            bytes -> HELPER.fromJson(new String(bytes)),
-            machine -> HELPER.toJson(machine).getBytes(StandardCharsets.UTF_8)
-    );
+public enum MachineStorageType implements Function<IFactoryManager, MachineSerializer<?>> {
+    JSON(0, MachineStorageHelper::new);
+
     private final int typeIndex;
-    private final Function<byte[], IMachine> deserializer;
-    private final Function<IMachine, byte[]> serializer;
+    private final Function<IFactoryManager, MachineSerializer<?>> factory;
 
     public static MachineStorageType getType(int index) {
         return switch (index) {
@@ -48,11 +44,8 @@ public enum MachineStorageType {
         };
     }
 
-    public IMachine fromBytes(byte[] bytes) {
-        return deserializer.apply(bytes);
-    }
-
-    public byte[] toBytes(IMachine machine) {
-        return serializer.apply(machine);
+    @Override
+    public MachineSerializer<?> apply(IFactoryManager factory) {
+        return this.factory.apply(factory);
     }
 }
