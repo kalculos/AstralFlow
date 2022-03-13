@@ -19,31 +19,22 @@
  *   USA
  */
 
-package io.ib67.astralflow.internal;
+package io.ib67.astralflow.storage.impl.chunk;
 
-import com.google.gson.*;
-import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
-import io.ib67.astralflow.storage.impl.chunk.ChunkBasedMachineStorage;
+import io.ib67.util.Pair;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Location;
+import org.jetbrains.annotations.ApiStatus;
 
-import java.lang.reflect.Type;
-import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
-// todo more storage support
+@ApiStatus.Internal
 @RequiredArgsConstructor
-public class MachineStorageSerializer implements JsonDeserializer<IMachineStorage>, JsonSerializer<IMachineStorage> {
-    private final Path storage;
-    private final IFactoryManager factory;
-
-    @Override
-    public IMachineStorage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new ChunkBasedMachineStorage(storage, MachineStorageType.JSON); // todo
-    }
-
-    @Override
-    public JsonElement serialize(IMachineStorage src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive("filestorage");
-    }
+public final class MachineData {
+    // 谁也阻止不了我开摆
+    final Map<Location, Pair<MachineStorageType, byte[]>> machineDatas = new HashMap<>();
+    final int chunkX;
+    final int chunkZ;
 }
