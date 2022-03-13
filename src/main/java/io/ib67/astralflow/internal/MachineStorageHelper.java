@@ -29,7 +29,9 @@ import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.MachineSerializer;
 import io.ib67.util.Util;
 
-public class MachineStorageHelper implements MachineSerializer<String> {
+import java.nio.charset.StandardCharsets;
+
+public class MachineStorageHelper implements MachineSerializer {
     public static final MachineStorageHelper HELPER = new MachineStorageHelper(AstralFlow.getInstance().getFactories());
     private final Gson MACHINE_SERIALIZER;
 
@@ -53,12 +55,12 @@ public class MachineStorageHelper implements MachineSerializer<String> {
     }
 
     @Override
-    public IMachine fromData(String o) {
-        return fromJson((String) o);
+    public IMachine fromData(byte[] o) {
+        return fromJson(new String(o));
     }
 
     @Override
-    public String toData(IMachine machine) {
-        return toJson(machine);
+    public byte[] toData(IMachine machine) {
+        return toJson(machine).getBytes(StandardCharsets.UTF_8);
     }
 }

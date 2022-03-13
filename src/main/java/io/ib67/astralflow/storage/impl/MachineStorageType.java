@@ -31,11 +31,11 @@ import java.util.function.Function;
 
 @RequiredArgsConstructor
 @Getter
-public enum MachineStorageType implements Function<IFactoryManager, MachineSerializer<?>> {
+public enum MachineStorageType implements Function<IFactoryManager, MachineSerializer> {
     JSON(0, MachineStorageHelper::new);
 
     private final int typeIndex;
-    private final Function<IFactoryManager, MachineSerializer<?>> factory;
+    private final Function<IFactoryManager, MachineSerializer> factory;
 
     public static MachineStorageType getType(int index) {
         return switch (index) {
@@ -45,7 +45,7 @@ public enum MachineStorageType implements Function<IFactoryManager, MachineSeria
     }
 
     @Override
-    public MachineSerializer<?> apply(IFactoryManager factory) {
+    public MachineSerializer apply(IFactoryManager factory) {
         return this.factory.apply(factory);
     }
 }

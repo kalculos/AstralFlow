@@ -28,7 +28,9 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.IMachineStorage;
+import io.ib67.astralflow.storage.MachineSerializer;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.util.Pair;
 import io.ib67.util.Util;
@@ -62,9 +64,14 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
 
     private final MachineStorageType defaultStorageType;
 
+    private final Map<MachineStorageType, MachineSerializer> serializers = new EnumMap<>(MachineStorageType.class);
+
+    private final IFactoryManager machineFactory;
+
     @SneakyThrows
-    public ChunkBasedMachineStorage(Path dataPath, MachineStorageType defaultStorageType) {
+    public ChunkBasedMachineStorage(Path dataPath, MachineStorageType defaultStorageType, IFactoryManager machineFactory) {
         this.defaultStorageType = defaultStorageType;
+        this.machineFactory = machineFactory;
         //todo add hooks for chunk load and unload. And its data saving
         if (Files.isDirectory(dataPath)) {
             throw new IllegalArgumentException("The provided data path is a directory");
@@ -136,8 +143,13 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         }
         // read machine data.
         var dataPair = index.value.machineDatas.get(AstralHelper.purifyLocation(loc));
-        machineCache.put(loc, new WeakReference<>(dataPair.key.fromBytes(dataPair.value)));
+        //machineCache.put(loc, new WeakReference<>(dataPair.key.fromBytes(dataPair.value)));
+        machineCache.put(loc, new WeakReference<>(getSerializer(dataPair.key).fromData(dataPair.value)));
         return machineCache.get(loc).get();
+    }
+
+    private MachineSerializer getSerializer(MachineStorageType key) {
+        return serializers.computeIfAbsent(key, it -> it.apply(machineFactory));
     }
 
     @Override
@@ -161,9 +173,9 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         var originalMachineData = v.machineDatas.get(loc);
 
         if (originalMachineData == null) {
-            originalMachineData = Pair.of(defaultStorageType, defaultStorageType.toBytes(state));
+            originalMachineData = Pair.of(defaultStorageType, getSerializer(defaultStorageType).toData(state));
         } else {
-            originalMachineData.value = originalMachineData.key.toBytes(state);
+            originalMachineData.value = getSerializer(originalMachineData.key).toData(state);
         }
         v.machineDatas.put(loc, originalMachineData);
     }

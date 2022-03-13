@@ -52,7 +52,7 @@ public class AstralFlowConfiguration {
     public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageIndexes) {
         return new AstralFlowConfiguration(
                 new Language(),
-                new ChunkBasedMachineStorage(machineStorageIndexes, MachineStorageType.JSON), //todo
+                new ChunkBasedMachineStorage(machineStorageIndexes, MachineStorageType.JSON, AstralFlow.getInstance().getFactories()), //todo
                 new FileItemStorage(itemStorageDir, AstralFlow.getInstance().getFactories()),
                 new RecipeSetting()
         );

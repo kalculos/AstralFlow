@@ -23,8 +23,8 @@ package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.machines.IMachine;
 
-public interface MachineSerializer<T> {
-    IMachine fromData(T t);
+public interface MachineSerializer {
+    IMachine fromData(byte[] t);
 
-    T toData(IMachine machine);
+    byte[] toData(IMachine machine);
 }
