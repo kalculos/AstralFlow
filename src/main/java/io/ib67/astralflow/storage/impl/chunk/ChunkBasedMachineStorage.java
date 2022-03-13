@@ -69,8 +69,9 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         if (Files.isDirectory(dataPath)) {
             throw new IllegalArgumentException("The provided data path is a directory");
         }
-        cachedMachineLocations = SERIALIZER.fromJson(Files.readString(dataPath), new TypeToken<HashMap<UUID, Location>>() {
+        var a = (HashMap<UUID, Location>) SERIALIZER.fromJson(Files.readString(dataPath), new TypeToken<HashMap<UUID, Location>>() {
         }.getType());
+        cachedMachineLocations = a == null ? new HashMap<>() : a;
         reversedCachedMachineLocations = HashBiMap.create(cachedMachineLocations).inverse();
         cachedLocations.addAll(cachedMachineLocations.values());
         HookType.CHUNK_LOAD.register(chunk -> initChunk(chunk.getChunk()));

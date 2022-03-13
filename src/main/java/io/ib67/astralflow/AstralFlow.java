@@ -47,6 +47,7 @@ import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.ItemStateStorage;
 import io.ib67.astralflow.texture.ITextureRegistry;
+import io.ib67.util.Util;
 import io.ib67.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -69,7 +70,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private AstralFlowConfiguration configuration;
     @Getter
     private IMachineManager machineManager;
-    private final Path machineDir = getDataFolder().toPath().resolve("machines");
+    private final Path machineIndex = getDataFolder().toPath().resolve("machines.index");
     private final Path languageDir = getDataFolder().toPath().resolve("locales");
     private final Path itemDir = getDataFolder().toPath().resolve("items");
     @Getter
@@ -99,7 +100,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         instance = this;
         Log.info("Loading &aConfigurations");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
-        machineDir.toFile().mkdirs();
+        if (Util.runCatching(() -> machineIndex.toFile().createNewFile()).alsoPrintStack().isFailed()) {
+            setEnabled(false);
+            return;
+        }
         languageDir.toFile().mkdirs();
         itemDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
@@ -183,14 +187,14 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         Gson configSerializer = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
-                .registerTypeHierarchyAdapter(IMachineStorage.class, new MachineStorageSerializer(machineDir, factories))
+                .registerTypeHierarchyAdapter(IMachineStorage.class, new MachineStorageSerializer(machineIndex, factories))
                 .registerTypeHierarchyAdapter(ItemStateStorage.class, new ItemStorageSerializer(itemDir, factories))
                 .create();
         // extract config.
         var confFile = new File(getDataFolder(), "config.json");
         if (!confFile.exists() || confFile.length() == 0) {
             confFile.createNewFile();
-            Files.writeString(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir)));
+            Files.writeString(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex)));
         }
         try (
                 var config = new FileInputStream(confFile)
@@ -206,7 +210,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 if (configuration.getVersion() > CONFIG_CURRENT_VERSION) {
                     Log.warn("Launching Configuration migrator.");
                     var migrator = new ConfigMigrator(new JsonParser().parse(confString).getAsJsonObject());
-                    var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir));
+                    var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex));
                     Log.info("Migration complete.");
                     Files.writeString(confFile.toPath(), configSerializer.toJson(conf));
                     configuration = conf;
@@ -218,7 +222,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         } catch (IOException e) {
             e.printStackTrace();
             Log.warn("Cannot load configuration. Falling back to default values");
-            configuration = AstralFlowConfiguration.defaultConfiguration(itemDir, machineDir);
+            configuration = AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex);
         }
 
     }
