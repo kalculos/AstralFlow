@@ -20,3 +20,5 @@
  */
 
 rootProject.name = 'AstralFlow'
+include 'test-plugin'
+

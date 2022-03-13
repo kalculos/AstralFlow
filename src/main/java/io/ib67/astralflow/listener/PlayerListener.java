@@ -19,15 +19,20 @@
  *   USA
  */
 
-package io.ib67.astralflow.config;
+package io.ib67.astralflow.listener;
 
-import lombok.Getter;
+import io.ib67.astralflow.AstralFlow;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
-public final class Language {
-    public final String serverIsInitializing = """
-            &c 服务器正在加载中，请稍候再试。
-            &8&o 这通常不需要太长时间 ( < 3min )
-            """;
-    @Getter
-    private final String name = "zh_CN";
+public class PlayerListener implements Listener {
+    @EventHandler(priority = EventPriority.HIGHEST) // for server security.
+    public void onPlayerLogin(AsyncPlayerPreLoginEvent event) {
+        if (!((AstralFlow) AstralFlow.getInstance()).isInitialized() && !AstralFlow.getInstance().getSettings().isAllowPlayerJoinBeforeInit()) {
+            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
+            event.setKickMessage(AstralFlow.getInstance().getSettings().getLocale().serverIsInitializing);
+        }
+    }
 }

@@ -88,6 +88,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     private static final Map<HookType<?>, List<Consumer<?>>> HOOKS = new HashMap<>();
+    @Getter
     private volatile boolean initialized = false; // volatile to prevent opcode reshuffle
 
     public static AstralFlowAPI getInstance() {
@@ -118,16 +119,19 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         loadListeners();
         //todo Load StorageLoader in other sourceset.
         //Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
-        loadAllMachines();
-        if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
-            injectVanillaCraft();
-        }
         Bukkit.getScheduler().runTask(this, () -> {
-            for (Consumer<?> hook : getHooks(HookType.SERVER_STARTUP_COMPLETED)) {
-                hook.accept(null);
+            // this task will be executed after server full-start.
+            loadAllMachines();
+            if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
+                injectVanillaCraft();
             }
+            Bukkit.getScheduler().runTask(this, () -> {
+                for (Consumer<?> hook : getHooks(HookType.SERVER_STARTUP_COMPLETED)) {
+                    hook.accept(null);
+                }
+            });
+            initialized = true;
         });
-        initialized = true;
     }
 
     private void injectVanillaCraft() {

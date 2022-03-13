@@ -29,20 +29,22 @@ plugins {
 group = 'io.ib67'
 version = '0.0.1'
 
-repositories {
-    mavenCentral()
-    maven {
-        name = 'spigotmc-repo'
-        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+allprojects {
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'spigotmc-repo'
+            url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        }
+        maven {
+            name = 'sonatype'
+            url = 'https://oss.sonatype.org/content/groups/public/'
+        }
+        maven {
+            url = "https://jitpack.io"
+        }
+        maven { url "https://repo.dmulloy2.net/repository/public/" }
     }
-    maven {
-        name = 'sonatype'
-        url = 'https://oss.sonatype.org/content/groups/public/'
-    }
-    maven {
-        url = "https://jitpack.io"
-    }
-    maven { url "https://repo.dmulloy2.net/repository/public/" }
 }
 dependencies {
     api('com.github.iceBear67:tools:0.2.0') {

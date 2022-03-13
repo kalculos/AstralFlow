@@ -41,6 +41,8 @@ public class AstralFlowConfiguration {
 
     private final int version = CONFIG_CURRENT_VERSION;
     private final Language locale;
+    @SerializedName("allow-player-join-before-init")
+    private final boolean allowPlayerJoinBeforeInit = false;
     @SerializedName("machine-storage-type")
     private final IMachineStorage storage;
     @SerializedName("item-storage-type")
