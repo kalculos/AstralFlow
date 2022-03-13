@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemBuilder<C extends ItemCategory<T>, T> {
     private final ItemCategory<T> category;
@@ -39,7 +40,7 @@ public class ItemBuilder<C extends ItemCategory<T>, T> {
     private final List<AstralRecipe> recipes = new ArrayList<>();
 
     private ItemBuilder(ItemCategory<T> category) {
-        this.category = category;
+        this.category = Objects.requireNonNull(category, "Category cannot be null");
     }
 
     public static <C extends ItemCategory<P>, P>
@@ -61,7 +62,7 @@ public class ItemBuilder<C extends ItemCategory<T>, T> {
     }
 
     public ItemBuilder<C, T> oreDict(String oreDictId) {
-        this.oreDictId = oreDictId;
+        this.oreDictId = Objects.requireNonNull(oreDictId, "OreDictId cannot be null");
         return this;
     }
 

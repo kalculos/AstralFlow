@@ -29,6 +29,7 @@ import io.ib67.astralflow.manager.IFactoryManager;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class FactoryManagerImpl implements IFactoryManager {
     private final Map<Class<? extends IMachine>, IMachineFactory<?, ?>> machineFactories = new HashMap<>();
@@ -36,6 +37,7 @@ public class FactoryManagerImpl implements IFactoryManager {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends IMachine, S extends IState> IMachineFactory<T, S> getMachineFactory(Class<T> type) {
+        Objects.requireNonNull(type, "Type cannot be null");
         return (IMachineFactory<T, S>) machineFactories.get(type);
     }
 
@@ -46,15 +48,20 @@ public class FactoryManagerImpl implements IFactoryManager {
 
     @Override
     public <T extends IMachine, S extends IState> boolean register(Class<T> claz, IMachineFactory<T, S> factory) {
+        Objects.requireNonNull(claz, "Class cannot be null");
+        Objects.requireNonNull(factory, "Factory cannot be null");
+
         if (machineFactories.containsKey(claz)) {
             return false;
         }
+
         machineFactories.put(claz, factory);
         return true;
     }
 
     @Override
     public <T extends IMachine, S extends IState> boolean unregister(Class<T> type) {
+        Objects.requireNonNull(type, "Type cannot be null");
         return machineFactories.containsKey(type) && machineFactories.remove(type) != null;
     }
 }

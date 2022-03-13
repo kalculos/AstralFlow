@@ -42,6 +42,6 @@ public class ItemStorageSerializer implements JsonSerializer<ItemStateStorage>, 
 
     @Override
     public JsonElement serialize(ItemStateStorage src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive("filestorage"); //todo
+        return new JsonPrimitive("filestorage"); // TODO
     }
 }

@@ -33,6 +33,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.nio.file.Path;
+import java.util.Objects;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -50,6 +51,9 @@ public class AstralFlowConfiguration {
     private final RecipeSetting recipeSetting;
 
     public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageIndexes) {
+        Objects.requireNonNull(itemStorageDir, "ItemStorageDir cannot be null");
+        Objects.requireNonNull(machineStorageIndexes, "MachineStorageIndexes cannot be null");
+
         return new AstralFlowConfiguration(
                 new Language(),
                 new ChunkBasedMachineStorage(machineStorageIndexes, MachineStorageType.JSON, AstralFlow.getInstance().getFactories()), //todo

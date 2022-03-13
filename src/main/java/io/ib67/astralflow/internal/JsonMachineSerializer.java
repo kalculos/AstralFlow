@@ -31,6 +31,7 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.reflect.Type;
+import java.util.Objects;
 import java.util.UUID;
 
 @ApiStatus.Internal
