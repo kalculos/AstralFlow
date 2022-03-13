@@ -142,7 +142,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
             return null;
         }
         // read machine data.
-        var dataPair = index.value.machineDatas.get(AstralHelper.purifyLocation(loc));
+        var dataPair = index.value.machineData.get(AstralHelper.purifyLocation(loc));
         //machineCache.put(loc, new WeakReference<>(dataPair.key.fromBytes(dataPair.value)));
         machineCache.put(loc, new WeakReference<>(getSerializer(dataPair.key).fromData(dataPair.value)));
         return machineCache.get(loc).get();
@@ -170,14 +170,14 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         }
         loc.getChunk();
         var v = chunks.get(loc.getChunk()).value;
-        var originalMachineData = v.machineDatas.get(loc);
+        var originalMachineData = v.machineData.get(loc);
 
         if (originalMachineData == null) {
             originalMachineData = Pair.of(defaultStorageType, getSerializer(defaultStorageType).toData(state));
         } else {
             originalMachineData.value = getSerializer(originalMachineData.key).toData(state);
         }
-        v.machineDatas.put(loc, originalMachineData);
+        v.machineData.put(loc, originalMachineData);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         cachedMachineLocations.remove(machine.getId());
 
         var indexAndData = chunks.get(loc.getChunk());
-        indexAndData.value.machineDatas.remove(loc);
+        indexAndData.value.machineData.remove(loc);
         indexAndData.key.removeMachine(loc);
     }
 

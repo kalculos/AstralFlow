@@ -34,7 +34,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public final class MachineData {
     // 谁也阻止不了我开摆
-    final Map<Location, Pair<MachineStorageType, byte[]>> machineDatas = new HashMap<>();
+    final Map<Location, Pair<MachineStorageType, byte[]>> machineData = new HashMap<>();
     final int chunkX;
     final int chunkZ;
+
+    public Map<Location, Pair<MachineStorageType, byte[]>> getMachineData() {
+        return machineData;
+    }
 }

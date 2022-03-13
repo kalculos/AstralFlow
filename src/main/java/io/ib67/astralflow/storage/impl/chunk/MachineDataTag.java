@@ -46,18 +46,19 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
         var worldName = loc.getWorld().getName();
         buf.writeInt(worldName.length());
         buf.writeBytes(worldName.getBytes(UTF_8));
-        buf.writeByte(loc.getBlockX() & 15);
-        buf.writeByte(loc.getBlockY());
-        buf.writeByte(loc.getBlockZ() & 15);
+        buf.writeInt(loc.getBlockX());
+        buf.writeShort(loc.getBlockY());
+        buf.writeInt(loc.getBlockZ());
     }
 
     public static Location readLocation(int chunkX, int chunkZ, ByteBuf buf) {
-        var worldNameLen = buf.readInt();
-        var worldName = buf.readBytes(worldNameLen).toString();
-        var x = buf.readByte();
-        var y = buf.readByte();
-        var z = buf.readByte();
-        return new Location(Bukkit.getWorld(worldName), (chunkX * 16) + x, y, (chunkZ * 16) + z);
+        var worldNameLen = new byte[buf.readInt()];
+        buf.readBytes(worldNameLen);
+        var worldName = new String(worldNameLen, UTF_8);
+        var x = buf.readInt();
+        var y = buf.readShort();
+        var z = buf.readInt();
+        return new Location(Bukkit.getWorld(worldName), x, y, z);
     }
 
     @NotNull
@@ -82,8 +83,8 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
         buf.writeByte(STORAGE_VERSION);
         buf.writeInt(complex.chunkX);
         buf.writeInt(complex.chunkZ);
-        buf.writeInt(complex.machineDatas.size());
-        for (Map.Entry<Location, Pair<MachineStorageType, byte[]>> longPairEntry : complex.machineDatas.entrySet()) {
+        buf.writeInt(complex.machineData.size());
+        for (Map.Entry<Location, Pair<MachineStorageType, byte[]>> longPairEntry : complex.machineData.entrySet()) {
             var intHash = longPairEntry.getKey();
             // write loc
             writeLocation(longPairEntry.getKey(), buf);
@@ -116,8 +117,9 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
 
             var type = MachineStorageType.getType(buf.readByte());
             var dataLen = buf.readInt();
-            var data = buf.readBytes(dataLen).array();
-            result.machineDatas.put(loc, Pair.of(type, data));
+            var data = new byte[dataLen];
+            buf.readBytes(data);
+            result.machineData.put(loc, Pair.of(type, data));
         }
         buf.release();
         return result;
