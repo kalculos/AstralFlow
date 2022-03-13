@@ -23,7 +23,6 @@ package io.ib67.astralflow.storage.impl.chunk;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
@@ -34,6 +33,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.ib67.astralflow.storage.impl.chunk.BufferUtil.readLocation;
+import static io.ib67.astralflow.storage.impl.chunk.BufferUtil.writeLocation;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @ApiStatus.Internal
@@ -52,34 +53,16 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
         }
     }
 
-    public static void writeLocation(Location loc, ByteBuf buf) {
-        // [name len] [name] [x(1 byte)] [y(1b)] [z(1b)]
-        var worldName = loc.getWorld().getName();
-        buf.writeInt(worldName.length());
-        buf.writeBytes(worldName.getBytes(UTF_8));
-        buf.writeByte(loc.getBlockX() & 15);
-        buf.writeByte(loc.getBlockY());
-        buf.writeByte(loc.getBlockZ() & 15);
-    }
-
-    public static Location readLocation(int chunkX, int chunkZ, ByteBuf buf) {
-        var worldNameLen = buf.readInt();
-        var worldName = buf.readBytes(worldNameLen).toString();
-        var x = buf.readByte();
-        var y = buf.readByte();
-        var z = buf.readByte();
-        return new Location(Bukkit.getWorld(worldName), (chunkX * 16) + x, y, (chunkZ * 16) + z);
-    }
-
     public static Map<Location, String> readEntries(int chunkX, int chunkZ, int count, ByteBuf buf) {
-        var result = new HashMap<Location, String>(count, 2); // avoid-resizing
-        for (int i = 1; i < count; i++) {
-            var nameLen = buf.readInt();
-            var typeName = buf.readBytes(nameLen).toString();
+        var result = new HashMap<Location, String>(count, 2); // avoid-resizing at loading
+        for (int i = 0; i < count; i++) {
+            var nameLen = new byte[buf.readInt()];
+            buf.readBytes(nameLen);
+            var typeName = new String(nameLen, UTF_8);
             var loc = readLocation(chunkX, chunkZ, buf);
             result.put(loc, typeName);
         }
-        return result;
+        return new HashMap<>(result); // or the map cannot be resized.
     }
 
     @NotNull

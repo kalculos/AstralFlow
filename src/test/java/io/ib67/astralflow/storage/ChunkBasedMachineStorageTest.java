@@ -22,9 +22,7 @@
 package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.storage.impl.MachineStorageType;
-import io.ib67.astralflow.storage.impl.chunk.ChunkBasedMachineStorage;
-import io.ib67.astralflow.storage.impl.chunk.MachineData;
-import io.ib67.astralflow.storage.impl.chunk.MachineDataTag;
+import io.ib67.astralflow.storage.impl.chunk.*;
 import io.ib67.astralflow.test.TestUtil;
 import io.ib67.util.Pair;
 import org.bukkit.Bukkit;
@@ -34,8 +32,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ChunkBasedMachineStorageTest {
@@ -63,5 +63,17 @@ public class ChunkBasedMachineStorageTest {
         // deserialize.
         var desMd = tag.fromPrimitive(serializedData, null);
         assertArrayEquals(machineData.getMachineData().get(new Location(worldMock, 1, 1, 1)).value, desMd.getMachineData().get(new Location(worldMock, 1, 1, 1)).value, "Test MachineData Serialization");
+    }
+
+    @Test
+    public void testMachineIndexTag() {
+        var tag = MachineIndexTag.INSTANCE;
+        var machineIndex = new ChunkMachineIndex(Map.of(
+                new Location(Bukkit.getWorld("world"), 1, 1, 1),
+                "dummydummy"
+        ), 1, 1);
+        var serializedData = tag.toPrimitive(machineIndex, null);
+        var desMd = tag.fromPrimitive(serializedData, null);
+        assertEquals(machineIndex.getMachineType(new Location(Bukkit.getWorld("world"), 1, 1, 1)), desMd.getMachineType(new Location(Bukkit.getWorld("world"), 1, 1, 1)), "Test MachineIndex Serialization");
     }
 }

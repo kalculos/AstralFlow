@@ -21,42 +21,30 @@
 
 package io.ib67.astralflow.storage.impl.chunk;
 
-import io.ib67.astralflow.machines.IMachine;
+import io.netty.buffer.ByteBuf;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.jetbrains.annotations.ApiStatus;
 
-import java.util.Map;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
-@ApiStatus.Internal
-public final class ChunkMachineIndex {
-
-    final Map<Location, String> machines;
-    final int chunkX;
-    final int chunkZ;
-    boolean hasMachines = false;
-
-    public ChunkMachineIndex(Map<Location, String> machines, int chunkX, int chunkZ) {
-        this.machines = machines;
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
-        if (!machines.isEmpty()) {
-            hasMachines = true;
-        }
+public class BufferUtil {
+    public static void writeLocation(Location loc, ByteBuf buf) {
+        // [name len] [name] [x(1 byte)] [y(1b)] [z(1b)]
+        var worldName = loc.getWorld().getName();
+        buf.writeInt(worldName.length());
+        buf.writeBytes(worldName.getBytes(UTF_8));
+        buf.writeInt(loc.getBlockX());
+        buf.writeShort(loc.getBlockY());
+        buf.writeInt(loc.getBlockZ());
     }
 
-    public void addMachine(IMachine machine) {
-        hasMachines = true;
-        machines.put(machine.getLocation(), machine.getType().getName());
-    }
-
-    public void removeMachine(Location loc) {
-        machines.remove(loc);
-        if (machines.isEmpty()) {
-            hasMachines = false;
-        }
-    }
-
-    public String getMachineType(Location location) {
-        return machines.get(location);
+    public static Location readLocation(int chunkX, int chunkZ, ByteBuf buf) {
+        var worldNameLen = new byte[buf.readInt()];
+        buf.readBytes(worldNameLen);
+        var worldName = new String(worldNameLen, UTF_8);
+        var x = buf.readInt();
+        var y = buf.readShort();
+        var z = buf.readInt();
+        return new Location(Bukkit.getWorld(worldName), x, y, z);
     }
 }

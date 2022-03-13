@@ -23,9 +23,7 @@ package io.ib67.astralflow.storage.impl.chunk;
 
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.util.Pair;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
@@ -34,32 +32,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static io.ib67.astralflow.storage.impl.chunk.BufferUtil.readLocation;
+import static io.ib67.astralflow.storage.impl.chunk.BufferUtil.writeLocation;
 
 @ApiStatus.Internal
 public final class MachineDataTag implements PersistentDataType<byte[], MachineData> {
     public static final MachineDataTag INSTANCE = new MachineDataTag();
     private static final int STORAGE_VERSION = 0;
 
-    public static void writeLocation(Location loc, ByteBuf buf) {
-        // [name len] [name] [x(1 byte)] [y(1b)] [z(1b)]
-        var worldName = loc.getWorld().getName();
-        buf.writeInt(worldName.length());
-        buf.writeBytes(worldName.getBytes(UTF_8));
-        buf.writeInt(loc.getBlockX());
-        buf.writeShort(loc.getBlockY());
-        buf.writeInt(loc.getBlockZ());
-    }
-
-    public static Location readLocation(int chunkX, int chunkZ, ByteBuf buf) {
-        var worldNameLen = new byte[buf.readInt()];
-        buf.readBytes(worldNameLen);
-        var worldName = new String(worldNameLen, UTF_8);
-        var x = buf.readInt();
-        var y = buf.readShort();
-        var z = buf.readInt();
-        return new Location(Bukkit.getWorld(worldName), x, y, z);
-    }
 
     @NotNull
     @Override
