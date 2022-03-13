@@ -21,6 +21,8 @@
 
 package io.ib67.astralflow.storage;
 
+import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.factories.StatelessMachineFactory;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.astralflow.storage.impl.chunk.*;
 import io.ib67.astralflow.test.TestUtil;
@@ -31,11 +33,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ChunkBasedMachineStorageTest {
@@ -44,7 +49,6 @@ public class ChunkBasedMachineStorageTest {
     @BeforeAll
     public void setup() {
         TestUtil.init();
-
     }
 
     @Test
@@ -75,5 +79,28 @@ public class ChunkBasedMachineStorageTest {
         var serializedData = tag.toPrimitive(machineIndex, null);
         var desMd = tag.fromPrimitive(serializedData, null);
         assertEquals(machineIndex.getMachineType(new Location(Bukkit.getWorld("world"), 1, 1, 1)), desMd.getMachineType(new Location(Bukkit.getWorld("world"), 1, 1, 1)), "Test MachineIndex Serialization");
+
+        //todo test empty machine index.
+    }
+
+    @Test
+    public void testChunkStorage() throws IOException {
+        // register factory
+        AstralFlow.getInstance().getFactories().register(DummyStatefulMachine.class, new StatelessMachineFactory<>((l, u) -> new DummyStatefulMachine(u, l)));
+        var file = AstralFlow.getInstance().asPlugin().getDataFolder().toPath().resolve("test.index");
+        Files.createFile(file);
+        var randomLoc = new Location(Bukkit.getWorld("world"), ThreadLocalRandom.current().nextInt(3000), 1, ThreadLocalRandom.current().nextInt(3000));
+        var storage = new ChunkBasedMachineStorage(file, MachineStorageType.JSON, AstralFlow.getInstance().getFactories());
+        storage.initChunk(randomLoc.getChunk());
+        var machine = new DummyStatefulMachine(UUID.randomUUID(), randomLoc);
+        storage.save(randomLoc, machine);
+
+        // read
+        storage.finalizeChunk(randomLoc.getChunk());
+
+        storage.initChunk(randomLoc.getChunk());
+        var readMachine = (DummyStatefulMachine) storage.get(randomLoc);
+        assertNotNull(readMachine.getState());
+        assertEquals(readMachine.getState().get("nullcat?"), "sexy!");
     }
 }

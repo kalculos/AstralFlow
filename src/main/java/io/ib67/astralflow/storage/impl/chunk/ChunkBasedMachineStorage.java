@@ -72,7 +72,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     public ChunkBasedMachineStorage(Path dataPath, MachineStorageType defaultStorageType, IFactoryManager machineFactory) {
         this.defaultStorageType = defaultStorageType;
         this.machineFactory = machineFactory;
-        //todo add hooks for chunk load and unload. And its data saving
+        //todo add hooks for its data saving
+
         if (Files.isDirectory(dataPath)) {
             throw new IllegalArgumentException("The provided data path is a directory");
         }
@@ -121,6 +122,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     public boolean initChunk(Chunk chunk) {
         var pdc = chunk.getPersistentDataContainer();
         if (!pdc.has(MACHINE_INDEX_KEY, MachineIndexTag.INSTANCE) || !pdc.has(MACHINE_INDEX_KEY, MachineDataTag.INSTANCE)) {
+            chunks.put(chunk, Pair.of(new ChunkMachineIndex(new HashMap<>(), chunk.getX(), chunk.getZ()), new MachineData(chunk.getX(), chunk.getZ())));
             return false;
         }
         chunks.put(chunk, Pair.of(pdc.get(MACHINE_INDEX_KEY, MachineIndexTag.INSTANCE), pdc.get(MACHINE_DATA_KEY, MachineDataTag.INSTANCE)));
@@ -167,8 +169,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         boolean chunkLoaded = locc.getWorld().isChunkLoaded(locc.getBlockX() >> 4, locc.getBlockZ() >> 4);
         if (!chunkLoaded) {
             Log.warn("ChunkBasedMachineStorage", "Chunk not loaded when saving machine. This is a potential bug!");
+            initChunk(loc.getChunk());
         }
-        loc.getChunk();
         var v = chunks.get(loc.getChunk()).value;
         var originalMachineData = v.machineData.get(loc);
 
