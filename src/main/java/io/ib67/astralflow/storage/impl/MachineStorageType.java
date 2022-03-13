@@ -35,7 +35,7 @@ import static io.ib67.astralflow.internal.MachineStorageHelper.HELPER;
 public enum MachineStorageType {
     JSON(0,
             bytes -> HELPER.fromJson(new String(bytes)),
-            machine -> HELPER.toJson(machine).getBytes(StandardCharsets.UTF_8);
+            machine -> HELPER.toJson(machine).getBytes(StandardCharsets.UTF_8)
     );
     private final int typeIndex;
     private final Function<byte[], IMachine> deserializer;
