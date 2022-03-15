@@ -63,7 +63,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0";
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.18.1' // mock-buukkit 1.18 has some problem
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.24.1' // mock-buukkit 1.18 has some problem
 }
 lombok {
     version = "1.18.20"
