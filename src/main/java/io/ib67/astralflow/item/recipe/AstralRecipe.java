@@ -23,12 +23,14 @@ package io.ib67.astralflow.item.recipe;
 
 import org.bukkit.Keyed;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface AstralRecipe extends Keyed, Predicate<ItemStack[]>, UnaryOperator<ItemStack[]> {
     @Contract(" -> new")
     ItemStack produceResult();

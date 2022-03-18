@@ -21,8 +21,11 @@
 
 package io.ib67.astralflow.storage;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.util.Collection;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface KeyedStorage<K, V> {
     boolean has(K uuid);
 

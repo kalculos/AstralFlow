@@ -21,8 +21,11 @@
 
 package io.ib67.astralflow.texture;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.nio.file.Path;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface ITextureExporter {
     void export(Path pathToResult);
 

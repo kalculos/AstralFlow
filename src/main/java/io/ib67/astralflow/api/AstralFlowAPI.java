@@ -31,10 +31,12 @@ import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;
 import java.util.function.Consumer;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface AstralFlowAPI {
     IMachineManager getMachineManager();
 

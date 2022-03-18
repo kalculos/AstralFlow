@@ -19,10 +19,11 @@
  *   USA
  */
 
-package io.ib67.astralflow.manager;
+package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.Tickable;
+import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.scheduler.Scheduler;
 import io.ib67.astralflow.scheduler.SchedulerAdapter;
 import io.ib67.astralflow.scheduler.SyncScheduler;

@@ -22,7 +22,7 @@
 package io.ib67.astralflow.scheduler;
 
 import io.ib67.astralflow.Tickable;
-import io.ib67.astralflow.manager.TickManager;
+import io.ib67.astralflow.manager.impl.TickManager;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;

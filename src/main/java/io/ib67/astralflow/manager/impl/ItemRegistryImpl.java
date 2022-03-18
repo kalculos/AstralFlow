@@ -48,10 +48,9 @@ public class ItemRegistryImpl implements ItemRegistry {
     private final ItemStateStorage states;
 
     public ItemRegistryImpl(ItemStateStorage states, IOreDict oreDict) {
-        Objects.requireNonNull(states);
-        Objects.requireNonNull(oreDict);
-        this.states = states;
-        this.oreDict = oreDict;
+        this.states = Objects.requireNonNull(states);
+        this.oreDict = Objects.requireNonNull(oreDict);
+
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, () -> {
             userStateCache.forEach(states::save);
             internalStateCache.forEach(states::save);

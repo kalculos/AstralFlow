@@ -22,10 +22,12 @@
 package io.ib67.astralflow.item;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;
 import java.util.function.Predicate;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface IOreDict {
     /**
      * 插件完成初始化后将会封锁所有的 registerItem 请求以减小维护成本

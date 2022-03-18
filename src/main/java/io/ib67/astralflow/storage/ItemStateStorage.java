@@ -22,8 +22,10 @@
 package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.item.ItemState;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface ItemStateStorage extends KeyedStorage<UUID, ItemState> {
 }
