@@ -23,6 +23,8 @@ package io.ib67.astralflow.api.external;
 
 import lombok.Builder;
 
+import java.util.Objects;
+
 public record ModuleInfo(
         String moduleName,
         String issueTrackerUrl,
@@ -32,6 +34,16 @@ public record ModuleInfo(
 ) {
     @Builder
     public ModuleInfo {
-
+        Objects.requireNonNull(moduleName, "moduleName cannot be null");
+        Objects.requireNonNull(moduleVersion, "moduleVersion cannot be null");
+        if (issueTrackerUrl == null || issueTrackerUrl.isEmpty()) {
+            issueTrackerUrl = "Not Available.";
+        }
+        if (moduleDescription == null || moduleDescription.isEmpty()) {
+            moduleDescription = "Not Available.";
+        }
+        if (moduleAuthors == null || moduleAuthors.length == 0) {
+            moduleAuthors = new String[]{"Not Available."};
+        }
     }
 }

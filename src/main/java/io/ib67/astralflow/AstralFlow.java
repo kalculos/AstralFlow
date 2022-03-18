@@ -40,7 +40,10 @@ import io.ib67.astralflow.listener.BlockListener;
 import io.ib67.astralflow.listener.MachineListener;
 import io.ib67.astralflow.listener.WorldListener;
 import io.ib67.astralflow.listener.crafts.RecipeListener;
-import io.ib67.astralflow.manager.*;
+import io.ib67.astralflow.manager.IFactoryManager;
+import io.ib67.astralflow.manager.IMachineManager;
+import io.ib67.astralflow.manager.ITickManager;
+import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
@@ -122,6 +125,9 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         //Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
         Bukkit.getScheduler().runTask(this, () -> {
             // this task will be executed after server full-start.
+
+            /* LOAD MODULES */
+
             loadAllMachines();
             if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
                 injectVanillaCraft();
