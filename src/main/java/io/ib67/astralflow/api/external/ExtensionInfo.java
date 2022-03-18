@@ -23,6 +23,7 @@ package io.ib67.astralflow.api.external;
 
 import lombok.Builder;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -58,6 +59,6 @@ public record ExtensionInfo(
 
     @Override
     public String toString() {
-        return String.format("%s v%s by %s", extensionName, extensionVersion, extensionAuthors);
+        return String.format("%s v%s by %s", extensionName, extensionVersion, Arrays.toString(extensionAuthors));
     }
 }
