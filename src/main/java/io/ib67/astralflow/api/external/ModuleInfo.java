@@ -25,6 +25,15 @@ import lombok.Builder;
 
 import java.util.Objects;
 
+/**
+ * Information about a {@link AstralModule}
+ *
+ * @param moduleName        name of module. *not nullable*
+ * @param issueTrackerUrl   an url linked to feedback pages, nullable
+ * @param moduleDescription description for the module, nullable
+ * @param moduleVersion     version of the module, *not nullable*.
+ * @param moduleAuthors     authors, nullable
+ */
 public record ModuleInfo(
         String moduleName,
         String issueTrackerUrl,
