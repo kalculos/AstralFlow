@@ -26,33 +26,33 @@ import lombok.Builder;
 import java.util.Objects;
 
 /**
- * Information about a {@link AstralModule}
+ * Information about a {@link AstralExtension}
  *
- * @param moduleName        name of module. *not nullable*
- * @param issueTrackerUrl   an url linked to feedback pages, nullable
- * @param moduleDescription description for the module, nullable
- * @param moduleVersion     version of the module, *not nullable*.
- * @param moduleAuthors     authors, nullable
+ * @param extensionName        name of extension. *not nullable*
+ * @param issueTrackerUrl      an url linked to feedback pages, nullable
+ * @param extensionDescription description for the extension, nullable
+ * @param extensionVersion     version of the extension, *not nullable*.
+ * @param extensionAuthors     authors, nullable
  */
-public record ModuleInfo(
-        String moduleName,
+public record ExtensionInfo(
+        String extensionName,
         String issueTrackerUrl,
-        String moduleDescription,
-        String moduleVersion,
-        String[] moduleAuthors
+        String extensionDescription,
+        String extensionVersion,
+        String[] extensionAuthors
 ) {
     @Builder
-    public ModuleInfo {
-        Objects.requireNonNull(moduleName, "moduleName cannot be null");
-        Objects.requireNonNull(moduleVersion, "moduleVersion cannot be null");
+    public ExtensionInfo {
+        Objects.requireNonNull(extensionName, "extensionName cannot be null");
+        Objects.requireNonNull(extensionVersion, "extensionVersion cannot be null");
         if (issueTrackerUrl == null || issueTrackerUrl.isEmpty()) {
             issueTrackerUrl = "Not Available.";
         }
-        if (moduleDescription == null || moduleDescription.isEmpty()) {
-            moduleDescription = "Not Available.";
+        if (extensionDescription == null || extensionDescription.isEmpty()) {
+            extensionDescription = "Not Available.";
         }
-        if (moduleAuthors == null || moduleAuthors.length == 0) {
-            moduleAuthors = new String[]{"Not Available."};
+        if (extensionAuthors == null || extensionAuthors.length == 0) {
+            extensionAuthors = new String[]{"Not Available."};
         }
     }
 }

@@ -28,29 +28,29 @@ import java.util.Objects;
 
 
 /**
- * A class that represents a module.
+ * A class that represents an extension.
  * <p>
  * Registering your own contents' by subclassing this first.
  * Also check the doc.
  */
 @ApiStatus.AvailableSince("0.1.0")
-public abstract class AstralModule {
-    private final ModuleInfo info;
+public abstract class AstralExtension {
+    private final ExtensionInfo info;
 
-    public AstralModule(@NotNull ModuleInfo info) {
-        Objects.requireNonNull(info, "Module info cannot be null");
+    public AstralExtension(@NotNull ExtensionInfo info) {
+        Objects.requireNonNull(info, "extension info cannot be null");
         this.info = info;
     }
 
     /**
-     * Called when the module is in INIT phase. You can register your machines and items here.
+     * Called when the extension is in INIT phase. You can register your machines and items here.
      */
     public void init() {
 
     }
 
     /**
-     * Called when your module and astralflow itself is going to be disabled. (Generally server shutdown.)
+     * Called when your extension and astralflow itself is going to be disabled. (Generally server shutdown.)
      */
     public void terminate() {
 
