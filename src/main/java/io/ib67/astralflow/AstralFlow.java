@@ -95,6 +95,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     AstralFlow(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file); // for mock bukkit
     }
+    
+    public AstralFlow() {
+        super();
+    }
 
     private static final Map<HookType<?>, List<Consumer<?>>> HOOKS = new HashMap<>();
     @Getter
@@ -139,7 +143,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             }
             return true;
         });
-    
+
         if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
             injectVanillaCraft();
         }
