@@ -141,4 +141,9 @@ public class MachineManagerImpl implements IMachineManager {
         machineStorage.remove(machine.getLocation());
         return true;
     }
+
+    @Override
+    public TickReceipt<IMachine> getReceiptByMachine(IMachine machine) {
+        return this.receiptMap.get(machine.getId());
+    }
 }
