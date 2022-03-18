@@ -32,10 +32,7 @@ import io.ib67.astralflow.extension.ExtensionRegistryImpl;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
-import io.ib67.astralflow.internal.ItemStorageSerializer;
-import io.ib67.astralflow.internal.LanguageSerializer;
-import io.ib67.astralflow.internal.MachineStorageSerializer;
-import io.ib67.astralflow.internal.Warnings;
+import io.ib67.astralflow.internal.*;
 import io.ib67.astralflow.internal.config.ConfigMigrator;
 import io.ib67.astralflow.item.OreDictImpl;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
@@ -60,6 +57,7 @@ import io.ib67.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -115,6 +113,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     public void onEnable() {
         // Plugin startup logic
         instance = this;
+        // logo
+        for (String logo : AstralConstants.LOGO) {
+            Bukkit.getLogger().info(ChatColor.AQUA + logo); // removing prefix.
+        }
+        Log.info("Welcome to AstralFlow!");
         Log.info("Loading &aConfigurations");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
         if (Util.runCatching(() -> machineIndex.toFile().createNewFile()).alsoPrintStack().isFailed()) {
