@@ -23,9 +23,11 @@ package io.ib67.astralflow.machines;
 
 import io.ib67.astralflow.Tickable;
 import org.bukkit.Location;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface IMachine extends Tickable<IMachine>, LifeCycle {
     boolean canTick();
 

@@ -21,8 +21,11 @@
 
 package io.ib67.astralflow.texture;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.util.Optional;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface ITextureRegistry {
     void registerTexture(Texture texture);
 

@@ -21,7 +21,6 @@
 
 package io.ib67.astralflow.api;
 
-import com.google.gson.annotations.Since;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
