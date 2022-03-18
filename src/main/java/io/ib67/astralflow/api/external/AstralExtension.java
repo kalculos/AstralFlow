@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.api.external;
 
+import io.ib67.astralflow.AstralFlow;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +31,7 @@ import java.util.Objects;
 /**
  * A class that represents an extension.
  * <p>
- * Registering your own contents' by subclassing this first.
+ * Registering your own contents' by subclassing this first. Extensions will be registered automatically by the constructor.
  * Also check the doc.
  */
 @ApiStatus.AvailableSince("0.1.0")
@@ -40,6 +41,8 @@ public abstract class AstralExtension {
     public AstralExtension(@NotNull ExtensionInfo info) {
         Objects.requireNonNull(info, "extension info cannot be null");
         this.info = info;
+        // register this extension automatically.
+        AstralFlow.getInstance().getExtensionRegistry().registerExtension(this);
     }
 
     public final ExtensionInfo getInfo() {
