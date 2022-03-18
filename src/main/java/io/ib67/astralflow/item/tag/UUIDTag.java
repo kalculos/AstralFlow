@@ -23,13 +23,14 @@ package io.ib67.astralflow.item.tag;
 
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
 public class UUIDTag implements PersistentDataType<byte[], UUID> {
     @Override
-    public Class<byte[]> getPrimitiveType() {
+    public @NotNull Class<byte[]> getPrimitiveType() {
         return byte[].class;
     }
 

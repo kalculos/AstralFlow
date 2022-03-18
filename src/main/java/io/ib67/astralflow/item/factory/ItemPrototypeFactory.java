@@ -24,6 +24,7 @@ package io.ib67.astralflow.item.factory;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.LogicalHolder;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
  * 如果需要添加功能可以委托到现有的实现类中
  * <p>
  */
+@ApiStatus.AvailableSince("0.1.0")
 public interface ItemPrototypeFactory {
 
     /**

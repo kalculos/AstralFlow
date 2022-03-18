@@ -23,11 +23,13 @@ package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.Tickable;
 import io.ib67.astralflow.scheduler.TickReceipt;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface ITickManager {
     <T extends Tickable<T>> TickReceipt<T> registerTickable(Tickable<T> tickable);
 

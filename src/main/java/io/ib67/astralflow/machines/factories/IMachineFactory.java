@@ -24,10 +24,12 @@ package io.ib67.astralflow.machines.factories;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import org.bukkit.Location;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+@ApiStatus.AvailableSince("0.1.0")
 @FunctionalInterface
 public interface IMachineFactory<T extends IMachine, S extends IState> {
     default T createMachine(Location location) {

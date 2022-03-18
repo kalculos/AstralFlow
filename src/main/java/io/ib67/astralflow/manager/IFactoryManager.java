@@ -24,9 +24,11 @@ package io.ib67.astralflow.manager;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface IFactoryManager {
     <T extends IMachine, S extends IState> IMachineFactory<T, S> getMachineFactory(Class<T> type);
 

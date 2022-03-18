@@ -90,7 +90,7 @@ public class Shapeless implements AstralRecipe {
             return false;
         }
         // clean itemStack array
-        List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).collect(Collectors.toList());
+        List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).toList();
         if (cleanItemStacks.size() != choices.length) {
             return false;
         }
@@ -109,7 +109,7 @@ public class Shapeless implements AstralRecipe {
             throw new NullPointerException("itemStacks cannot be null");
         }
         // clean itemStack array
-        List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).collect(Collectors.toList());
+        List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).toList();
         if (cleanItemStacks.size() != choices.length) {
             throw new IllegalArgumentException("itemStacks size does not match choices size");
         }

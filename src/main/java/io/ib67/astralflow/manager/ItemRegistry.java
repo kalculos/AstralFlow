@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Optional;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface ItemRegistry {
     default void registerItem(ItemPrototypeFactory item) {
         registerItem(item, null);

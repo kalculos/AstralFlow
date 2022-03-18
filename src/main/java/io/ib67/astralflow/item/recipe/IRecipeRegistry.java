@@ -23,10 +23,15 @@ package io.ib67.astralflow.item.recipe;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 
+/**
+ * This class could registry a recipe.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public interface IRecipeRegistry {
     @Contract(pure = true, value = "_->this")
     IRecipeRegistry registerRecipe(AstralRecipe recipe);
