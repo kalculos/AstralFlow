@@ -133,7 +133,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 injectVanillaCraft();
             }
             Bukkit.getScheduler().runTask(this, () -> {
-                for (Consumer<?> hook : getHooks(HookType.SERVER_STARTUP_COMPLETED)) {
+                for (Consumer<?> hook : getHooks(HookType.ASTRALFLOW_STARTUP_COMPLETED)) {
                     hook.accept(null);
                 }
             });
