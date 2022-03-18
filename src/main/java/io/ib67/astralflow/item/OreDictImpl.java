@@ -36,7 +36,7 @@ public class OreDictImpl implements IOreDict {
     private volatile boolean locked = false;
 
     {
-        HookType.SERVER_STARTUP_COMPLETED.register(this::compile);
+        HookType.ASTRALFLOW_STARTUP_COMPLETED.register(this::compile);
     }
 
     private void compile() {
