@@ -35,6 +35,7 @@ import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.internal.ItemStorageSerializer;
 import io.ib67.astralflow.internal.LanguageSerializer;
 import io.ib67.astralflow.internal.MachineStorageSerializer;
+import io.ib67.astralflow.internal.Warnings;
 import io.ib67.astralflow.internal.config.ConfigMigrator;
 import io.ib67.astralflow.item.OreDictImpl;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
@@ -59,6 +60,8 @@ import io.ib67.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -131,28 +134,39 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         loadItemManager();
         loadListeners();
 
-        /* LOAD MODULES */
-        extensionRegistry.getExtensions().removeIf(extension -> {
-            try {
-                extension.init();
-            } catch (Throwable t) {
-                Log.warn("Failed to load extension: " + extension.getInfo());
-                Log.warn("Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
-                Log.warn("This module will be ignored.");
-                return false;
-            }
-            return true;
-        });
-
         if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
             injectVanillaCraft();
         }
         Bukkit.getScheduler().runTask(this, () -> {
+            boolean reloadChunks = false;
+            if (Bukkit.getWorlds().stream().mapToInt(world -> world.getLoadedChunks().length).sum() > 0) {
+                Log.warn("There are chunks loaded in the world, which may cause unexpected behavior due to unregistered machines..");
+                Warnings.warnUnstableServerSoft();
+                reloadChunks = true;
+            }
+            /* LOAD MODULES */
+            extensionRegistry.getExtensions().removeIf(extension -> {
+                try {
+                    extension.init();
+                } catch (Throwable t) {
+                    Log.warn("Failed to load extension: " + extension.getInfo());
+                    Log.warn("Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
+                    Log.warn("This module will be ignored.");
+                    return false;
+                }
+                return true;
+            });
+            if (reloadChunks) {
+                Log.warn("Reloading chunks to fix unregistered machines.");
+                for (World world : Bukkit.getWorlds())
+                    for (Chunk chunk : world.getLoadedChunks())
+                        chunk.unload();
+            }
             for (Consumer<?> hook : getHooks(HookType.ASTRALFLOW_STARTUP_COMPLETED)) {
                 hook.accept(null);
             }
+            initialized = true;
         });
-        initialized = true;
 
     }
 
