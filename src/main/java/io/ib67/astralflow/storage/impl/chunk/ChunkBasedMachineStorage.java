@@ -125,7 +125,11 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
             chunks.put(chunk, Pair.of(new ChunkMachineIndex(new HashMap<>(), chunk.getX(), chunk.getZ()), new MachineData(chunk.getX(), chunk.getZ())));
             return false;
         }
-        chunks.put(chunk, Pair.of(pdc.get(MACHINE_INDEX_KEY, MachineIndexTag.INSTANCE), pdc.get(MACHINE_DATA_KEY, MachineDataTag.INSTANCE)));
+        Pair<ChunkMachineIndex, MachineData> indexMachineDataPair = Pair.of(pdc.get(MACHINE_INDEX_KEY, MachineIndexTag.INSTANCE), pdc.get(MACHINE_DATA_KEY, MachineDataTag.INSTANCE));
+        chunks.put(chunk, indexMachineDataPair);
+
+        // load machines.
+        indexMachineDataPair.key.machines.keySet().forEach(this::get);
         return true;
     }
 
