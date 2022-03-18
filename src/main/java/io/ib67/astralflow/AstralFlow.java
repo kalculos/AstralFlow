@@ -121,16 +121,15 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             setEnabled(false);
             return;
         }
+        Log.info("Loading &aComponents");
         languageDir.toFile().mkdirs();
         itemDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
         loadConfig();
-        Log.info("Loading &aMachines");
         loadMachineManager();
         //scheduler = new TickScheduler(machineManager);
         //scheduler.runTaskTimer(this, 0L, 1L); // Every tick.
         tickManager = new TickManager();
-        Log.info("Loading &aItems");
         loadItemManager();
         loadListeners();
 
@@ -145,9 +144,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 reloadChunks = true;
             }
             /* LOAD MODULES */
+            Log.info("Loading &aModules");
             extensionRegistry.getExtensions().removeIf(extension -> {
                 try {
                     extension.init();
+                    Log.info("Loaded extension: " + extension.getInfo());
                 } catch (Throwable t) {
                     Log.warn("Failed to load extension: " + extension.getInfo());
                     Log.warn("Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
@@ -215,13 +216,11 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private void loadMachineManager() {
         var machineStorage = configuration.getStorage();
         machineManager = new MachineManagerImpl(machineStorage);
-        Log.info(machineManager.getAllMachines().size() + " machines were found.");
     }
 
     private void loadItemManager() {
         var itemStorage = configuration.getItemStorage();
         itemRegistry = new ItemRegistryImpl(itemStorage, new OreDictImpl());
-        Log.info(itemStorage.getKeys().size() + " items were found.");
     }
 
     private void loadAllMachines() {

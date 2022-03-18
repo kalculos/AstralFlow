@@ -27,6 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class TestPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
-        Log.info("TestPlugin enabled");
+        Log.info("Loading TestModule...");
+        new TestModule();
     }
 }
