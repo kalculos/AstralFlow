@@ -30,6 +30,6 @@ public class ConfigMigrator {
     private final JsonObject targetedConfig;
 
     public AstralFlowConfiguration migrate(AstralFlowConfiguration currentConfig) {
-        return currentConfig; // todo but not now
+        return currentConfig; // TODO but not now
     }
 }

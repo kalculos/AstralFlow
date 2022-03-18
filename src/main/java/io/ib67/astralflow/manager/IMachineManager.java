@@ -22,12 +22,15 @@
 package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.scheduler.TickReceipt;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;
 import java.util.UUID;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface IMachineManager {
     void setupMachine(IMachine machine, boolean update);
 
@@ -57,4 +60,6 @@ public interface IMachineManager {
     void saveMachines();
 
     boolean removeAndTerminateMachine(IMachine machine);
+
+    TickReceipt<IMachine> getReceiptByMachine(IMachine machine);
 }

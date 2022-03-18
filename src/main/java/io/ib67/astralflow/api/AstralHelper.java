@@ -21,16 +21,18 @@
 
 package io.ib67.astralflow.api;
 
-import com.google.gson.annotations.Since;
 import io.ib67.astralflow.AstralFlow;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.util.Objects;
 
 /**
  * Functional class providing utility methods
  */
-@Since(1)
+@ApiStatus.AvailableSince("0.1.0")
 public enum AstralHelper {
     @Deprecated
     USELESS_INSTANCE;

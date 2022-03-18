@@ -22,7 +22,9 @@
 package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.machines.IMachine;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface MachineSerializer {
     IMachine fromData(byte[] t);
 

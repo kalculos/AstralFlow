@@ -30,6 +30,7 @@ import io.ib67.util.bukkit.Log;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -38,9 +39,9 @@ public class FileItemStorage implements ItemStateStorage {
     private final MachineStorageHelper helper;
 
     public FileItemStorage(Path storageDir, IFactoryManager factoryManager) {
-        helper = new MachineStorageHelper(factoryManager);
+        helper = new MachineStorageHelper(Objects.requireNonNull(factoryManager, "FactoryManager cannot be null!"));
         storage = FileBasedKeyedStorage.<ItemState>builder()
-                .storageDir(storageDir)
+                .storageDir(Objects.requireNonNull(storageDir, "StorageDir cannot be null!"))
                 .valueInMapper(this::fromBytes)
                 .valueOutMapper(this::toBytes)
                 .build();

@@ -50,7 +50,7 @@ dependencies {
     api('com.github.iceBear67:tools:0.2.0') {
         exclude module: 'testplug'
     }
-    compileOnly 'io.netty:netty-all:4.1.68.Final'
+    compileOnly 'io.netty:netty-all:4.1.75.Final'
 
     compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
@@ -63,7 +63,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0";
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.18.1' // mock-buukkit 1.18 has some problem
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.24.1' // mock-buukkit 1.18 has some problem
 }
 lombok {
     version = "1.18.20"

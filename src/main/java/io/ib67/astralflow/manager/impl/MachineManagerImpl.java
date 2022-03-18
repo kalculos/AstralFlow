@@ -33,10 +33,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -61,6 +58,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public boolean isRegistered(UUID uuid) {
+        Objects.requireNonNull(uuid, "UUID cannot be null.");
         return cache.containsKey(uuid);
     }
 
@@ -111,8 +109,9 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void registerMachine(IMachine machine) {
-        // validations.
+        Objects.requireNonNull(machine, "Machine cannot be null.");
         var id = machine.getId();
+
         if (cache.containsKey(id)) {
             throw new IllegalArgumentException("This machine is already registered.");
         }
@@ -141,5 +140,10 @@ public class MachineManagerImpl implements IMachineManager {
         cache.remove(machine.getId());
         machineStorage.remove(machine.getLocation());
         return true;
+    }
+
+    @Override
+    public TickReceipt<IMachine> getReceiptByMachine(IMachine machine) {
+        return this.receiptMap.get(machine.getId());
     }
 }

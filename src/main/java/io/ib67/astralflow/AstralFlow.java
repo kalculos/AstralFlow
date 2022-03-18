@@ -44,6 +44,7 @@ import io.ib67.astralflow.manager.*;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
+import io.ib67.astralflow.manager.impl.TickManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.ItemStateStorage;
 import io.ib67.astralflow.texture.ITextureRegistry;
