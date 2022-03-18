@@ -52,7 +52,12 @@ public record ExtensionInfo(
             extensionDescription = "Not Available.";
         }
         if (extensionAuthors == null || extensionAuthors.length == 0) {
-            extensionAuthors = new String[]{"Not Available."};
+            extensionAuthors = new String[]{"Unknown"};
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s v%s by %s", extensionName, extensionVersion, extensionAuthors);
     }
 }

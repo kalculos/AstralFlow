@@ -25,8 +25,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import io.ib67.astralflow.api.AstralFlowAPI;
+import io.ib67.astralflow.api.external.AstralExtension;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.config.Language;
+import io.ib67.astralflow.extension.ExtensionRegistryImpl;
+import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.internal.ItemStorageSerializer;
@@ -84,6 +87,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private ItemRegistry itemRegistry;
     @Getter
     private final IRecipeRegistry recipeRegistry = new RecipeRegistryImpl();
+    @Getter
+    private final IExtensionRegistry extensionRegistry = new ExtensionRegistryImpl();
 
     private static AstralFlow instance;
 
@@ -121,24 +126,30 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         Log.info("Loading &aItems");
         loadItemManager();
         loadListeners();
-        //todo Load StorageLoader in other sourceset.
-        //Util.runCatching(() -> Class.forName("astralflow.storage.StorageLoader", true, getClassLoader()).getDeclaredConstructor().newInstance()).alsoPrintStack();
-        Bukkit.getScheduler().runTask(this, () -> {
-            // this task will be executed after server full-start.
 
-            /* LOAD MODULES */
-
-            loadAllMachines();
-            if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
-                injectVanillaCraft();
+        /* LOAD MODULES */
+        extensionRegistry.getExtensions().removeIf(extension -> {
+            try {
+                extension.init();
+            } catch (Throwable t) {
+                Log.warn("Failed to load extension: " + extension.getInfo());
+                Log.warn("Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
+                Log.warn("This module will be ignored.");
+                return false;
             }
-            Bukkit.getScheduler().runTask(this, () -> {
-                for (Consumer<?> hook : getHooks(HookType.ASTRALFLOW_STARTUP_COMPLETED)) {
-                    hook.accept(null);
-                }
-            });
-            initialized = true;
+            return true;
         });
+    
+        if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
+            injectVanillaCraft();
+        }
+        Bukkit.getScheduler().runTask(this, () -> {
+            for (Consumer<?> hook : getHooks(HookType.ASTRALFLOW_STARTUP_COMPLETED)) {
+                hook.accept(null);
+            }
+        });
+        initialized = true;
+
     }
 
     private void injectVanillaCraft() {
@@ -153,6 +164,15 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             Log.warn("We're not initialized! Won't do anything.");
             return;
         }
+        Log.info("Disabling Modules");
+        for (AstralExtension extension : extensionRegistry.getExtensions()) {
+            try {
+                extension.terminate();
+            } catch (Throwable t) {
+                Log.warn("Failed to terminate extension: " + extension.getInfo());
+                Log.warn("Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
+            }
+        }
         Log.info("Saving Data");
         for (Consumer<?> hook : getHooks(HookType.PLUGIN_SHUTDOWN)) {
             hook.accept(null);
@@ -160,6 +180,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         for (Consumer<?> hook : getHooks(HookType.SAVE_DATA)) {
             hook.accept(null);
         }
+
+
     }
 
     private void loadListeners() {

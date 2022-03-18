@@ -42,6 +42,10 @@ public abstract class AstralExtension {
         this.info = info;
     }
 
+    public final ExtensionInfo getInfo() {
+        return info;
+    }
+
     /**
      * Called when the extension is in INIT phase. You can register your machines and items here.
      */

@@ -22,6 +22,7 @@
 package io.ib67.astralflow.api;
 
 import io.ib67.astralflow.config.AstralFlowConfiguration;
+import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
@@ -57,6 +58,8 @@ public interface AstralFlowAPI {
     <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable);
 
     <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
+
+    IExtensionRegistry getExtensionRegistry();
 
     default Plugin asPlugin() {
         return (Plugin) this;
