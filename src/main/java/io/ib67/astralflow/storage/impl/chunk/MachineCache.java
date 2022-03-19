@@ -23,6 +23,7 @@ package io.ib67.astralflow.storage.impl.chunk;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import io.ib67.astralflow.api.AstralHelper;
 import lombok.SneakyThrows;
 import org.bukkit.Location;
 
@@ -65,8 +66,8 @@ public final class MachineCache {
     }
 
     public void update(UUID uuid, Location location) {
-        uuid2Loc.put(uuid, location);
-        loc2uuid.put(location, uuid);
+        uuid2Loc.put(uuid, AstralHelper.purifyLocation(location));
+        loc2uuid.put(AstralHelper.purifyLocation(location), uuid);
     }
 
     public void remove(UUID uuid) {
@@ -74,7 +75,7 @@ public final class MachineCache {
     }
 
     public void remove(Location location) {
-        uuid2Loc.remove(loc2uuid.remove(location));
+        uuid2Loc.remove(loc2uuid.remove(AstralHelper.purifyLocation(location)));
     }
 
     public void clear() {

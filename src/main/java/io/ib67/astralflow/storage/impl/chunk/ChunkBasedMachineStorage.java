@@ -91,7 +91,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
 
     @Override
     public UUID getUUIDByLocation(Location location) {
-        return machineCache.getUUIDByLocation(location);
+        Objects.requireNonNull(location, "location cannot be null");
+        return machineCache.getUUIDByLocation(AstralHelper.purifyLocation(location));
     }
 
     @Override
@@ -102,22 +103,27 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
 
     @Override
     public boolean has(Location uuid) {
+        Objects.requireNonNull(uuid, "location cannot be null");
         // check cache.
-        return getUUIDByLocation(uuid) == null;
+        return getUUIDByLocation(AstralHelper.purifyLocation(uuid)) == null;
     }
 
     @Override
     public void initChunk(Chunk chunk) {
+        Objects.requireNonNull(chunk, "chunk cannot be null");
         chunkMap.computeIfAbsent(chunk, chunkFactory::loadChunk);
     }
 
     @Override
     public void finalizeChunk(Chunk chunk) {
+        Objects.requireNonNull(chunk, "chunk cannot be null");
         finalizeChunk(new ChunkUnloadHook(chunk));
     }
 
     @Override
-    public IMachine get(Location loc) {
+    public IMachine get(Location aloc) {
+        Objects.requireNonNull(aloc, "location cannot be null");
+        var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.isChunkLoaded(loc)) {
             initChunk(loc.getChunk());
         }
@@ -130,7 +136,11 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     }
 
     @Override
-    public void save(Location loc, IMachine state) {
+    public void save(Location aloc, IMachine state) {
+        Objects.requireNonNull(aloc, "loc cannot be null");
+        Objects.requireNonNull(state, "state cannot be null");
+
+        var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.equalsLocationFuzzily(loc, state.getLocation())) {
             Log.warn("CBMS", "Location and machine location are not equal! " + loc + " != " + state.getLocation() + " ,this may cause SECURITY issues.");
         }
@@ -142,7 +152,9 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     }
 
     @Override
-    public void remove(Location loc) {
+    public void remove(Location aloc) {
+        Objects.requireNonNull(aloc, "loc cannot be null");
+        var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.isChunkLoaded(loc) || !chunkMap.containsKey(loc.getChunk())) {
             initChunk(loc.getChunk());
         }

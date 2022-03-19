@@ -48,7 +48,9 @@ public enum AstralHelper {
     }
 
     public static Location purifyLocation(Location location) {
-        return new Location(location.getWorld(), Location.locToBlock(location.getX()), Location.locToBlock(location.getY()), Location.locToBlock(location.getZ()));
+        return (location.getYaw() != 0 && location.getPitch() != 0)
+                ? new Location(location.getWorld(), Location.locToBlock(location.getX()), Location.locToBlock(location.getY()), Location.locToBlock(location.getZ()))
+                : location;
     }
 
     public static boolean isChunkLoaded(Location loc) {
