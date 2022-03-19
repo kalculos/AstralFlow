@@ -226,15 +226,6 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         itemRegistry = new ItemRegistryImpl(itemStorage, new OreDictImpl());
     }
 
-    private void loadAllMachines() {
-        var machines = new ArrayList<>(machineManager.getAllMachines());
-        machines.forEach(machineManager::getAndLoadMachine);
-     /*   for (IMachine loadedMachine : machineManager.getLoadedMachines()) {
-            tickManager.registerTickable(loadedMachine).requires(IMachine::isActivated);
-        } */
-        Log.info(machineManager.getLoadedMachines().size() + " machines were loaded");
-    }
-
     @SneakyThrows
     private void loadConfig() {
         Gson configSerializer = new GsonBuilder()
