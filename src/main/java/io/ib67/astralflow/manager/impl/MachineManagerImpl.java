@@ -64,6 +64,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public IMachine getAndLoadMachine(UUID uuid) {
+        //todo refactor.
         return cache.computeIfAbsent(uuid, k -> {
             var machine = machineStorage.get(machineStorage.getLocationByUUID(k));
             if (machine == null) {

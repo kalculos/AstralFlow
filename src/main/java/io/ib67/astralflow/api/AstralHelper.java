@@ -27,8 +27,6 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.Objects;
-
 /**
  * Functional class providing utility methods
  */
@@ -51,6 +49,10 @@ public enum AstralHelper {
 
     public static Location purifyLocation(Location location) {
         return new Location(location.getWorld(), Location.locToBlock(location.getX()), Location.locToBlock(location.getY()), Location.locToBlock(location.getZ()));
+    }
+
+    public static boolean isChunkLoaded(Location loc) {
+        return loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4);
     }
 
     // Only compares for block x-y-z
