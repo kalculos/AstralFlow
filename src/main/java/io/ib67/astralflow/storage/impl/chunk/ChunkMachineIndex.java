@@ -22,18 +22,23 @@
 package io.ib67.astralflow.storage.impl.chunk;
 
 import io.ib67.astralflow.machines.IMachine;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.Collection;
 import java.util.Map;
 
 @ApiStatus.Internal
 public final class ChunkMachineIndex {
 
-    final Map<Location, String> machines;
-    final int chunkX;
-    final int chunkZ;
-    boolean hasMachines = false;
+    private final Map<Location, String> machines;
+    @Getter
+    private final int chunkX;
+    @Getter
+    private final int chunkZ;
+    @Getter
+    private boolean hasMachines = false;
 
     public ChunkMachineIndex(Map<Location, String> machines, int chunkX, int chunkZ) {
         this.machines = machines;
@@ -54,6 +59,18 @@ public final class ChunkMachineIndex {
         if (machines.isEmpty()) {
             hasMachines = false;
         }
+    }
+
+    public Collection<? extends Location> getLocations() {
+        return machines.keySet();
+    }
+
+    public Collection<? extends Map.Entry<Location, String>> getEntries() {
+        return machines.entrySet();
+    }
+
+    public Collection<? extends String> getMachineTypes() {
+        return machines.values();
     }
 
     public String getMachineType(Location location) {

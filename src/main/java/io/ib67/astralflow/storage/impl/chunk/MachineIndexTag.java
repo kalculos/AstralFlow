@@ -92,11 +92,11 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
          */
         var buffer = Unpooled.buffer();
         buffer.writeByte(STORAGE_VERSION);
-        buffer.writeInt(complex.chunkX);
-        buffer.writeInt(complex.chunkZ);
-        buffer.writeBoolean(complex.hasMachines);
-        buffer.writeInt(complex.machines.size());
-        writeEntries(complex.machines.entrySet(), buffer);
+        buffer.writeInt(complex.getChunkX());
+        buffer.writeInt(complex.getChunkZ());
+        buffer.writeBoolean(complex.isHasMachines());
+        buffer.writeInt(complex.getMachineTypes().size());
+        writeEntries(complex.getEntries(), buffer);
         var result = buffer.array();
         buffer.release();
         return result;

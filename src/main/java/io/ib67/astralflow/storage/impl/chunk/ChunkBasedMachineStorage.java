@@ -102,18 +102,18 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     }
 
     public boolean finalizeChunk(Chunk chunk) {
-        chunks.get(chunk).key.machines.forEach((location, machType) -> {
-            if (location.getChunk() == chunk) {
-                var machine = get(location);
+        chunks.get(chunk).key.getEntries().forEach(entry -> {
+            if (entry.getKey().getChunk() == chunk) {
+                var machine = get(entry.getKey());
 
-                save(location, machine);
+                save(entry.getKey(), machine);
                 machine.onUnload();
                 AstralFlow.getInstance().getMachineManager().deactivateMachine(machine);
 
                 // write data
-                var pdc = location.getChunk().getPersistentDataContainer();
-                pdc.set(MACHINE_INDEX_KEY, MachineIndexTag.INSTANCE, chunks.get(location.getChunk()).key);
-                pdc.set(MACHINE_DATA_KEY, MachineDataTag.INSTANCE, chunks.get(location.getChunk()).value);
+                var pdc = entry.getKey().getChunk().getPersistentDataContainer();
+                pdc.set(MACHINE_INDEX_KEY, MachineIndexTag.INSTANCE, chunks.get(entry.getKey().getChunk()).key);
+                pdc.set(MACHINE_DATA_KEY, MachineDataTag.INSTANCE, chunks.get(entry.getKey().getChunk()).value);
             }
         });
         return true;
@@ -129,7 +129,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         chunks.put(chunk, indexMachineDataPair);
 
         // load machines.
-        indexMachineDataPair.key.machines.keySet().forEach(this::get);
+        indexMachineDataPair.key.getLocations().forEach(this::get);
         return true;
     }
 
@@ -144,11 +144,11 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         }
         var index = chunks.get(loc.getChunk());
 
-        if (!index.key.hasMachines) {
+        if (!index.key.isHasMachines()) {
             return null;
         }
         // read machine data.
-        var dataPair = index.value.machineData.get(AstralHelper.purifyLocation(loc));
+        var dataPair = index.value.getMachineData().get(AstralHelper.purifyLocation(loc));
         //machineCache.put(loc, new WeakReference<>(dataPair.key.fromBytes(dataPair.value)));
         machineCache.put(loc, new WeakReference<>(getSerializer(dataPair.key).fromData(dataPair.value)));
         var machine = machineCache.get(loc).get();
@@ -178,14 +178,14 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
             initChunk(loc.getChunk());
         }
         var v = chunks.get(loc.getChunk()).value;
-        var originalMachineData = v.machineData.get(loc);
+        var originalMachineData = v.getData(loc);
 
         if (originalMachineData == null) {
             originalMachineData = Pair.of(defaultStorageType, getSerializer(defaultStorageType).toData(state));
         } else {
             originalMachineData.value = getSerializer(originalMachineData.key).toData(state);
         }
-        v.machineData.put(loc, originalMachineData);
+        v.save(loc, originalMachineData.key, originalMachineData.value); // todo introduce migrate mode.
     }
 
     @Override
@@ -198,7 +198,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         cachedMachineLocations.remove(machine.getId());
 
         var indexAndData = chunks.get(loc.getChunk());
-        indexAndData.value.machineData.remove(loc);
+        indexAndData.value.remove(loc);
         indexAndData.key.removeMachine(loc);
     }
 

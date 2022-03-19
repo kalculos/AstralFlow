@@ -23,6 +23,7 @@ package io.ib67.astralflow.storage.impl.chunk;
 
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.util.Pair;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.jetbrains.annotations.ApiStatus;
@@ -32,13 +33,21 @@ import java.util.Map;
 
 @ApiStatus.Internal
 @RequiredArgsConstructor
+@Getter
 public final class MachineData {
-    // 谁也阻止不了我开摆
-    final Map<Location, Pair<MachineStorageType, byte[]>> machineData = new HashMap<>();
-    final int chunkX;
-    final int chunkZ;
+    private final Map<Location, Pair<MachineStorageType, byte[]>> machineData = new HashMap<>();
+    private final int chunkX;
+    private final int chunkZ;
 
-    public Map<Location, Pair<MachineStorageType, byte[]>> getMachineData() {
-        return machineData;
+    public void save(Location loc, MachineStorageType type, byte[] data) {
+        machineData.put(loc, Pair.of(type, data));
+    }
+
+    public Pair<MachineStorageType, byte[]> getData(Location loc) {
+        return machineData.get(loc);
+    }
+
+    public void remove(Location loc) {
+        machineData.remove(loc);
     }
 }

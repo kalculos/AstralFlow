@@ -61,10 +61,10 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
          */
         var buf = Unpooled.buffer();
         buf.writeByte(STORAGE_VERSION);
-        buf.writeInt(complex.chunkX);
-        buf.writeInt(complex.chunkZ);
-        buf.writeInt(complex.machineData.size());
-        for (Map.Entry<Location, Pair<MachineStorageType, byte[]>> longPairEntry : complex.machineData.entrySet()) {
+        buf.writeInt(complex.getChunkX());
+        buf.writeInt(complex.getChunkZ());
+        buf.writeInt(complex.getMachineData().size());
+        for (Map.Entry<Location, Pair<MachineStorageType, byte[]>> longPairEntry : complex.getMachineData().entrySet()) {
             var intHash = longPairEntry.getKey();
             // write loc
             writeLocation(longPairEntry.getKey(), buf);
@@ -99,7 +99,7 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
             var dataLen = buf.readInt();
             var data = new byte[dataLen];
             buf.readBytes(data);
-            result.machineData.put(loc, Pair.of(type, data));
+            result.getMachineData().put(loc, Pair.of(type, data));
         }
         buf.release();
         return result;
