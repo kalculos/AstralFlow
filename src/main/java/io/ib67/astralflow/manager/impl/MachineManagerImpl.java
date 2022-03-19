@@ -43,9 +43,9 @@ public class MachineManagerImpl implements IMachineManager {
     private static final Object EMPTY_OBJ = new Object();
 
     private final IMachineStorage machineStorage;
-    private final Map<Location, IMachine> cache = new HashMap<>(INITIAL_MACHINE_CAPACITY); // todo: lifecycle and GC problems
     private final Map<IMachine, TickReceipt<IMachine>> receiptMap = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
 
+    private final Map<IMachine, Object> loadedMachines = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
     private final Map<Chunk, Object> checkedChunks = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
 
     {
@@ -57,6 +57,7 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public void setupMachine(IMachine machine, boolean update) {
         Objects.requireNonNull(machine);
+        loadedMachines.put(machine, EMPTY_OBJ);
         if (!isRegistered(machine.getId())) {
             registerMachine(machine);
         }
@@ -68,7 +69,7 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public boolean isRegistered(UUID uuid) {
         Objects.requireNonNull(uuid, "UUID cannot be null.");
-        return cache.containsKey(uuid);
+        return machineStorage.getLocationByUUID(uuid) != null;
     }
 
     private void unloadChunk(Chunk chunk) {
@@ -103,7 +104,7 @@ public class MachineManagerImpl implements IMachineManager {
         if (init) {
             initChunk(location.getChunk());
         }
-
+        loadedMachines.put(machineStorage.get(location), EMPTY_OBJ);
         return machineStorage.get(location);
     }
 
@@ -135,7 +136,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public Collection<? extends IMachine> getLoadedMachines() {
-        return cache.values();
+        return loadedMachines.keySet();
     }
 
     @Override
@@ -148,10 +149,11 @@ public class MachineManagerImpl implements IMachineManager {
         Objects.requireNonNull(machine, "Machine cannot be null.");
         var id = AstralHelper.purifyLocation(machine.getLocation());
 
-        if (cache.containsKey(id)) {
+        if (loadedMachines.containsKey(id)) {
             throw new IllegalArgumentException("This machine is already registered.");
         }
-        cache.put(id, machine);
+        loadedMachines.put(machine, EMPTY_OBJ);
+        machineStorage.save(machine.getLocation(), machine);
     }
 
     @Override
@@ -173,9 +175,7 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public boolean removeAndTerminateMachine(IMachine machine) {
         Objects.requireNonNull(machine);
-        deactivateMachine(machine);
-        machine.onUnload();
-        cache.remove(machine.getId());
+        terminateMachine(machine);
         machineStorage.remove(machine.getLocation());
         return true;
     }
@@ -184,7 +184,8 @@ public class MachineManagerImpl implements IMachineManager {
     public void terminateMachine(IMachine machine) {
         Objects.requireNonNull(machine);
         deactivateMachine(machine);
-        cache.remove(AstralHelper.purifyLocation(machine.getLocation()));
+        machine.onUnload();
+        loadedMachines.remove(machine);
     }
 
     @Override
