@@ -45,8 +45,13 @@ public final class MachineCache {
         }
         var map = (Map<UUID, Location>) new Gson().fromJson(Files.readString(pathToCache), new TypeToken<Map<UUID, Location>>() {
         }.getType());
-        uuid2Loc = map;
-        loc2uuid = new HashMap<>(map.size() + 16);
+        if (map != null) {
+            uuid2Loc = map;
+            loc2uuid = new HashMap<>(map.size() + 16);
+        } else {
+            uuid2Loc = new HashMap<>();
+            loc2uuid = new HashMap<>();
+        }
 
         map.forEach((uuid, loc) -> loc2uuid.put(loc, uuid));
     }
