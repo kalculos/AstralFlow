@@ -22,9 +22,11 @@
 package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.machines.IMachine;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.Collection;
 import java.util.UUID;
 
 @ApiStatus.AvailableSince("0.1.0")
@@ -32,4 +34,6 @@ public interface IMachineStorage extends KeyedStorage<Location, IMachine> {
     Location getLocationByUUID(UUID uuid);
 
     UUID getUUIDByLocation(Location location);
+
+    Collection<? extends IMachine> getMachinesByChunk(Chunk chunk);
 }
