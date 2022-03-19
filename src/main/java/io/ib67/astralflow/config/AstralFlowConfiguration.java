@@ -28,6 +28,7 @@ import io.ib67.astralflow.storage.ItemStateStorage;
 import io.ib67.astralflow.storage.impl.FileItemStorage;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.astralflow.storage.impl.chunk.ChunkBasedMachineStorage;
+import io.ib67.astralflow.storage.impl.chunk.MachineCache;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class AstralFlowConfiguration {
 
         return new AstralFlowConfiguration(
                 new Language(),
-                new ChunkBasedMachineStorage(machineStorageIndexes, MachineStorageType.JSON, AstralFlow.getInstance().getFactories()), //todo
+                new ChunkBasedMachineStorage(new MachineCache(machineStorageIndexes), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON), //todo
                 new FileItemStorage(itemStorageDir, AstralFlow.getInstance().getFactories()),
                 new RecipeSetting()
         );
