@@ -23,16 +23,21 @@ package io.ib67.astralflow.hook.event.item;
 
 import io.ib67.astralflow.item.AstralItem;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.Action;
 
 @Getter
-public class ItemInteractBlockEvent extends ItemEvent {
+public class ItemInteractBlockEvent extends ItemEvent implements Cancellable {
     private final Action clickType;
     private final Block clickedBlock;
     private final BlockFace clickedFace;
+    @Setter
+    @Getter
+    private boolean cancelled = false;
 
     public ItemInteractBlockEvent(AstralItem item, Player player, Action clickType, Block clickedBlock, BlockFace clickedFace) {
         super(item, player);

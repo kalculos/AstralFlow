@@ -59,6 +59,14 @@ public interface AstralFlowAPI {
 
     <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
 
+    /**
+     * @param hookType
+     * @param event
+     * @param <T>
+     * @return iscancelled
+     */
+    <T extends HookEvent> boolean callHooks(HookType<T> hookType, T event);
+
     IExtensionRegistry getExtensionRegistry();
 
     default Plugin asPlugin() {

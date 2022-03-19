@@ -23,40 +23,42 @@ package io.ib67.astralflow.listener;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.hook.event.item.ItemConsumeEvent;
 import io.ib67.astralflow.hook.event.item.ItemDamagedEvent;
+import io.ib67.astralflow.hook.event.item.ItemInteractBlockEvent;
 import io.ib67.astralflow.item.AstralItem;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
-
-import java.util.function.Consumer;
 
 public class ItemListener implements Listener {
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event) {
         var evt = new ItemConsumeEvent(new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry()), event.getPlayer());
-        for (Consumer<ItemConsumeEvent> hook : AstralFlow.getInstance().getHooks(HookType.ITEM_CONSUME)) {
-            hook.accept(evt);
-            if (evt.isCancelled()) {
-                event.setCancelled(true);
-                return;
-            }
-        }
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_CONSUME, evt));
     }
 
     @EventHandler
-    public <T extends HookEvent> void onItemDamaged(PlayerItemDamageEvent event) {
+    public void onItemDamaged(PlayerItemDamageEvent event) {
         var hookEvt = new ItemDamagedEvent(new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry()), event.getPlayer(), event.getDamage());
-        for (Consumer<ItemDamagedEvent> hook : AstralFlow.getInstance().getHooks(HookType.ITEM_DAMAGE)) {
-            hook.accept(hookEvt);
-            if (hookEvt.isCancelled()) {
-                event.setCancelled(true);
-                return;
-            }
-        }
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_DAMAGE, hookEvt));
     }
-    
+
+    @EventHandler
+    public void onInteractBlock(PlayerInteractEvent event) {
+        if (event.getItem() == null || event.getItem().getType() == Material.AIR) {
+            return;
+        }
+        if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.AIR) {
+            //todo itemUse
+            return;
+        }
+        var item = new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry());
+        var hookEvt = new ItemInteractBlockEvent(item, event.getPlayer(), event.getAction(), event.getClickedBlock(), event.getBlockFace());
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_INTERACT_BLOCK, hookEvt));
+    }
+
 }
