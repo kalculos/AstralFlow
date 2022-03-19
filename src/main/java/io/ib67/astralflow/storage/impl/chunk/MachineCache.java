@@ -48,12 +48,12 @@ public final class MachineCache {
         if (map != null) {
             uuid2Loc = map;
             loc2uuid = new HashMap<>(map.size() + 16);
+            map.forEach((uuid, loc) -> loc2uuid.put(loc, uuid));
         } else {
             uuid2Loc = new HashMap<>();
             loc2uuid = new HashMap<>();
         }
 
-        map.forEach((uuid, loc) -> loc2uuid.put(loc, uuid));
     }
 
     public Location getLocationByUUID(UUID uuid) {
