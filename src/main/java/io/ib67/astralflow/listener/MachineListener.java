@@ -21,8 +21,11 @@
 
 package io.ib67.astralflow.listener;
 
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
+import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 import io.ib67.astralflow.machines.trait.Interactive;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -38,8 +41,7 @@ public class MachineListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onBreak_blockItem(MachineBlockBreakEvent event) {
-// todo onBreak
+        var hookEvt = new MachineBreakEvent(event.getMachine(), event.getPlayer(), event.getBlock());
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.MACHINE_BREAK, hookEvt));
     }
-
-    //todo onPlace
 }
