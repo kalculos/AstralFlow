@@ -37,9 +37,7 @@ import io.ib67.astralflow.internal.config.ConfigMigrator;
 import io.ib67.astralflow.item.OreDictImpl;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
 import io.ib67.astralflow.item.recipe.RecipeRegistryImpl;
-import io.ib67.astralflow.listener.BlockListener;
-import io.ib67.astralflow.listener.MachineListener;
-import io.ib67.astralflow.listener.WorldListener;
+import io.ib67.astralflow.listener.*;
 import io.ib67.astralflow.listener.crafts.RecipeListener;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
@@ -229,6 +227,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         getServer().getPluginManager().registerEvents(new BlockListener(this), this);
         getServer().getPluginManager().registerEvents(new MachineListener(), this);
         getServer().getPluginManager().registerEvents(new WorldListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new ItemListener(), this);
     }
 
     private void loadFactoryManager() {
