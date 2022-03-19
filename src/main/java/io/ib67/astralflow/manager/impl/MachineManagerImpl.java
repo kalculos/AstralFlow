@@ -84,6 +84,7 @@ public class MachineManagerImpl implements IMachineManager {
         machineStorage.initChunk(chunk);
         checkedChunks.put(chunk, EMPTY_OBJ);
         for (IMachine machine : machineStorage.getMachinesByChunk(chunk)) {
+            machine.onLoad();
             setupMachine(machine, !machine.getClass().isAnnotationPresent(Tickless.class));
         }
     }
