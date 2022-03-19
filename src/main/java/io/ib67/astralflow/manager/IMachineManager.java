@@ -36,14 +36,9 @@ public interface IMachineManager {
 
     boolean isRegistered(UUID uuid);
 
-    /**
-     * @param uuid
-     * @return
-     * @throws IllegalArgumentException if uuid not registered.
-     */
-    IMachine getAndLoadMachine(UUID uuid);
-
     IMachine getAndLoadMachine(Location location);
+
+    IMachine getAndLoadMachine(UUID id);
 
     void deactivateMachine(IMachine machine);
 
@@ -51,7 +46,7 @@ public interface IMachineManager {
 
     Collection<? extends IMachine> getLoadedMachines();
 
-    Collection<? extends UUID> getAllMachines();
+    Collection<? extends Location> getAllMachines();
 
     void registerMachine(IMachine machine);
 
@@ -60,6 +55,8 @@ public interface IMachineManager {
     void saveMachines();
 
     boolean removeAndTerminateMachine(IMachine machine);
+
+    void terminateMachine(IMachine machine);
 
     TickReceipt<IMachine> getReceiptByMachine(IMachine machine);
 }
