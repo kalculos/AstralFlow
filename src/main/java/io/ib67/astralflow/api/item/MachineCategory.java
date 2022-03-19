@@ -19,8 +19,20 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.api.item;
 
-public interface LogicalHolder {
-    ItemKey getId();
+import io.ib67.astralflow.item.builder.ItemCategory;
+import io.ib67.astralflow.item.builder.ItemPrototype;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+
+public class MachineCategory implements ItemCategory<MachineItem> {
+    @Override
+    public ItemPrototypeFactory getFactory(MachineItem item) {
+        return ItemPrototype.builder()
+                .id(item.getId())
+                .prototype(item.getPrototype())
+                .holder(item)
+                .statePrototype(new MachineItemState(null, null))
+                .build();
+    }
 }

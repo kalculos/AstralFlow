@@ -19,8 +19,38 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.machines;
 
-public interface LogicalHolder {
-    ItemKey getId();
+import org.bukkit.Location;
+import org.bukkit.Material;
+
+import java.util.UUID;
+
+public class JebWool extends AbstractMachine {
+    private static final Material[] WOOLS = new Material[]{
+            Material.BLUE_WOOL,
+            Material.GREEN_WOOL,
+            Material.RED_WOOL,
+            Material.YELLOW_WOOL,
+            Material.WHITE_WOOL,
+            Material.BLACK_WOOL
+    };
+    private int counter;
+
+    protected JebWool(UUID id, Location location) {
+        super(id, location);
+    }
+
+    @Override
+    public void onLoad() {
+        getLocation().getBlock().setType(Material.OBSIDIAN);
+    }
+
+    @Override
+    public void update(IMachine self) {
+        counter++;
+        if (counter % 2 == 0) {
+            getLocation().getBlock().setType(WOOLS[counter % WOOLS.length]);
+        }
+    }
 }

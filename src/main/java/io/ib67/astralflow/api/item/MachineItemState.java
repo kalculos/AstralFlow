@@ -19,8 +19,19 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.api.item;
 
-public interface LogicalHolder {
-    ItemKey getId();
+import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.machines.IState;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@Data
+public class MachineItemState extends ItemState {
+    private IState data;
+    private String type;
+
 }

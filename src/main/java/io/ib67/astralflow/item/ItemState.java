@@ -22,13 +22,11 @@
 package io.ib67.astralflow.item;
 
 import io.ib67.astralflow.machines.IState;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor
 public abstract class ItemState implements IState, Cloneable {
 
     @Override

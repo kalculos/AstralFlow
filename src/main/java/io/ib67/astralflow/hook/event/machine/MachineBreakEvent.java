@@ -19,8 +19,25 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.hook.event.machine;
 
-public interface LogicalHolder {
-    ItemKey getId();
+import io.ib67.astralflow.machines.IMachine;
+import lombok.Getter;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
+
+public class MachineBreakEvent extends MachineEvent {
+    @Nullable
+    @Getter
+    private final Player player;
+
+    @Getter
+    private final Block brokenBlock;
+
+    public MachineBreakEvent(IMachine machine, @Nullable Player player, Block brokenBlock) {
+        super(machine);
+        this.player = player;
+        this.brokenBlock = brokenBlock;
+    }
 }

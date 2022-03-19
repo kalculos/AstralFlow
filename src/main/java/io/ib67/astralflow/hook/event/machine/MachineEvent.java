@@ -19,8 +19,15 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.hook.event.machine;
 
-public interface LogicalHolder {
-    ItemKey getId();
+import io.ib67.astralflow.hook.event.HookEvent;
+import io.ib67.astralflow.machines.IMachine;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
+public abstract class MachineEvent extends HookEvent {
+    private final IMachine machine;
 }

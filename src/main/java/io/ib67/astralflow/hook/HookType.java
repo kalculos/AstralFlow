@@ -29,6 +29,7 @@ import io.ib67.astralflow.hook.event.item.ItemConsumeEvent;
 import io.ib67.astralflow.hook.event.item.ItemDamagedEvent;
 import io.ib67.astralflow.hook.event.item.ItemInteractBlockEvent;
 import io.ib67.astralflow.hook.event.item.ItemInteractEntityEvent;
+import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 
 import java.util.function.Consumer;
 
@@ -47,6 +48,8 @@ public final class HookType<T extends HookEvent> {
 
     public static final HookType<ChunkLoadHook> CHUNK_LOAD = new HookType<>();
     public static final HookType<ChunkUnloadHook> CHUNK_UNLOAD = new HookType<>();
+
+    public static final HookType<MachineBreakEvent> MACHINE_BREAK = new HookType<>();
 
     public void register(Consumer<T> acceptor) {
         AstralFlow.getInstance().addHook(this, acceptor);
