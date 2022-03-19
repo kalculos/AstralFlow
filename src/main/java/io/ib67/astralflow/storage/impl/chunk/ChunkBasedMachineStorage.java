@@ -155,5 +155,6 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         for (Chunk chunk : chunkMap.keySet()) {
             finalizeChunk(new ChunkUnloadHook(chunk));
         }
+        machineCache.save();
     }
 }
