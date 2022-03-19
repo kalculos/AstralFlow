@@ -92,8 +92,9 @@ public class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public IMachine getAndLoadMachine(Location location) {
-        Objects.requireNonNull(location, "Location cannot be null.");
+    public IMachine getAndLoadMachine(Location alocation) {
+        Objects.requireNonNull(alocation, "Location cannot be null.");
+        var location = AstralHelper.purifyLocation(alocation);
         boolean init = false;
         if (AstralHelper.isChunkLoaded(location)) {
             if (!checkedChunks.containsKey(location.getChunk())) {
@@ -144,7 +145,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public Collection<? extends Location> getAllMachines() {
-        return machineStorage.getKeys();
+        return machineStorage.getKeys().stream().map(Location::clone).toList();
     }
 
     @Override
@@ -155,7 +156,7 @@ public class MachineManagerImpl implements IMachineManager {
             throw new IllegalArgumentException("This machine is already registered.");
         }
         loadedMachines.put(machine, EMPTY_OBJ);
-        machineStorage.save(machine.getLocation(), machine);
+        machineStorage.save(AstralHelper.purifyLocation(machine.getLocation()), machine);
     }
 
     @Override
@@ -180,7 +181,7 @@ public class MachineManagerImpl implements IMachineManager {
     public boolean removeAndTerminateMachine(IMachine machine) {
         Objects.requireNonNull(machine);
         terminateMachine(machine);
-        machineStorage.remove(machine.getLocation());
+        machineStorage.remove(AstralHelper.purifyLocation(machine.getLocation()));
         return true;
     }
 
