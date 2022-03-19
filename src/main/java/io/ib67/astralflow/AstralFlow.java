@@ -60,6 +60,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.event.Cancellable;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -313,5 +314,18 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     public <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook) {
         Object o = HOOKS.getOrDefault(hook, Collections.emptyList());
         return (List<? extends Consumer<T>>) o;
+    }
+
+    @Override
+    public <T extends HookEvent> boolean callHooks(HookType<T> hookType, T event) {
+        for (Consumer<T> hook : getHooks(hookType)) {
+            hook.accept(event);
+            if (event instanceof Cancellable) {
+                if (((Cancellable) event).isCancelled()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
