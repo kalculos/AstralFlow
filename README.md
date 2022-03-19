@@ -9,7 +9,7 @@ AstralFlow is a lightweight bukkit plugin that provides a framework to create a 
 
 Based on Spigot API.
 
-[Discuss @ Telegram](https://t.me/AstralFlows) or click `@AstralFlows` directly in Telegram.
+[Discuss @ Telegram (@AstralFlows)](https://t.me/AstralFlows)
 
 # Contributing
 
@@ -27,9 +27,23 @@ And we recommend Lombok.
 5. Texture generate and auto-publish
 
 # Getting Started
+
 (deprecated)
 [Example `HelloMachine`](./src/storageModule/java/astralflow/storage/machines/HelloMachine.java)
 
 # Sponsor
-Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!  
-![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png)
+
+Maintaining AstralFlow isn't an easy work, it takes maintainers tons of time and effort to make it feature-rich and
+reliable.    
+If you meet any problems, please [submit an issue here](https://github.com/iceBear67/AstralFlow/issues/new/choose)  
+If you want to support our work, please consider donate us by clicking the sponsor button above.
+
+Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!
+
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" style="zoom:50%;"  alt="JetBrains Logo"/>
+
+# Contributors
+
+<a href="https://github.com/iceBear67/AstralFlow/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=iceBear67/AstralFlow"  alt="Contributors"/>
+</a>
