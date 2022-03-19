@@ -26,6 +26,12 @@ import io.ib67.astralflow.item.builder.ItemPrototype;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 
 public class MachineCategory implements ItemCategory<MachineItem> {
+    public static final MachineCategory INSTANCE = new MachineCategory();
+
+    private MachineCategory() {
+        
+    }
+
     @Override
     public ItemPrototypeFactory getFactory(MachineItem item) {
         return ItemPrototype.builder()
