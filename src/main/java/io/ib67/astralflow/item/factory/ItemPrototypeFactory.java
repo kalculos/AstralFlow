@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.item.factory;
 
+import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.LogicalHolder;
 import org.bukkit.inventory.ItemStack;
@@ -57,12 +58,11 @@ public interface ItemPrototypeFactory {
 
     /**
      * 物品的标识 ID。
-     * 虽然不强制，但是请尽量使用 `命名空间:命名` 的做法来取ID.
      *
      * @return
      */
     @Contract(pure = true)
-    String getId();
+    ItemKey getId();
 
     /**
      * 物品的注册源。一个注册源可能会被多个注册源装饰以完成对原型的修饰,因此用户需要使用 getRegistry 来获取最内层的注册源

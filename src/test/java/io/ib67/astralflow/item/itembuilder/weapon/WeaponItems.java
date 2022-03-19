@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.item.itembuilder.weapon;
 
+import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.LogicalHolder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,6 @@ import org.bukkit.inventory.ItemStack;
 @RequiredArgsConstructor
 @Getter
 public abstract sealed class WeaponItems implements LogicalHolder permits Melee {
-    private final String id;
+    private final ItemKey id;
     private final ItemStack prototype;
 }

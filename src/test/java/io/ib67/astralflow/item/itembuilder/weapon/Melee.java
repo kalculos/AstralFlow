@@ -21,12 +21,13 @@
 
 package io.ib67.astralflow.item.itembuilder.weapon;
 
+import io.ib67.astralflow.item.ItemKey;
 import org.bukkit.inventory.ItemStack;
 
 public abstract non-sealed class Melee extends WeaponItems {
     private final float damage;
 
-    public Melee(String id, ItemStack prototype, float damage) {
+    public Melee(ItemKey id, ItemStack prototype, float damage) {
         super(id, prototype);
         this.damage = damage;
     }

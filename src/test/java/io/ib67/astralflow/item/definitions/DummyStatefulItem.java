@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.item.definitions;
 
+import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.bukkit.Material;
@@ -44,7 +45,7 @@ public class DummyStatefulItem implements ItemPrototypeFactory {
     }
 
     @Override
-    public String getId() {
-        return "astralflow:test_dummy_stateful_item";
+    public ItemKey getId() {
+        return ItemKey.from("astralflow", "test_dummy_stateful_item");
     }
 }

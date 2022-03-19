@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.item.builder;
 
+import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
@@ -33,6 +34,6 @@ import org.bukkit.inventory.ItemStack;
 public class ItemPrototype implements ItemPrototypeFactory {
     private final ItemStack prototype;
     private final ItemState statePrototype;
-    private final String id;
+    private final ItemKey id;
     private final LogicalHolder holder;
 }

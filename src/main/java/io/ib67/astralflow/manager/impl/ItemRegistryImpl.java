@@ -24,10 +24,7 @@ package io.ib67.astralflow.manager.impl;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.internal.item.state.InternalItemState;
-import io.ib67.astralflow.item.AstralItem;
-import io.ib67.astralflow.item.IOreDict;
-import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.StateScope;
+import io.ib67.astralflow.item.*;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.tag.UUIDTag;
 import io.ib67.astralflow.manager.ItemRegistry;
@@ -42,7 +39,7 @@ import static org.bukkit.Material.AIR;
 public class ItemRegistryImpl implements ItemRegistry {
     private static final UUIDTag TAG = new UUIDTag();
     private final IOreDict oreDict;
-    private final Map<String, ItemPrototypeFactory> itemMap = new HashMap<>();
+    private final Map<ItemKey, ItemPrototypeFactory> itemMap = new HashMap<>();
     private final Map<UUID, ItemState> userStateCache = new HashMap<>();
     private final Map<UUID, ItemState> internalStateCache = new HashMap<>();
     private final ItemStateStorage states;
@@ -89,8 +86,10 @@ public class ItemRegistryImpl implements ItemRegistry {
     }
 
     @Override
-    public ItemPrototypeFactory getRegistry(String key) {
+    public ItemPrototypeFactory getRegistry(ItemKey key) {
         Objects.requireNonNull(key);
+        Objects.requireNonNull(key.getId());
+        Objects.requireNonNull(key.getNamespace());
         return itemMap.get(key);
     }
 
@@ -125,8 +124,10 @@ public class ItemRegistryImpl implements ItemRegistry {
     }
 
     @Override
-    public AstralItem createItem(String key) {
+    public AstralItem createItem(ItemKey key) {
         Objects.requireNonNull(key);
+        Objects.requireNonNull(key.getId());
+        Objects.requireNonNull(key.getNamespace());
         var item = getRegistry(key);
         if (item == null) return null;
         // validation
@@ -138,7 +139,7 @@ public class ItemRegistryImpl implements ItemRegistry {
         var afState = new InternalItemState(key); // store prototype info to this
         UUID uuid;
         if (userState == null) {
-            uuid = UUID.nameUUIDFromBytes(key.getBytes());
+            uuid = UUID.nameUUIDFromBytes(key.asString().getBytes());
         } else {
             uuid = UUID.randomUUID();
             userState = userState.clone();

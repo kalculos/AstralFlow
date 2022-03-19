@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.item.builder;
 
+import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
@@ -52,7 +53,7 @@ class PrototypeDecorator implements ItemPrototypeFactory {
     }
 
     @Override
-    public String getId() {
+    public ItemKey getId() {
         return registry.getId();
     }
 

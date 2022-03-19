@@ -23,6 +23,7 @@ package io.ib67.astralflow.item.recipe.choices;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.internal.item.state.InternalItemState;
+import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
@@ -38,17 +39,17 @@ import java.util.stream.Collectors;
 public final class AstralItemChoice implements IngredientChoice {
     private final short count;
     private final short durability;
-    private final Set<String> materials;
-    private final Lazy<Set<String>, List<ItemStack>> compiledRItems = Lazy.by(t ->
+    private final Set<ItemKey> materials;
+    private final Lazy<Set<ItemKey>, List<ItemStack>> compiledRItems = Lazy.by(t ->
             t.stream().map(e -> AstralFlow.getInstance().getItemRegistry().getRegistry(e))
                     .map(ItemPrototypeFactory::getPrototype).collect(Collectors.toList())
     );
 
-    public AstralItemChoice(String... itemIds) {
+    public AstralItemChoice(ItemKey... itemIds) {
         this((short) 1, (short) 0, itemIds);
     }
 
-    public AstralItemChoice(short durability, short count, String... itemIds) {
+    public AstralItemChoice(short durability, short count, ItemKey... itemIds) {
         this.durability = durability;
         this.count = count;
         materials = Set.of(itemIds);

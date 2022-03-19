@@ -22,6 +22,7 @@
 package io.ib67.astralflow.item.itembuilder;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.item.ItemKeys;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.item.itembuilder.weapon.Melee;
 import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
@@ -45,7 +46,7 @@ public class ItemBuilderTest {
 
     @Test
     public void testItemBuilder() {
-        var p = new Melee("astralflow:test_melee", new ItemStack(Material.DIAMOND_SWORD), 114514F) {
+        var p = new Melee(ItemKeys.from("astralflow:test_melee"), new ItemStack(Material.DIAMOND_SWORD), 114514F) {
         };
         ItemBuilder.of(Weapon.INSTANCE)
                 .oreDict("melee_oredict")
@@ -57,7 +58,7 @@ public class ItemBuilderTest {
                 //todo @pending@ .bind(Texture.of("astralflow:test_melee", Path.of("aa"), TextureType.ITEM))
                 .prototype(p)
                 .register();
-        var r = AstralFlow.getInstance().getItemRegistry().getRegistry("astralflow:test_melee");
+        var r = AstralFlow.getInstance().getItemRegistry().getRegistry(ItemKeys.from("astralflow:test_melee"));
         assertNotNull(r);
         assertSame(p, r.getHolder());
         // test recipe

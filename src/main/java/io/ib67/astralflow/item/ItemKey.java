@@ -19,20 +19,31 @@
  *   USA
  */
 
-package io.ib67.astralflow.internal.item.state;
+package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.item.ItemKey;
-import io.ib67.astralflow.item.ItemState;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import io.ib67.astralflow.AstralFlow;
+import org.jetbrains.annotations.ApiStatus;
 
-@RequiredArgsConstructor
-@Getter
-public class InternalItemState extends ItemState implements Cloneable {
-    private final ItemKey prototypeKey;
+/**
+ * This class represents a key to identity {@link io.ib67.astralflow.item.builder.ItemPrototype}s.
+ * <p>
+ * You should use it with an enum, which easier your life.
+ */
+@ApiStatus.AvailableSince("0.1.0")
+public interface ItemKey {
+    static ItemKey from(String namespace, String id) {
+        return ItemKeys.from(namespace, id);
+    }
 
-    @Override
-    public ItemState clone() {
-        return super.clone();
+    String getId();
+
+    String getNamespace();
+
+    default AstralItem createNewItem() {
+        return AstralFlow.getInstance().getItemRegistry().createItem(this);
+    }
+
+    default String asString() {
+        return getNamespace() + ":" + getId();
     }
 }

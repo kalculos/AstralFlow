@@ -21,10 +21,7 @@
 
 package io.ib67.astralflow.manager;
 
-import io.ib67.astralflow.item.AstralItem;
-import io.ib67.astralflow.item.IOreDict;
-import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.StateScope;
+import io.ib67.astralflow.item.*;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
@@ -47,11 +44,11 @@ public interface ItemRegistry {
 
     Collection<? extends ItemPrototypeFactory> getItemPrototypes();
 
-    ItemPrototypeFactory getRegistry(String key);
+    ItemPrototypeFactory getRegistry(ItemKey key);
 
     Optional<ItemPrototypeFactory> getRegistry(ItemStack itemStack);
 
-    AstralItem createItem(String key);
+    AstralItem createItem(ItemKey key);
 
     @ApiStatus.Experimental
     @Nullable
