@@ -73,4 +73,9 @@ public class FileBasedKeyedStorage<V> implements KeyedStorage<String, V> {
     public void remove(String uuid) {
         Files.deleteIfExists(storageDir.resolve(uuid));
     }
+
+    @Override
+    public void flush() {
+        // no-op
+    }
 }

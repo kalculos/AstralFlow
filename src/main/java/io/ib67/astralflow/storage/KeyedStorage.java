@@ -36,4 +36,6 @@ public interface KeyedStorage<K, V> {
     void save(K uuid, V state); // flush cache
 
     void remove(K uuid);
+
+    void flush();
 }
