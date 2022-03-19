@@ -56,6 +56,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void setupMachine(IMachine machine, boolean update) {
+        Objects.requireNonNull(machine);
         if (!isRegistered(machine.getId())) {
             registerMachine(machine);
         }
@@ -71,12 +72,14 @@ public class MachineManagerImpl implements IMachineManager {
     }
 
     private void unloadChunk(Chunk chunk) {
+        Objects.requireNonNull(chunk);
         checkedChunks.remove(chunk);
         machineStorage.getMachinesByChunk(chunk).forEach(this::terminateMachine);
         machineStorage.finalizeChunk(chunk);
     }
 
     private void initChunk(Chunk chunk) {
+        Objects.requireNonNull(chunk);
         machineStorage.initChunk(chunk);
         checkedChunks.put(chunk, EMPTY_OBJ);
         for (IMachine machine : machineStorage.getMachinesByChunk(chunk)) {
@@ -106,6 +109,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public IMachine getAndLoadMachine(UUID id) {
+        Objects.requireNonNull(id, "UUID cannot be null.");
         return getAndLoadMachine(machineStorage.getLocationByUUID(id));
     }
 
@@ -122,6 +126,10 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void activateMachine(IMachine machine) {
+        Objects.requireNonNull(machine);
+        if (machine.getClass().isAnnotationPresent(Tickless.class)) {
+            Log.warn("Machine " + machine.getId() + " is tickless. But still activated.");
+        }
         receiptMap.computeIfAbsent(machine, k -> AstralFlow.getInstance().getTickManager().registerTickable(machine).requires(IMachine::canTick));
     }
 
@@ -150,6 +158,7 @@ public class MachineManagerImpl implements IMachineManager {
     public boolean isMachine(Block block) {
         // FIX: https://github.com/iceBear67/AstralFlow/issues/2
         //return getLoadedMachines().stream().anyMatch(machine -> block.getLocation().distance(machine.getLocation()) < 0.1); // for some moving entities
+        Objects.requireNonNull(block);
         return getLoadedMachines().stream().anyMatch(machine -> AstralHelper.equalsLocationFuzzily(machine.getLocation(), block.getLocation()));
     }
 
@@ -163,6 +172,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public boolean removeAndTerminateMachine(IMachine machine) {
+        Objects.requireNonNull(machine);
         deactivateMachine(machine);
         machine.onUnload();
         cache.remove(machine.getId());
@@ -172,14 +182,16 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void terminateMachine(IMachine machine) {
+        Objects.requireNonNull(machine);
         deactivateMachine(machine);
         cache.remove(AstralHelper.purifyLocation(machine.getLocation()));
     }
 
     @Override
     public TickReceipt<IMachine> getReceiptByMachine(IMachine machine) {
+        Objects.requireNonNull(machine);
         var r = this.receiptMap.get(machine);
-        if (r.isDropped()) {
+        if (r == null || r.isDropped()) {
             return null;
         }
         return r;
