@@ -23,19 +23,27 @@ package io.ib67.astralflow.listener.crafts;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.internal.RecipeHelper;
+import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
-import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.CraftingInventory;
 
-import java.util.Arrays;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 @RequiredArgsConstructor
 public class RecipeListener implements Listener {
     private final IRecipeRegistry recipeRegistry;
+
+    private final Map<Player, AstralRecipe> recipeSessions = new WeakHashMap<>(Bukkit.getMaxPlayers());
 
     @EventHandler(priority = EventPriority.LOW)
     public void onCraftPrepare(PrepareItemCraftEvent event) {
@@ -44,12 +52,26 @@ public class RecipeListener implements Listener {
             return;
         }
         var matrix = event.getInventory().getMatrix();
-        Log.warn(Arrays.toString(matrix));
         var recipe = recipeRegistry.matchRecipe(RecipeHelper.leftAlignMatrixItems(matrix));
+        recipeSessions.put((Player) event.getViewers().get(0), recipe);
         if (recipe != null) {
-            var modifiedMatrix = recipe.apply(matrix);
+            //var modifiedMatrix = recipe.apply(matrix);
+            event.getInventory().setResult(recipe.getPrototype().clone());
+            //event.getInventory().setMatrix(modifiedMatrix);
+        }
+    }
+
+    @EventHandler
+    public void onTableClose(InventoryCloseEvent event) {
+        if (event.getInventory() instanceof CraftingInventory) recipeSessions.remove((Player) event.getPlayer());
+    }
+
+    @EventHandler
+    public void onCraftItem(CraftItemEvent event) {
+        var recipe = recipeSessions.get((Player) event.getWhoClicked());
+        if (recipe != null) {
             event.getInventory().setResult(recipe.produceResult());
-            event.getInventory().setMatrix(modifiedMatrix);
+            event.getInventory().setMatrix(recipe.apply(event.getInventory().getMatrix()));
         }
     }
 }
