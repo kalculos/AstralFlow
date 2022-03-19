@@ -24,8 +24,6 @@ package io.ib67.astralflow.item.recipe.kind;
 import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
-import io.ib67.util.Lazy;
-import io.ib67.util.Randomly;
 import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
@@ -43,21 +41,6 @@ public class Shaped implements AstralRecipe {
     private static final ItemStack PLACEHOLDER = new ItemStack(Material.STONE);
     private final NamespacedKey key;
     private final IngredientChoice[] originMatrix; // todo: performance issues.
-    private final Lazy<IngredientChoice[], Integer> compiledHash = Lazy.by(t ->
-            RecipeHelper.generateMatrixPatternHash(
-                    RecipeHelper.leftAndUpAlignMatrix(
-                            RecipeHelper.toStringMatrix(
-                                    Arrays.stream(t).map(e -> {
-                                                if (e == null) {
-                                                    return null;
-                                                }
-                                                return Randomly.pickOrNull(e.getRepresentativeItems());
-                                            }
-                                    ).toArray(ItemStack[]::new)
-                            )
-                    )
-            )
-    );
     private Supplier<ItemStack> factory;
     private ItemStack demo;
 
@@ -105,19 +88,11 @@ public class Shaped implements AstralRecipe {
         return key;
     }
 
-    public int getCompiledHash() {
-        return compiledHash.get(originMatrix);
-    }
-
     @Override
     public boolean test(ItemStack[] itemStacks) {
         // check for patterns.
         //var matrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(itemStacks)));
         var matrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(itemStacks)));
-        var paramHash = RecipeHelper.generateMatrixPatternHash(matrix);
-        if (paramHash != compiledHash.get(originMatrix)) {
-            return false;
-        }
         if (originMatrix.length != itemStacks.length) {
             // actually it shouldn't happen.
             Log.warn("Recipe matrix length mismatch. This shouldn't happen! KEY: " + key + ". Report it to the author of " + key.getNamespace());

@@ -21,8 +21,6 @@
 
 package io.ib67.astralflow.item.recipe;
 
-import com.google.common.collect.Lists;
-import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -37,17 +35,6 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     @Override
     public IRecipeRegistry registerRecipe(AstralRecipe recipe) {
         recipesMap.put(recipe.getKey(), recipe);
-        if (recipe instanceof Shaped shaped) {
-            var hash = shaped.getCompiledHash();
-            shapedRecipes.compute(hash, (k, v) -> {
-                if (v != null) {
-                    v.add(shaped);
-                    return v;
-                }
-                return Lists.newArrayList(shaped);
-            });
-            return this;
-        }
         recipes.add(recipe);
         return this;
     }
@@ -55,10 +42,6 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     @Override
     public IRecipeRegistry unregisterRecipe(AstralRecipe recipe) {
         recipesMap.remove(recipe.getKey());
-        if (recipe instanceof Shaped) {
-            shapedRecipes.remove(((Shaped) recipe).getCompiledHash());
-            return this;
-        }
         recipes.remove(recipe);
         return this;
     }
@@ -79,15 +62,6 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     public AstralRecipe matchRecipe(RecipeType type, ItemStack[] matrix) {
         return switch (type) {
             case CRAFTING -> {
-                int hash = RecipeHelper.generateMatrixPatternHash(RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(matrix))));
-                var shaped = shapedRecipes.get(hash);
-                if (shaped != null) {
-                    for (Shaped recipe : shaped) {
-                        if (recipe.test(matrix)) yield recipe;
-                    }
-                }
-
-                // match shapeless.
                 for (AstralRecipe recipe : recipes) {
                     if (recipe.test(matrix)) {
                         yield recipe;
