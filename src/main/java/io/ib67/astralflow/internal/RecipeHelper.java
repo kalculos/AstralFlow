@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -121,10 +122,13 @@ public class RecipeHelper {
         } else {
             newMatrix = matrix;
         }
+        // check all null
+        if (Arrays.stream(newMatrix).allMatch(Objects::isNull)) return new String[0];
+
         // up
         int upOffset = 0;
         for (String s : newMatrix) {
-            if (!s.trim().isEmpty()) {
+            if (s == null || !s.trim().isEmpty()) {
                 break;
             }
             upOffset++;

@@ -111,6 +111,15 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     @Override
     public void onEnable() {
+        if (AstralConstants.DEBUG) {
+            // disable watchdog.
+            Thread.getAllStackTraces().forEach((t, stackTrace) -> {
+                if (t.getName().contains("Watchdog")) {
+                    t.stop();
+                    Log.info("Debug", "Killed Watchdog.");
+                }
+            });
+        }
         if (initialized) {
             Bukkit.getScheduler().runTask(this, Bukkit::shutdown);
             throw new IllegalStateException("AstralFlow IS NOT ALLOWED to be reloaded. We'll shutdown this server for security issues later");

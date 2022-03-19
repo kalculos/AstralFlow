@@ -51,7 +51,7 @@ public class MachineManagerImpl implements IMachineManager {
     private final Map<Chunk, Object> checkedChunks = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
 
     {
-        AstralFlow.getInstance().addHook(HookType.SAVE_DATA, this::saveMachines);
+        AstralFlow.getInstance().addHook(HookType.PLUGIN_SHUTDOWN, this::saveMachines);
         HookType.CHUNK_LOAD.register(chunkLoad -> initChunk(chunkLoad.getChunk()));
         HookType.CHUNK_UNLOAD.register(chunkUnload -> finalizeChunk(chunkUnload.getChunk()));
     }
