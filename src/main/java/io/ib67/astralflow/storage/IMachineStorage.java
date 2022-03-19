@@ -36,4 +36,8 @@ public interface IMachineStorage extends KeyedStorage<Location, IMachine> {
     UUID getUUIDByLocation(Location location);
 
     Collection<? extends IMachine> getMachinesByChunk(Chunk chunk);
+
+    void initChunk(Chunk chunk);
+
+    void finalizeChunk(Chunk chunk);
 }
