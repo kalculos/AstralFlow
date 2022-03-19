@@ -51,6 +51,7 @@ import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.manager.impl.TickManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.ItemStateStorage;
+import io.ib67.astralflow.task.SaveDataTask;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.util.Util;
 import io.ib67.util.bukkit.Log;
@@ -97,7 +98,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     AstralFlow(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file); // for mock bukkit
     }
-    
+
     public AstralFlow() {
         super();
     }
@@ -182,6 +183,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             }
             for (Consumer<?> hook : getHooks(HookType.ASTRALFLOW_STARTUP_COMPLETED)) {
                 hook.accept(null);
+            }
+            var dataSaveInterval = getSettings().getDataSaveIntervals();
+            if (dataSaveInterval != -1) {
+                new SaveDataTask().runTaskTimer(this, 0L, dataSaveInterval * 20L);
             }
             initialized = true;
         });

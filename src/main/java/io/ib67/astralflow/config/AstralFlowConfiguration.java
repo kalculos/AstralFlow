@@ -53,6 +53,9 @@ public class AstralFlowConfiguration {
     @SerializedName("recipe-settings")
     private final RecipeSetting recipeSetting;
 
+    @SerializedName("data-save-intervals")
+    private final int dataSaveIntervals = 300;
+
     public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageIndexes) {
         Objects.requireNonNull(itemStorageDir, "ItemStorageDir cannot be null");
         Objects.requireNonNull(machineStorageIndexes, "MachineStorageIndexes cannot be null");
