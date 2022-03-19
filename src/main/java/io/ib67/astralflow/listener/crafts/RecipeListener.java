@@ -26,7 +26,6 @@ import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,7 +42,7 @@ import java.util.WeakHashMap;
 public class RecipeListener implements Listener {
     private final IRecipeRegistry recipeRegistry;
 
-    private final Map<Player, AstralRecipe> recipeSessions = new WeakHashMap<>(Bukkit.getMaxPlayers());
+    private final Map<Player, AstralRecipe> recipeSessions = new WeakHashMap<>();
 
     @EventHandler(priority = EventPriority.LOW)
     public void onCraftPrepare(PrepareItemCraftEvent event) {
