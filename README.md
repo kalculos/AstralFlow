@@ -28,8 +28,7 @@ And we recommend Lombok.
 
 # Getting Started
 
-(deprecated)
-[Example `HelloMachine`](./src/storageModule/java/astralflow/storage/machines/HelloMachine.java)
+[Example `JebWool`](./test-plugin/src/main/java/io/ib67/astralflow/machines/JebWool.java)
 
 # Sponsor
 
@@ -41,9 +40,3 @@ If you want to support our work, please consider donate us by clicking the spons
 Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!
 
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" style="zoom:50%;"  alt="JetBrains Logo"/>
-
-# Contributors
-
-<a href="https://github.com/iceBear67/AstralFlow/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=iceBear67/AstralFlow"  alt="Contributors"/>
-</a>
