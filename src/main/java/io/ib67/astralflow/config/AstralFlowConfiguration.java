@@ -52,6 +52,9 @@ public class AstralFlowConfiguration {
     @SerializedName("recipe-settings")
     private final RecipeSetting recipeSetting;
 
+    @SerializedName("lazy-machine-data-migration")
+    private final boolean lazyMachineDataMigration = false;
+
     public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageIndexes) {
         Objects.requireNonNull(itemStorageDir, "ItemStorageDir cannot be null");
         Objects.requireNonNull(machineStorageIndexes, "MachineStorageIndexes cannot be null");

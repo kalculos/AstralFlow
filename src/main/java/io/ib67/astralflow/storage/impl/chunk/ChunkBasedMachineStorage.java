@@ -185,7 +185,11 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         } else {
             originalMachineData.value = getSerializer(originalMachineData.key).toData(state);
         }
-        v.save(loc, originalMachineData.key, originalMachineData.value); // todo introduce migrate mode.
+        if (AstralFlow.getInstance().getSettings().isLazyMachineDataMigration()) {
+            v.save(loc, defaultStorageType, originalMachineData.value);
+        } else {
+            v.save(loc, originalMachineData.key, originalMachineData.value);
+        }
     }
 
     @Override
