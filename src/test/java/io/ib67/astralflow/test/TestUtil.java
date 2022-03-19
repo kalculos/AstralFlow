@@ -23,9 +23,13 @@ package io.ib67.astralflow.test;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.internal.AstralConstants;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestUtil {
     public static void init() {
+        assertTrue(AstralConstants.MOCKING);
         if (!MockBukkit.isMocked()) {
             MockBukkit.mock();
             MockBukkit.getMock().addSimpleWorld("world");

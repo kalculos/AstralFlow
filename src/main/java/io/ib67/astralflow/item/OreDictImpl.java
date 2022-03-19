@@ -24,6 +24,7 @@ package io.ib67.astralflow.item;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.util.Pair;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,13 +41,12 @@ public class OreDictImpl implements IOreDict {
     }
 
     private void compile() {
-        locked = true;
+        if (!AstralConstants.MOCKING) locked = true;
     }
 
     @Override
     public IOreDict registerItem(String dictKey, ItemStack prototype, Predicate<ItemStack> itemStackPredicate) {
         if (locked) throw new IllegalStateException("OreDict is locked due to server startup completed.");
-        if (items.containsKey(dictKey)) throw new IllegalArgumentException(dictKey + " is already registered.");
         items.put(dictKey, Pair.of(prototype, itemStackPredicate));
         return this;
     }
