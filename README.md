@@ -2,6 +2,7 @@
 
 ![](https://img.shields.io/github/license/iceBear67/AstralFlow?style=flat-square)
 ![](https://img.shields.io/github/v/release/iceBear67/AstralFlow?style=flat-square)
+![](https://img.shields.io/tokei/lines/github/iceBear67/AstralFlow?style=flat-square)
 
 *汝身听吾号令，吾与汝同在，应曉星之召，从寰宇之源，于此起誓，吾是治狱世间物类之人，吾是肃清世间浊物之人。*
 
