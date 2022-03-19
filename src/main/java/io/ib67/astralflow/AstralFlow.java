@@ -103,7 +103,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private static final Map<HookType<?>, List<Consumer<?>>> HOOKS = new HashMap<>();
     @Getter
-    private volatile boolean initialized = false; // volatile to prevent opcode reshuffle
+    private static volatile boolean initialized = false; // volatile to prevent opcode reshuffle
 
     public static AstralFlowAPI getInstance() {
         return instance;
