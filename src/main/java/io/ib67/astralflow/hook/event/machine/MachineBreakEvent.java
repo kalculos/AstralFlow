@@ -23,17 +23,23 @@ package io.ib67.astralflow.hook.event.machine;
 
 import io.ib67.astralflow.machines.IMachine;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.Nullable;
 
-public class MachineBreakEvent extends MachineEvent {
+public class MachineBreakEvent extends MachineEvent implements Cancellable {
     @Nullable
     @Getter
     private final Player player;
 
     @Getter
     private final Block brokenBlock;
+
+    @Setter
+    @Getter
+    private boolean cancelled;
 
     public MachineBreakEvent(IMachine machine, @Nullable Player player, Block brokenBlock) {
         super(machine);
