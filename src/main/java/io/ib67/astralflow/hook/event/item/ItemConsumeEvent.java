@@ -22,9 +22,16 @@
 package io.ib67.astralflow.hook.event.item;
 
 import io.ib67.astralflow.item.AstralItem;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 
-public class ItemConsumeEvent extends ItemEvent {
+public class ItemConsumeEvent extends ItemEvent implements Cancellable {
+    @Setter
+    @Getter
+    private boolean cancelled = false;
+
     public ItemConsumeEvent(AstralItem item, Player player) {
         super(item, player);
     }
