@@ -25,25 +25,33 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.Tickless;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class MachineManagerImpl implements IMachineManager {
+    private static final int INITIAL_MACHINE_CAPACITY = 64;
+    private static final Object EMPTY_OBJ = new Object();
+
     private final IMachineStorage machineStorage;
-    private final Map<UUID, IMachine> cache = new HashMap<>(64);
-    private final Map<IMachine, TickReceipt<IMachine>> receiptMap = new WeakHashMap<>(64);
+    private final Map<Location, IMachine> cache = new HashMap<>(INITIAL_MACHINE_CAPACITY); // todo: lifecycle and GC problems
+    private final Map<IMachine, TickReceipt<IMachine>> receiptMap = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
+
+    private final Map<Chunk, Object> checkedChunks = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
 
     {
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, this::saveMachines);
+        HookType.CHUNK_LOAD.register(chunkLoad -> initChunk(chunkLoad.getChunk()));
+        HookType.CHUNK_UNLOAD.register(chunkUnload -> unloadChunk(chunkUnload.getChunk()));
     }
 
     @Override
@@ -62,24 +70,43 @@ public class MachineManagerImpl implements IMachineManager {
         return cache.containsKey(uuid);
     }
 
-    @Override
-    public IMachine getAndLoadMachine(UUID uuid) {
-        //todo refactor.
-        return cache.computeIfAbsent(uuid, k -> {
-            var machine = machineStorage.get(machineStorage.getLocationByUUID(k));
-            if (machine == null) {
-                throw new IllegalArgumentException("Machine with id " + k + " is not registered.");
-            }
-            //setupMachine(machine);
-            machine.init();
-            activateMachine(machine);
-            return machine;
-        });
+    private void unloadChunk(Chunk chunk) {
+        checkedChunks.remove(chunk);
+        machineStorage.getMachinesByChunk(chunk).forEach(this::terminateMachine);
+        machineStorage.finalizeChunk(chunk);
+    }
+
+    private void initChunk(Chunk chunk) {
+        machineStorage.initChunk(chunk);
+        checkedChunks.put(chunk, EMPTY_OBJ);
+        for (IMachine machine : machineStorage.getMachinesByChunk(chunk)) {
+            setupMachine(machine, !machine.getClass().isAnnotationPresent(Tickless.class));
+        }
     }
 
     @Override
     public IMachine getAndLoadMachine(Location location) {
-        return getLoadedMachines().stream().filter(machine -> AstralHelper.equalsLocationFuzzily(machine.getLocation(), location)).findFirst().orElse(null); //todo FIXME
+        Objects.requireNonNull(location, "Location cannot be null.");
+        boolean init = false;
+        if (AstralHelper.isChunkLoaded(location)) {
+            if (!checkedChunks.containsKey(location.getChunk())) {
+                init = true;
+                Log.warn("Chunk is loaded but not initialized by AF. This is a potential bug");
+            }
+        } else {
+            init = true;
+        }
+
+        if (init) {
+            initChunk(location.getChunk());
+        }
+
+        return machineStorage.get(location);
+    }
+
+    @Override
+    public IMachine getAndLoadMachine(UUID id) {
+        return getAndLoadMachine(machineStorage.getLocationByUUID(id));
     }
 
     @Override
@@ -90,7 +117,7 @@ public class MachineManagerImpl implements IMachineManager {
             return;
         }
         receipt.drop();
-        receiptMap.remove(machine.getId());
+        receiptMap.remove(machine);
     }
 
     @Override
@@ -104,14 +131,14 @@ public class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public Collection<? extends UUID> getAllMachines() {
-        return machineStorage.getKeys().stream().map(machineStorage::getUUIDByLocation).collect(Collectors.toList());
+    public Collection<? extends Location> getAllMachines() {
+        return machineStorage.getKeys();
     }
 
     @Override
     public void registerMachine(IMachine machine) {
         Objects.requireNonNull(machine, "Machine cannot be null.");
-        var id = machine.getId();
+        var id = AstralHelper.purifyLocation(machine.getLocation());
 
         if (cache.containsKey(id)) {
             throw new IllegalArgumentException("This machine is already registered.");
@@ -141,6 +168,12 @@ public class MachineManagerImpl implements IMachineManager {
         cache.remove(machine.getId());
         machineStorage.remove(machine.getLocation());
         return true;
+    }
+
+    @Override
+    public void terminateMachine(IMachine machine) {
+        deactivateMachine(machine);
+        cache.remove(AstralHelper.purifyLocation(machine.getLocation()));
     }
 
     @Override
