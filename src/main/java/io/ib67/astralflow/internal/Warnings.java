@@ -27,6 +27,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Warnings {
     public static void warnUnstableServerSoft() {
-        Log.warn("Are you running some \"Optimized\" Server Software (e.g Mirai, Pufferfish)? These are known to cause issues and we can't help a lot.");
+        Log.warn("Is this server just generated new maps before or you are running some \"Optimized\" Server Software (e.g Mirai, Pufferfish)? These are known to cause issues and we can't help a lot.");
     }
 }

@@ -59,7 +59,7 @@ public class TestModule extends AstralExtension {
                         .build()
                 ).prototype(new MachineItem(
                         ItemKeys.from("tester:jeb_wool"),
-                        ItemStacks.builder()
+                        ItemStacks.builder(Material.WHITE_WOOL)
                                 .displayName("&aJeb Wool!")
                                 .lore("&b Such a colorful woooooool")
                                 .build(),

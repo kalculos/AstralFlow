@@ -156,6 +156,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                     extension.init();
                     Log.info("Loaded extension: " + extension.getInfo());
                 } catch (Throwable t) {
+                    t.printStackTrace();
                     Log.warn("Failed to load extension: " + extension.getInfo());
                     Log.warn("Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
                     Log.warn("This module will be ignored.");
