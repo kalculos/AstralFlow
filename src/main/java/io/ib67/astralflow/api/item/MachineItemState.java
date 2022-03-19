@@ -32,6 +32,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public class MachineItemState extends ItemState {
     private IState data;
-    private String type;
+    private String machineType;
 
 }

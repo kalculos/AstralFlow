@@ -73,7 +73,7 @@ public class MachineItem implements LogicalHolder {
         var item = AstralFlow.getInstance().getItemRegistry().createItem(id);
         var emptyState = (MachineItemState) item.getState().get();
         emptyState.setData(state.getData());
-        emptyState.setType(state.getType());
+        emptyState.setMachineType(state.getType().getName());
         var loc = event.getBrokenBlock().getLocation();
         loc.getWorld().dropItemNaturally(loc, item.asItemStack());
     }

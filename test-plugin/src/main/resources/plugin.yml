@@ -2,5 +2,6 @@ name: AstralFlow.Tester
 main: io.ib67.astralflow.TestPlugin
 version: 0.1.0
 description: A test plugin for astral flow features. DO NOT AND NEVER USE THIS IN PRODUCTION ENVIRONMENT.
+api-version: 1.18
 depend:
   - AstralFlow

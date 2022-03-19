@@ -24,11 +24,14 @@ package io.ib67.astralflow.listener.crafts;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
+import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 public class RecipeListener implements Listener {
@@ -41,6 +44,7 @@ public class RecipeListener implements Listener {
             return;
         }
         var matrix = event.getInventory().getMatrix();
+        Log.warn(Arrays.toString(matrix));
         var recipe = recipeRegistry.matchRecipe(RecipeHelper.leftAlignMatrixItems(matrix));
         if (recipe != null) {
             var modifiedMatrix = recipe.apply(matrix);

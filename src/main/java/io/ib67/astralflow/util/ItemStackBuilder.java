@@ -67,7 +67,7 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder itemFlags(ItemFlag... flags) {
         for (ItemFlag flag : flags) {
-            itemFlags.add(flag)
+            itemFlags.add(flag);
         }
         return this;
     }
