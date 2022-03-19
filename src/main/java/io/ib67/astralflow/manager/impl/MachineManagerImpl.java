@@ -119,7 +119,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void deactivateMachine(IMachine machine) {
-        var receipt = receiptMap.get(machine.getId());
+        var receipt = receiptMap.get(machine);
         if (receipt == null) {
             Log.warn("Machine " + machine.getId() + " is already deactivated. Won't do anything.");
             return;
@@ -150,9 +150,8 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public void registerMachine(IMachine machine) {
         Objects.requireNonNull(machine, "Machine cannot be null.");
-        var id = AstralHelper.purifyLocation(machine.getLocation());
 
-        if (loadedMachines.containsKey(id)) {
+        if (loadedMachines.containsKey(machine)) {
             throw new IllegalArgumentException("This machine is already registered.");
         }
         loadedMachines.put(machine, EMPTY_OBJ);
