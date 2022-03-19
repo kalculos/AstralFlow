@@ -26,10 +26,12 @@ import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.item.ItemConsumeEvent;
 import io.ib67.astralflow.hook.event.item.ItemDamagedEvent;
 import io.ib67.astralflow.hook.event.item.ItemInteractBlockEvent;
+import io.ib67.astralflow.hook.event.item.ItemInteractEntityEvent;
 import io.ib67.astralflow.item.AstralItem;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
@@ -61,4 +63,17 @@ public class ItemListener implements Listener {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_INTERACT_BLOCK, hookEvt));
     }
 
+    @EventHandler
+    public void onInteractEntity(PlayerInteractAtEntityEvent event) {
+        if (event.getPlayer().getEquipment() == null) {
+            return;
+        }
+        var item = event.getPlayer().getEquipment().getItemInMainHand();
+        if (item.getType() == Material.AIR) {
+            return;
+        }
+        var afItem = new AstralItem(item, AstralFlow.getInstance().getItemRegistry());
+        var hookEvt = new ItemInteractEntityEvent(afItem, event.getPlayer(), event.getRightClicked());
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_INTERACT_ENTITY, hookEvt));
+    }
 }
