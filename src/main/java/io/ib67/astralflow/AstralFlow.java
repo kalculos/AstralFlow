@@ -111,7 +111,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        if (initialized) {
+            Bukkit.getScheduler().runTask(this, Bukkit::shutdown);
+            throw new IllegalStateException("AstralFlow IS NOT ALLOWED to be reloaded. We'll shutdown this server for security issues later");
+        }
         instance = this;
         // logo
         for (String logo : AstralConstants.LOGO) {
