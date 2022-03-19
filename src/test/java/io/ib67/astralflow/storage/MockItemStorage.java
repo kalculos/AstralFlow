@@ -55,4 +55,9 @@ public class MockItemStorage implements ItemStateStorage {
     public void remove(UUID uuid) {
         states.remove(uuid);
     }
+
+    @Override
+    public void flush() {
+
+    }
 }
