@@ -26,6 +26,7 @@ import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.astralflow.storage.impl.chunk.ChunkBasedMachineStorage;
+import io.ib67.astralflow.storage.impl.chunk.MachineCache;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Type;
@@ -39,7 +40,7 @@ public class MachineStorageSerializer implements JsonDeserializer<IMachineStorag
 
     @Override
     public IMachineStorage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new ChunkBasedMachineStorage(storage, MachineStorageType.JSON, factory); // todo
+        return new ChunkBasedMachineStorage(new MachineCache(storage), factory, MachineStorageType.JSON); // todo
     }
 
     @Override

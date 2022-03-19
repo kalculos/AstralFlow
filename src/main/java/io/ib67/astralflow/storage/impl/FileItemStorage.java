@@ -83,4 +83,9 @@ public class FileItemStorage implements ItemStateStorage {
     public void remove(UUID uuid) {
         storage.remove(uuid.toString());
     }
+
+    @Override
+    public void flush() {
+
+    }
 }
