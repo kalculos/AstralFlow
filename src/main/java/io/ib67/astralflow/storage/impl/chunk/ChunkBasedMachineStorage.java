@@ -23,7 +23,6 @@ package io.ib67.astralflow.storage.impl.chunk;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
-import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
 import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.machines.IMachine;
@@ -57,8 +56,6 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
                 MACHINE_DATA_TAG
         );
         this.machineCache = cache;
-
-        HookType.CHUNK_UNLOAD.register(this::finalizeChunk);
     }
 
     private void finalizeChunk(ChunkUnloadHook hook) {
@@ -109,8 +106,14 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         return getUUIDByLocation(uuid) == null;
     }
 
-    private void initChunk(Chunk chunk) {
+    @Override
+    public void initChunk(Chunk chunk) {
         chunkMap.computeIfAbsent(chunk, chunkFactory::loadChunk);
+    }
+
+    @Override
+    public void finalizeChunk(Chunk chunk) {
+        finalizeChunk(new ChunkUnloadHook(chunk));
     }
 
     @Override
