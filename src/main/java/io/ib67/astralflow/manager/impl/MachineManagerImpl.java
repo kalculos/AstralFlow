@@ -31,8 +31,10 @@ import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import java.util.*;
@@ -51,7 +53,7 @@ public class MachineManagerImpl implements IMachineManager {
     {
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, this::saveMachines);
         HookType.CHUNK_LOAD.register(chunkLoad -> initChunk(chunkLoad.getChunk()));
-        HookType.CHUNK_UNLOAD.register(chunkUnload -> unloadChunk(chunkUnload.getChunk()));
+        HookType.CHUNK_UNLOAD.register(chunkUnload -> finalizeChunk(chunkUnload.getChunk()));
     }
 
     @Override
@@ -72,7 +74,7 @@ public class MachineManagerImpl implements IMachineManager {
         return machineStorage.getLocationByUUID(uuid) != null;
     }
 
-    private void unloadChunk(Chunk chunk) {
+    private void finalizeChunk(Chunk chunk) {
         Objects.requireNonNull(chunk);
         checkedChunks.remove(chunk);
         machineStorage.getMachinesByChunk(chunk).forEach(this::terminateMachine);
@@ -167,10 +169,12 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void saveMachines() {
-        getLoadedMachines().stream().filter(e -> {
-            e.onUnload();
-            return true;
-        }).forEach(e -> machineStorage.save(e.getLocation(), e));
+        for (World world : Bukkit.getWorlds()) {
+            for (Chunk loadedChunk : world.getLoadedChunks()) {
+                finalizeChunk(loadedChunk);
+            }
+        }
+        machineStorage.flush();
     }
 
     @Override
