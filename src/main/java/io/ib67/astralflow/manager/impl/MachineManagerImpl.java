@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 public class MachineManagerImpl implements IMachineManager {
     private final IMachineStorage machineStorage;
     private final Map<UUID, IMachine> cache = new HashMap<>(64);
-    private final Map<UUID, TickReceipt<IMachine>> receiptMap = new HashMap<>(64);
+    private final Map<IMachine, TickReceipt<IMachine>> receiptMap = new WeakHashMap<>(64);
 
     {
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, this::saveMachines);
@@ -94,7 +94,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public void activateMachine(IMachine machine) {
-        receiptMap.computeIfAbsent(machine.getId(), k -> AstralFlow.getInstance().getTickManager().registerTickable(machine).requires(IMachine::canTick));
+        receiptMap.computeIfAbsent(machine, k -> AstralFlow.getInstance().getTickManager().registerTickable(machine).requires(IMachine::canTick));
     }
 
     @Override
@@ -128,7 +128,7 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public void saveMachines() {
         getLoadedMachines().stream().filter(e -> {
-            e.terminate();
+            e.onUnload();
             return true;
         }).forEach(e -> machineStorage.save(e.getLocation(), e));
     }
@@ -136,7 +136,7 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public boolean removeAndTerminateMachine(IMachine machine) {
         deactivateMachine(machine);
-        machine.terminate();
+        machine.onUnload();
         cache.remove(machine.getId());
         machineStorage.remove(machine.getLocation());
         return true;
@@ -144,6 +144,10 @@ public class MachineManagerImpl implements IMachineManager {
 
     @Override
     public TickReceipt<IMachine> getReceiptByMachine(IMachine machine) {
-        return this.receiptMap.get(machine.getId());
+        var r = this.receiptMap.get(machine);
+        if (r.isDropped()) {
+            return null;
+        }
+        return r;
     }
 }

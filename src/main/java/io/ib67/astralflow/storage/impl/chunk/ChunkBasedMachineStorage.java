@@ -107,8 +107,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
                 var machine = get(location);
 
                 save(location, machine);
-                // deactivate // TODO: 2022/3/13  Drop tickReceipt.
                 machine.onUnload();
+                AstralFlow.getInstance().getMachineManager().deactivateMachine(machine);
 
                 // write data
                 var pdc = location.getChunk().getPersistentDataContainer();
@@ -151,6 +151,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         var dataPair = index.value.machineData.get(AstralHelper.purifyLocation(loc));
         //machineCache.put(loc, new WeakReference<>(dataPair.key.fromBytes(dataPair.value)));
         machineCache.put(loc, new WeakReference<>(getSerializer(dataPair.key).fromData(dataPair.value)));
+        var machine = machineCache.get(loc).get();
+        AstralFlow.getInstance().getMachineManager().setupMachine(machine, true);
         return machineCache.get(loc).get();
     }
 

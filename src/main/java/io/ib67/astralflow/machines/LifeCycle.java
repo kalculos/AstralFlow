@@ -44,10 +44,4 @@ public interface LifeCycle {
      */
     default void onUnload() {
     }
-
-    /**
-     * Called when the machine should be terminated immediately.
-     */
-    default void terminate() {
-    }
 }
