@@ -66,13 +66,15 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         }
         var memChunk = chunkMap.get(unloadingChunk);
         if (AstralConstants.DEBUG) {
-            Log.info("debug", memChunk.getMachines().size() + " machines in chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " will be saved.");
+            if (memChunk.getMachines().size() != 0)
+                Log.info("debug", memChunk.getMachines().size() + " machines in chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " will be saved.");
         }
         for (IMachine machine : memChunk.getMachines()) {
             this.save(machine.getLocation(), machine); // avoiding undefined behaviours.
         }
         if (AstralConstants.DEBUG) {
-            Log.info("debug", "Done. Flushing cache");
+            if (memChunk.getMachines().size() != 0)
+                Log.info("debug", "Done. Flushing cache");
         }
         flushChunkCache(unloadingChunk, memChunk);
     }
