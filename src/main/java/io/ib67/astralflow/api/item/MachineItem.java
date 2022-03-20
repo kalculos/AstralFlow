@@ -28,6 +28,7 @@ import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.Tickless;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
@@ -58,7 +59,8 @@ public class MachineItem implements LogicalHolder {
             var machineLoc = event.getClickedBlock().getLocation().clone().add(event.getClickedFace().getDirection());
             var machineUUID = UUID.randomUUID();
             var factory = AstralFlow.getInstance().getFactories().getMachineFactory(typeOfMachine);
-            factory.createMachine(machineLoc, machineUUID, state.getData());
+            var machine = factory.createMachine(machineLoc, machineUUID, state.getData());
+            AstralFlow.getInstance().getMachineManager().setupMachine(machine, !typeOfMachine.isAnnotationPresent(Tickless.class));
         } else {
             return;
         }
