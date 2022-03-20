@@ -30,8 +30,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
 
@@ -66,11 +67,17 @@ public class RecipeListener implements Listener {
     }
 
     @EventHandler
-    public void onCraftItem(CraftItemEvent event) {
-        var recipe = recipeSessions.get((Player) event.getWhoClicked());
-        if (recipe != null) {
-            event.getInventory().setResult(recipe.produceResult());
-            event.getInventory().setMatrix(recipe.apply(event.getInventory().getMatrix()));
+    public void onCraftItem(InventoryClickEvent event) {
+        if (event.getClickedInventory() instanceof CraftingInventory) {
+            var inv = (CraftingInventory) event.getClickedInventory();
+            if (event.getSlotType() == InventoryType.SlotType.RESULT && inv.getResult() != null) {
+                var recipe = recipeSessions.get((Player) event.getWhoClicked());
+                if (recipe != null) {
+                    event.setCurrentItem(recipe.produceResult());
+                    ;
+                    //inv.setMatrix(recipe.apply(inv.getMatrix()));
+                }
+            }
         }
     }
 }
