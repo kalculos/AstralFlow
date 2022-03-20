@@ -59,7 +59,6 @@ public class MachineManagerImpl implements IMachineManager {
     @Override
     public void setupMachine(IMachine machine, boolean update) {
         Objects.requireNonNull(machine);
-        loadedMachines.put(machine, EMPTY_OBJ);
         if (!isRegistered(machine.getId())) {
             registerMachine(machine);
         }
