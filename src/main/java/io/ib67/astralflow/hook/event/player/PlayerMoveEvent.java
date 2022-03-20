@@ -22,6 +22,7 @@
 package io.ib67.astralflow.hook.event.player;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -32,18 +33,19 @@ import org.bukkit.util.Vector;
  */
 public class PlayerMoveEvent extends PlayerEvent {
     @Getter
-    private final Location fromLocation;
+    private final Location from;
 
     @Getter
-    private final Location toDirection;
+    @Setter
+    private Location to;
 
-    public PlayerMoveEvent(Player player, Location fromLocation, Location toDirection) {
+    public PlayerMoveEvent(Player player, Location from, Location to) {
         super(player);
-        this.fromLocation = fromLocation;
-        this.toDirection = toDirection;
+        this.from = from;
+        this.to = to;
     }
 
-    public Vector getDirection() {
-        return toDirection.toVector().subtract(fromLocation.toVector());
+    public Vector getToDirection() {
+        return to.toVector().subtract(from.toVector());
     }
 }
