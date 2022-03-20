@@ -23,10 +23,7 @@ package io.ib67.astralflow.listener;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.item.ItemConsumeEvent;
-import io.ib67.astralflow.hook.event.item.ItemDamagedEvent;
-import io.ib67.astralflow.hook.event.item.ItemInteractBlockEvent;
-import io.ib67.astralflow.hook.event.item.ItemInteractEntityEvent;
+import io.ib67.astralflow.hook.event.item.*;
 import io.ib67.astralflow.item.AstralItem;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -55,8 +52,8 @@ public class ItemListener implements Listener {
             return;
         }
         if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.AIR) {
-            //todo itemUse
-            return;
+            var evt = new ItemUseEvent(new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry()), event.getPlayer());
+            event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_USE, evt));
         }
         var item = new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry());
         var hookEvt = new ItemInteractBlockEvent(item, event.getPlayer(), event.getAction(), event.getClickedBlock(), event.getBlockFace());

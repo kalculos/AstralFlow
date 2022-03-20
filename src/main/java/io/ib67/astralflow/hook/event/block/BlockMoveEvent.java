@@ -25,6 +25,7 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.util.Vector;
 
 /**
@@ -35,7 +36,7 @@ public class BlockMoveEvent extends BlockEvent {
     @Getter
     private final Location fromLocation;
 
-    private final Location direction;
+    private final Location toDirection;
 
     @Getter
     private final BlockMoveReason reason;
@@ -43,11 +44,11 @@ public class BlockMoveEvent extends BlockEvent {
     public BlockMoveEvent(Block block, Location fromLocation, Player player, Location direction, BlockMoveReason reason) {
         super(block, player);
         this.fromLocation = fromLocation;
-        this.direction = direction;
+        this.toDirection = direction;
         this.reason = reason;
     }
 
-    public Vector getDirection() {
-        return direction.toVector().subtract(fromLocation.toVector());
+    public Vector getToDirection() {
+        return toDirection.toVector().subtract(fromLocation.toVector());
     }
 }
