@@ -39,7 +39,7 @@ public class JebWool extends AbstractMachine implements Pushable {
     };
     private int counter;
 
-    protected JebWool(UUID id, Location location) {
+    public JebWool(UUID id, Location location) {
         super(id, location);
     }
 
