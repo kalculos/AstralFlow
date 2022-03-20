@@ -26,7 +26,7 @@ package io.ib67.astralflow.hook.event.player;
  * @date 3/20/22 12:37 PM
  */
 public class PlayerRawInteractEvent extends PlayerEvent {
-    public PlayerRawInteractEvent(String playerName) {
-        super(playerName);
+    public PlayerRawInteractEvent(String player) {
+        super(player);
     }
 }

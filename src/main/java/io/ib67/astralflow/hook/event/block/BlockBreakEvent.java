@@ -29,11 +29,7 @@ import org.bukkit.block.Block;
  * @date 3/20/22 12:48 PM
  */
 public class BlockBreakEvent extends BlockEvent {
-    @Getter
-    private final String breakerName;
-
-    public BlockBreakEvent(Block block, String breakerName) {
-        super(block);
-        this.breakerName = breakerName;
+    public BlockBreakEvent(Block block, String player) {
+        super(block, player);
     }
 }

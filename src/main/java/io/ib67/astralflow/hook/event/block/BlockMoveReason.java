@@ -19,20 +19,8 @@
  *   USA
  */
 
-package io.ib67.astralflow.hook.event.player;
+package io.ib67.astralflow.hook.event.block;
 
-import lombok.Getter;
-
-/**
- * @author EvanLuo42
- * @date 3/20/22 12:33 PM
- */
-public class PlayerAttackEvent extends PlayerEvent {
-    @Getter
-    private final String victimEntity;
-
-    public PlayerAttackEvent(String player, String victimEntity) {
-        super(player);
-        this.victimEntity = victimEntity;
-    }
+public enum BlockMoveReason {
+    PISTON_PUSH
 }

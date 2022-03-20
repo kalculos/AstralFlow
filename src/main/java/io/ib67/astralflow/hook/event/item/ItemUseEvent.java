@@ -23,13 +23,26 @@ package io.ib67.astralflow.hook.event.item;
 
 import io.ib67.astralflow.item.AstralItem;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 
 /**
  * @author EvanLuo42
  * @date 3/20/22 12:29 PM
  */
-public class ItemUseEvent extends ItemEvent {
+public class ItemUseEvent extends ItemEvent implements Cancellable {
+    private boolean cancel;
+
     public ItemUseEvent(AstralItem item, Player player) {
         super(item, player);
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancel;
+    }
+
+    @Override
+    public void setCancelled(boolean cancel) {
+        this.cancel = cancel;
     }
 }

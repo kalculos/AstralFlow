@@ -32,8 +32,8 @@ public class PlayerMoveEvent extends PlayerEvent {
     @Getter
     private final Location location;
 
-    public PlayerMoveEvent(String playerName, Location location) {
-        super(playerName);
+    public PlayerMoveEvent(String player, Location location) {
+        super(player);
         this.location = location;
     }
 }

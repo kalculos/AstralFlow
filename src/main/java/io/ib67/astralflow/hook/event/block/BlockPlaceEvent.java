@@ -33,8 +33,8 @@ public class BlockPlaceEvent extends BlockEvent {
     @Getter
     private final Location location;
 
-    public BlockPlaceEvent(Block block, Location location) {
-        super(block);
+    public BlockPlaceEvent(Block block, Location location, String player) {
+        super(block, player);
         this.location = location;
     }
 }
