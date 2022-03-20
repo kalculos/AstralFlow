@@ -23,6 +23,7 @@ package io.ib67.astralflow.hook.event.player;
 
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 /**
  * @author EvanLuo42
@@ -32,7 +33,7 @@ public class PlayerMoveEvent extends PlayerEvent {
     @Getter
     private final Location location;
 
-    public PlayerMoveEvent(String player, Location location) {
+    public PlayerMoveEvent(Player player, Location location) {
         super(player);
         this.location = location;
     }

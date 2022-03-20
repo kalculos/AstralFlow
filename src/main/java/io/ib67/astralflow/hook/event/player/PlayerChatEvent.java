@@ -23,6 +23,7 @@ package io.ib67.astralflow.hook.event.player;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 
 /**
  * @author EvanLuo42
@@ -32,7 +33,7 @@ public class PlayerChatEvent extends PlayerEvent {
     @Getter
     private final String message;
 
-    public PlayerChatEvent(String player, String message) {
+    public PlayerChatEvent(Player player, String message) {
         super(player);
         this.message = message;
     }

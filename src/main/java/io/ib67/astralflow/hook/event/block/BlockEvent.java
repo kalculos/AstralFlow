@@ -25,6 +25,7 @@ import io.ib67.astralflow.hook.event.HookEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 /**
  * @author EvanLuo42
@@ -34,5 +35,5 @@ import org.bukkit.block.Block;
 @Getter
 public class BlockEvent extends HookEvent {
     private final Block block;
-    private final String player;
+    private final Player player;
 }

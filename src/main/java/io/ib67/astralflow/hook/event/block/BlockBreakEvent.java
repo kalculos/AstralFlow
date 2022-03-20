@@ -23,13 +23,14 @@ package io.ib67.astralflow.hook.event.block;
 
 import lombok.Getter;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 /**
  * @author EvanLuo42
  * @date 3/20/22 12:48 PM
  */
 public class BlockBreakEvent extends BlockEvent {
-    public BlockBreakEvent(Block block, String player) {
+    public BlockBreakEvent(Block block, Player player) {
         super(block, player);
     }
 }

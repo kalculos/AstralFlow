@@ -22,6 +22,8 @@
 package io.ib67.astralflow.hook.event.player;
 
 import lombok.Getter;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 /**
  * @author EvanLuo42
@@ -29,9 +31,9 @@ import lombok.Getter;
  */
 public class PlayerAttackEvent extends PlayerEvent {
     @Getter
-    private final String victimEntity;
+    private final Entity victimEntity;
 
-    public PlayerAttackEvent(String player, String victimEntity) {
+    public PlayerAttackEvent(Player player, Entity victimEntity) {
         super(player);
         this.victimEntity = victimEntity;
     }
