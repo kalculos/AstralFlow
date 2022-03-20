@@ -21,12 +21,14 @@
 
 package io.ib67.astralflow.machines;
 
+import io.ib67.astralflow.machines.trait.Pushable;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 
 import java.util.UUID;
 
-public class JebWool extends AbstractMachine {
+public class JebWool extends AbstractMachine implements Pushable {
     private static final Material[] WOOLS = new Material[]{
             Material.BLUE_WOOL,
             Material.GREEN_WOOL,
@@ -52,5 +54,10 @@ public class JebWool extends AbstractMachine {
         if (counter % 2 == 0) {
             getLocation().getBlock().setType(WOOLS[counter % WOOLS.length]);
         }
+    }
+
+    @Override
+    public void push(Location newLocation, BlockFace direction) {
+        super.setLocation(newLocation);
     }
 }
