@@ -35,7 +35,6 @@ public class PlayerMoveEvent extends PlayerEvent {
     @Getter
     private final Location from;
 
-    @Getter
     @Setter
     private Location to;
 
@@ -45,7 +44,7 @@ public class PlayerMoveEvent extends PlayerEvent {
         this.to = to;
     }
 
-    public Vector getToDirection() {
+    public Vector getTo() {
         return to.toVector().subtract(from.toVector());
     }
 }
