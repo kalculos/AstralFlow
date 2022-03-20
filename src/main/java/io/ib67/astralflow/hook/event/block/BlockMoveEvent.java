@@ -24,6 +24,7 @@ package io.ib67.astralflow.hook.event.block;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
@@ -39,7 +40,7 @@ public class BlockMoveEvent extends BlockEvent {
     @Getter
     private final BlockMoveReason reason;
 
-    public BlockMoveEvent(Block block, Location fromLocation, String player, Location direction, BlockMoveReason reason) {
+    public BlockMoveEvent(Block block, Location fromLocation, Player player, Location direction, BlockMoveReason reason) {
         super(block, player);
         this.fromLocation = fromLocation;
         this.direction = direction;

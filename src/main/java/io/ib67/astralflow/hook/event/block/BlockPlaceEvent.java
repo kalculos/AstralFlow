@@ -24,6 +24,7 @@ package io.ib67.astralflow.hook.event.block;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 /**
  * @author EvanLuo42
@@ -33,7 +34,7 @@ public class BlockPlaceEvent extends BlockEvent {
     @Getter
     private final Location location;
 
-    public BlockPlaceEvent(Block block, Location location, String player) {
+    public BlockPlaceEvent(Block block, Location location, Player player) {
         super(block, player);
         this.location = location;
     }

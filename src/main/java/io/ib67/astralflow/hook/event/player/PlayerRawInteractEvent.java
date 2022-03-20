@@ -21,12 +21,14 @@
 
 package io.ib67.astralflow.hook.event.player;
 
+import org.bukkit.entity.Player;
+
 /**
  * @author EvanLuo42
  * @date 3/20/22 12:37 PM
  */
 public class PlayerRawInteractEvent extends PlayerEvent {
-    public PlayerRawInteractEvent(String player) {
+    public PlayerRawInteractEvent(Player player) {
         super(player);
     }
 }

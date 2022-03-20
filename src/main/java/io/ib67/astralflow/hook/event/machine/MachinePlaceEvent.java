@@ -24,6 +24,7 @@ package io.ib67.astralflow.hook.event.machine;
 import io.ib67.astralflow.machines.IMachine;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 /**
@@ -35,11 +36,11 @@ public class MachinePlaceEvent extends MachineEvent implements Cancellable {
     private final Location location;
 
     @Getter
-    private final String player;
+    private final Player player;
 
     private boolean cancel;
 
-    public MachinePlaceEvent(IMachine machine, Location location, String player) {
+    public MachinePlaceEvent(IMachine machine, Location location, Player player) {
         super(machine);
         this.location = location;
         this.player = player;

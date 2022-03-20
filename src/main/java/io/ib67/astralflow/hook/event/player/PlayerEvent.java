@@ -24,6 +24,7 @@ package io.ib67.astralflow.hook.event.player;
 import io.ib67.astralflow.hook.event.HookEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.entity.Player;
 
 /**
  * @author EvanLuo42
@@ -32,5 +33,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class PlayerEvent extends HookEvent {
-    private final String player;
+    private final Player player;
 }
