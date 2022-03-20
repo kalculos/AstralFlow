@@ -22,10 +22,12 @@
 package io.ib67.astralflow.api;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.machines.IMachine;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Functional class providing utility methods
@@ -45,6 +47,11 @@ public enum AstralHelper {
 
     public static boolean hasMachine(Block block) {
         return AstralFlow.getInstance().getMachineManager().isMachine(block);
+    }
+
+    @Nullable
+    public static IMachine getMachine(Block block) {
+        return AstralFlow.getInstance().getMachineManager().getAndLoadMachine(block.getLocation());
     }
 
     public static Location purifyLocation(Location location) {

@@ -22,14 +22,19 @@
 package io.ib67.astralflow.listener;
 
 import io.ib67.astralflow.api.AstralFlowAPI;
+import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
+import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.trait.Pushable;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 @RequiredArgsConstructor
@@ -71,5 +76,21 @@ public class BlockListener implements Listener {
             }
             event.setDropItems(evt.isDropItem());
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPistonPush(BlockPistonExtendEvent extendEvent) {
+        var machines = extendEvent.getBlocks().stream().filter(AstralHelper::hasMachine).map(AstralHelper::getMachine).toList();
+        if (!machines.stream().allMatch(it -> it instanceof Pushable)) {
+            extendEvent.setCancelled(true);
+        } else {
+            // all are pushable
+            machines.stream().map(e -> (Pushable) e).forEach(e -> e.push(((IMachine) e).getLocation().add(extendEvent.getDirection().getDirection()), extendEvent.getDirection()));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPistonPull(BlockPistonRetractEvent event) {
+        onPistonPush(new BlockPistonExtendEvent(event.getBlock(), event.getBlocks(), event.getDirection()));
     }
 }
