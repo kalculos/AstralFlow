@@ -38,7 +38,7 @@ public class MachineCategory implements ItemCategory<MachineItem> {
                 .id(item.getId())
                 .prototype(item.getPrototype())
                 .holder(item)
-                .statePrototype(new MachineItemState(null, null))
+                .statePrototype(new MachineItemState(null, item.getTypeOfMachine().getName()))
                 .build();
     }
 }
