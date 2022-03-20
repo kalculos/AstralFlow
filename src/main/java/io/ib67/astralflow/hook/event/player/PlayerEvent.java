@@ -32,5 +32,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class PlayerEvent extends HookEvent {
-    private final String playerName;
+    private final String player;
 }

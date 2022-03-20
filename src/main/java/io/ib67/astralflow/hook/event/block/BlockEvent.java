@@ -34,4 +34,5 @@ import org.bukkit.block.Block;
 @Getter
 public class BlockEvent extends HookEvent {
     private final Block block;
+    private final String player;
 }
