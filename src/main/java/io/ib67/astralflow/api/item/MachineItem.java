@@ -53,7 +53,7 @@ public class MachineItem implements LogicalHolder {
             return;
         }
         var state = (MachineItemState) item.getState().get();
-        if (typeOfMachine.getName().equals(state.getType())) {
+        if (typeOfMachine.getName().equals(state.getMachineType())) {
             // setup machine.
             var machineLoc = event.getClickedBlock().getLocation().clone().add(event.getClickedFace().getDirection());
             var machineUUID = UUID.randomUUID();
