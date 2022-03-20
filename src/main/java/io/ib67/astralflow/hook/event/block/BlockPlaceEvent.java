@@ -31,11 +31,7 @@ import org.bukkit.entity.Player;
  * @date 3/20/22 12:48 PM
  */
 public class BlockPlaceEvent extends BlockEvent {
-    @Getter
-    private final Location location;
-
-    public BlockPlaceEvent(Block block, Location location, Player player) {
+    public BlockPlaceEvent(Block block, Player player) {
         super(block, player);
-        this.location = location;
     }
 }

@@ -21,14 +21,20 @@
 
 package io.ib67.astralflow.hook.event.player;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 
 /**
  * @author EvanLuo42
  * @date 3/20/22 12:37 PM
  */
 public class PlayerRawInteractEvent extends PlayerEvent {
-    public PlayerRawInteractEvent(Player player) {
+    @Getter
+    private final ClickType clickType;
+
+    public PlayerRawInteractEvent(Player player, ClickType clickType) {
         super(player);
+        this.clickType = clickType;
     }
 }
