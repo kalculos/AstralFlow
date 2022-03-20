@@ -49,7 +49,7 @@ public class ItemRegistryImpl implements ItemRegistry {
         this.oreDict = Objects.requireNonNull(oreDict);
 
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, () -> {
-            userStateCache.forEach(states::save);
+            userStateCache.forEach(states::save); // FIXME: Overriding save method
             internalStateCache.forEach(states::save);
         });
     }
