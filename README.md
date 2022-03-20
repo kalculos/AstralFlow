@@ -38,4 +38,4 @@ If you want to support our work, please consider donate us by clicking the spons
 
 Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!
 
-<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" style="zoom:50%;"  alt="JetBrains Logo"/>
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" width="300" height="300"  alt="JetBrains Logo"/>
