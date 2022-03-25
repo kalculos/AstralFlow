@@ -29,6 +29,8 @@ And we recommend Lombok.
 
 [Example `JebWool`](./test-plugin/src/main/java/io/ib67/astralflow/machines/JebWool.java)
 
+![jeb_wool](https://user-images.githubusercontent.com/48877375/160128050-d1e55af1-be9e-4631-b52b-990f994fc1af.gif)
+
 # Sponsor
 
 Maintaining AstralFlow isn't an easy work, it takes maintainers tons of time and effort to make it feature-rich and
