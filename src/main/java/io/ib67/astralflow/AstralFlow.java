@@ -130,6 +130,19 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             Bukkit.getLogger().info(ChatColor.AQUA + logo); // removing prefix.
         }
         Log.info("Welcome to AstralFlow!");
+        // issue-62: more information.
+        try (var res = getResource("buildInfo")) {
+            Log.info(new String(res.readAllBytes()));
+            if (AstralConstants.DEBUG) {
+                Log.info("Debug mode is enabled.");
+            }
+            if (AstralConstants.MOCKING) {
+                Log.info("Mocking mode is enabled.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.warn("Cannot read build information. Is it a bug?");
+        }
         Log.info("Loading &aConfigurations");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
         if (Util.runCatching(() -> machineIndex.toFile().createNewFile()).alsoPrintStack().isFailed()) {
