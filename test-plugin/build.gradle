@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.ib67.astralflow'
-version '0.0.1'
+version parent.version
 
 repositories {
     mavenCentral()

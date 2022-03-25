@@ -27,7 +27,7 @@ plugins {
 }
 
 group = 'io.ib67'
-version = '0.0.1'
+version = properties.get("version")
 
 allprojects {
     repositories {
