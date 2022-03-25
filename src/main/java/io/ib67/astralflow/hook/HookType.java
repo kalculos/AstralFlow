@@ -23,13 +23,18 @@ package io.ib67.astralflow.hook;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.event.HookEvent;
+import io.ib67.astralflow.hook.event.block.BlockBreakEvent;
+import io.ib67.astralflow.hook.event.block.BlockMoveEvent;
+import io.ib67.astralflow.hook.event.block.BlockPlaceEvent;
 import io.ib67.astralflow.hook.event.chunk.ChunkLoadHook;
 import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
-import io.ib67.astralflow.hook.event.item.ItemConsumeEvent;
-import io.ib67.astralflow.hook.event.item.ItemDamagedEvent;
-import io.ib67.astralflow.hook.event.item.ItemInteractBlockEvent;
-import io.ib67.astralflow.hook.event.item.ItemInteractEntityEvent;
+import io.ib67.astralflow.hook.event.item.*;
 import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
+import io.ib67.astralflow.hook.event.machine.MachinePlaceEvent;
+import io.ib67.astralflow.hook.event.player.PlayerAttackEvent;
+import io.ib67.astralflow.hook.event.player.PlayerChatEvent;
+import io.ib67.astralflow.hook.event.player.PlayerMoveEvent;
+import io.ib67.astralflow.hook.event.player.PlayerRawInteractEvent;
 
 import java.util.function.Consumer;
 
@@ -45,11 +50,27 @@ public final class HookType<T extends HookEvent> {
     public static final HookType<ItemDamagedEvent> ITEM_DAMAGE = new HookType<>();
     public static final HookType<ItemInteractBlockEvent> ITEM_INTERACT_BLOCK = new HookType<>();
     public static final HookType<ItemInteractEntityEvent> ITEM_INTERACT_ENTITY = new HookType<>();
+    public static final HookType<ItemUseEvent> ITEM_USE = new HookType<>();
+    public static final HookType<ItemBrokenEvent> ITEM_BROKEN = new HookType<>();
 
+    // For chunks
     public static final HookType<ChunkLoadHook> CHUNK_LOAD = new HookType<>();
     public static final HookType<ChunkUnloadHook> CHUNK_UNLOAD = new HookType<>();
 
+    // For machines
     public static final HookType<MachineBreakEvent> MACHINE_BREAK = new HookType<>();
+    public static final HookType<MachinePlaceEvent> MACHINE_PLACE = new HookType<>();
+
+    // For players
+    public static final HookType<PlayerAttackEvent> PLAYER_ATTACK = new HookType<>();
+    public static final HookType<PlayerChatEvent> PLAYER_CHAT = new HookType<>();
+    public static final HookType<PlayerMoveEvent> PLAYER_MOVE = new HookType<>();
+    public static final HookType<PlayerRawInteractEvent> PLAYER_RAW_INTERACT = new HookType<>();
+
+    // For blocks
+    public static final HookType<BlockBreakEvent> BLOCK_BREAK = new HookType<>();
+    public static final HookType<BlockMoveEvent> BLOCK_MOVE = new HookType<>();
+    public static final HookType<BlockPlaceEvent> BLOCK_PLACE = new HookType<>();
 
     public void register(Consumer<T> acceptor) {
         AstralFlow.getInstance().addHook(this, acceptor);
