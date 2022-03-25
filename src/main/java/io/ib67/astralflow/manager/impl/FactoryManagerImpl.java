@@ -21,11 +21,14 @@
 
 package io.ib67.astralflow.manager.impl;
 
+import io.ib67.astralflow.machines.AutoFactory;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
+import io.ib67.astralflow.machines.factories.SimpleMachineFactory;
 import io.ib67.astralflow.manager.IFactoryManager;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +41,21 @@ public class FactoryManagerImpl implements IFactoryManager {
     @Override
     public <T extends IMachine, S extends IState> IMachineFactory<T, S> getMachineFactory(Class<T> type) {
         Objects.requireNonNull(type, "Type cannot be null");
-        return (IMachineFactory<T, S>) machineFactories.get(type);
+        return (IMachineFactory<T, S>) machineFactories.computeIfAbsent(type, t -> {
+            if (!t.isAnnotationPresent(AutoFactory.class)) {
+                return null;
+            }
+            var annotation = t.getAnnotation(AutoFactory.class);
+            if (annotation.value() == SimpleMachineFactory.class) {
+                return new SimpleMachineFactory<>(t);
+            } else {
+                try {
+                    return annotation.value().getDeclaredConstructor().newInstance();
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    throw new UnsupportedOperationException("Cannot instantiate factory from @AutoFactory for " + t + ", is there any available empty contructors?", e);
+                }
+            }
+        });
     }
 
     @Override
