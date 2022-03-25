@@ -28,6 +28,7 @@ import org.bukkit.block.BlockFace;
 
 import java.util.UUID;
 
+@AutoFactory
 public class JebWool extends AbstractMachine implements Pushable {
     private static final Material[] WOOLS = new Material[]{
             Material.BLUE_WOOL,

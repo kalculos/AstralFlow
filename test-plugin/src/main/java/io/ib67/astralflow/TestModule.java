@@ -23,7 +23,6 @@ package io.ib67.astralflow;
 
 import io.ib67.astralflow.api.external.AstralExtension;
 import io.ib67.astralflow.api.external.ExtensionInfo;
-import io.ib67.astralflow.api.factories.StatelessMachineFactory;
 import io.ib67.astralflow.api.item.MachineCategory;
 import io.ib67.astralflow.api.item.MachineItem;
 import io.ib67.astralflow.item.ItemKeys;
@@ -51,10 +50,6 @@ public class TestModule extends AstralExtension {
 
     @Override
     public void init() {
-        // register factories
-        AstralFlow.getInstance().getFactories().register(JebWool.class, new StatelessMachineFactory<>(
-                (location, uuid) -> new JebWool(uuid, location)
-        ));
         // register items.
         ItemBuilder.of(MachineCategory.INSTANCE)
                 .oreDict("wool")
