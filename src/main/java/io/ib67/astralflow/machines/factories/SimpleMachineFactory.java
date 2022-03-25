@@ -57,6 +57,10 @@ public class SimpleMachineFactory<M extends IMachine, S extends IState> implemen
                 continue;
             }
             for (int i = 0; i < types.length; i++) {
+                if (types[i] != Location.class && types[i] != UUID.class && !IState.class.isAssignableFrom(types[i])) {
+                    resetStates();
+                    break;
+                }
                 if (types[i] == Location.class) {
                     if (locationSlot == -1) {
                         locationSlot = i;
