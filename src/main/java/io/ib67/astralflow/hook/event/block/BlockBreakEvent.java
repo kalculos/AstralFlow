@@ -1,7 +1,7 @@
 /*
  *
- *   AstralFlow - The plugin who is turning bukkit into mod-pack
- *   Copyright (C) 2022 iceBear67
+ *   AstralFlow - The plugin enriches bukkit servers
+ *   Copyright (C) 2022 The Inlined Lambdas and Contributors
  *
  *   This library is free software; you can redistribute it and/or
  *   modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@
 
 package io.ib67.astralflow.hook.event.block;
 
-import lombok.Getter;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
