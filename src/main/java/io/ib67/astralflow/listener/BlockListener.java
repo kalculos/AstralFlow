@@ -81,6 +81,9 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPistonPush(BlockPistonExtendEvent extendEvent) {
         var machines = extendEvent.getBlocks().stream().filter(AstralHelper::hasMachine).map(AstralHelper::getMachine).toList();
+        if (machines.isEmpty()) {
+            return;
+        }
         if (!machines.stream().allMatch(it -> it instanceof Pushable)) {
             extendEvent.setCancelled(true);
         } else {
