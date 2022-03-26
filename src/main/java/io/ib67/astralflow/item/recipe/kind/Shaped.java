@@ -39,7 +39,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Shaped implements AstralRecipe {
-    private static final ItemStack PLACEHOLDER = new ItemStack(Material.STONE);
     private final NamespacedKey key;
     private final IngredientChoice[] originMatrix; // todo: performance issues.
     private Supplier<ItemStack> factory;
