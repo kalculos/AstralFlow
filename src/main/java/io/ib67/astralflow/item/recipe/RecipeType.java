@@ -23,6 +23,6 @@ package io.ib67.astralflow.item.recipe;
 
 public enum RecipeType {
     CRAFTING,
-    FURNACE,
-    POTION
+    SMELTING,
+    BREWING
 }
