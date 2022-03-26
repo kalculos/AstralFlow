@@ -22,12 +22,12 @@
 package io.ib67.astralflow.machines.trait;
 
 import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 
 
 @ApiStatus.AvailableSince("0.1.0")
 @ApiStatus.Experimental
 public interface Pushable {
-    void push(Location newLocation, BlockFace direction);
+    void push(Location newLocation, Vector direction);
 }
