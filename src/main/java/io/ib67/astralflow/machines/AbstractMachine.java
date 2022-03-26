@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.machines;
 
+import io.ib67.astralflow.AstralFlow;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -61,12 +62,9 @@ public abstract class AbstractMachine implements IMachine {
     }
 
     protected void setLocation(Location location) {
-        this.location.setX(location.getX());
-        this.location.setY(location.getY());
-        this.location.setZ(location.getZ());
-        this.location.setWorld(location.getWorld());
-        this.location.setYaw(location.getYaw());
-        this.location.setPitch(location.getPitch());
+        var previousLoc = this.location.clone();
+        this.location = location;
+        AstralFlow.getInstance().getMachineManager().updateMachineLocation(previousLoc, this); // todo: decoupling this
     }
 
     @Override
