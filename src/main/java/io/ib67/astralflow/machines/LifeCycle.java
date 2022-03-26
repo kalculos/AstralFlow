@@ -33,7 +33,7 @@ public interface LifeCycle {
     }
 
     /**
-     * Called when chunk is unloading. Save your data into state here.
+     * Called when chunk is unloading or machine is deactivated. Save your data into state here.
      */
     default void onUnload() {
     }
