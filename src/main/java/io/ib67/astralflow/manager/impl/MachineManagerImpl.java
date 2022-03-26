@@ -177,7 +177,7 @@ public class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public boolean removeAndTerminateMachine(IMachine machine) {
+    public boolean removeMachine(IMachine machine) {
         Objects.requireNonNull(machine);
         terminateMachine(machine);
         machineStorage.remove(AstralHelper.purifyLocation(machine.getLocation()));

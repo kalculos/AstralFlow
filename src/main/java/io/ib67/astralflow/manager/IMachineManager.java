@@ -28,35 +28,90 @@ import org.bukkit.block.Block;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;
-import java.util.UUID;
 
 @ApiStatus.AvailableSince("0.1.0")
 public interface IMachineManager {
+    /**
+     * Add a machine into tick queue and save it to machine storage.
+     * <p>
+     * equals {@link #activateMachine(IMachine)} and {@link #registerMachine(IMachine)}
+     *
+     * @param machine machine
+     * @param update  should we tick that
+     */
     void setupMachine(IMachine machine, boolean update);
 
-    boolean isRegistered(UUID uuid);
-
+    /**
+     * Get machine by location, also load it.
+     *
+     * @param location location of machine
+     * @return machine
+     */
     IMachine getAndLoadMachine(Location location);
 
-    IMachine getAndLoadMachine(UUID id);
-
+    /**
+     * Deactivate the machine (untick)
+     *
+     * @param machine machine to be deactivated
+     */
     void deactivateMachine(IMachine machine);
 
+    /**
+     * Add the machine into tick queue
+     *
+     * @param machine machine
+     */
     void activateMachine(IMachine machine);
 
+    /**
+     * Get all loaded machines, whatever they've activated.
+     *
+     * @return
+     */
     Collection<? extends IMachine> getLoadedMachines();
 
-    Collection<? extends Location> getAllMachines();
+    // todo: consider removal Collection<? extends Location> getAllMachines();
 
+    /**
+     * Register the machine and track it in storage
+     *
+     * @param machine
+     */
     void registerMachine(IMachine machine);
 
+    /**
+     * Is the block a machine?
+     *
+     * @param block block
+     * @return result
+     */
     boolean isMachine(Block block);
 
+    /**
+     * Save machine datas.
+     */
     void saveMachines();
 
-    boolean removeAndTerminateMachine(IMachine machine);
+    /**
+     * Remove a machine from storage. This method doesn't deactivate the machine.
+     *
+     * @param machine
+     * @return
+     */
+    boolean removeMachine(IMachine machine);
 
+    /**
+     * Deactivate the machine.
+     *
+     * @param machine
+     */
     void terminateMachine(IMachine machine);
 
+    /**
+     * Get its tick receipt.
+     *
+     * @param machine machine
+     * @return tick receipt.
+     */
     TickReceipt<IMachine> getReceiptByMachine(IMachine machine);
 }
