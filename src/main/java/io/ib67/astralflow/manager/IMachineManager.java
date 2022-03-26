@@ -40,7 +40,7 @@ public interface IMachineManager {
      * @param update  should we tick that
      */
     default void setupMachine(IMachine machine, boolean update) {
-        activateMachine(machine);
+        if (update) activateMachine(machine);
         registerMachine(machine);
     }
 
@@ -82,6 +82,8 @@ public interface IMachineManager {
      */
     void registerMachine(IMachine machine);
 
+    void unregisterMachine(IMachine machine);
+
     /**
      * Is the block a machine?
      *
@@ -102,7 +104,7 @@ public interface IMachineManager {
      * @return
      */
     boolean removeMachine(IMachine machine);
-    
+
 
     /**
      * Get its tick receipt.
