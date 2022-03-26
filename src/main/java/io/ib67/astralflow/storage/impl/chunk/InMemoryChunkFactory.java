@@ -78,6 +78,7 @@ public class InMemoryChunkFactory {
                 var machineData = machines.getData(location);
 
                 var machine = getSerializer(machineData.key).fromData(machineData.value);
+                location = machine.getLocation(); // to keep same reference with the machine state.
                 machinesMap.put(location, machine);
             }
             return new InMemoryChunk(chunksIndex, machines, machinesMap, storageType, getSerializer(storageType));

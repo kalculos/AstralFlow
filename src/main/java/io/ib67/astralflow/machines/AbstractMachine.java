@@ -37,12 +37,19 @@ import static io.ib67.astralflow.machines.IState.EMPTY_STATE;
 
 public abstract class AbstractMachine implements IMachine {
     private final UUID id;
-    @Setter(AccessLevel.PROTECTED)
+
+    // this reference keeps same with the machineStorage one.
     private Location location;
     @Setter(AccessLevel.PROTECTED)
     @Getter
     private IState state = EMPTY_STATE;
 
+    /**
+     * DO NOT COPY LOCATION
+     *
+     * @param id
+     * @param location
+     */
     protected AbstractMachine(UUID id, Location location) {
         this.id = id;
         this.location = location;
@@ -51,6 +58,15 @@ public abstract class AbstractMachine implements IMachine {
     @Override
     public boolean canTick() {
         return location.isWorldLoaded() && Objects.requireNonNull(location.getWorld()).isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4);
+    }
+
+    protected void setLocation(Location location) {
+        this.location.setX(location.getX());
+        this.location.setY(location.getY());
+        this.location.setZ(location.getZ());
+        this.location.setWorld(location.getWorld());
+        this.location.setYaw(location.getYaw());
+        this.location.setPitch(location.getPitch());
     }
 
     @Override
