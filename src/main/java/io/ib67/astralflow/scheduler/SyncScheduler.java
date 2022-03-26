@@ -37,7 +37,7 @@ public class SyncScheduler implements Scheduler {
 
     @Override
     public <T extends Tickable<T>> TickReceipt<T> add(Tickable<T> tickable) throws IllegalArgumentException {
-        if (tickTargets.parallelStream().anyMatch(e -> e.tickable == tickable)) {
+        if (tickTargets.stream().anyMatch(e -> e.tickable == tickable)) {
             throw new IllegalArgumentException(tickable.toString() + " is already in ticking.");
         }
         var receipt = new TickReceipt<T>();
