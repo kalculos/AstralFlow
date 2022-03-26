@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -42,7 +43,7 @@ import java.util.function.Supplier;
 public class TickReceipt<T extends Tickable<T>> {
     private final List<AwaitingTickable<T>> syncs = new ArrayList<>(); //todo Flattening
     private final List<AwaitingTickable<T>> always = new ArrayList<>();
-    private Function<T, Boolean> requirement;
+    private Predicate<T> requirement;
     private boolean dropped = false;
     private String name = null;
 
@@ -53,7 +54,7 @@ public class TickReceipt<T extends Tickable<T>> {
      * @param consumer
      * @return
      */
-    public TickReceipt<T> requires(Supplier<Function<T, Boolean>> consumer) {
+    public TickReceipt<T> requires(Supplier<Predicate<T>> consumer) {
         Validate.notNull(consumer);
         return requires(consumer.get());
     }
@@ -66,15 +67,19 @@ public class TickReceipt<T extends Tickable<T>> {
      * @param func
      * @return
      */
-    public TickReceipt<T> requires(Function<T, Boolean> func) {
+    public TickReceipt<T> requires(Predicate<T> func) {
         Validate.notNull(func);
+        if (requirement != null) {
+            requirement = requirement.and(func);
+            return this;
+        }
         this.requirement = func;
         return this;
     }
 
     /**
      * 在回执目标运行的时候顺便运行新的 tickable，可以用于同步多个实体之间的动作
-     * 与 {@link this#alwaysTicks(Tickable)} 不同，（如果有的话）他必须在 {@link this#requires(Function)} 通过后才运行
+     * 与 {@link this#alwaysTicks(Tickable)} 不同，（如果有的话）他必须在 {@link this#requires(Predicate)} 通过后才运行
      * 这意味着可能会受到 {@link io.ib67.astralflow.scheduler.strategies.PeriodicTicks} 一类的影响
      *
      * @param tickable
@@ -103,7 +108,7 @@ public class TickReceipt<T extends Tickable<T>> {
 
     /**
      * 在回执目标运行的时候顺便运行新的 tickable，可以用于同步多个实体之间的动作
-     * 与 {@link this#alsoTicks(Tickable)} 和 {@link this#alwaysTicks(Tickable)} 不同，他不会返回新的回执，但是会受到同一个条件 ({@link this#requires(Function)}) 的影响。
+     * 与 {@link this#alsoTicks(Tickable)} 和 {@link this#alwaysTicks(Tickable)} 不同，他不会返回新的回执，但是会受到同一个条件 ({@link this#requires(Predicate)}) 的影响。
      *
      * @param tickable
      * @return 自身，用于更方便的链式调用
@@ -161,7 +166,7 @@ public class TickReceipt<T extends Tickable<T>> {
                 alway.tick();
             }
         }
-        if (requirement == null || requirement.apply((T) t)) {
+        if (requirement == null || requirement.test((T) t)) {
             if (syncs.size() != 0) {
                 for (AwaitingTickable<?> sync : syncs) {
                     sync.tick();
