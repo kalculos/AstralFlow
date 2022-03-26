@@ -25,22 +25,15 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.AvailableSince("0.1.0")
 public interface LifeCycle {
-
     /**
-     * Called when your machine is created and ready for initialization. IT IS NOT onLoad, which calls at chunk loading, WE'LL CALL THIS ON, e.g ENABLE
-     */
-    default void init() {
-    }
-
-    /**
-     * Due to undefined motivation of your machine instance created, you should ONLY *LOAD* YOUR MACHINE HERE!
-     * do things such as set block.
+     * Calls when the chunk is loaded and your machine is ready to initialize.
+     * You can get {@link io.ib67.astralflow.scheduler.TickReceipt} by calling {@link io.ib67.astralflow.manager.IMachineManager#getReceiptByMachine(IMachine)}.
      */
     default void onLoad() {
     }
 
     /**
-     * Called when chunk is unloading.
+     * Called when chunk is unloading. Save your data into state here.
      */
     default void onUnload() {
     }
