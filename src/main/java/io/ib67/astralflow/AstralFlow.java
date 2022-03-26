@@ -154,10 +154,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         itemDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
         loadConfig();
+        tickManager = new TickManager();
         loadMachineManager();
         //scheduler = new TickScheduler(machineManager);
         //scheduler.runTaskTimer(this, 0L, 1L); // Every tick.
-        tickManager = new TickManager();
         loadItemManager();
         loadListeners();
 
@@ -250,7 +250,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadMachineManager() {
         var machineStorage = configuration.getStorage();
-        machineManager = new MachineManagerImpl(machineStorage);
+        machineManager = new MachineManagerImpl(machineStorage, 16, tickManager.getScheduler());
     }
 
     private void loadItemManager() {
