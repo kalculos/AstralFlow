@@ -24,6 +24,7 @@ package io.ib67.astralflow.item.recipe.kind;
 import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
+import io.ib67.astralflow.item.recipe.RecipeType;
 import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
@@ -55,6 +56,11 @@ public class Shaped implements AstralRecipe {
 
     public static ShapedBuilder of(NamespacedKey key) {
         return new ShapedBuilder(key);
+    }
+
+    @Override
+    public RecipeType getRecipeType() {
+        return RecipeType.CRAFTING;
     }
 
     @Override

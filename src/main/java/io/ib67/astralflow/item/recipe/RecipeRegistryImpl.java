@@ -21,28 +21,28 @@
 
 package io.ib67.astralflow.item.recipe;
 
-import io.ib67.astralflow.item.recipe.kind.Shaped;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RecipeRegistryImpl implements IRecipeRegistry {
-    private final Map<Integer, List<Shaped>> shapedRecipes = new HashMap<>(32);
     private final Map<NamespacedKey, AstralRecipe> recipesMap = new WeakHashMap<>();
-    private final List<AstralRecipe> recipes = new ArrayList<>();
+
+    private final Map<RecipeType, List<AstralRecipe>> recipes = new EnumMap<>(RecipeType.class);
 
     @Override
     public IRecipeRegistry registerRecipe(AstralRecipe recipe) {
         recipesMap.put(recipe.getKey(), recipe);
-        recipes.add(recipe);
+        recipes.computeIfAbsent(recipe.getRecipeType(), k -> new ArrayList<>()).add(recipe);
         return this;
     }
 
     @Override
     public IRecipeRegistry unregisterRecipe(AstralRecipe recipe) {
         recipesMap.remove(recipe.getKey());
-        recipes.remove(recipe);
+        recipes.computeIfAbsent(recipe.getRecipeType(), k -> new ArrayList<>()).remove(recipe);
         return this;
     }
 
@@ -53,23 +53,17 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
 
     @Override
     public List<? extends AstralRecipe> getRecipes() {
-        var arr = new ArrayList<>(recipes);
-        shapedRecipes.values().forEach(arr::addAll);
-        return arr;
+        return recipes.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     @Override
     public AstralRecipe matchRecipe(RecipeType type, ItemStack[] matrix) {
-        return switch (type) {
-            case CRAFTING -> {
-                for (AstralRecipe recipe : recipes) {
-                    if (recipe.test(matrix)) {
-                        yield recipe;
-                    }
-                }
-                yield null;
+        var craftingRecipes = recipes.getOrDefault(type, Collections.emptyList());
+        for (AstralRecipe recipe : craftingRecipes) {
+            if (recipe.test(matrix)) {
+                return recipe;
             }
-            default -> throw new UnsupportedOperationException("Currently Unsupported recipe type: " + type); //todo
-        };
+        }
+        return null;
     }
 }
