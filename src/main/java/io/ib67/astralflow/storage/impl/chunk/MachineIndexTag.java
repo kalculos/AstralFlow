@@ -29,6 +29,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,9 +41,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @ApiStatus.Internal
 public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMachineIndex> {
     public static final MachineIndexTag INSTANCE = new MachineIndexTag();
-    private static final int STORAGE_VERSION = 0;
+    private static final int STORAGE_VERSION = 1;
 
-    public static void writeEntries(Collection<? extends Map.Entry<Location, String>> collection, ByteBuf buffer) {
+    public static void writeEntries0(Collection<? extends Map.Entry<Location, String>> collection, ByteBuf buffer) {
         // [typeNameLen] [typeName] [Location]
         for (Map.Entry<Location, String> pair : collection) {
             var loc = pair.getKey();
@@ -53,12 +54,54 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
         }
     }
 
-    public static Map<Location, String> readEntries(int chunkX, int chunkZ, int count, ByteBuf buf) {
+    public static Map<Location, String> readEntries0(int chunkX, int chunkZ, int count, ByteBuf buf) {
         var result = new HashMap<Location, String>(count, 2); // avoid-resizing at loading
         for (int i = 0; i < count; i++) {
             var nameLen = new byte[buf.readInt()];
             buf.readBytes(nameLen);
             var typeName = new String(nameLen, UTF_8);
+            var loc = readLocation(chunkX, chunkZ, buf);
+            result.put(loc, typeName);
+        }
+        return new HashMap<>(result); // or the map cannot be resized.
+    }
+
+    public static void writeEntries1(Collection<? extends Map.Entry<Location, String>> collection, ByteBuf buffer) {
+        // cpool [size] { [Len][Data] } [typeCPoolId] [Location]
+        var constants = new ArrayList<String>(collection.size());
+        for (Map.Entry<Location, String> locationStringEntry : collection) {
+            if (!constants.contains(locationStringEntry.getValue())) constants.add(locationStringEntry.getValue());
+        }
+        // write cpool
+        buffer.writeInt(constants.size());
+        for (var constant : constants) {
+            buffer.writeInt(constant.length());
+            buffer.writeBytes(constant.getBytes(UTF_8));
+        }
+
+        //write entries
+        for (Map.Entry<Location, String> pair : collection) {
+            var loc = pair.getKey();
+            var type = constants.indexOf(pair.getValue());
+            buffer.writeInt(type);
+            writeLocation(loc, buffer);
+        }
+    }
+
+    public static Map<Location, String> readEntries1(int chunkX, int chunkZ, int count, ByteBuf buf) {
+        // read constant pool
+        var poolSize = buf.readInt();
+        var constants = new String[poolSize];
+        for (int i = 0; i < poolSize; i++) {
+            var nameLen = new byte[buf.readInt()];
+            buf.readBytes(nameLen);
+            constants[i] = new String(nameLen, UTF_8);
+        }
+
+        //read entries
+        var result = new HashMap<Location, String>(count, 2); // avoid-resizing at loading
+        for (int i = 0; i < count; i++) {
+            var typeName = constants[buf.readInt()];
             var loc = readLocation(chunkX, chunkZ, buf);
             result.put(loc, typeName);
         }
@@ -96,7 +139,7 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
         buffer.writeInt(complex.getChunkZ());
         buffer.writeBoolean(complex.isHasMachines());
         buffer.writeInt(complex.getMachineTypes().size());
-        writeEntries(complex.getEntries(), buffer);
+        writeEntries1(complex.getEntries(), buffer);
         var result = buffer.array();
         buffer.release();
         return result;
@@ -111,14 +154,31 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
         var chunkX = buf.readInt();
         var chunkZ = buf.readInt();
         if (version != STORAGE_VERSION) {
-            throw new IllegalArgumentException("Unsupported version: " + version);
+            switch (version) {
+                case 0:
+                    return readVersion0(buf, chunkX, chunkZ);
+                default:
+                    throw new UnsupportedOperationException("Unknown version: " + version);
+            }
         }
+
         var hasMachines = buf.readBoolean();
         if (!hasMachines) {
             return new ChunkMachineIndex(new HashMap<>(), chunkX, chunkZ);
         }
         var count = buf.readInt();
-        var entries = readEntries(chunkX, chunkZ, count, buf);
+        var entries = readEntries1(chunkX, chunkZ, count, buf);
+        buf.release();
+        return new ChunkMachineIndex(entries, chunkX, chunkZ);
+    }
+
+    public ChunkMachineIndex readVersion0(ByteBuf buf, int chunkX, int chunkZ) {
+        var hasMachines = buf.readBoolean();
+        if (!hasMachines) {
+            return new ChunkMachineIndex(new HashMap<>(), chunkX, chunkZ);
+        }
+        var count = buf.readInt();
+        var entries = readEntries0(chunkX, chunkZ, count, buf);
         buf.release();
         return new ChunkMachineIndex(entries, chunkX, chunkZ);
     }
