@@ -32,6 +32,8 @@ import java.util.function.UnaryOperator;
 
 @ApiStatus.AvailableSince("0.1.0")
 public interface AstralRecipe extends Keyed, Predicate<ItemStack[]>, UnaryOperator<ItemStack[]> {
+    RecipeType getRecipeType();
+
     @Contract(" -> new")
     ItemStack produceResult();
 

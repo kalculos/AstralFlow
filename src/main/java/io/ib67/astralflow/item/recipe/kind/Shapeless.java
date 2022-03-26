@@ -25,6 +25,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
+import io.ib67.astralflow.item.recipe.RecipeType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,11 @@ public class Shapeless implements AstralRecipe {
 
     public static ShapelessBuilder of(Plugin plugin, String key, ItemKey resultItemId) {
         return of(plugin, key, () -> AstralFlow.getInstance().getItemRegistry().getRegistry(resultItemId).getPrototype().clone());
+    }
+
+    @Override
+    public RecipeType getRecipeType() {
+        return RecipeType.CRAFTING;
     }
 
     @Override
