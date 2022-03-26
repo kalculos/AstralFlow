@@ -102,13 +102,7 @@ public interface IMachineManager {
      * @return
      */
     boolean removeMachine(IMachine machine);
-
-    /**
-     * Deactivate the machine.
-     *
-     * @param machine
-     */
-    void terminateMachine(IMachine machine);
+    
 
     /**
      * Get its tick receipt.
@@ -117,4 +111,12 @@ public interface IMachineManager {
      * @return tick receipt.
      */
     TickReceipt<IMachine> getReceiptByMachine(IMachine machine);
+
+    /**
+     * Is it a tracked machine?
+     *
+     * @param machine machine
+     * @return true or false
+     */
+    boolean isRegistered(IMachine machine);
 }
