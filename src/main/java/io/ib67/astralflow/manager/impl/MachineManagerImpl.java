@@ -175,4 +175,13 @@ public class MachineManagerImpl implements IMachineManager {
         Objects.requireNonNull(machine, "Machine cannot be null");
         return loadedMachines.contains(machine);
     }
+
+    @Override
+    public void updateMachineLocation(Location previousLocation, IMachine machine) {
+        if (!isRegistered(machine)) {
+            throw new IllegalArgumentException("Machine " + machine + " is not registered");
+        }
+        machineStorage.remove(previousLocation);
+        machineStorage.save(machine.getLocation(), machine);
+    }
 }

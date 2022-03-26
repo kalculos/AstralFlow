@@ -121,4 +121,6 @@ public interface IMachineManager {
      * @return true or false
      */
     boolean isRegistered(IMachine machine);
+
+    void updateMachineLocation(Location previousLocation, IMachine machine);
 }
