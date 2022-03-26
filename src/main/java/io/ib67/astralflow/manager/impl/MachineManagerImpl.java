@@ -21,184 +21,158 @@
 
 package io.ib67.astralflow.manager.impl;
 
-import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.hook.event.chunk.ChunkLoadHook;
+import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.Tickless;
 import io.ib67.astralflow.manager.IMachineManager;
+import io.ib67.astralflow.scheduler.Scheduler;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.storage.IMachineStorage;
+import io.ib67.astralflow.util.WeakHashSet;
 import io.ib67.util.bukkit.Log;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import java.util.*;
 
-@RequiredArgsConstructor
 public class MachineManagerImpl implements IMachineManager {
-    private static final int INITIAL_MACHINE_CAPACITY = 64;
-    private static final Object EMPTY_OBJ = new Object();
 
     private final IMachineStorage machineStorage;
-    private final Map<IMachine, TickReceipt<IMachine>> receiptMap = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
+    private final Set<IMachine> loadedMachines;
 
-    private final Map<IMachine, Object> loadedMachines = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
-    private final Map<Chunk, Object> checkedChunks = new WeakHashMap<>(INITIAL_MACHINE_CAPACITY);
+    private final Map<IMachine, TickReceipt<IMachine>> tickReceipts;
+    private final Scheduler scheduler;
 
-    {
-        AstralFlow.getInstance().addHook(HookType.PLUGIN_SHUTDOWN, this::saveMachines);
-        HookType.CHUNK_LOAD.register(chunkLoad -> initChunk(chunkLoad.getChunk()));
-        HookType.CHUNK_UNLOAD.register(chunkUnload -> finalizeChunk(chunkUnload.getChunk()));
+    private final Set<Chunk> checkedChunks = new WeakHashSet<>(128); // to check loaded chunks out of astral flow
+
+    public MachineManagerImpl(IMachineStorage storage, int capacity, Scheduler scheduler) {
+        this.machineStorage = storage;
+        int defaultCapacity = Math.max(capacity, 16);
+        tickReceipts = new WeakHashMap<>(capacity);
+        this.scheduler = scheduler;
+
+        loadedMachines = new WeakHashSet<>(defaultCapacity);
+        HookType.CHUNK_LOAD.register(this::initChunk);
+        HookType.CHUNK_UNLOAD.register(this::finalizeChunk);
     }
 
-    @Override
-    public void setupMachine(IMachine machine, boolean update) {
-        Objects.requireNonNull(machine);
-        if (!isRegistered(machine.getId())) {
-            registerMachine(machine);
-        }
-        //registerMachine(machine);
-        machine.init();
-        if (update) activateMachine(machine);
-    }
+    private void initChunk(ChunkLoadHook hook) {
+        checkedChunks.add(hook.getChunk());
 
-    @Override
-    public boolean isRegistered(UUID uuid) {
-        Objects.requireNonNull(uuid, "UUID cannot be null.");
-        return machineStorage.getLocationByUUID(uuid) != null;
-    }
-
-    private void finalizeChunk(Chunk chunk) {
-        Objects.requireNonNull(chunk);
-        checkedChunks.remove(chunk);
-        machineStorage.getMachinesByChunk(chunk).forEach(this::terminateMachine);
-        machineStorage.finalizeChunk(chunk);
-    }
-
-    private void initChunk(Chunk chunk) {
-        Objects.requireNonNull(chunk);
-        machineStorage.initChunk(chunk);
-        checkedChunks.put(chunk, EMPTY_OBJ);
-        for (IMachine machine : machineStorage.getMachinesByChunk(chunk)) {
-            machine.onLoad();
+        machineStorage.initChunk(hook.getChunk());
+        for (IMachine machine : machineStorage.getMachinesByChunk(hook.getChunk())) {
             setupMachine(machine, !machine.getClass().isAnnotationPresent(Tickless.class));
         }
     }
 
-    @Override
-    public IMachine getAndLoadMachine(Location alocation) {
-        Objects.requireNonNull(alocation, "Location cannot be null.");
-        var location = AstralHelper.purifyLocation(alocation);
-        boolean init = false;
-        if (AstralHelper.isChunkLoaded(location)) {
-            if (!checkedChunks.containsKey(location.getChunk())) {
-                init = true;
-                Log.warn("Chunk is loaded but not initialized by AF. This is a potential bug");
-            }
-        } else {
-            init = true;
-        }
+    private void finalizeChunk(ChunkUnloadHook hook) {
+        checkedChunks.remove(hook.getChunk());
 
-        if (init) {
-            initChunk(location.getChunk());
+        machineStorage.getMachinesByChunk(hook.getChunk())
+                .forEach(this::terminateMachine);
+        machineStorage.finalizeChunk(hook.getChunk());
+    }
+
+    private void terminateMachine(IMachine machine) {
+        Objects.requireNonNull(machine, "Machine cannot be null");
+        if (getReceiptByMachine(machine) != null) {
+            deactivateMachine(machine);
         }
-        loadedMachines.put(machineStorage.get(location), EMPTY_OBJ);
-        return machineStorage.get(location);
+        unregisterMachine(machine);
     }
 
     @Override
-    public IMachine getAndLoadMachine(UUID id) {
-        Objects.requireNonNull(id, "UUID cannot be null.");
-        return getAndLoadMachine(machineStorage.getLocationByUUID(id));
+    public IMachine getAndLoadMachine(Location location) {
+        Objects.requireNonNull(location, "Location cannot be null");
+        var loc = AstralHelper.purifyLocation(location);
+
+        if (AstralHelper.isChunkLoaded(loc) && !checkedChunks.contains(loc.getChunk())) {
+            Log.warn("MachineManager", "Chunk is loaded but not initialized by AF. This is a potential bug");
+        }
+
+        boolean init = !AstralHelper.isChunkLoaded(loc) || !checkedChunks.contains(loc.getChunk());
+        if (init) {
+            loc.getChunk().load();
+        }
+        return machineStorage.get(loc); // machine will be initialized at `loadChunk`
     }
 
     @Override
     public void deactivateMachine(IMachine machine) {
-        var receipt = receiptMap.get(machine);
-        if (receipt == null) {
-            Log.warn("Machine " + machine.getId() + " is already deactivated. Won't do anything.");
-            return;
+        Objects.requireNonNull(machine, "Machine cannot be null");
+        if (getReceiptByMachine(machine) == null) {
+            throw new IllegalStateException("Machine " + machine + " is not active");
         }
-        receipt.drop();
-        receiptMap.remove(machine);
+        Optional.ofNullable(getReceiptByMachine(machine)).ifPresent(TickReceipt::drop);
     }
 
     @Override
     public void activateMachine(IMachine machine) {
-        Objects.requireNonNull(machine);
-        if (machine.getClass().isAnnotationPresent(Tickless.class)) {
-            Log.warn("Machine " + machine.getId() + " is tickless. But still activated.");
+        Objects.requireNonNull(machine, "Machine cannot be null");
+        if (getReceiptByMachine(machine) != null) {
+            throw new IllegalStateException("Machine " + machine + " is already active");
         }
-        receiptMap.computeIfAbsent(machine, k -> AstralFlow.getInstance().getTickManager().registerTickable(machine).requires(IMachine::canTick));
+        tickReceipts.put(machine, scheduler.add(machine));
+
     }
 
     @Override
     public Collection<? extends IMachine> getLoadedMachines() {
-        return loadedMachines.keySet();
-    }
-
-    @Override
-    public Collection<? extends Location> getAllMachines() {
-        return machineStorage.getKeys().stream().map(Location::clone).toList();
+        return loadedMachines;
     }
 
     @Override
     public void registerMachine(IMachine machine) {
-        Objects.requireNonNull(machine, "Machine cannot be null.");
-
-        if (loadedMachines.containsKey(machine)) {
-            throw new IllegalArgumentException("This machine is already registered.");
-        }
-        loadedMachines.put(machine, EMPTY_OBJ);
+        Objects.requireNonNull(machine, "Machine cannot be null");
+        loadedMachines.add(machine);
         machineStorage.save(AstralHelper.purifyLocation(machine.getLocation()), machine);
     }
 
     @Override
+    public void unregisterMachine(IMachine machine) {
+        Objects.requireNonNull(machine, "Machine cannot be null");
+        loadedMachines.remove(machine);
+        machine.onUnload();
+    }
+
+    @Override
     public boolean isMachine(Block block) {
-        // FIX: https://github.com/iceBear67/AstralFlow/issues/2
-        //return getLoadedMachines().stream().anyMatch(machine -> block.getLocation().distance(machine.getLocation()) < 0.1); // for some moving entities
-        Objects.requireNonNull(block);
-        return getLoadedMachines().stream().anyMatch(machine -> AstralHelper.equalsLocationFuzzily(machine.getLocation(), block.getLocation()));
+        Objects.requireNonNull(block, "Block cannot be null");
+        return machineStorage.get(AstralHelper.purifyLocation(block.getLocation())) != null;
     }
 
     @Override
     public void saveMachines() {
-        for (World world : Bukkit.getWorlds()) {
-            for (Chunk loadedChunk : world.getLoadedChunks()) {
-                finalizeChunk(loadedChunk);
-            }
-        }
         machineStorage.flush();
     }
 
     @Override
     public boolean removeMachine(IMachine machine) {
-        Objects.requireNonNull(machine);
-        terminateMachine(machine);
+        Objects.requireNonNull(machine, "Machine cannot be null");
+        if (!isRegistered(machine)) {
+            throw new IllegalArgumentException("machine " + machine + " is not registered");
+        }
         machineStorage.remove(AstralHelper.purifyLocation(machine.getLocation()));
         return true;
     }
 
     @Override
-    public void terminateMachine(IMachine machine) {
-        Objects.requireNonNull(machine);
-        deactivateMachine(machine);
-        machine.onUnload();
-        loadedMachines.remove(machine);
-    }
-
-    @Override
     public TickReceipt<IMachine> getReceiptByMachine(IMachine machine) {
-        Objects.requireNonNull(machine);
-        var r = this.receiptMap.get(machine);
+        Objects.requireNonNull(machine, "Machine cannot be null");
+        var r = tickReceipts.get(machine);
         if (r == null || r.isDropped()) {
             return null;
         }
         return r;
+    }
+
+    @Override
+    public boolean isRegistered(IMachine machine) {
+        Objects.requireNonNull(machine, "Machine cannot be null");
+        return loadedMachines.contains(machine);
     }
 }
