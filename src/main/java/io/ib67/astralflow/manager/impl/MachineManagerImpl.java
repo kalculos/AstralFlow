@@ -28,7 +28,7 @@ import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.Tickless;
 import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.astralflow.scheduler.Scheduler;
+import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.util.WeakHashSet;
@@ -45,11 +45,11 @@ public class MachineManagerImpl implements IMachineManager {
     private final Set<IMachine> loadedMachines;
 
     private final Map<IMachine, TickReceipt<IMachine>> tickReceipts;
-    private final Scheduler scheduler;
+    private final ITickManager scheduler;
 
     private final Set<Chunk> checkedChunks = new WeakHashSet<>(128); // to check loaded chunks out of astral flow
 
-    public MachineManagerImpl(IMachineStorage storage, int capacity, Scheduler scheduler) {
+    public MachineManagerImpl(IMachineStorage storage, int capacity, ITickManager scheduler) {
         this.machineStorage = storage;
         int defaultCapacity = Math.max(capacity, 16);
         tickReceipts = new WeakHashMap<>(capacity);
@@ -116,7 +116,7 @@ public class MachineManagerImpl implements IMachineManager {
         if (getReceiptByMachine(machine) != null) {
             throw new IllegalStateException("Machine " + machine + " is already active");
         }
-        tickReceipts.put(machine, scheduler.add(machine));
+        tickReceipts.put(machine, scheduler.registerTickable(machine));
 
     }
 

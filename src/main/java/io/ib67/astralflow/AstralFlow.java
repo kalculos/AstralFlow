@@ -250,7 +250,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadMachineManager() {
         var machineStorage = configuration.getStorage();
-        machineManager = new MachineManagerImpl(machineStorage, configuration.getOptimization().getInitialMachineCapacity(), tickManager.getScheduler());
+        machineManager = new MachineManagerImpl(machineStorage, configuration.getOptimization().getInitialMachineCapacity(), tickManager);
     }
 
     private void loadItemManager() {
