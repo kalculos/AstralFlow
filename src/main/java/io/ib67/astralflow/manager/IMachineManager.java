@@ -39,7 +39,10 @@ public interface IMachineManager {
      * @param machine machine
      * @param update  should we tick that
      */
-    void setupMachine(IMachine machine, boolean update);
+    default void setupMachine(IMachine machine, boolean update) {
+        activateMachine(machine);
+        registerMachine(machine);
+    }
 
     /**
      * Get machine by location, also load it.
