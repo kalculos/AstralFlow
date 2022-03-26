@@ -90,7 +90,7 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPistonPull(BlockPistonRetractEvent event) {
-        event.setCancelled(onBlockMove(event.getBlock(), event.getBlocks(), event.getDirection().getDirection().multiply(-1), true));
+        event.setCancelled(onBlockMove(event.getBlock(), event.getBlocks(), event.getDirection().getDirection(), true));
     }
 
     private boolean onBlockMove(Block piston, Collection<? extends Block> movingBlocks, Vector direction, boolean pulling) {
