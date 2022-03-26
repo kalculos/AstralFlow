@@ -50,11 +50,14 @@ public class AstralFlowConfiguration {
     @SerializedName("item-storage-type")
     private final ItemStateStorage itemStorage;
 
+    @SerializedName("data-save-intervals")
+    private final int dataSaveIntervals = 300;
+
     @SerializedName("recipe-settings")
     private final RecipeSetting recipeSetting;
 
-    @SerializedName("data-save-intervals")
-    private final int dataSaveIntervals = 300;
+    @SerializedName("optimization-settings")
+    private final Optimization optimization = new Optimization();
 
     public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageIndexes) {
         Objects.requireNonNull(itemStorageDir, "ItemStorageDir cannot be null");
@@ -66,6 +69,12 @@ public class AstralFlowConfiguration {
                 new FileItemStorage(itemStorageDir, AstralFlow.getInstance().getFactories()),
                 new RecipeSetting()
         );
+    }
+
+    @Getter
+    public static class Optimization {
+        @SerializedName("initial-machine-capacity")
+        private final int initialMachineCapacity = 32;
     }
 
     @Getter
