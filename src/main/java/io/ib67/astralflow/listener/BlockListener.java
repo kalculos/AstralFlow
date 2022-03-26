@@ -29,6 +29,7 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.trait.Pushable;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -36,6 +37,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Vector;
+
+import java.util.Collection;
+import java.util.Comparator;
 
 @RequiredArgsConstructor
 public class BlockListener implements Listener {
@@ -80,20 +85,30 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPistonPush(BlockPistonExtendEvent extendEvent) {
-        var machines = extendEvent.getBlocks().stream().filter(AstralHelper::hasMachine).map(AstralHelper::getMachine).toList();
-        if (machines.isEmpty()) {
-            return;
-        }
-        if (!machines.stream().allMatch(it -> it instanceof Pushable)) {
-            extendEvent.setCancelled(true);
-        } else {
-            // all are pushable
-            machines.stream().map(e -> (Pushable) e).forEach(e -> e.push(((IMachine) e).getLocation().add(extendEvent.getDirection().getDirection()), extendEvent.getDirection()));
-        }
+        extendEvent.setCancelled(onBlockMove(extendEvent.getBlock(), extendEvent.getBlocks(), extendEvent.getDirection().getDirection(), false));
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPistonPull(BlockPistonRetractEvent event) {
-        onPistonPush(new BlockPistonExtendEvent(event.getBlock(), event.getBlocks(), event.getDirection()));
+        event.setCancelled(onBlockMove(event.getBlock(), event.getBlocks(), event.getDirection().getDirection().multiply(-1), true));
+    }
+
+    private boolean onBlockMove(Block piston, Collection<? extends Block> movingBlocks, Vector direction, boolean pulling) {
+        var machines = movingBlocks.stream().filter(AstralHelper::hasMachine).map(AstralHelper::getMachine).toList();
+        if (machines.isEmpty()) {
+            return false;
+        }
+        if (!machines.stream().allMatch(it -> it instanceof Pushable)) {
+            return true;
+        } else {
+            // all are pushable
+            var comparator = Comparator.<IMachine>comparingDouble(it -> it.getLocation().distanceSquared(piston.getLocation()));
+            if (pulling) comparator = comparator.reversed();
+            machines.stream()
+                    .sorted(comparator)
+                    .map(e -> (Pushable) e)
+                    .forEach(e -> e.push(((IMachine) e).getLocation().add(direction), direction));
+            return false;
+        }
     }
 }
