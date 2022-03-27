@@ -31,18 +31,26 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-public class Smelting implements AstralRecipe {
+public final class Smelting implements AstralRecipe {
     private final NamespacedKey key;
     private final IngredientChoice fuel;
     private final IngredientChoice input;
     private Supplier<ItemStack> result;
     private ItemStack resultPrototype;
 
-    //todo: builder
     private Smelting(NamespacedKey key, IngredientChoice fuel, IngredientChoice input, Supplier<ItemStack> result) {
         this.key = key;
         this.fuel = fuel;
         this.input = input;
+        this.result = result;
+    }
+
+    public static Smelting of(NamespacedKey key, IngredientChoice fuel, IngredientChoice input, Supplier<ItemStack> result) {
+        return new Smelting(key, fuel, input, result);
+    }
+
+    public static Smelting of(NamespacedKey key, IngredientChoice fuel, IngredientChoice input) {
+        return of(key, fuel, input, null);
     }
 
     @Override
