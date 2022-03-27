@@ -52,6 +52,8 @@ public class Shapeless implements AstralRecipe {
     private ItemStack prototype;
 
     private Shapeless(List<IngredientChoice> choices, NamespacedKey key) {
+        Objects.requireNonNull(choices, "choices");
+        Objects.requireNonNull(key, "key");
         this.choices = choices.toArray(new IngredientChoice[0]);
         this.key = key;
     }
