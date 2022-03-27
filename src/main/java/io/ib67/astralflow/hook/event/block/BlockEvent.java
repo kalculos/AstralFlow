@@ -24,8 +24,10 @@ package io.ib67.astralflow.hook.event.block;
 import io.ib67.astralflow.hook.event.HookEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 
 /**
  * @author EvanLuo42
@@ -33,7 +35,9 @@ import org.bukkit.entity.Player;
  */
 @AllArgsConstructor
 @Getter
-public class BlockEvent extends HookEvent {
+public class BlockEvent extends HookEvent implements Cancellable {
     private final Block block;
     private final Player player;
+    @Setter
+    private boolean cancelled;
 }

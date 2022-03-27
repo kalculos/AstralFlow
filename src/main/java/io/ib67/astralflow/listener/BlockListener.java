@@ -25,6 +25,7 @@ import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
+import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.trait.Pushable;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
@@ -45,6 +47,15 @@ import java.util.Comparator;
 @RequiredArgsConstructor
 public class BlockListener implements Listener {
     private final AstralFlowAPI flow;
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        event.setCancelled(
+                flow.callHooks(
+                        HookType.BLOCK_PLACE,
+                        new io.ib67.astralflow.hook.event.block.BlockPlaceEvent(event.getBlockPlaced(), event.getPlayer()))
+        );
+    }
 
     @EventHandler(priority = EventPriority.HIGH) // plugins like resident may cancell this event
     public void onBlockInteraction(PlayerInteractEvent event) {
