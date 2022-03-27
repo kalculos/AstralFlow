@@ -41,7 +41,7 @@ public class BlockMoveEvent extends BlockEvent {
     private final BlockMoveReason reason;
 
     public BlockMoveEvent(Block block, Location fromLocation, Player player, Location direction, BlockMoveReason reason) {
-        super(block, player);
+        super(block, player, false);
         this.fromLocation = fromLocation;
         this.toDirection = direction;
         this.reason = reason;

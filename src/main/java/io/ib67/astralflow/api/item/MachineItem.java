@@ -25,11 +25,15 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.block.BlockPlaceEvent;
 import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
+import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.Tickless;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.UUID;
 
 @Getter
 public class MachineItem implements LogicalHolder {
@@ -46,7 +50,21 @@ public class MachineItem implements LogicalHolder {
     }
 
     private void onPlace(BlockPlaceEvent event) {
-
+        var item = new AstralItem(event.getItemInHand(), AstralFlow.getInstance().getItemRegistry()); // todo: refactor BlockPlaceEvent
+        if (item.getState().isEmpty() || !(item.getState().get() instanceof MachineItemState)) {
+            return;
+        }
+        var state = (MachineItemState) item.getState().get();
+        if (typeOfMachine.getName().equals(state.getMachineType())) {
+            // setup machine.
+            var machineLoc = event.getBlock().getLocation();
+            var machineUUID = UUID.randomUUID();
+            var factory = AstralFlow.getInstance().getFactories().getMachineFactory(typeOfMachine);
+            var machine = factory.createMachine(machineLoc, machineUUID, state.getData());
+            AstralFlow.getInstance().getMachineManager().setupMachine(machine, !typeOfMachine.isAnnotationPresent(Tickless.class));
+        } else {
+            return;
+        }
     }
 
     private void onBreak(MachineBreakEvent event) {

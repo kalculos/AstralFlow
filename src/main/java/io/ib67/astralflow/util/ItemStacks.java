@@ -22,9 +22,22 @@
 package io.ib67.astralflow.util;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class ItemStacks {
     public static ItemStackBuilder builder(Material material) {
         return new ItemStackBuilder().material(material);
+    }
+
+    public static ItemStack consumeOrNull(ItemStack itemStack, int amount) {
+        if (itemStack.getAmount() < amount) {
+            return null;
+        }
+        if (itemStack.getAmount() == amount) {
+            return new ItemStack(Material.AIR);
+        }
+        var item = itemStack.clone();
+        item.setAmount(item.getAmount() - amount);
+        return item;
     }
 }

@@ -30,6 +30,6 @@ import org.bukkit.entity.Player;
  */
 public class BlockBreakEvent extends BlockEvent {
     public BlockBreakEvent(Block block, Player player) {
-        super(block, player);
+        super(block, player, false);
     }
 }
