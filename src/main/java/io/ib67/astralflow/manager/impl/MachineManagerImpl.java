@@ -25,6 +25,7 @@ import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.chunk.ChunkLoadHook;
 import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
+import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.Tickless;
 import io.ib67.astralflow.manager.IMachineManager;
@@ -58,8 +59,7 @@ public class MachineManagerImpl implements IMachineManager {
         loadedMachines = new WeakHashSet<>(defaultCapacity);
         HookType.CHUNK_LOAD.register(this::initChunk);
         HookType.CHUNK_UNLOAD.register(this::finalizeChunk);
-        HookType.SAVE_DATA.register(this::saveMachines);
-        HookType.PLUGIN_SHUTDOWN.register(this::finalizeAll); //todo: performance issue / flush twice
+        HookType.SAVE_DATA.register(this::onSaveData);
     }
 
     private void finalizeAll() {
@@ -150,6 +150,13 @@ public class MachineManagerImpl implements IMachineManager {
     public boolean isMachine(Block block) {
         Objects.requireNonNull(block, "Block cannot be null");
         return machineStorage.get(AstralHelper.purifyLocation(block.getLocation())) != null;
+    }
+
+    private void onSaveData(SaveDataEvent event) {
+        if (event.isShuttingDown()) {
+            finalizeAll();
+        }
+        saveMachines();
     }
 
     @Override
