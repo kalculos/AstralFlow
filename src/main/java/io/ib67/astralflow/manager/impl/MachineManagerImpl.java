@@ -58,6 +58,13 @@ public class MachineManagerImpl implements IMachineManager {
         loadedMachines = new WeakHashSet<>(defaultCapacity);
         HookType.CHUNK_LOAD.register(this::initChunk);
         HookType.CHUNK_UNLOAD.register(this::finalizeChunk);
+        HookType.SAVE_DATA.register(this::saveMachines);
+        HookType.PLUGIN_SHUTDOWN.register(this::finalizeAll); //todo: performance issue / flush twice
+    }
+
+    private void finalizeAll() {
+        var chunks = List.copyOf(checkedChunks);
+        chunks.stream().map(ChunkUnloadHook::new).forEach(this::finalizeChunk);
     }
 
     private void initChunk(ChunkLoadHook hook) {
