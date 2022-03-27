@@ -30,6 +30,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 @ApiStatus.AvailableSince("0.1.0")
@@ -41,6 +42,9 @@ public final class Smelting implements AstralRecipe {
     private ItemStack resultPrototype;
 
     private Smelting(NamespacedKey key, IngredientChoice fuel, IngredientChoice input, Supplier<ItemStack> result) {
+        Objects.requireNonNull(key, "key");
+        Objects.requireNonNull(fuel, "fuel");
+        Objects.requireNonNull(input, "input");
         this.key = key;
         this.fuel = fuel;
         this.input = input;
