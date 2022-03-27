@@ -123,4 +123,14 @@ public interface IMachineManager {
     boolean isRegistered(IMachine machine);
 
     void updateMachineLocation(Location previousLocation, IMachine machine);
+
+    /**
+     * Helper method to remove a machine from storage and tick queue.
+     *
+     * @param machine
+     */
+    default void terminateAndRemoveMachine(IMachine machine) {
+        removeMachine(machine);
+        deactivateMachine(machine);
+    }
 }
