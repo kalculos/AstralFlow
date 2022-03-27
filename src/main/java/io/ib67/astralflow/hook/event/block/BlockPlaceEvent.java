@@ -21,15 +21,21 @@
 
 package io.ib67.astralflow.hook.event.block;
 
+import lombok.Getter;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * @author EvanLuo42
  * @date 3/20/22 12:48 PM
  */
+@Getter
 public class BlockPlaceEvent extends BlockEvent {
-    public BlockPlaceEvent(Block block, Player player) {
-        super(block, player);
+    private final ItemStack itemInHand;
+
+    public BlockPlaceEvent(Block block, Player player, ItemStack itemInHand) {
+        super(block, player, false);
+        this.itemInHand = itemInHand;
     }
 }

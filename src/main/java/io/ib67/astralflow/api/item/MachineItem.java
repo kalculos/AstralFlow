@@ -23,16 +23,13 @@ package io.ib67.astralflow.api.item;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.item.ItemInteractBlockEvent;
+import io.ib67.astralflow.hook.event.block.BlockPlaceEvent;
 import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.Tickless;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.UUID;
 
 @Getter
 public class MachineItem implements LogicalHolder {
@@ -44,26 +41,12 @@ public class MachineItem implements LogicalHolder {
         this.id = id;
         this.prototype = prototype;
         this.typeOfMachine = typeOfMachine;
-        HookType.ITEM_INTERACT_BLOCK.register(this::onPlace);
+        HookType.BLOCK_PLACE.register(this::onPlace);
         HookType.MACHINE_BREAK.register(this::onBreak);
     }
 
-    private void onPlace(ItemInteractBlockEvent event) {
-        var item = event.getItem();
-        if (item.getState().isEmpty() || !(item.getState().get() instanceof MachineItemState)) {
-            return;
-        }
-        var state = (MachineItemState) item.getState().get();
-        if (typeOfMachine.getName().equals(state.getMachineType())) {
-            // setup machine.
-            var machineLoc = event.getClickedBlock().getLocation().clone().add(event.getClickedFace().getDirection());
-            var machineUUID = UUID.randomUUID();
-            var factory = AstralFlow.getInstance().getFactories().getMachineFactory(typeOfMachine);
-            var machine = factory.createMachine(machineLoc, machineUUID, state.getData());
-            AstralFlow.getInstance().getMachineManager().setupMachine(machine, !typeOfMachine.isAnnotationPresent(Tickless.class));
-        } else {
-            return;
-        }
+    private void onPlace(BlockPlaceEvent event) {
+
     }
 
     private void onBreak(MachineBreakEvent event) {
