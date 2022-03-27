@@ -23,6 +23,8 @@ package io.ib67.astralflow.api;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.util.bukkit.Log;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -62,6 +64,13 @@ public enum AstralHelper {
 
     public static boolean isChunkLoaded(Location loc) {
         return loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4);
+    }
+
+    public static void ensureMainThread(String reason) {
+        if (!Bukkit.isPrimaryThread()) {
+            Log.warn("Threads", "Thread " + Thread.currentThread().getName() + " is not the main thread but operating some resources that are not thread-safe. ");
+            throw new IllegalCallerException("This method must be called from the main thread. Reason: " + reason);
+        }
     }
 
     // Only compares for block x-y-z

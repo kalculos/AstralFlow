@@ -62,7 +62,9 @@ public final class TickManager implements ITickManager {
     public TickManager() {
         this.scheduler = new SyncScheduler();
         this.adapter = new SchedulerAdapter(scheduler);
-        adapter.runTaskTimer(AstralFlow.getInstance().asPlugin(), 0L, 1L);
+        Bukkit.getScheduler().runTaskLater(AstralFlow.getInstance().asPlugin(), () -> {
+            adapter.runTaskTimer(AstralFlow.getInstance().asPlugin(), 0L, 1L);
+        }, 1L);
         Bukkit.getScheduler().runTaskTimer(AstralFlow.getInstance().asPlugin(), () -> {
             // Remove trashes.
             var ref = refTrashQueue.poll();

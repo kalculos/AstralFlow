@@ -23,20 +23,25 @@ package io.ib67.astralflow.scheduler;
 
 
 import io.ib67.astralflow.Tickable;
+import io.ib67.astralflow.api.AstralHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SyncScheduler implements Scheduler {
     private final List<AwaitingTickable<?>> tickTargets = new ArrayList<>();
 
     @Override
     public void tick() {
+        AstralHelper.ensureMainThread("Concurrent Modification to ArrayList");
         tickTargets.removeIf(AwaitingTickable::tickAlsoClean);
     }
 
     @Override
     public <T extends Tickable<T>> TickReceipt<T> add(Tickable<T> tickable) throws IllegalArgumentException {
+        AstralHelper.ensureMainThread("Concurrent Modification to ArrayList");
+        Objects.requireNonNull(tickable, "Tickable cannot be null");
         if (tickTargets.stream().anyMatch(e -> e.tickable == tickable)) {
             throw new IllegalArgumentException(tickable.toString() + " is already in ticking.");
         }
