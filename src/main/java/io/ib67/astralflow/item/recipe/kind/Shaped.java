@@ -162,11 +162,6 @@ public class Shaped implements AstralRecipe {
             return this;
         }
 
-        public ShapedBuilder demoItem(ItemStack item) {
-            this.demo = item;
-            return this;
-        }
-
         public ShapedBuilder setIngredient(char key, IngredientChoice choice) {
             itemMap.put(key, choice);
             return this;
