@@ -24,14 +24,14 @@ package io.ib67.astralflow.scheduler.strategies;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * 用于收集 tick 做到控制间隔的工具
- * Also see {@link io.ib67.astralflow.scheduler.TickReceipt#requires(Function)}
+ * Also see {@link io.ib67.astralflow.scheduler.TickReceipt#requires(Predicate)}
  */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class PeriodicTicks implements Function<Object, Boolean> {
+public class PeriodicTicks<T> implements Predicate<T> {
     private final int target;
     private int ticks;
 
@@ -148,7 +148,7 @@ public class PeriodicTicks implements Function<Object, Boolean> {
     }
 
     @Override
-    public Boolean apply(Object t) {
+    public boolean test(Object t) {
         ticks++;
         if (ticks != target) {
             return false;

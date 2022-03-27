@@ -29,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -49,7 +48,7 @@ public class TickReceipt<T extends Tickable<T>> {
 
     /**
      * 包装。
-     * Also see {@link io.ib67.astralflow.scheduler.strategies.PeriodicTicks} and {@link io.ib67.astralflow.scheduler.strategies.RequirementComposer}
+     * Also see {@link io.ib67.astralflow.scheduler.strategies.PeriodicTicks}
      *
      * @param consumer
      * @return
@@ -61,7 +60,7 @@ public class TickReceipt<T extends Tickable<T>> {
 
     /**
      * 触发 tick 的先决条件。
-     * 每个回执只能设置有一个条件，多个以最后插入的为准 , 可以通过 {@link io.ib67.astralflow.scheduler.strategies.RequirementComposer} 或者 {@link Function#andThen(Function)} 合并多个条件
+     * 每个回执可以有多个条件。需要全部通过才能触发
      * 设置触发更新的间隔: {@link io.ib67.astralflow.scheduler.strategies.PeriodicTicks}
      *
      * @param func
