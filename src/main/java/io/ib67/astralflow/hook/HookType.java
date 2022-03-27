@@ -35,6 +35,7 @@ import io.ib67.astralflow.hook.event.player.PlayerAttackEvent;
 import io.ib67.astralflow.hook.event.player.PlayerChatEvent;
 import io.ib67.astralflow.hook.event.player.PlayerMoveEvent;
 import io.ib67.astralflow.hook.event.player.PlayerRawInteractEvent;
+import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 
 import java.util.function.Consumer;
 
@@ -42,7 +43,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public final class HookType<T extends HookEvent> {
     public static final HookType<?> PLUGIN_SHUTDOWN = new HookType<>();
-    public static final HookType<?> SAVE_DATA = new HookType<>();
+    public static final HookType<SaveDataEvent> SAVE_DATA = new HookType<>();
     public static final HookType<?> ASTRALFLOW_STARTUP_COMPLETED = new HookType<>();
 
     // For items

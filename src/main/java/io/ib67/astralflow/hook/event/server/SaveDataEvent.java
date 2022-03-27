@@ -19,16 +19,14 @@
  *   USA
  */
 
-package io.ib67.astralflow.task;
+package io.ib67.astralflow.hook.event.server;
 
-import io.ib67.astralflow.AstralFlow;
-import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.server.SaveDataEvent;
-import org.bukkit.scheduler.BukkitRunnable;
+import io.ib67.astralflow.hook.event.HookEvent;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public class SaveDataTask extends BukkitRunnable {
-    @Override
-    public void run() {
-        AstralFlow.getInstance().callHooks(HookType.SAVE_DATA, new SaveDataEvent(false));
-    }
+@RequiredArgsConstructor
+@Getter
+public class SaveDataEvent extends HookEvent {
+    private final boolean isShuttingDown;
 }

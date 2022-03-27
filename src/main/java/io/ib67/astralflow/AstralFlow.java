@@ -32,6 +32,7 @@ import io.ib67.astralflow.extension.ExtensionRegistryImpl;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.HookEvent;
+import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import io.ib67.astralflow.internal.*;
 import io.ib67.astralflow.internal.config.ConfigMigrator;
 import io.ib67.astralflow.item.OreDictImpl;
@@ -229,8 +230,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         for (Consumer<?> hook : getHooks(HookType.PLUGIN_SHUTDOWN)) {
             hook.accept(null);
         }
-        for (Consumer<?> hook : getHooks(HookType.SAVE_DATA)) {
-            hook.accept(null);
+        for (Consumer<SaveDataEvent> hook : getHooks(HookType.SAVE_DATA)) {
+            hook.accept(new SaveDataEvent(true));
         }
 
 
