@@ -22,7 +22,6 @@
 package io.ib67.astralflow.item.recipe;
 
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,7 +56,9 @@ public class RecipeRegistryImpl implements IRecipeRegistry {
     }
 
     @Override
-    public AstralRecipe matchRecipe(RecipeType type, ItemStack[] matrix) {
+    public AstralRecipe matchRecipe(ItemMatrix imatrix) {
+        var type = imatrix.getType();
+        var matrix = imatrix.getMatrix();
         var craftingRecipes = recipes.getOrDefault(type, Collections.emptyList());
         for (AstralRecipe recipe : craftingRecipes) {
             if (recipe.test(matrix)) {
