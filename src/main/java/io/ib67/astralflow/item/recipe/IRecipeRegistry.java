@@ -44,9 +44,10 @@ public interface IRecipeRegistry {
     @Contract(value = " -> new")
     List<? extends AstralRecipe> getRecipes();
 
-    AstralRecipe matchRecipe(RecipeType type, ItemStack... recipe);
+    AstralRecipe matchRecipe(ItemMatrix matrix);
 
+    @SuppressWarnings("all")
     default AstralRecipe matchRecipe(ItemStack... recipe) {
-        return matchRecipe(RecipeType.CRAFTING, recipe);
+        return matchRecipe(ItemMatrix.createRawMatrix(RecipeType.CRAFTING, recipe));
     }
 }
