@@ -34,6 +34,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+@ApiStatus.AvailableSince("0.1.0")
 @Getter
 public class Shapeless implements AstralRecipe {
     private final IngredientChoice[] choices;
