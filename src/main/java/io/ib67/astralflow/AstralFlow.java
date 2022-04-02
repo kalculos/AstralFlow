@@ -34,7 +34,9 @@ import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import io.ib67.astralflow.internal.*;
 import io.ib67.astralflow.internal.config.ConfigMigrator;
+import io.ib67.astralflow.item.oredict.CompoundOreDict;
 import io.ib67.astralflow.item.oredict.SimpleOreDict;
+import io.ib67.astralflow.item.oredict.VanillaOreDict;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
 import io.ib67.astralflow.item.recipe.RecipeRegistryImpl;
 import io.ib67.astralflow.listener.*;
@@ -256,7 +258,9 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadItemManager() {
         var itemStorage = configuration.getItemStorage();
-        itemRegistry = new ItemRegistryImpl(itemStorage, new SimpleOreDict());
+        itemRegistry = new ItemRegistryImpl(itemStorage, configuration.getRecipeSetting().isAddVanillaOreDict()
+                ? new CompoundOreDict(List.of(new SimpleOreDict(), new VanillaOreDict()))
+                : new SimpleOreDict());
     }
 
     @SneakyThrows
