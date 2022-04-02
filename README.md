@@ -8,7 +8,8 @@ AstralFlow is a lightweight bukkit plugin that provides a framework to create a 
 
 Based on Spigot API.
 
-[Discuss @ Telegram (@AstralFlows)](https://t.me/AstralFlows)
+[Channel @ Telegram (@AstralFlows)](https://t.me/AstralFlows)  
+[Discuss @ Discord](https://discord.gg/fSkxjB4z6A)
 
 # Contributing
 
