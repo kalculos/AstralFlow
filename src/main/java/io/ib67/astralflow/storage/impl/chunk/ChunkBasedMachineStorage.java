@@ -23,7 +23,6 @@ package io.ib67.astralflow.storage.impl.chunk;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
-import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
 import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IFactoryManager;
@@ -58,8 +57,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         this.machineCache = cache;
     }
 
-    private void finalizeChunk(ChunkUnloadHook hook) {
-        var unloadingChunk = hook.getChunk();
+    public void finalizeChunk(Chunk unloadingChunk) {
+        Objects.requireNonNull(unloadingChunk, "chunk cannot be null");
         if (!chunkMap.containsKey(unloadingChunk)) {
             Log.warn("CBMS", "It seems that chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " is not registered in the chunk map. This may be a potential bug.");
             return;
@@ -116,11 +115,6 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         chunkMap.computeIfAbsent(chunk, chunkFactory::loadChunk);
     }
 
-    @Override
-    public void finalizeChunk(Chunk chunk) {
-        Objects.requireNonNull(chunk, "chunk cannot be null");
-        finalizeChunk(new ChunkUnloadHook(chunk));
-    }
 
     @Override
     public IMachine get(Location aloc) {
@@ -167,7 +161,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     @Override
     public void flush() {
         for (Chunk chunk : chunkMap.keySet()) {
-            finalizeChunk(new ChunkUnloadHook(chunk));
+            finalizeChunk(chunk);
         }
         machineCache.save();
     }

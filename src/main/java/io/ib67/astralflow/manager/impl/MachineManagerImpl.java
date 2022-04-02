@@ -23,8 +23,6 @@ package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.chunk.ChunkLoadHook;
-import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.Tickless;
@@ -37,6 +35,7 @@ import io.ib67.util.bukkit.Log;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.*;
 
@@ -58,16 +57,16 @@ public class MachineManagerImpl implements IMachineManager {
 
         loadedMachines = new WeakHashSet<>(defaultCapacity);
         HookType.CHUNK_LOAD.register(this::initChunk);
-        HookType.CHUNK_UNLOAD.register(this::finalizeChunk);
+        HookType.CHUNK_UNLOAD.register(t -> finalizeChunk(t.getChunk()));
         HookType.SAVE_DATA.register(this::onSaveData);
     }
 
     private void finalizeAll() {
         var chunks = List.copyOf(checkedChunks);
-        chunks.stream().map(ChunkUnloadHook::new).forEach(this::finalizeChunk);
+        chunks.stream().forEach(this::finalizeChunk);
     }
 
-    private void initChunk(ChunkLoadHook hook) {
+    private void initChunk(ChunkLoadEvent hook) {
         checkedChunks.add(hook.getChunk());
 
         machineStorage.initChunk(hook.getChunk());
@@ -76,12 +75,12 @@ public class MachineManagerImpl implements IMachineManager {
         }
     }
 
-    private void finalizeChunk(ChunkUnloadHook hook) {
-        checkedChunks.remove(hook.getChunk());
+    private void finalizeChunk(Chunk chunk) {
+        checkedChunks.remove(chunk);
 
-        machineStorage.getMachinesByChunk(hook.getChunk())
+        machineStorage.getMachinesByChunk(chunk)
                 .forEach(this::terminateMachine);
-        machineStorage.finalizeChunk(hook.getChunk());
+        machineStorage.finalizeChunk(chunk);
     }
 
     private void terminateMachine(IMachine machine) {
