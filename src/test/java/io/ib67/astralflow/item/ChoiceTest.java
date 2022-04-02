@@ -98,15 +98,15 @@ public class ChoiceTest {
 
     @Test
     public void testOreDictChoice() {
-        var choice = new OreDictChoice("wool");
-        AstralFlow.getInstance().getItemRegistry().registerItem(ItemPrototype.builder().id(DOG_WOOL_KEY).prototype(new ItemStack(Material.BROWN_WOOL)).build(), "wool");
+        var choice = new OreDictChoice("testing_wool");
+        AstralFlow.getInstance().getItemRegistry().registerItem(ItemPrototype.builder().id(DOG_WOOL_KEY).prototype(new ItemStack(Material.BROWN_WOOL)).build(), "testing_wool");
         var item = DOG_WOOL_KEY.createNewItem();
         assertTrue(choice.test(item.asItemStack()));
         var fakeItem = new ItemStack(Material.MUSIC_DISC_CAT);
         assertFalse(choice.test(fakeItem));
         fakeItem = new ItemStack(Material.BROWN_WOOL);
         assertFalse(choice.test(fakeItem));
-        AstralFlow.getInstance().getItemRegistry().registerItem(ItemPrototype.builder().id(CAT_WOOL_KEY).prototype(new ItemStack(Material.BROWN_WOOL)).build(), "wool");
+        AstralFlow.getInstance().getItemRegistry().registerItem(ItemPrototype.builder().id(CAT_WOOL_KEY).prototype(new ItemStack(Material.BROWN_WOOL)).build(), "testing_wool");
         assertTrue(choice.test(CAT_WOOL_KEY.createNewItem().asItemStack()));
     }
 }

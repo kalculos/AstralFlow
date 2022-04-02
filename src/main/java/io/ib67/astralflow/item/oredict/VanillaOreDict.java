@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -133,7 +134,11 @@ public class VanillaOreDict implements IOreDict {
             case "ingot":
                 yield List.of(Material.IRON_INGOT, Material.GOLD_INGOT, Material.COPPER_INGOT, Material.DIAMOND, Material.NETHERITE_INGOT, Material.EMERALD);
             default:
-                yield List.of(Material.valueOf(oreDictId)); // we don't match it every time due to the lack of performance.
+                var result = Material.getMaterial(oreDictId);
+                if (result != null) {
+                    yield List.of(result);
+                }
+                yield Collections.emptyList();
         };
     }
 
