@@ -42,7 +42,7 @@ public class ItemRegistryTest {
     @BeforeAll
     public void setup() {
         init();
-        registry = new ItemRegistryImpl(new MockItemStorage(), new SimpleOreDict());
+        registry = new ItemRegistryImpl(new MockItemStorage(), new MockItemStorage(), new SimpleOreDict());
     }
 
     @Test

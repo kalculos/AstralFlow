@@ -51,6 +51,7 @@ import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.manager.impl.TickManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.ItemStateStorage;
+import io.ib67.astralflow.storage.impl.FileItemStorage;
 import io.ib67.astralflow.task.SaveDataTask;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.util.Util;
@@ -258,7 +259,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadItemManager() {
         var itemStorage = configuration.getItemStorage();
-        itemRegistry = new ItemRegistryImpl(itemStorage, configuration.getRecipeSetting().isAddVanillaOreDict()
+        itemRegistry = new ItemRegistryImpl(new FileItemStorage(getDataFolder().toPath().resolve("internal_items"), factories), itemStorage, configuration.getRecipeSetting().isAddVanillaOreDict()
                 ? new CompoundOreDict(List.of(new SimpleOreDict(), new VanillaOreDict()))
                 : new SimpleOreDict());
     }
