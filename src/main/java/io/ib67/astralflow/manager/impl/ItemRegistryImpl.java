@@ -46,15 +46,17 @@ public class ItemRegistryImpl implements ItemRegistry {
     private final Map<ItemKey, ItemPrototypeFactory> itemMap = new HashMap<>();
     private final Map<UUID, ItemState> userStateCache = new HashMap<>();
     private final Map<UUID, ItemState> internalStateCache = new HashMap<>();
-    private final ItemStateStorage states;
+    private final ItemStateStorage userStates;
+    private final ItemStateStorage internalStates;
 
-    public ItemRegistryImpl(ItemStateStorage states, IOreDict oreDict) {
-        this.states = Objects.requireNonNull(states);
+    public ItemRegistryImpl(ItemStateStorage internalStates, ItemStateStorage userStates, IOreDict oreDict) {
+        this.userStates = Objects.requireNonNull(userStates);
+        this.internalStates = Objects.requireNonNull(internalStates);
         this.oreDict = Objects.requireNonNull(oreDict);
 
         AstralFlow.getInstance().addHook(HookType.SAVE_DATA, () -> {
-            userStateCache.forEach(states::save); // FIXME: Overriding save method
-            internalStateCache.forEach(states::save);
+            userStateCache.forEach(userStates::save); // FIXME: Overriding save method
+            internalStateCache.forEach(internalStates::save);
         });
     }
 
@@ -120,10 +122,11 @@ public class ItemRegistryImpl implements ItemRegistry {
         var uuid = im.getPersistentDataContainer().get(scope.getTagKey(), TAG);
         var cache = scope == StateScope.INTERNAL_ITEM ? internalStateCache : userStateCache;
         return cache.computeIfAbsent(uuid, u -> {
-            if (!states.has(uuid)) {
+            var state = scope == StateScope.INTERNAL_ITEM ? internalStates : userStates;
+            if (!state.has(uuid)) {
                 return null;
             }
-            return states.get(uuid);
+            return state.get(uuid);
         });
     }
 
