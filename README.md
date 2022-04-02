@@ -31,6 +31,7 @@ And we recommend Lombok.
 [Example `JebWool`](./test-plugin/src/main/java/io/ib67/astralflow/machines/JebWool.java)
 
 ![jeb_wool](https://user-images.githubusercontent.com/48877375/160128050-d1e55af1-be9e-4631-b52b-990f994fc1af.gif)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FInlinedLambdas%2FAstralFlow.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FInlinedLambdas%2FAstralFlow?ref=badge_shield)
 
 # Sponsor
 
@@ -42,3 +43,7 @@ If you want to support our work, please consider donate us by clicking the spons
 Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!
 
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" width="300" height="300"  alt="JetBrains Logo"/>
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FInlinedLambdas%2FAstralFlow.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FInlinedLambdas%2FAstralFlow?ref=badge_large)
