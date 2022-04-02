@@ -21,32 +21,29 @@
 
 package io.ib67.astralflow.item;
 
+import io.ib67.astralflow.item.oredict.VanillaOreDict;
+import io.ib67.astralflow.test.TestUtil;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.ApiStatus;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
-import java.util.Collection;
-import java.util.function.Predicate;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ApiStatus.AvailableSince("0.1.0")
-public interface IOreDict {
-    /**
-     * 插件完成初始化后将会封锁所有的 registerItem 请求以减小维护成本
-     *
-     * @param prototype
-     * @param dictKey
-     * @return
-     * @throws IllegalStateException if locked
-     */
-    IOreDict registerItem(String dictKey, ItemStack prototype, Predicate<ItemStack> tester);
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class OreDictTest {
+    @BeforeAll
+    public void setup() {
+        TestUtil.init();
+    }
 
-    boolean matchItem(String oredictId, ItemStack itemStack);
-
-    /**
-     * This method will return a collection of all the registered items. Only for being shown to player
-     *
-     * @param oredictId
-     * @return
-     */
-    Collection<? extends ItemStack> getItems(String oredictId);
-
+    @Test
+    public void onTestVanillaOreDict() {
+        var oreDict = new VanillaOreDict();
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> oreDict.registerItem(null, null, null));
+        assertTrue(oreDict.matchItem("wool", new ItemStack(Material.WHITE_WOOL)));
+        assertTrue(oreDict.matchItem("ingot", new ItemStack(Material.DIAMOND)));
+    }
 }

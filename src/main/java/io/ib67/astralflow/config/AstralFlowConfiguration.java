@@ -83,5 +83,7 @@ public class AstralFlowConfiguration {
         private final boolean injectVanillaCraftingTable = true;
         @SerializedName("override-vanilla-recipe")
         private final boolean overrideVanillaRecipe = true;
+        @SerializedName("add-vanilla-oredict")
+        private final boolean addVanillaOreDict = true;
     }
 }
