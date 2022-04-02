@@ -19,12 +19,13 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.item.oredict;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.internal.AstralConstants;
+import io.ib67.astralflow.item.IOreDict;
 import io.ib67.util.Pair;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,7 +33,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class OreDictImpl implements IOreDict {
+public class SimpleOreDict implements IOreDict {
     private final Multimap<String, Pair<ItemStack, Predicate<ItemStack>>> items = ArrayListMultimap.create();
     private volatile boolean locked = false;
 
