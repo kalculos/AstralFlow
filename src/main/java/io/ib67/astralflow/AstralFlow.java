@@ -242,6 +242,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         getServer().getPluginManager().registerEvents(new WorldListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityListener(this), this);
     }
 
     private void loadFactoryManager() {
