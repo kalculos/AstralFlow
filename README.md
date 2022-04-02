@@ -4,7 +4,7 @@
 ![](https://img.shields.io/github/v/release/iceBear67/AstralFlow?style=flat-square)
 ![](https://img.shields.io/tokei/lines/github/iceBear67/AstralFlow?style=flat-square)
 
-AstralFlow is a lightweight bukkit plugin that provides a framework to create a modpack-like experience.
+A Powerful Framework that provides all you need in creating a modpack but for Bukkit.
 
 Based on Spigot API.
 
@@ -37,7 +37,7 @@ And we recommend Lombok.
 Maintaining AstralFlow isn't an easy work, it takes maintainers tons of time and effort to make it feature-rich and
 reliable.    
 If you meet any problems, please [submit an issue here](https://github.com/iceBear67/AstralFlow/issues/new/choose)  
-If you want to support our work, please consider donate us by clicking the sponsor button above.
+If you want to support our work, please consider donate us by clicking the sponsor button above or leave your star!
 
 Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!
 
