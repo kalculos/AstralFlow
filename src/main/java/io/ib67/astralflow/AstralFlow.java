@@ -31,7 +31,6 @@ import io.ib67.astralflow.config.Language;
 import io.ib67.astralflow.extension.ExtensionRegistryImpl;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import io.ib67.astralflow.internal.*;
 import io.ib67.astralflow.internal.config.ConfigMigrator;
@@ -320,23 +319,23 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     @Override
-    public <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable) {
+    public <T> void addHook(HookType<T> type, Runnable runnable) {
         addHook(type, t -> runnable.run());
     }
 
     @Override
-    public <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable) {
+    public <T> void addHook(HookType<T> type, Consumer<T> runnable) {
         HOOKS.computeIfAbsent(type, k -> new ArrayList<>()).add(runnable);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook) {
+    public <T> Collection<? extends Consumer<T>> getHooks(HookType<T> hook) {
         Object o = HOOKS.getOrDefault(hook, Collections.emptyList());
         return (List<? extends Consumer<T>>) o;
     }
 
     @Override
-    public <T extends HookEvent> boolean callHooks(HookType<T> hookType, T event) {
+    public <T> boolean callHooks(HookType<T> hookType, T event) {
         for (Consumer<T> hook : getHooks(hookType)) {
             hook.accept(event);
             if (event instanceof Cancellable) {
