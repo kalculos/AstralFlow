@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow.item.oredict;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;

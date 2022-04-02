@@ -21,43 +21,46 @@
 
 package io.ib67.astralflow.item.oredict;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.internal.AstralConstants;
-import io.ib67.util.Pair;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-public class SimpleOreDict implements IOreDict {
-    private final Multimap<String, Pair<ItemStack, Predicate<ItemStack>>> items = ArrayListMultimap.create();
-    private volatile boolean locked = false;
-
-    {
-        HookType.ASTRALFLOW_STARTUP_COMPLETED.register(this::compile);
-    }
-
-    private void compile() {
-        if (!AstralConstants.MOCKING) locked = true;
-    }
+@RequiredArgsConstructor
+public class CompoundOreDict implements IOreDict {
+    private final List<IOreDict> oreDicts;
 
     @Override
-    public IOreDict registerItem(String dictKey, ItemStack prototype, Predicate<ItemStack> itemStackPredicate) {
-        if (locked) throw new IllegalStateException("OreDict is locked due to server startup completed.");
-        items.put(dictKey, Pair.of(prototype, itemStackPredicate));
+    public IOreDict registerItem(String dictKey, ItemStack prototype, Predicate<ItemStack> tester) {
+        for (IOreDict oreDict : oreDicts) {
+            if (!(oreDict instanceof VanillaOreDict)) {
+                oreDict.registerItem(dictKey, prototype, tester);
+            }
+        }
         return this;
     }
 
     @Override
     public boolean matchItem(String oredictId, ItemStack itemStack) {
-        return items.get(oredictId).stream().anyMatch(e -> e.value.test(itemStack));
+        for (IOreDict oreDict : oreDicts) {
+            var result = oreDict.matchItem(oredictId, itemStack);
+            if (result) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
-    public Collection<? extends ItemStack> getItems(String dictKey) {
-        return items.get(dictKey).stream().map(e -> e.key).collect(Collectors.toList()); // should we defensive-copy here?
+    public Collection<? extends ItemStack> getItems(String oredictId) {
+        var list = new LinkedList<ItemStack>();
+        for (IOreDict oreDict : oreDicts) {
+            list.addAll(oreDict.getItems(oredictId));
+        }
+        return Collections.unmodifiableCollection(list);
     }
 }
