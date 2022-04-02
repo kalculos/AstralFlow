@@ -22,10 +22,13 @@
 package io.ib67.astralflow.listener;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.hook.HookType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) // for server security.
@@ -34,5 +37,15 @@ public class PlayerListener implements Listener {
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
             event.setKickMessage(AstralFlow.getInstance().getSettings().getLocale().serverIsInitializing);
         }
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        AstralFlow.getInstance().callHooks(HookType.PLAYER_CHAT, event);
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        AstralFlow.getInstance().callHooks(HookType.PLAYER_MOVE, event);
     }
 }
