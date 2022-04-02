@@ -21,31 +21,21 @@
 
 package io.ib67.astralflow.listener;
 
-import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.hook.HookType;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class PlayerListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST) // for server security.
-    public void onPlayerLogin(AsyncPlayerPreLoginEvent event) {
-        if (!AstralFlow.isInitialized() && !AstralFlow.getInstance().getSettings().isAllowPlayerJoinBeforeInit()) {
-            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-            event.setKickMessage(AstralFlow.getInstance().getSettings().getLocale().serverIsInitializing);
-        }
+public class EntityListener implements Listener {
+    private final AstralFlowAPI flow;
+
+    public EntityListener(AstralFlowAPI flow) {
+        this.flow = flow;
     }
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        AstralFlow.getInstance().callHooks(HookType.PLAYER_CHAT, event);
-    }
-
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        AstralFlow.getInstance().callHooks(HookType.PLAYER_MOVE, event);
+    public void onDamage(EntityDamageByEntityEvent event) {
+        flow.callHooks(HookType.ENTITY_DAMAGE, event);
     }
 }

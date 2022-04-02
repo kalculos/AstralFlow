@@ -26,6 +26,7 @@ import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.hook.event.machine.MachinePlaceEvent;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.trait.Pushable;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +57,13 @@ public class BlockListener implements Listener {
                         event
                 )
         );
+
+        if (flow.getMachineManager().isMachine(event.getBlockPlaced()) && !event.isCancelled()) {
+            event.setCancelled(flow.callHooks(
+                    HookType.MACHINE_PLACE,
+                    new MachinePlaceEvent(flow.getMachineManager().getAndLoadMachine(event.getBlockPlaced().getLocation()), event.getBlockPlaced().getLocation(), event.getPlayer())
+            ));
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH) // plugins like resident may cancell this event
