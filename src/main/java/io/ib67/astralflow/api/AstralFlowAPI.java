@@ -24,7 +24,6 @@ package io.ib67.astralflow.api;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
@@ -53,11 +52,11 @@ public interface AstralFlowAPI {
 
     IRecipeRegistry getRecipeRegistry();
 
-    <T extends HookEvent> void addHook(HookType<T> type, Runnable runnable);
+    <T> void addHook(HookType<T> type, Runnable runnable);
 
-    <T extends HookEvent> void addHook(HookType<T> type, Consumer<T> runnable);
+    <T> void addHook(HookType<T> type, Consumer<T> runnable);
 
-    <T extends HookEvent> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
+    <T> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
 
     /**
      * @param hookType
@@ -65,7 +64,7 @@ public interface AstralFlowAPI {
      * @param <T>
      * @return iscancelled
      */
-    <T extends HookEvent> boolean callHooks(HookType<T> hookType, T event);
+    <T> boolean callHooks(HookType<T> hookType, T event);
 
     IExtensionRegistry getExtensionRegistry();
 

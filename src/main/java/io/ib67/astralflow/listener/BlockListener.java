@@ -53,7 +53,8 @@ public class BlockListener implements Listener {
         event.setCancelled(
                 flow.callHooks(
                         HookType.BLOCK_PLACE,
-                        new io.ib67.astralflow.hook.event.block.BlockPlaceEvent(event.getBlockPlaced(), event.getPlayer(), event.getItemInHand()))
+                        event
+                )
         );
     }
 

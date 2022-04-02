@@ -23,8 +23,6 @@ package io.ib67.astralflow.listener;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.chunk.ChunkLoadHook;
-import io.ib67.astralflow.hook.event.chunk.ChunkUnloadHook;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -41,14 +39,12 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        var hookEvent = new ChunkLoadHook(event.getChunk());
-        AstralFlow.getInstance().getHooks(HookType.CHUNK_LOAD).forEach(e -> e.accept(hookEvent));
+        AstralFlow.getInstance().callHooks(HookType.CHUNK_LOAD, event);
     }
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-        var hookEvent = new ChunkUnloadHook(event.getChunk());
-        AstralFlow.getInstance().getHooks(HookType.CHUNK_UNLOAD).forEach(e -> e.accept(hookEvent));
+        AstralFlow.getInstance().callHooks(HookType.CHUNK_UNLOAD, event);
     }
 
 }

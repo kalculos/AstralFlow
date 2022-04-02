@@ -23,8 +23,6 @@ package io.ib67.astralflow.listener;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.item.*;
-import io.ib67.astralflow.item.AstralItem;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,28 +34,24 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 public class ItemListener implements Listener {
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event) {
-        var evt = new ItemConsumeEvent(new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry()), event.getPlayer());
-        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_CONSUME, evt));
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_CONSUME, event));
     }
 
     @EventHandler
     public void onItemDamaged(PlayerItemDamageEvent event) {
-        var hookEvt = new ItemDamagedEvent(new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry()), event.getPlayer(), event.getDamage());
-        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_DAMAGE, hookEvt));
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_DAMAGE, event));
     }
 
     @EventHandler
     public void onInteractBlock(PlayerInteractEvent event) {
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT, event));
         if (event.getItem() == null || event.getItem().getType() == Material.AIR) {
             return;
         }
         if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.AIR) {
-            var evt = new ItemUseEvent(new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry()), event.getPlayer());
-            event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_USE, evt));
+            event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_USE, event));
         }
-        var item = new AstralItem(event.getItem(), AstralFlow.getInstance().getItemRegistry());
-        var hookEvt = new ItemInteractBlockEvent(item, event.getPlayer(), event.getAction(), event.getClickedBlock(), event.getBlockFace());
-        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_INTERACT_BLOCK, hookEvt));
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT_BLOCK, event));
     }
 
     @EventHandler
@@ -69,8 +63,6 @@ public class ItemListener implements Listener {
         if (item.getType() == Material.AIR) {
             return;
         }
-        var afItem = new AstralItem(item, AstralFlow.getInstance().getItemRegistry());
-        var hookEvt = new ItemInteractEntityEvent(afItem, event.getPlayer(), event.getRightClicked());
-        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_INTERACT_ENTITY, hookEvt));
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT_ENTITY, event));
     }
 }
