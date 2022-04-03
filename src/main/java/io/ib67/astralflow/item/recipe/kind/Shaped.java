@@ -101,7 +101,7 @@ public class Shaped implements AstralRecipe {
         var matrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(RecipeHelper.toStringMatrix(itemStacks)));
         if (originMatrix.length != itemStacks.length) {
             // actually it shouldn't happen.
-            Log.warn("Recipe matrix length mismatch. This shouldn't happen! KEY: " + key + ". Report it to the author of " + key.getNamespace());
+            Log.warn("ShapedRecipe", "Recipe matrix length mismatch. This shouldn't happen! KEY: " + key + ". Report it to the author of " + key.getNamespace());
             return false;
         }
         // check for ingredients.

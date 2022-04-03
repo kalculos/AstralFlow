@@ -28,6 +28,7 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
+import io.ib67.astralflow.util.LogCategory;
 import io.ib67.util.bukkit.Log;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -66,14 +67,14 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         var memChunk = chunkMap.get(unloadingChunk);
         if (AstralConstants.DEBUG) {
             if (memChunk.getMachines().size() != 0)
-                Log.info("debug", memChunk.getMachines().size() + " machines in chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " will be saved.");
+                Log.info(LogCategory.DEBUG, memChunk.getMachines().size() + " machines in chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " will be saved.");
         }
         for (IMachine machine : memChunk.getMachines()) {
             this.save(machine.getLocation(), machine); // avoiding undefined behaviours.
         }
         if (AstralConstants.DEBUG) {
             if (memChunk.getMachines().size() != 0)
-                Log.info("debug", "Done. Flushing cache");
+                Log.info(LogCategory.DEBUG, "Done. Flushing cache");
         }
         flushChunkCache(unloadingChunk, memChunk);
     }
