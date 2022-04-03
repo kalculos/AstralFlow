@@ -36,9 +36,11 @@ public class JsonItemSerializer implements ItemSerializer {
     private final Gson serializer;
 
     public JsonItemSerializer(IFactoryManager factoryManager) {
-        this.serializer = Util.BukkitAPI.gsonBuilderForBukkit()
-                .registerTypeHierarchyAdapter(IState.class, new StateSerializer())
+        var serializer = Util.BukkitAPI.gsonBuilderForBukkit()
                 .registerTypeHierarchyAdapter(ItemKey.class, new ItemKeySerializer())
+                .create();
+        this.serializer = Util.BukkitAPI.gsonBuilderForBukkit()
+                .registerTypeHierarchyAdapter(IState.class, new StateSerializer(serializer))
                 .create();
     }
 

@@ -32,7 +32,7 @@ import java.lang.reflect.Type;
 public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {
     private static final String KEY_TYPE = "type";
     private static final String KEY_DATA = "data";
-
+    private final Gson defaultSerializer;
     @Override
     public IState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         // assertion 1. context is a bukkit compatible serializer
@@ -51,7 +51,7 @@ public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer
     public JsonElement serialize(IState src, Type typeOfSrc, JsonSerializationContext context) {
         var jo = new JsonObject();
         jo.addProperty(KEY_TYPE, src.getType().getName());
-        jo.add(KEY_DATA, context.serialize(src));
+        jo.add(KEY_DATA, defaultSerializer.toJsonTree(src));
         return jo;
     }
 }
