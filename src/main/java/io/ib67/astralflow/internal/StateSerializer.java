@@ -39,7 +39,7 @@ public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer
         var jo = json.getAsJsonObject();
         var clazName = jo.get(KEY_TYPE).getAsString();
         var result = Util.runCatching(() -> (Object) Class.forName(clazName)).onSuccess(claz -> {
-            return context.deserialize(jo.getAsJsonObject(KEY_DATA), (Type) claz);
+            return defaultSerializer.fromJson(jo.getAsJsonObject(KEY_DATA), (Type) claz);
         }).getResult();
         if (result == null) {
             throw new JsonParseException("Can't find state type: " + clazName); // constant if-condition fixes idea highlight rendering.
