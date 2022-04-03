@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MockItemStorage implements ItemStateStorage {
+public class MockItemStorage implements KeyedStorage<UUID, ItemState> {
     private final Map<UUID, ItemState> states = new HashMap<>();
 
     @Override

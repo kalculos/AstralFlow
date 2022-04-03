@@ -39,7 +39,7 @@ public class MachineStorageHelper implements MachineSerializer {
     public MachineStorageHelper(IFactoryManager factories) {
         MACHINE_SERIALIZER = Util.BukkitAPI.gsonBuilderForBukkit()
                 .registerTypeHierarchyAdapter(IMachine.class, new JsonMachineSerializer(factories))
-                .registerTypeHierarchyAdapter(IState.class, new StateSerializer(Util.BukkitAPI.gsonForBukkit()))
+                .registerTypeHierarchyAdapter(IState.class, new StateSerializer())
                 .registerTypeHierarchyAdapter(ItemKey.class, new ItemKeySerializer())
                 .create();
     }

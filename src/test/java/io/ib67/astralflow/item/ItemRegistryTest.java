@@ -24,7 +24,6 @@ package io.ib67.astralflow.item;
 import io.ib67.astralflow.item.definitions.DummyStatefulItem;
 import io.ib67.astralflow.item.definitions.DummyStatelessItem;
 import io.ib67.astralflow.item.oredict.SimpleOreDict;
-import io.ib67.astralflow.item.tag.UUIDTag;
 import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
 import io.ib67.astralflow.storage.MockItemStorage;

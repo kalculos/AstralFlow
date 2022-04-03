@@ -32,7 +32,6 @@ import java.lang.reflect.Type;
 public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {
     private static final String KEY_TYPE = "type";
     private static final String KEY_DATA = "data";
-    private final Gson defaultSerializer;
 
     @Override
     public IState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -40,7 +39,7 @@ public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer
         var jo = json.getAsJsonObject();
         var clazName = jo.get(KEY_TYPE).getAsString();
         var result = Util.runCatching(() -> (Object) Class.forName(clazName)).onSuccess(claz -> {
-            return defaultSerializer.fromJson(jo.getAsJsonObject(KEY_DATA), (Type) claz);
+            return context.deserialize(jo.getAsJsonObject(KEY_DATA), (Type) claz);
         }).getResult();
         if (result == null) {
             throw new JsonParseException("Can't find state type: " + clazName); // constant if-condition fixes idea highlight rendering.
@@ -52,7 +51,7 @@ public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer
     public JsonElement serialize(IState src, Type typeOfSrc, JsonSerializationContext context) {
         var jo = new JsonObject();
         jo.addProperty(KEY_TYPE, src.getType().getName());
-        jo.add(KEY_DATA, defaultSerializer.toJsonTree(src));
+        jo.add(KEY_DATA, context.serialize(src));
         return jo;
     }
 }
