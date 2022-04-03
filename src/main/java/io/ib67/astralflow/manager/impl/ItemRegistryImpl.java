@@ -124,9 +124,10 @@ public class ItemRegistryImpl implements ItemRegistry {
         Objects.requireNonNull(state);
         var meta = itemStack.getItemMeta();
         if (meta == null) {
-            return;
+            throw new IllegalArgumentException("ItemStack has no ItemMeta");
         }
         var pdc = meta.getPersistentDataContainer();
         pdc.set(scope.getTagKey(), stateTag, state);
+        itemStack.setItemMeta(meta);
     }
 }
