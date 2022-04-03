@@ -19,13 +19,12 @@
  *   USA
  */
 
-package io.ib67.astralflow.storage;
+package io.ib67.astralflow.item.serialization;
 
 import io.ib67.astralflow.item.ItemState;
-import org.jetbrains.annotations.ApiStatus;
 
-import java.util.UUID;
+public interface ItemSerializer {
+    ItemState deserialize(byte[] bytes);
 
-@ApiStatus.AvailableSince("0.1.0")
-public interface ItemStateStorage extends KeyedStorage<UUID, ItemState> {
+    byte[] serialize(ItemState state);
 }

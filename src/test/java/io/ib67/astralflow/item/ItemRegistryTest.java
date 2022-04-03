@@ -24,10 +24,11 @@ package io.ib67.astralflow.item;
 import io.ib67.astralflow.item.definitions.DummyStatefulItem;
 import io.ib67.astralflow.item.definitions.DummyStatelessItem;
 import io.ib67.astralflow.item.oredict.SimpleOreDict;
-import io.ib67.astralflow.item.tag.UUIDTag;
+import io.ib67.astralflow.item.serialization.ItemStorageType;
+import io.ib67.astralflow.item.tag.ItemStateTag;
 import io.ib67.astralflow.manager.ItemRegistry;
+import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
-import io.ib67.astralflow.storage.MockItemStorage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -42,7 +43,7 @@ public class ItemRegistryTest {
     @BeforeAll
     public void setup() {
         init();
-        registry = new ItemRegistryImpl(new MockItemStorage(), new MockItemStorage(), new SimpleOreDict());
+        registry = new ItemRegistryImpl(new SimpleOreDict(), new FactoryManagerImpl());
     }
 
     @Test
@@ -56,15 +57,13 @@ public class ItemRegistryTest {
         assertNotSame(item.asItemStack(), p.getPrototype(), "ItemRegistry can't modify the prototype");
         assertTrue(item.getState().isEmpty(), "Stateless states must be empty");
 
-        // let's see uuid allocation.
-        var item2 = registry.createItem(p.getId());
-        var uuid1 = item.asItemStack().getItemMeta().getPersistentDataContainer().get(StateScope.USER_ITEM.getTagKey(), new UUIDTag());
-        var uuid2 = item2.asItemStack().getItemMeta().getPersistentDataContainer().get(StateScope.USER_ITEM.getTagKey(), new UUIDTag());
-        assertEquals(uuid1, uuid2, "UUIDs must be equal");
+        // user state should be null.
+        var jsonStateTag = new ItemStateTag(ItemStorageType.JSON, null);
+        var state1 = item.asItemStack().getItemMeta().getPersistentDataContainer().get(StateScope.USER_ITEM.getTagKey(), jsonStateTag);
+        assertNull(state1, "User state must be null for Stateless items");
 
         // test is item
         assertTrue(registry.isItem(item.asItemStack()), "Item should be registered");
-
     }
 
     @Test
@@ -77,12 +76,6 @@ public class ItemRegistryTest {
         assertNotEquals(null, item, "Item should not be null");
         assertNotSame(item.asItemStack(), p.getPrototype(), "ItemRegistry can't modify the prototype");
         assertFalse(item.getState().isEmpty(), "Stateful states must not be empty");
-
-        // let's see uuid allocation.
-        var item2 = registry.createItem(p.getId());
-        var uuid1 = item.asItemStack().getItemMeta().getPersistentDataContainer().get(StateScope.USER_ITEM.getTagKey(), new UUIDTag());
-        var uuid2 = item2.asItemStack().getItemMeta().getPersistentDataContainer().get(StateScope.USER_ITEM.getTagKey(), new UUIDTag());
-        assertNotEquals(uuid1, uuid2, "UUIDs must not be equal");
 
         //test is item
         assertTrue(registry.isItem(item.asItemStack()), "Item should be registered");

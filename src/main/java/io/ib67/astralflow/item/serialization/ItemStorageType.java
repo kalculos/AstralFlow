@@ -19,29 +19,31 @@
  *   USA
  */
 
-package io.ib67.astralflow.internal;
+package io.ib67.astralflow.item.serialization;
 
-import com.google.gson.*;
 import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.astralflow.storage.ItemStateStorage;
-import io.ib67.astralflow.storage.impl.FileItemStorage;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.lang.reflect.Type;
-import java.nio.file.Path;
+import java.util.function.Function;
 
+@Getter
 @RequiredArgsConstructor
-public class ItemStorageSerializer implements JsonSerializer<ItemStateStorage>, JsonDeserializer<ItemStateStorage> {
-    private final Path storage;
-    private final IFactoryManager factory;
+public enum ItemStorageType implements Function<IFactoryManager, ItemSerializer> {
+    JSON(0, JsonItemSerializer::new);
 
-    @Override
-    public ItemStateStorage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new FileItemStorage(storage, factory);
+    private final int typeIndex;
+    private final Function<IFactoryManager, ItemSerializer> factory;
+
+    public static ItemStorageType getType(int index) {
+        return switch (index) {
+            case 0 -> JSON;
+            default -> throw new IllegalArgumentException("Invalid type index");
+        };
     }
 
     @Override
-    public JsonElement serialize(ItemStateStorage src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive("filestorage"); // TODO
+    public ItemSerializer apply(IFactoryManager factory) {
+        return this.factory.apply(factory);
     }
 }

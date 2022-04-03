@@ -38,7 +38,7 @@ public class ItemKeySerializer implements JsonSerializer<ItemKey>, JsonDeseriali
         var namespace = jo.getAsJsonPrimitive("namespace").getAsString();
         Objects.requireNonNull(id);
         Objects.requireNonNull(namespace);
-        return ItemKey.from(id, namespace);
+        return ItemKey.from(namespace, id);
     }
 
     @Override

@@ -33,7 +33,6 @@ public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer
     private static final String KEY_TYPE = "type";
     private static final String KEY_DATA = "data";
     private final Gson defaultSerializer;
-
     @Override
     public IState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         // assertion 1. context is a bukkit compatible serializer

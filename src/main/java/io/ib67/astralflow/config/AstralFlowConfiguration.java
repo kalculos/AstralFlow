@@ -24,8 +24,6 @@ package io.ib67.astralflow.config;
 import com.google.gson.annotations.SerializedName;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.storage.IMachineStorage;
-import io.ib67.astralflow.storage.ItemStateStorage;
-import io.ib67.astralflow.storage.impl.FileItemStorage;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.astralflow.storage.impl.chunk.ChunkBasedMachineStorage;
 import io.ib67.astralflow.storage.impl.chunk.MachineCache;
@@ -47,8 +45,6 @@ public class AstralFlowConfiguration {
     private final boolean allowPlayerJoinBeforeInit = false;
     @SerializedName("machine-storage-type")
     private final IMachineStorage storage;
-    @SerializedName("item-storage-type")
-    private final ItemStateStorage itemStorage;
 
     @SerializedName("data-save-intervals")
     private final int dataSaveIntervals = 300;
@@ -66,7 +62,6 @@ public class AstralFlowConfiguration {
         return new AstralFlowConfiguration(
                 new Language(),
                 new ChunkBasedMachineStorage(new MachineCache(machineStorageIndexes), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON), //todo
-                new FileItemStorage(itemStorageDir, AstralFlow.getInstance().getFactories()),
                 new RecipeSetting()
         );
     }
