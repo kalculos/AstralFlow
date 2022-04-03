@@ -32,7 +32,10 @@ import io.ib67.astralflow.extension.ExtensionRegistryImpl;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
-import io.ib67.astralflow.internal.*;
+import io.ib67.astralflow.internal.AstralConstants;
+import io.ib67.astralflow.internal.LanguageSerializer;
+import io.ib67.astralflow.internal.MachineStorageSerializer;
+import io.ib67.astralflow.internal.Warnings;
 import io.ib67.astralflow.internal.config.ConfigMigrator;
 import io.ib67.astralflow.item.oredict.CompoundOreDict;
 import io.ib67.astralflow.item.oredict.SimpleOreDict;
@@ -50,8 +53,6 @@ import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.manager.impl.TickManager;
 import io.ib67.astralflow.storage.IMachineStorage;
-import io.ib67.astralflow.storage.ItemStateStorage;
-import io.ib67.astralflow.storage.impl.FileItemStorage;
 import io.ib67.astralflow.task.SaveDataTask;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.util.Util;
@@ -258,10 +259,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     private void loadItemManager() {
-        var itemStorage = configuration.getItemStorage();
-        itemRegistry = new ItemRegistryImpl(new FileItemStorage(getDataFolder().toPath().resolve("internal_items"), factories), itemStorage, configuration.getRecipeSetting().isAddVanillaOreDict()
+        itemRegistry = new ItemRegistryImpl(configuration.getRecipeSetting().isAddVanillaOreDict()
                 ? new CompoundOreDict(List.of(new SimpleOreDict(), new VanillaOreDict()))
-                : new SimpleOreDict());
+                : new SimpleOreDict(),
+                factories);
     }
 
     @SneakyThrows
@@ -270,7 +271,6 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 .setPrettyPrinting()
                 .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
                 .registerTypeHierarchyAdapter(IMachineStorage.class, new MachineStorageSerializer(machineIndex, factories))
-                .registerTypeHierarchyAdapter(ItemStateStorage.class, new ItemStorageSerializer(itemDir, factories))
                 .create();
         // extract config.
         var confFile = new File(getDataFolder(), "config.json");
