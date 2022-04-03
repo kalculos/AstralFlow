@@ -21,33 +21,25 @@
 
 package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.manager.ItemRegistry;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+public class AnotherSimpleState extends ItemState {
+    private String data;
 
-import java.util.Optional;
-
-@RequiredArgsConstructor
-public class AstralItem {
-    private final ItemStack originalItemStack;
-    private final ItemRegistry itemRegistry;
-
-    @NotNull
-    public ItemStack asItemStack() {
-        return originalItemStack;
+    public AnotherSimpleState(String data) {
+        this.data = data;
     }
 
-    public Optional<ItemState> getState() {
-        return Optional.ofNullable(itemRegistry.getState(originalItemStack));
+    public String getData() {
+        return data;
     }
 
-    public void saveState(ItemState state) {
-        itemRegistry.saveState(originalItemStack, StateScope.USER_ITEM, state);
+    public void setData(String data) {
+        this.data = data;
     }
 
     @Override
-    public int hashCode() {
-        return originalItemStack.hashCode();
+    public String toString() {
+        return "AnotherSimpleState{" +
+                "data='" + data + '\'' +
+                '}';
     }
 }

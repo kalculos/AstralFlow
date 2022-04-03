@@ -13,6 +13,12 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     compileOnly parent
+    implementation('com.github.iceBear67:tools:10254f1e10') {
+        exclude module: 'testplug'
+    }
+}
+shadowJar {
+    relocate 'io.ib67.util', 'astralflow.tester.relocate.util'
 }
 test {
     useJUnitPlatform()

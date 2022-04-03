@@ -25,7 +25,8 @@ import io.ib67.astralflow.api.external.AstralExtension;
 import io.ib67.astralflow.api.external.ExtensionInfo;
 import io.ib67.astralflow.api.item.MachineCategory;
 import io.ib67.astralflow.api.item.MachineItem;
-import io.ib67.astralflow.item.ItemKeys;
+import io.ib67.astralflow.item.SimpleStatefulCategory;
+import io.ib67.astralflow.item.SimpleStatelessCategory;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
@@ -58,13 +59,19 @@ public class TestModule extends AstralExtension {
                         .setIngredient('A', new MaterialChoice(Material.BLACK_WOOL, Material.WHITE_WOOL))
                         .build()
                 ).prototype(new MachineItem(
-                        ItemKeys.from("tester:jeb_wool"),
+                        TestItems.JEB_WOOL,
                         ItemStacks.builder(Material.WHITE_WOOL)
                                 .displayName("&aJeb Wool!")
                                 .lore("&b Such a colorful woooooool")
                                 .build(),
                         JebWool.class
                 ))
+                .register();
+        ItemBuilder.of(new SimpleStatelessCategory())
+                .prototype(TestItems.STATELESS_ITEM)
+                .register();
+        ItemBuilder.of(new SimpleStatefulCategory())
+                .prototype(TestItems.STATEFUL_ITEM)
                 .register();
     }
 }

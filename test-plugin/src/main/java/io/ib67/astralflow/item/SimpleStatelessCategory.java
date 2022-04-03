@@ -21,33 +21,19 @@
 
 package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.manager.ItemRegistry;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import io.ib67.astralflow.item.builder.ItemCategory;
+import io.ib67.astralflow.item.builder.ItemPrototype;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.util.ItemStacks;
+import org.bukkit.Material;
 
-import java.util.Optional;
-
-@RequiredArgsConstructor
-public class AstralItem {
-    private final ItemStack originalItemStack;
-    private final ItemRegistry itemRegistry;
-
-    @NotNull
-    public ItemStack asItemStack() {
-        return originalItemStack;
-    }
-
-    public Optional<ItemState> getState() {
-        return Optional.ofNullable(itemRegistry.getState(originalItemStack));
-    }
-
-    public void saveState(ItemState state) {
-        itemRegistry.saveState(originalItemStack, StateScope.USER_ITEM, state);
-    }
-
+public class SimpleStatelessCategory implements ItemCategory<ItemKey> {
     @Override
-    public int hashCode() {
-        return originalItemStack.hashCode();
+    public ItemPrototypeFactory getFactory(ItemKey item) {
+        return ItemPrototype.builder()
+                .statePrototype(null)
+                .prototype(ItemStacks.builder(Material.IRON_INGOT).build())
+                .id(item)
+                .build();
     }
 }

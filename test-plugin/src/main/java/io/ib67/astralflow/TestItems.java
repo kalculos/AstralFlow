@@ -19,35 +19,27 @@
  *   USA
  */
 
-package io.ib67.astralflow.item;
+package io.ib67.astralflow;
 
-import io.ib67.astralflow.manager.ItemRegistry;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import io.ib67.astralflow.item.ItemKey;
 
-import java.util.Optional;
+public enum TestItems implements ItemKey {
+    JEB_WOOL("jeb_wool"),
+    STATELESS_ITEM("stateless_item"),
+    STATEFUL_ITEM("simple_stateful_item");
+    private final String id;
 
-@RequiredArgsConstructor
-public class AstralItem {
-    private final ItemStack originalItemStack;
-    private final ItemRegistry itemRegistry;
-
-    @NotNull
-    public ItemStack asItemStack() {
-        return originalItemStack;
-    }
-
-    public Optional<ItemState> getState() {
-        return Optional.ofNullable(itemRegistry.getState(originalItemStack));
-    }
-
-    public void saveState(ItemState state) {
-        itemRegistry.saveState(originalItemStack, StateScope.USER_ITEM, state);
+    TestItems(String id) {
+        this.id = id;
     }
 
     @Override
-    public int hashCode() {
-        return originalItemStack.hashCode();
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String getNamespace() {
+        return "tester";
     }
 }
