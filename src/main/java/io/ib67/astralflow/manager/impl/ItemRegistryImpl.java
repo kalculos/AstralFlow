@@ -116,4 +116,17 @@ public class ItemRegistryImpl implements ItemRegistry {
         var pdc = meta.getPersistentDataContainer();
         return pdc.get(stateScope.getTagKey(), stateTag);
     }
+
+    @Override
+    public void saveState(ItemStack itemStack, StateScope scope, ItemState state) {
+        Objects.requireNonNull(itemStack);
+        Objects.requireNonNull(scope);
+        Objects.requireNonNull(state);
+        var meta = itemStack.getItemMeta();
+        if (meta == null) {
+            return;
+        }
+        var pdc = meta.getPersistentDataContainer();
+        pdc.set(scope.getTagKey(), stateTag, state);
+    }
 }

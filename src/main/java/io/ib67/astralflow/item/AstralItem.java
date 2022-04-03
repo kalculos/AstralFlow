@@ -42,6 +42,10 @@ public class AstralItem {
         return Optional.ofNullable(itemRegistry.getState(originalItemStack));
     }
 
+    public void saveState(ItemState state) {
+        itemRegistry.saveState(originalItemStack, StateScope.USER_ITEM, state);
+    }
+
     @Override
     public int hashCode() {
         return originalItemStack.hashCode();

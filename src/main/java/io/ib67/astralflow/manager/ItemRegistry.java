@@ -58,6 +58,9 @@ public interface ItemRegistry {
     @Nullable
     ItemState getState(ItemStack itemStack, StateScope stateScope);
 
+    @ApiStatus.Internal
+    void saveState(ItemStack itemStack, StateScope scope, ItemState state);
+
     @Nullable
     default ItemState getState(ItemStack itemStack) {
         return getState(itemStack, StateScope.USER_ITEM);
