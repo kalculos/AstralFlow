@@ -52,8 +52,10 @@ public class ItemRegistryImpl implements ItemRegistry {
     @Override
     public void registerItem(ItemPrototypeFactory item, String oredict) {
         Objects.requireNonNull(item);
-        Objects.requireNonNull(oredict);
         itemMap.put(item.getId(), item);
+        if (oredict != null) {
+            oreDict.registerItem(oredict, item.getPrototype().clone(), this::isItem);
+        }
     }
 
     @Override
