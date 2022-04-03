@@ -74,7 +74,7 @@ public class ItemStateTag implements PersistentDataType<byte[], ItemState> {
         var storageType = ItemStorageType.getType(storageIndex);
         var len = buf.readInt();
         var data = new byte[len];
-        buf.readBytes(len);
+        buf.readBytes(data);
         buf.release();
         return serializers.computeIfAbsent(storageType, type -> type.apply(factoryManager)).deserialize(data);
     }
