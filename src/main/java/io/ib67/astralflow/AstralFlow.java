@@ -55,6 +55,7 @@ import io.ib67.astralflow.manager.impl.TickManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.task.SaveDataTask;
 import io.ib67.astralflow.texture.ITextureRegistry;
+import io.ib67.astralflow.util.LogCategory;
 import io.ib67.util.Util;
 import io.ib67.util.bukkit.Log;
 import lombok.Getter;
@@ -77,6 +78,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 import static io.ib67.astralflow.config.AstralFlowConfiguration.CONFIG_CURRENT_VERSION;
+import static io.ib67.astralflow.util.LogCategory.INIT;
+import static io.ib67.astralflow.util.LogCategory.MIGRATOR;
 
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private AstralFlowConfiguration configuration;
@@ -120,7 +123,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             Thread.getAllStackTraces().forEach((t, stackTrace) -> {
                 if (t.getName().contains("Watchdog")) {
                     t.stop();
-                    Log.info("Debug", "Killed Watchdog.");
+                    Log.info(LogCategory.DEBUG, "Killed Watchdog.");
                 }
             });
         }
@@ -133,27 +136,27 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         for (String logo : AstralConstants.LOGO) {
             Bukkit.getLogger().info(ChatColor.AQUA + logo); // removing prefix.
         }
-        Log.info("Welcome to AstralFlow!");
+        Log.info(LogCategory.INIT, "Welcome to AstralFlow!");
         // issue-62: more information.
         try (var res = getResource("buildInfo")) {
-            Log.info(new String(res.readAllBytes()));
+            Log.info(LogCategory.INIT, new String(res.readAllBytes()));
             if (AstralConstants.DEBUG) {
-                Log.info("Debug mode is enabled.");
+                Log.info(LogCategory.DEBUG, "Debug mode is enabled.");
             }
             if (AstralConstants.MOCKING) {
-                Log.info("Mocking mode is enabled.");
+                Log.info(LogCategory.DEBUG, "Mocking mode is enabled.");
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Log.warn("Cannot read build information. Is it a bug?");
+            Log.warn(LogCategory.INIT, "Cannot read build information. Is it a bug?");
         }
-        Log.info("Loading &aConfigurations");
+        Log.info(LogCategory.INIT, "Loading &aConfigurations");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
         if (Util.runCatching(() -> machineIndex.toFile().createNewFile()).alsoPrintStack().isFailed()) {
             setEnabled(false);
             return;
         }
-        Log.info("Loading &aComponents");
+        Log.info(LogCategory.INIT, "Loading &aComponents");
         languageDir.toFile().mkdirs();
         itemDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
@@ -171,27 +174,27 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         Bukkit.getScheduler().runTask(this, () -> {
             boolean reloadChunks = false;
             if (Bukkit.getWorlds().stream().mapToInt(world -> world.getLoadedChunks().length).sum() > 0) {
-                Log.warn("There are chunks loaded in the world, which may cause unexpected behavior due to unregistered machines..");
+                Log.warn(LogCategory.INIT, "There are chunks loaded in the world, which may cause unexpected behavior due to unregistered machines..");
                 Warnings.warnUnstableServerSoft();
                 reloadChunks = true;
             }
             /* LOAD MODULES */
-            Log.info("Loading &aModules");
+            Log.info(LogCategory.INIT, "Loading &aModules");
             extensionRegistry.getExtensions().removeIf(extension -> {
                 try {
                     extension.init();
-                    Log.info("Loaded extension: " + extension.getInfo());
+                    Log.info(LogCategory.EXTENSION, "Loaded extension: " + extension.getInfo());
                 } catch (Throwable t) {
                     t.printStackTrace();
-                    Log.warn("Failed to load extension: " + extension.getInfo());
-                    Log.warn("Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
-                    Log.warn("This module will be ignored.");
+                    Log.warn(LogCategory.EXTENSION, "Failed to load extension: " + extension.getInfo());
+                    Log.warn(LogCategory.EXTENSION, "Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
+                    Log.warn(LogCategory.EXTENSION, "This module will be ignored.");
                     return false;
                 }
                 return true;
             });
             if (reloadChunks) {
-                Log.warn("Reloading chunks to fix unregistered machines.");
+                Log.warn(LogCategory.INIT, "Reloading chunks to fix unregistered machines.");
                 for (World world : Bukkit.getWorlds())
                     for (Chunk chunk : world.getLoadedChunks())
                         chunk.unload();
@@ -209,7 +212,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     private void injectVanillaCraft() {
-        Log.info("Injecting vanilla crafting table");
+        Log.info(LogCategory.INIT, "Injecting vanilla crafting table");
         Bukkit.getPluginManager().registerEvents(new RecipeListener(recipeRegistry), this);
     }
 
@@ -217,19 +220,19 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     public void onDisable() {
         // save data.
         if (!initialized) {
-            Log.warn("We're not initialized! Won't do anything.");
+            Log.warn(LogCategory.TERMINATION, "We're not initialized! Won't do anything.");
             return;
         }
-        Log.info("Disabling Modules");
+        Log.info(LogCategory.EXTENSION, "Disabling Modules");
         for (AstralExtension extension : extensionRegistry.getExtensions()) {
             try {
                 extension.terminate();
             } catch (Throwable t) {
-                Log.warn("Failed to terminate extension: " + extension.getInfo());
-                Log.warn("Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
+                Log.warn(LogCategory.EXTENSION, "Failed to terminate extension: " + extension.getInfo());
+                Log.warn(LogCategory.EXTENSION, "Issue Tracker URL: " + extension.getInfo().issueTrackerUrl());
             }
         }
-        Log.info("Saving Data");
+        Log.info(LogCategory.TERMINATION, "Saving Data");
         for (Consumer<?> hook : getHooks(HookType.PLUGIN_SHUTDOWN)) {
             hook.accept(null);
         }
@@ -287,23 +290,23 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 throw new IOException("Can't parse config");
             }
             if (configuration.getVersion() != CONFIG_CURRENT_VERSION) {
-                Log.warn("Configuration version mismatch! Expected " + CONFIG_CURRENT_VERSION + " but got " + configuration.getVersion());
-                Log.warn("Looking for automatic solutions..");
+                Log.warn(MIGRATOR, "Configuration version mismatch! Expected " + CONFIG_CURRENT_VERSION + " but got " + configuration.getVersion());
+                Log.info(MIGRATOR, "Looking for automatic solutions..");
                 if (configuration.getVersion() > CONFIG_CURRENT_VERSION) {
-                    Log.warn("Launching Configuration migrator.");
-                    var migrator = new ConfigMigrator(new JsonParser().parse(confString).getAsJsonObject());
+                    Log.info(MIGRATOR, "Launching Configuration migrator.");
+                    var migrator = new ConfigMigrator(JsonParser.parseString(confString).getAsJsonObject());
                     var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex));
-                    Log.info("Migration complete.");
+                    Log.info(MIGRATOR, "Migration complete.");
                     Files.writeString(confFile.toPath(), configSerializer.toJson(conf));
                     configuration = conf;
                 } else {
                     // higher.
-                    Log.warn("Can't migrate configuration. Please update AstralFlow.");
+                    Log.warn(MIGRATOR, "Can't migrate configuration. Please update AstralFlow.");
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Log.warn("Cannot load configuration. Falling back to default values");
+            Log.warn(INIT, "Cannot load configuration. Falling back to default values");
             configuration = AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex);
         }
 

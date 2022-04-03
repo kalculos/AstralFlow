@@ -19,16 +19,12 @@
  *   USA
  */
 
-package io.ib67.astralflow;
+package io.ib67.astralflow.util;
 
-import io.ib67.astralflow.util.LogCategory;
-import io.ib67.util.bukkit.Log;
-import org.bukkit.plugin.java.JavaPlugin;
-
-public class TestPlugin extends JavaPlugin {
-    @Override
-    public void onEnable() {
-        Log.info(LogCategory.INIT, "Loading TestModule...");
-        new TestModule();
-    }
+public class LogCategory {
+    public static final String INIT = "Init";
+    public static final String TERMINATION = "Termination";
+    public static final String DEBUG = "Debug";
+    public static final String EXTENSION = "Extension";
+    public static final String MIGRATOR = "Migrator";
 }
