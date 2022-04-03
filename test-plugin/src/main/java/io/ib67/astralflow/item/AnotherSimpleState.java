@@ -21,20 +21,25 @@
 
 package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.item.builder.ItemCategory;
-import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import io.ib67.astralflow.util.ItemStacks;
-import org.bukkit.Material;
+public class AnotherSimpleState extends ItemState {
+    private String data;
 
-public class SimpleStatefulCategory implements ItemCategory<ItemKey> {
+    public AnotherSimpleState(String data) {
+        this.data = data;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
     @Override
-    public ItemPrototypeFactory getFactory(ItemKey item) {
-        return ItemPrototype
-                .builder()
-                .prototype(ItemStacks.builder(Material.GOLD_INGOT).build())
-                .id(item)
-                .statePrototype(new AnotherSimpleState("default"))
-                .build();
+    public String toString() {
+        return "AnotherSimpleState{" +
+                "data='" + data + '\'' +
+                '}';
     }
 }
