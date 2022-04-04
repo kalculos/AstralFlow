@@ -24,16 +24,23 @@ package io.ib67.astralflow.api.item.weapon;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.item.ItemKey;
+import lombok.Builder;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collections;
 import java.util.function.Predicate;
 
+/**
+ * For weapons like bow.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public class RangedItem extends WeaponBase {
+    @Builder
     protected RangedItem(ItemKey id, ItemStack prototype, WeaponProperty property, Predicate<Entity> entitySelector) {
         super(id, prototype, property, entitySelector, Collections.emptySet());
         HookType.PROJECTILE_HIT.register(this::onProjHit);

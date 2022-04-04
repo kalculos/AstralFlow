@@ -23,15 +23,18 @@ package io.ib67.astralflow.api.item.weapon;
 
 import io.ib67.astralflow.item.ItemKey;
 import lombok.Builder;
-import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Set;
 import java.util.function.Predicate;
 
-@Getter
+/**
+ * For items like swords, axes, etc.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public class MeleeItem extends WeaponBase {
     @Builder
     protected MeleeItem(ItemKey id, ItemStack prototype, WeaponProperty property, Predicate<Entity> entitySelector) {
