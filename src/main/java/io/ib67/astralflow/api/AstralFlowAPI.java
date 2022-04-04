@@ -30,6 +30,7 @@ import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.texture.ITextureRegistry;
+import io.ib67.astralflow.wireless.registry.IWirelessRegistry;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -45,6 +46,8 @@ public interface AstralFlowAPI {
     ItemRegistry getItemRegistry();
 
     ITickManager getTickManager();
+
+    IWirelessRegistry getWirelessRegistry();
 
     ITextureRegistry getTextureRegistry();
 

@@ -56,6 +56,8 @@ import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.task.SaveDataTask;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.astralflow.util.LogCategory;
+import io.ib67.astralflow.wireless.impl.SimpleWirelessRegistry;
+import io.ib67.astralflow.wireless.registry.IWirelessRegistry;
 import io.ib67.util.Util;
 import io.ib67.util.bukkit.Log;
 import lombok.Getter;
@@ -90,13 +92,16 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private final Path itemDir = getDataFolder().toPath().resolve("items");
     @Getter
     private IFactoryManager factories;
-    private ITickManager tickManager;
+    @Getter
+    private final IWirelessRegistry wirelessRegistry = new SimpleWirelessRegistry();
     @Getter
     private ItemRegistry itemRegistry;
     @Getter
     private final IRecipeRegistry recipeRegistry = new RecipeRegistryImpl();
     @Getter
     private final IExtensionRegistry extensionRegistry = new ExtensionRegistryImpl();
+    @Getter
+    private ITickManager tickManager;
 
     private static AstralFlow instance;
 
@@ -310,11 +315,6 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             configuration = AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex);
         }
 
-    }
-
-    @Override
-    public ITickManager getTickManager() {
-        return tickManager;
     }
 
     @Override
