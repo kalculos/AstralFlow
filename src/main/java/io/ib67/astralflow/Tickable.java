@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow;
 
+import io.ib67.astralflow.scheduler.TickReceipt;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.AvailableSince("0.1.0")
@@ -30,5 +31,9 @@ public interface Tickable<T extends Tickable<T>> {
     @SuppressWarnings("unchecked")
     default void update() {
         update((T) this);
+    }
+
+    default void setup(TickReceipt<T> receipt) {
+
     }
 }

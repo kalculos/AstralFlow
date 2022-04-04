@@ -51,7 +51,7 @@ import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
-import io.ib67.astralflow.manager.impl.TickManager;
+import io.ib67.astralflow.manager.impl.SimpleTickManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.task.SaveDataTask;
 import io.ib67.astralflow.texture.ITextureRegistry;
@@ -161,7 +161,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         itemDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
         loadConfig();
-        tickManager = new TickManager();
+        tickManager = new SimpleTickManager();
         loadMachineManager();
         //scheduler = new TickScheduler(machineManager);
         //scheduler.runTaskTimer(this, 0L, 1L); // Every tick.

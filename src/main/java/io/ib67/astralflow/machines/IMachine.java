@@ -29,7 +29,6 @@ import java.util.UUID;
 
 @ApiStatus.AvailableSince("0.1.0")
 public interface IMachine extends Tickable<IMachine>, LifeCycle {
-    boolean canTick();
 
     MachineProperty getProperty();
 
