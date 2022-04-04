@@ -19,26 +19,19 @@
  *   USA
  */
 
-package io.ib67.astralflow.api.item;
+package io.ib67.astralflow.api.item.machine;
 
-import io.ib67.astralflow.item.builder.ItemCategory;
-import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.machines.IState;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-public class MachineCategory implements ItemCategory<MachineItem> {
-    public static final MachineCategory INSTANCE = new MachineCategory();
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@Data
+public class MachineItemState extends ItemState {
+    private IState data;
+    private String machineType;
 
-    private MachineCategory() {
-        
-    }
-
-    @Override
-    public ItemPrototypeFactory getFactory(MachineItem item) {
-        return ItemPrototype.builder()
-                .id(item.getId())
-                .prototype(item.getPrototype())
-                .holder(item)
-                .statePrototype(new MachineItemState(null, item.getTypeOfMachine().getName()))
-                .build();
-    }
 }

@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.api.item;
+package io.ib67.astralflow.api.item.machine;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
@@ -33,6 +33,7 @@ import lombok.Getter;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -42,9 +43,15 @@ public class MachineItem implements LogicalHolder {
     private final Class<? extends IMachine> typeOfMachine;
 
     public MachineItem(ItemKey id, ItemStack prototype, Class<? extends IMachine> typeOfMachine) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(prototype);
+        Objects.requireNonNull(typeOfMachine);
         this.id = id;
         this.prototype = prototype;
         this.typeOfMachine = typeOfMachine;
+        if (!prototype.getType().isBlock()) {
+            throw new IllegalArgumentException("MachineItem must be a block!");
+        }
         HookType.BLOCK_PLACE.register(this::onPlace);
         HookType.MACHINE_BREAK.register(this::onBreak);
     }

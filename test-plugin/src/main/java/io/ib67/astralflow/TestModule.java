@@ -23,8 +23,8 @@ package io.ib67.astralflow;
 
 import io.ib67.astralflow.api.external.AstralExtension;
 import io.ib67.astralflow.api.external.ExtensionInfo;
-import io.ib67.astralflow.api.item.MachineCategory;
-import io.ib67.astralflow.api.item.MachineItem;
+import io.ib67.astralflow.api.item.machine.MachineCategory;
+import io.ib67.astralflow.api.item.machine.MachineItem;
 import io.ib67.astralflow.item.SimpleStatefulCategory;
 import io.ib67.astralflow.item.SimpleStatelessCategory;
 import io.ib67.astralflow.item.builder.ItemBuilder;
