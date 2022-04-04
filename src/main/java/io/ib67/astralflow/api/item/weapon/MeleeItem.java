@@ -34,7 +34,10 @@ import java.util.function.Predicate;
 @Getter
 public class MeleeItem extends WeaponBase {
     @Builder
-    protected MeleeItem(ItemKey id, ItemStack prototype, WeaponProperty property, Predicate<Entity> entitySelector, Set<EntityDamageEvent.DamageCause> types) {
-        super(id, prototype, property, entitySelector, types);
+    protected MeleeItem(ItemKey id, ItemStack prototype, WeaponProperty property, Predicate<Entity> entitySelector) {
+        super(id, prototype, property, entitySelector, Set.of(
+                EntityDamageEvent.DamageCause.ENTITY_ATTACK,
+                EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK
+        ));
     }
 }
