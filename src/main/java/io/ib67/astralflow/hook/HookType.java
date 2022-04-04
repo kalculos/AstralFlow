@@ -28,6 +28,9 @@ import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -48,7 +51,7 @@ public final class HookType<T> {
     public static final HookType<PlayerInteractEntityEvent> PLAYER_INTERACT_ENTITY = new HookType<>();
     public static final HookType<PlayerInteractEvent> PLAYER_INTERACT_BLOCK = new HookType<>();
     public static final HookType<PlayerItemBreakEvent> ITEM_BROKEN = new HookType<>();
-
+    public static final HookType<EntityDeathEvent> ENTITY_DEATH = new HookType<>();
     // For chunks
     public static final HookType<ChunkLoadEvent> CHUNK_LOAD = new HookType<>();
     public static final HookType<ChunkUnloadEvent> CHUNK_UNLOAD = new HookType<>();
@@ -57,13 +60,15 @@ public final class HookType<T> {
     public static final HookType<MachineBreakEvent> MACHINE_BREAK = new HookType<>();
     public static final HookType<MachinePlaceEvent> MACHINE_PLACE = new HookType<>();
 
-    public static final HookType<EntityDamageByEntityEvent> ENTITY_DAMAGE = new HookType<>();
+    public static final HookType<EntityDamageByEntityEvent> ENTITY_DAMAGE_BY_ENTITY = new HookType<>();
+    public static final HookType<EntityDamageEvent> ENTITY_DAMAGE = new HookType<>();
     public static final HookType<AsyncPlayerChatEvent> PLAYER_CHAT = new HookType<>();
     public static final HookType<PlayerMoveEvent> PLAYER_MOVE = new HookType<>();
 
     // For blocks
     public static final HookType<BlockBreakEvent> BLOCK_BREAK = new HookType<>();
     public static final HookType<BlockPlaceEvent> BLOCK_PLACE = new HookType<>();
+    public static final HookType<ProjectileHitEvent> PROJECTILE_HIT = new HookType<>();
 
     public void register(Consumer<T> acceptor) {
         AstralFlow.getInstance().addHook(this, acceptor);
