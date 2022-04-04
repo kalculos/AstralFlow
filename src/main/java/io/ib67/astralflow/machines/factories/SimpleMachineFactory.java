@@ -23,7 +23,6 @@ package io.ib67.astralflow.machines.factories;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
-import io.ib67.util.bukkit.Log;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Constructor;
@@ -41,8 +40,7 @@ public class SimpleMachineFactory<M extends IMachine> implements IMachineFactory
             constructor = machineClass.getDeclaredConstructor(MachineProperty.class);
             constructor.setAccessible(true);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            Log.warn("AutoFactory", "Failed to find constructor for " + machineClass.getName());
+            throw new IllegalArgumentException("The machine class " + machineClass.getName() + " does not have a constructor with MachineProperty as parameter.", e);
         }
     }
 
