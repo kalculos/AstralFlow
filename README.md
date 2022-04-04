@@ -30,7 +30,8 @@ And we recommend Lombok.
 
 [Example `JebWool`](./test-plugin/src/main/java/io/ib67/astralflow/machines/JebWool.java)
 
-![jeb_wool](https://user-images.githubusercontent.com/48877375/160128050-d1e55af1-be9e-4631-b52b-990f994fc1af.gif)
+![jeb_wool](https://user-images.githubusercontent.com/48877375/161483058-422f9375-a1b3-4aca-815d-3edb11170c24.gif)
+
 
 # Sponsor
 
