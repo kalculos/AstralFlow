@@ -25,7 +25,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.machines.AbstractMachine;
 import io.ib67.astralflow.machines.AutoFactory;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IState;
+import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.test.TestUtil;
 import org.bukkit.Location;
 import org.junit.jupiter.api.Assertions;
@@ -47,12 +47,19 @@ public class AutoFactoryTest {
 
         Assertions.assertNotNull(AstralFlow.getInstance().getFactories().getMachineFactory(MachineA.class), "Test MachineA -- regular args");
         Assertions.assertNotNull(AstralFlow.getInstance().getFactories().getMachineFactory(MachineB.class), "Test MachineB -- regular args");
-        Assertions.assertThrows(IllegalArgumentException.class, () -> AstralFlow.getInstance().getFactories().getMachineFactory(MachineC.class), "Test MachineC -- unmatchable");
+        Assertions.assertTrue(() -> {
+            try {
+                AstralFlow.getInstance().getFactories().getMachineFactory(MachineC.class);
+            } catch (Throwable t) {
+                return true;
+            }
+            return false;
+        }, "Test MachineC -- unmatchable");
         @AutoFactory
         class MachineD extends AbstractMachine { // there is a hidden constructor argument caused by non-static
 
-            protected MachineD(UUID id, Location location) {
-                super(id, location);
+            protected MachineD(MachineProperty p) {
+                super(p);
             }
 
             @Override
@@ -80,9 +87,9 @@ public class AutoFactoryTest {
     @AutoFactory
     static class MachineB extends AbstractMachine {
 
-        protected MachineB(Location location, IState state) {
-            super(UUID.randomUUID(), location); // do not do this in production
-            setState(state);
+        protected MachineB(MachineProperty p) {
+            super(p);
+            setState(p.getState());
         }
 
         @Override
@@ -94,8 +101,8 @@ public class AutoFactoryTest {
     @AutoFactory
     static class MachineA extends AbstractMachine {
 
-        protected MachineA(UUID id, Location location) {
-            super(id, location);
+        protected MachineA(MachineProperty property) {
+            super(property);
         }
 
         @Override

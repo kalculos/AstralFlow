@@ -51,6 +51,7 @@ public class MachineManagerImpl implements IMachineManager {
 
     public MachineManagerImpl(IMachineStorage storage, int capacity, ITickManager scheduler) {
         this.machineStorage = storage;
+        storage.init(this);
         int defaultCapacity = Math.max(capacity, 16);
         tickReceipts = new WeakHashMap<>(capacity);
         this.scheduler = scheduler;

@@ -23,19 +23,20 @@ package io.ib67.astralflow.storage.impl;
 
 import io.ib67.astralflow.internal.MachineStorageHelper;
 import io.ib67.astralflow.manager.IFactoryManager;
+import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.storage.MachineSerializer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 @RequiredArgsConstructor
 @Getter
-public enum MachineStorageType implements Function<IFactoryManager, MachineSerializer> {
+public enum MachineStorageType implements BiFunction<IFactoryManager, IMachineManager, MachineSerializer> {
     JSON(0, MachineStorageHelper::new);
 
     private final int typeIndex;
-    private final Function<IFactoryManager, MachineSerializer> factory;
+    private final BiFunction<IFactoryManager, IMachineManager, MachineSerializer> factory;
 
     public static MachineStorageType getType(int index) {
         return switch (index) {
@@ -45,7 +46,7 @@ public enum MachineStorageType implements Function<IFactoryManager, MachineSeria
     }
 
     @Override
-    public MachineSerializer apply(IFactoryManager factory) {
-        return this.factory.apply(factory);
+    public MachineSerializer apply(IFactoryManager factoryManager, IMachineManager manager) {
+        return this.factory.apply(factoryManager, manager);
     }
 }

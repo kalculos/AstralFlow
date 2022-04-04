@@ -23,6 +23,7 @@ package io.ib67.astralflow.storage.impl.chunk;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IFactoryManager;
+import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.storage.MachineSerializer;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import org.bukkit.Chunk;
@@ -36,6 +37,7 @@ import java.util.Objects;
 
 public class InMemoryChunkFactory {
     private final IFactoryManager factory;
+    private final IMachineManager defaultMachineManager;
     private final MachineStorageType storageType;
 
     private final NamespacedKey machineIndexKey;
@@ -43,11 +45,13 @@ public class InMemoryChunkFactory {
 
     private final Map<MachineStorageType, MachineSerializer> serializers = new EnumMap<>(MachineStorageType.class);
 
-    public InMemoryChunkFactory(IFactoryManager factory, MachineStorageType storageType, NamespacedKey machineIndexKey, NamespacedKey machineDataKey) {
+    public InMemoryChunkFactory(IFactoryManager factory, IMachineManager defaultMachineManager, MachineStorageType storageType, NamespacedKey machineIndexKey, NamespacedKey machineDataKey) {
         Objects.requireNonNull(factory, "factory cannot be null");
         Objects.requireNonNull(storageType, "storageType cannot be null");
         Objects.requireNonNull(machineIndexKey, "machineIndexKey cannot be null");
         Objects.requireNonNull(machineDataKey, "machineDataKey cannot be null");
+        Objects.requireNonNull(defaultMachineManager, "defaultMachineManager cannot be null");
+        this.defaultMachineManager = defaultMachineManager;
         this.machineIndexKey = machineIndexKey;
         this.machineDataKey = machineDataKey;
         this.factory = factory;
@@ -86,6 +90,6 @@ public class InMemoryChunkFactory {
     }
 
     private MachineSerializer getSerializer(MachineStorageType type) {
-        return serializers.computeIfAbsent(type, k -> k.apply(factory));
+        return serializers.computeIfAbsent(type, k -> k.apply(factory, defaultMachineManager));
     }
 }

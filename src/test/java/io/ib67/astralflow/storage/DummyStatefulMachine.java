@@ -23,14 +23,12 @@ package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.machines.AbstractMachine;
 import io.ib67.astralflow.machines.IMachine;
-import org.bukkit.Location;
-
-import java.util.UUID;
+import io.ib67.astralflow.machines.MachineProperty;
 
 class DummyStatefulMachine extends AbstractMachine {
 
-    protected DummyStatefulMachine(UUID id, Location location) {
-        super(id, location);
+    protected DummyStatefulMachine(MachineProperty property) {
+        super(property);
         var state = new SimpleMachineState<String>();
         state.put("nullcat?", "sexy!");
         this.setState(state);

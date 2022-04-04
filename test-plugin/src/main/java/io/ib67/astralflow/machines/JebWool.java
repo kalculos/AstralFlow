@@ -26,8 +26,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
-import java.util.UUID;
-
 @AutoFactory
 public class JebWool extends AbstractMachine implements Pushable {
     private static final Material[] WOOLS = new Material[]{
@@ -39,9 +37,10 @@ public class JebWool extends AbstractMachine implements Pushable {
             Material.BLACK_WOOL
     };
     private int counter;
+    private int req;
 
-    public JebWool(UUID id, Location location) {
-        super(id, location);
+    public JebWool(MachineProperty p) {
+        super(p);
     }
 
     @Override
@@ -51,8 +50,12 @@ public class JebWool extends AbstractMachine implements Pushable {
 
     @Override
     public void update(IMachine self) {
-        counter++;
-        getLocation().getBlock().setType(WOOLS[counter % WOOLS.length]);
+        req++;
+        if (req == 10) {
+            counter++;
+            getLocation().getBlock().setType(WOOLS[counter % WOOLS.length]);
+            req = 0;
+        }
     }
 
     @Override

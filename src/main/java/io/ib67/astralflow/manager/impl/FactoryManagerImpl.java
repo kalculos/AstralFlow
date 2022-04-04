@@ -23,7 +23,6 @@ package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.machines.AutoFactory;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
 import io.ib67.astralflow.machines.factories.SimpleMachineFactory;
 import io.ib67.astralflow.manager.IFactoryManager;
@@ -35,13 +34,13 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FactoryManagerImpl implements IFactoryManager {
-    private final Map<Class<? extends IMachine>, IMachineFactory<?, ?>> machineFactories = new HashMap<>();
+    private final Map<Class<? extends IMachine>, IMachineFactory<?>> machineFactories = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends IMachine, S extends IState> IMachineFactory<T, S> getMachineFactory(Class<T> type) {
+    public <T extends IMachine> IMachineFactory<T> getMachineFactory(Class<T> type) {
         Objects.requireNonNull(type, "Type cannot be null");
-        return (IMachineFactory<T, S>) machineFactories.computeIfAbsent(type, t -> {
+        return (IMachineFactory<T>) machineFactories.computeIfAbsent(type, t -> {
             if (!t.isAnnotationPresent(AutoFactory.class)) {
                 return null;
             }
@@ -59,12 +58,12 @@ public class FactoryManagerImpl implements IFactoryManager {
     }
 
     @Override
-    public Collection<? extends IMachineFactory<?, ?>> getMachineFactories() {
+    public Collection<? extends IMachineFactory<?>> getMachineFactories() {
         return machineFactories.values();
     }
 
     @Override
-    public <T extends IMachine, S extends IState> boolean register(Class<T> claz, IMachineFactory<T, S> factory) {
+    public <T extends IMachine> boolean register(Class<T> claz, IMachineFactory<T> factory) {
         Objects.requireNonNull(claz, "Class cannot be null");
         Objects.requireNonNull(factory, "Factory cannot be null");
 
@@ -77,7 +76,7 @@ public class FactoryManagerImpl implements IFactoryManager {
     }
 
     @Override
-    public <T extends IMachine, S extends IState> boolean unregister(Class<T> type) {
+    public <T extends IMachine> boolean unregister(Class<T> type) {
         Objects.requireNonNull(type, "Type cannot be null");
         return machineFactories.containsKey(type) && machineFactories.remove(type) != null;
     }

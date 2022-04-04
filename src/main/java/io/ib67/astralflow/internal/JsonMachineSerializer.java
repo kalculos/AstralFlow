@@ -24,7 +24,9 @@ package io.ib67.astralflow.internal;
 import com.google.gson.*;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
+import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.manager.IFactoryManager;
+import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
@@ -41,6 +43,7 @@ public class JsonMachineSerializer implements JsonSerializer<IMachine>, JsonDese
     private static final String KEY_LOCATION = "loc";
     private static final String KEY_ID = "uuid";
     private final IFactoryManager factories;
+    private final IMachineManager defaultManager;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -60,7 +63,15 @@ public class JsonMachineSerializer implements JsonSerializer<IMachine>, JsonDese
                     if (factory == null) {
                         throw new JsonParseException("No factories have registered for this type: " + type);
                     }
-                    return factory.createMachine(location, uuid, state);
+                    return factory.createMachine(
+                            MachineProperty
+                                    .builder()
+                                    .manager(defaultManager)
+                                    .location(location)
+                                    .state(state)
+                                    .uuid(uuid)
+                                    .build()
+                    );
                 }).getResult();
     }
 
