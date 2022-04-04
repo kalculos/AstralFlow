@@ -68,17 +68,26 @@ public abstract class WeaponBase extends ItemBase {
             var isItem = state.map(ItemPrototypeFactory::getHolder)
                     .filter(holder -> holder == this)
                     .isPresent();
+            if (!isItem) return;
             // apply damage.
-            if (entitySelector.test(event.getEntity())) {
-                var damage = this.property.getDamage();
-                if (!property.isClearOriginalDamage()) {
-                    damage = damage + event.getFinalDamage();
-                }
-                if (Math.random() > property.getCriticalChance()) {
-                    damage = damage * property.getCriticalMultiplexer();
-                }
-                event.setDamage(damage);
-            }
+            event.setDamage(damageCalc(event.getEntity(), event.getFinalDamage()));
         }
     }
+
+    protected double damageCalc(Entity entity, double originalDamage) {
+
+        // apply damage.
+        if (entitySelector.test(entity)) {
+            var damage = this.property.getDamage();
+            if (!property.isClearOriginalDamage()) {
+                damage = damage + originalDamage;
+            }
+            if (Math.random() > property.getCriticalChance()) {
+                damage = damage * property.getCriticalMultiplexer();
+            }
+            return damage;
+        }
+        return originalDamage;
+    }
+
 }
