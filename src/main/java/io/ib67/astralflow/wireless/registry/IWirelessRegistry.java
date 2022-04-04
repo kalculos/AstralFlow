@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
  * Providing an interface for peers to seek other peers.
  */
 @ApiStatus.AvailableSince("0.1.0")
-public interface IWirelessRegistry extends IWirelessDiscoverFactory {
+public interface IWirelessRegistry {
 
     /**
      * Register a peer. Registered Peers will be kept in weak reference for GC to clean.
