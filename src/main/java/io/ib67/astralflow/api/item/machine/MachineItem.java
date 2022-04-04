@@ -22,11 +22,11 @@
 package io.ib67.astralflow.api.item.machine;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.item.ItemBase;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.ItemKey;
-import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
@@ -35,21 +35,14 @@ import lombok.Getter;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
-public class MachineItem implements LogicalHolder {
-    private final ItemKey id;
-    private final ItemStack prototype;
+public class MachineItem extends ItemBase {
     private final Class<? extends IMachine> typeOfMachine;
 
     public MachineItem(ItemKey id, ItemStack prototype, Class<? extends IMachine> typeOfMachine) {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(prototype);
-        Objects.requireNonNull(typeOfMachine);
-        this.id = id;
-        this.prototype = prototype;
+        super(id, prototype);
         this.typeOfMachine = typeOfMachine;
         if (!prototype.getType().isBlock()) {
             throw new IllegalArgumentException("MachineItem must be a block!");
@@ -105,7 +98,7 @@ public class MachineItem implements LogicalHolder {
             return;
         }
         var state = new MachineItemState(machine.getState(), machine.getType().getName());
-        var item = AstralFlow.getInstance().getItemRegistry().createItem(id);
+        var item = AstralFlow.getInstance().getItemRegistry().createItem(getId());
         var emptyState = (MachineItemState) item.getState().get();
         emptyState.setData(state.getData());
         emptyState.setMachineType(machine.getType().getName());
