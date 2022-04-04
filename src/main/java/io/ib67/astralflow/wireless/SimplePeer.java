@@ -1,5 +1,6 @@
 package io.ib67.astralflow.wireless;
 
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.wireless.registry.IWirelessRegistry;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,7 +42,7 @@ public class SimplePeer<T> implements IWirelessPeer<T> {
     }
 
     public static final class SimplePeerBuilder<T> {
-        private IWirelessRegistry registry;
+        private IWirelessRegistry registry = AstralFlow.getInstance().getWirelessRegistry();
         private Consumer<IWirelessPeer<T>> negotiator = t -> {
         };
         private Consumer<T> messageReceiver = t -> {
