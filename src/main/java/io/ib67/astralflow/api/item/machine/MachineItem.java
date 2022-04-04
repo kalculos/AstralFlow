@@ -61,10 +61,10 @@ public class MachineItem implements LogicalHolder {
     /**
      * Utility method to register machine items
      *
-     * @param id
-     * @param prototype
-     * @param typeOfMachine
-     * @return
+     * @param id            itemkey
+     * @param prototype     prototype
+     * @param typeOfMachine machine type
+     * @return itemkey
      */
     public static ItemKey registerItem(ItemKey id, ItemStack prototype, Class<? extends IMachine> typeOfMachine) {
         ItemBuilder.of(MachineCategory.INSTANCE)
