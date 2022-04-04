@@ -24,7 +24,7 @@ package io.ib67.astralflow.util;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemStacks {
+public final class ItemStacks {
     public static ItemStackBuilder builder(Material material) {
         return new ItemStackBuilder().material(material);
     }

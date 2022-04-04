@@ -37,7 +37,7 @@ import static io.ib67.astralflow.test.TestUtil.init;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ItemRegistryTest {
+public final class ItemRegistryTest {
     private ItemRegistry registry;
 
     @BeforeAll

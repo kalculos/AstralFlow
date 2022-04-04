@@ -29,10 +29,11 @@ import lombok.RequiredArgsConstructor;
 import java.lang.reflect.Type;
 
 @RequiredArgsConstructor
-public class StateSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {
+public final class StateSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {
     private static final String KEY_TYPE = "type";
     private static final String KEY_DATA = "data";
     private final Gson defaultSerializer;
+
     @Override
     public IState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         // assertion 1. context is a bukkit compatible serializer

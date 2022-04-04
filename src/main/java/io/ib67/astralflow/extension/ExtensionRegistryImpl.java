@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class ExtensionRegistryImpl implements IExtensionRegistry {
+public final class ExtensionRegistryImpl implements IExtensionRegistry {
     private final Map<String, AstralExtension> extensions = new HashMap<>();
 
     @Override

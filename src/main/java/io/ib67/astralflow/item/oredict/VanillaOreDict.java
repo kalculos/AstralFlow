@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class VanillaOreDict implements IOreDict {
+public final class VanillaOreDict implements IOreDict {
     private static final List<Material> WOOLS = Arrays.stream(Material.values())
             .filter(e -> e.name().endsWith("_WOOL"))
             .toList();

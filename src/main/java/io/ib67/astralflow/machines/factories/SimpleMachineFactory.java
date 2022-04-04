@@ -27,7 +27,7 @@ import lombok.SneakyThrows;
 
 import java.lang.reflect.Constructor;
 
-public class SimpleMachineFactory<M extends IMachine> implements IMachineFactory<M> {
+public final class SimpleMachineFactory<M extends IMachine> implements IMachineFactory<M> {
     private final Class<M> machineClass;
 
     private Constructor<M> constructor;

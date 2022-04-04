@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.item;
 
-public class AnotherSimpleState extends ItemState {
+public final class AnotherSimpleState extends ItemState {
     private String data;
 
     public AnotherSimpleState(String data) {

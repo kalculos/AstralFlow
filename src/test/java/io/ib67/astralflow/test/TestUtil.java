@@ -27,14 +27,14 @@ import io.ib67.astralflow.internal.AstralConstants;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestUtil {
+public final class TestUtil {
     public static void init() {
         assertTrue(AstralConstants.MOCKING);
         if (!MockBukkit.isMocked()) {
             MockBukkit.mock();
             MockBukkit.getMock().addSimpleWorld("world");
         }
-        if(AstralFlow.getInstance() == null){
+        if (AstralFlow.getInstance() == null) {
             MockBukkit.load(AstralFlow.class);
         }
     }

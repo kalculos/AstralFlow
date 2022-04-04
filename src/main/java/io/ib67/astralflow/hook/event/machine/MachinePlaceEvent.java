@@ -31,7 +31,7 @@ import org.bukkit.event.Cancellable;
  * @author EvanLuo42
  * @date 3/20/22 12:52 PM
  */
-public class MachinePlaceEvent extends MachineEvent implements Cancellable {
+public final class MachinePlaceEvent extends MachineEvent implements Cancellable {
     @Getter
     private final Location location;
 

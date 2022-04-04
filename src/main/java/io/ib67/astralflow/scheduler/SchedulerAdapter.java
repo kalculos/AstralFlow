@@ -27,7 +27,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 @RequiredArgsConstructor
 @Getter
-public class SchedulerAdapter extends BukkitRunnable {
+public final class SchedulerAdapter extends BukkitRunnable {
     private final Scheduler delegatedScheduler;
 
     @Override

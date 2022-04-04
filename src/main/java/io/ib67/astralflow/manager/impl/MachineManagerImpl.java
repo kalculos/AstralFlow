@@ -39,7 +39,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.*;
 
-public class MachineManagerImpl implements IMachineManager {
+public final class MachineManagerImpl implements IMachineManager {
 
     private final IMachineStorage machineStorage;
     private final Set<IMachine> loadedMachines;

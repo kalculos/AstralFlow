@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ChoiceTest {
+public final class ChoiceTest {
 
     public static final ItemKey CAT_KEY = ItemKeys.from("test:cat");
     public static final ItemKey DOG_WOOL_KEY = ItemKeys.from("test:dog_wool");

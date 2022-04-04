@@ -31,7 +31,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-public class MachineListener implements Listener {
+public final class MachineListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) // latest to know
     private void onInteract(PlayerInteractMachineEvent event) {
         if (event.getMachine() instanceof Interactive) {

@@ -34,7 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Objects;
 import java.util.UUID;
 
-public class TestPlugin extends JavaPlugin {
+public final class TestPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         Log.info(LogCategory.INIT, "Loading TestModule...");

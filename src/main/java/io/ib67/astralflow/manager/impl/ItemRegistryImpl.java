@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class ItemRegistryImpl implements ItemRegistry {
+public final class ItemRegistryImpl implements ItemRegistry {
     @Getter
     private final IOreDict oreDict;
     private final Map<ItemKey, ItemPrototypeFactory> itemMap = new HashMap<>();

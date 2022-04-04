@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class WeakHashSet<E> implements Set<E> {
+public final class WeakHashSet<E> implements Set<E> {
     private static final Object EMPTY_OBJ = new Object();
     private final Map<E, Object> map;
 

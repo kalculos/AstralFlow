@@ -27,7 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class EntityListener implements Listener {
+public final class EntityListener implements Listener {
     private final AstralFlowAPI flow;
 
     public EntityListener(AstralFlowAPI flow) {

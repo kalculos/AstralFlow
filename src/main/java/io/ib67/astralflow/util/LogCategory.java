@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.util;
 
-public class LogCategory {
+public final class LogCategory {
     public static final String INIT = "Init";
     public static final String TERMINATION = "Termination";
     public static final String DEBUG = "Debug";

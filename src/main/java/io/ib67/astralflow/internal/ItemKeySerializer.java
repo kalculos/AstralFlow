@@ -27,7 +27,7 @@ import io.ib67.astralflow.item.ItemKey;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-public class ItemKeySerializer implements JsonSerializer<ItemKey>, JsonDeserializer<ItemKey> {
+public final class ItemKeySerializer implements JsonSerializer<ItemKey>, JsonDeserializer<ItemKey> {
     @Override
     public ItemKey deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         if (json.isJsonPrimitive()) {

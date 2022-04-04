@@ -45,7 +45,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ChunkBasedMachineStorageTest {
+public final class ChunkBasedMachineStorageTest {
     private ChunkBasedMachineStorage storage;
 
     @BeforeAll

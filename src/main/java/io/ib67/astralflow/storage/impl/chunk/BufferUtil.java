@@ -27,7 +27,7 @@ import org.bukkit.Location;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class BufferUtil {
+public final class BufferUtil {
     public static void writeLocation(Location loc, ByteBuf buf) {
         // [name len] [name] [x(1 byte)] [y(1b)] [z(1b)]
         var worldName = loc.getWorld().getName();

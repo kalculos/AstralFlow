@@ -31,7 +31,7 @@ import java.util.function.Predicate;
  * Also see {@link io.ib67.astralflow.scheduler.TickReceipt#requires(Predicate)}
  */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class PeriodicTicks<T> implements Predicate<T> {
+public final class PeriodicTicks<T> implements Predicate<T> {
     private final int target;
     private int ticks;
 

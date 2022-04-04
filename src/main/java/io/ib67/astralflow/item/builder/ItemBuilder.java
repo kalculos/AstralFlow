@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ItemBuilder<C extends ItemCategory<T>, T> {
+public final class ItemBuilder<C extends ItemCategory<T>, T> {
     private final ItemCategory<T> category;
     private Texture texture;
     private String oreDictId;
@@ -105,7 +105,7 @@ public class ItemBuilder<C extends ItemCategory<T>, T> {
         }
     }
 
-    public class WrappedBuilder {
+    public final class WrappedBuilder {
         private final ItemBuilder<C, T> builder;
 
         private WrappedBuilder(ItemBuilder<C, T> builder) {

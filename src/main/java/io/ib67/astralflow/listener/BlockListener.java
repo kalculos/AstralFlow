@@ -46,7 +46,7 @@ import java.util.Collection;
 import java.util.Comparator;
 
 @RequiredArgsConstructor
-public class BlockListener implements Listener {
+public final class BlockListener implements Listener {
     private final AstralFlowAPI flow;
 
     @EventHandler

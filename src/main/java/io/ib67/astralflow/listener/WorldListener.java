@@ -29,7 +29,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 
-public class WorldListener implements Listener {
+public final class WorldListener implements Listener {
     @EventHandler
     private void onWorldSave(WorldSaveEvent event) {
         // save data.

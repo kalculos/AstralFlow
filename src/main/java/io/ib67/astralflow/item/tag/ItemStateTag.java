@@ -35,7 +35,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class ItemStateTag implements PersistentDataType<byte[], ItemState> {
+public final class ItemStateTag implements PersistentDataType<byte[], ItemState> {
     private final ItemStorageType defaultStorageType;
     private final IFactoryManager factoryManager;
     private final Map<ItemStorageType, ItemSerializer> serializers = new EnumMap<>(ItemStorageType.class);

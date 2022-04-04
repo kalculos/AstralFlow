@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 @Builder
 @Getter
-public class MachineBlockBreakEvent extends MachineEvent implements Cancellable {
+public final class MachineBlockBreakEvent extends MachineEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final Block block;
     private final IMachine machine;

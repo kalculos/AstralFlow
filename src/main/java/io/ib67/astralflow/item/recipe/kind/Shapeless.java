@@ -44,7 +44,7 @@ import java.util.function.Supplier;
 
 @ApiStatus.AvailableSince("0.1.0")
 @Getter
-public class Shapeless implements AstralRecipe {
+public final class Shapeless implements AstralRecipe {
     private final IngredientChoice[] choices;
     private final NamespacedKey key;
     private Supplier<ItemStack> resultSupplier;

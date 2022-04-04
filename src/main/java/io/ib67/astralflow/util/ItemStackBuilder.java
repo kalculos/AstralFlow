@@ -29,7 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemStackBuilder {
+public final class ItemStackBuilder {
     private Material material = Material.AIR;
     private List<String> lore = new ArrayList<>();
     private int customModelId;

@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 @RequiredArgsConstructor
-public class RecipeListener implements Listener {
+public final class RecipeListener implements Listener {
     private final IRecipeRegistry recipeRegistry;
 
     private final Map<Player, AstralRecipe> recipeSessions = new WeakHashMap<>();

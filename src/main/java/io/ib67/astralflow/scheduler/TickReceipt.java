@@ -39,7 +39,7 @@ import java.util.function.Supplier;
  * @param <T> Tick Target
  */
 @ApiStatus.AvailableSince("0.1.0")
-public class TickReceipt<T extends Tickable<T>> {
+public final class TickReceipt<T extends Tickable<T>> {
     private final List<AwaitingTickable<T>> syncs = new ArrayList<>(); //todo Flattening
     private final List<AwaitingTickable<T>> always = new ArrayList<>();
     private Predicate<T> requirement;

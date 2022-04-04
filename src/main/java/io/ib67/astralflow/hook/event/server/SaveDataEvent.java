@@ -27,6 +27,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class SaveDataEvent extends HookEvent {
+public final class SaveDataEvent extends HookEvent {
     private final boolean isShuttingDown;
 }

@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class InMemoryChunkFactory {
+public final class InMemoryChunkFactory {
     private final IFactoryManager factory;
     private final IMachineManager defaultMachineManager;
     private final MachineStorageType storageType;

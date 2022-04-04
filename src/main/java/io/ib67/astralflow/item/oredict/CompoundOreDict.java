@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @RequiredArgsConstructor
-public class CompoundOreDict implements IOreDict {
+public final class CompoundOreDict implements IOreDict {
     private final List<IOreDict> oreDicts;
 
     @Override
