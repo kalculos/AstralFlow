@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A minimal unit to build a wireless network. WirelessPeer is location related.
  * And a common usage is to negotiate and exchange Flows between machines.
+ * <p>
+ * *note* If you're providing a location then you make sure that your location's world isn't change, or you may need to unregister-register again to update the location.
  *
  * @param <T> transferring data
  */

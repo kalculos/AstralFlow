@@ -3,10 +3,10 @@ package io.ib67.astralflow.wireless.registry;
 import io.ib67.astralflow.wireless.IWirelessPeer;
 import org.bukkit.Location;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Providing an interface for peers to seek other peers.
@@ -39,18 +39,17 @@ public interface IWirelessRegistry extends IWirelessDiscoverFactory {
      * @param <T>      The type of the peer.
      * @return The nearby peers.
      */
-    <T> Collection<? extends IWirelessPeer<T>> findPeers(Location location, Predicate<? extends Class<T>> typePredictor);
+    <T> Collection<? extends IWirelessPeer<T>> findPeers(Location location, double range, @Nullable Class<T> type);
 
     /**
      * Find nearby peers with their type in async threads, this may help for large-area discovery.
+     * This should be called on the main thread.
      *
      * @param location
-     * @param typePredictor
-     * @param consumer
      * @param <T>
      * @return
      */
-    <T> IWirelessRegistry findPeersAsync(Location location, Predicate<? extends Class<T>> typePredictor, Consumer<? extends IWirelessPeer<T>> consumer, Runnable whenDone);
+    <T> CompletableFuture<? extends Collection<? extends IWirelessPeer<T>>> findPeersAsync(Location location, double range);
 
     /**
      * Find nearby peers without checking their type.
@@ -59,7 +58,7 @@ public interface IWirelessRegistry extends IWirelessDiscoverFactory {
      * @param <T>      The type of the peer.
      * @return The nearby peers.
      */
-    default <T> Collection<? extends IWirelessPeer<T>> findPeers(Location location) {
-        return findPeers(location, t -> true);
+    default <T> Collection<? extends IWirelessPeer<T>> findPeers(Location location, double range) {
+        return findPeers(location, range, null);
     }
 }
