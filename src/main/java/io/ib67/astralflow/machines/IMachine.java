@@ -31,11 +31,19 @@ import java.util.UUID;
 public interface IMachine extends Tickable<IMachine>, LifeCycle {
     boolean canTick();
 
-    UUID getId();
+    MachineProperty getProperty();
 
-    Location getLocation();
+    default UUID getId() {
+        return getProperty().getUuid();
+    }
 
-    IState getState();
+    default Location getLocation() {
+        return getProperty().getLocation();
+    }
+
+    default IState getState() {
+        return getProperty().getState();
+    }
 
     default void update() {
         this.update(this);

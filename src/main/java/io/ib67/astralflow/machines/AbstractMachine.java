@@ -22,59 +22,31 @@
 package io.ib67.astralflow.machines;
 
 import io.ib67.astralflow.AstralFlow;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static io.ib67.astralflow.machines.IState.EMPTY_STATE;
-
 public abstract class AbstractMachine implements IMachine {
-    private final UUID id;
-
-    // this reference keeps same with the machineStorage one.
-    private Location location;
-    @Setter(AccessLevel.PROTECTED)
     @Getter
-    private IState state = EMPTY_STATE;
+    private final MachineProperty property;
 
-    /**
-     * DO NOT COPY LOCATION
-     *
-     * @param id
-     * @param location
-     */
-    protected AbstractMachine(UUID id, Location location) {
-        this.id = id;
-        this.location = location;
+    protected AbstractMachine(MachineProperty property) {
+        this.property = property;
     }
 
     @Override
     public boolean canTick() {
-        return location.isWorldLoaded() && Objects.requireNonNull(location.getWorld()).isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4);
+        return true;
     }
 
     protected void setLocation(Location location) {
-        var prevLoc = this.location.clone();
-        this.location = location;
+        var prevLoc = getLocation().clone();
+        property.setLocation(location);
         AstralFlow.getInstance().getMachineManager().updateMachineLocation(prevLoc, this); // todo: decouple this
-    }
-
-    @Override
-    public UUID getId() {
-        return id;
-    }
-
-    @Override
-    public Location getLocation() {
-        return location;
     }
 
     public static class SimpleMachineState<V> implements IState {
