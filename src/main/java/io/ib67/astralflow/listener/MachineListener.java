@@ -40,7 +40,7 @@ public final class MachineListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    private void onBreak_blockItem(MachineBlockBreakEvent event) {
+    private void onBreak(MachineBlockBreakEvent event) {
         var hookEvt = new MachineBreakEvent(event.getMachine(), event.getPlayer(), event.getBlock());
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.MACHINE_BREAK, hookEvt));
     }
