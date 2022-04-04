@@ -4,6 +4,7 @@ import io.ib67.astralflow.manager.IMachineManager;
 import lombok.Builder;
 import org.bukkit.Location;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public record MachineProperty(
@@ -14,6 +15,8 @@ public record MachineProperty(
 ) {
     @Builder
     public MachineProperty {
-        
+        Objects.requireNonNull(location, "location");
+        Objects.requireNonNull(manager, "manager");
+        Objects.requireNonNull(uuid, "uuid");
     }
 }
