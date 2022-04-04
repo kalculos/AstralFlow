@@ -44,11 +44,6 @@ public abstract class AbstractMachine implements IMachine {
         this(MachineProperty.builder().uuid(uuid).location(location).manager(AstralFlow.getInstance().getMachineManager()).build());
     }
 
-    @Override
-    public boolean canTick() {
-        return true;
-    }
-
     protected void setLocation(Location location) {
         var prevLoc = getLocation().clone();
         property.setLocation(location);
