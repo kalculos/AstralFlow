@@ -21,7 +21,7 @@ public record DummyItem(
     /**
      * Utility method to create a dummy item fastly.
      */
-    public static ItemKey createDummyItem(ItemKey key, ItemStack item) {
+    public static ItemKey registerItem(ItemKey key, ItemStack item) {
         ItemBuilder.of(DummyCategory.INSTANCE)
                 .prototype(new DummyItem(key, item))
                 .register();
