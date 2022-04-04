@@ -78,7 +78,9 @@ public final class TickManager implements ITickManager {
 
     @Override
     public <T extends Tickable<T>> TickReceipt<T> registerTickable(Tickable<T> tickable) {
-        return scheduler.add(tickable);
+        var tickReceipt = scheduler.add(tickable);
+        tickable.setup(tickReceipt);
+        return tickReceipt;
     }
 
     /**
@@ -87,6 +89,7 @@ public final class TickManager implements ITickManager {
      *
      * @param tickReceipt
      */
+    @Deprecated
     public void addReceipt(TickReceipt<?> tickReceipt) {
         receipts.add(new WeakReference<>(tickReceipt));
     }
