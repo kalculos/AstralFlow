@@ -22,7 +22,7 @@
 package io.ib67.astralflow.scheduler;
 
 import io.ib67.astralflow.Tickable;
-import io.ib67.astralflow.manager.impl.TickManager;
+import io.ib67.astralflow.manager.impl.SimpleTickManager;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -120,7 +120,7 @@ public class TickReceipt<T extends Tickable<T>> {
 
     /**
      * 设置回执的名字
-     * Also see {@link TickManager#getReceipt(String)}
+     * Also see {@link SimpleTickManager#getReceipt(String)}
      *
      * @param name receipt name
      * @return 自身
@@ -140,7 +140,7 @@ public class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 是否已经被抛弃，通常不应该继续保留被抛弃的回执的引用，其次你将无法通过 {@link TickManager#receiptStream()} 等方式获取到他
+     * 是否已经被抛弃，通常不应该继续保留被抛弃的回执的引用，其次你将无法通过 {@link SimpleTickManager#receiptStream()} 等方式获取到他
      *
      * @return
      */

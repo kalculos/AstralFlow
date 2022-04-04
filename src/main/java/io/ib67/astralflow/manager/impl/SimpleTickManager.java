@@ -48,7 +48,7 @@ import java.util.stream.Stream;
  * 每一个 Tick Manager 均会运行一个新的 Scheduler，请避免创建 Tick Manager。
  */
 @ApiStatus.AvailableSince("0.1.0")
-public final class TickManager implements ITickManager {
+public final class SimpleTickManager implements ITickManager {
     private final SchedulerAdapter adapter;
     private final ReferenceQueue<TickReceipt<?>> refTrashQueue = new ReferenceQueue<>();
     private final List<WeakReference<TickReceipt<?>>> receipts = new ArrayList<>();
@@ -59,7 +59,7 @@ public final class TickManager implements ITickManager {
     @Getter
     private final Scheduler scheduler;
 
-    public TickManager() {
+    public SimpleTickManager() {
         this.scheduler = new SyncScheduler();
         this.adapter = new SchedulerAdapter(scheduler);
         Bukkit.getScheduler().runTaskLater(AstralFlow.getInstance().asPlugin(), () -> {
