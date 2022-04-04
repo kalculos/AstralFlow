@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Builder
-public class PlayerInteractMachineEvent extends MachineEvent implements Cancellable {
+public final class PlayerInteractMachineEvent extends MachineEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final IMachine machine;
     private final Player player;

@@ -25,7 +25,7 @@ import io.ib67.util.Functional;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class AstralConstants {
+public final class AstralConstants {
     public static final boolean MOCKING = Functional.from(() -> {
         try {
             Class.forName("org.junit.jupiter.api.Test");

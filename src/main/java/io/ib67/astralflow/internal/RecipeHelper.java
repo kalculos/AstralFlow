@@ -34,7 +34,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @ApiStatus.Internal
-public class RecipeHelper {
+public final class RecipeHelper {
     public static String[] populateEmptyRows(@NotNull String... matrix) {
         if (matrix.length > 3) {
             throw new ArrayIndexOutOfBoundsException("Shaped recipes can only have 3 rows.");

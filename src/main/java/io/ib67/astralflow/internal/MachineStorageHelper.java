@@ -32,7 +32,7 @@ import io.ib67.util.Util;
 
 import java.nio.charset.StandardCharsets;
 
-public class MachineStorageHelper implements MachineSerializer {
+public final class MachineStorageHelper implements MachineSerializer {
     private final Gson MACHINE_SERIALIZER;
 
     public MachineStorageHelper(IFactoryManager factories, IMachineManager manager) {

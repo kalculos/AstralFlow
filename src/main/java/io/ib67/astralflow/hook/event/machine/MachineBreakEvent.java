@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.Nullable;
 
-public class MachineBreakEvent extends MachineEvent implements Cancellable {
+public final class MachineBreakEvent extends MachineEvent implements Cancellable {
     @Nullable
     @Getter
     private final Player player;

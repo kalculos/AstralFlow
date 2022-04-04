@@ -32,7 +32,7 @@ import io.ib67.util.Util;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class JsonItemSerializer implements ItemSerializer {
+public final class JsonItemSerializer implements ItemSerializer {
     private final Gson serializer;
 
     public JsonItemSerializer(IFactoryManager factoryManager) {

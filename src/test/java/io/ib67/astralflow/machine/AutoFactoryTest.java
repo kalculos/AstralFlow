@@ -36,7 +36,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.util.UUID;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class AutoFactoryTest {
+public final class AutoFactoryTest {
     @BeforeAll
     public void setup() {
         TestUtil.init();

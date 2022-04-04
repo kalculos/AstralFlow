@@ -36,7 +36,7 @@ import java.util.Objects;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class AstralFlowConfiguration {
+public final class AstralFlowConfiguration {
     public static final int CONFIG_CURRENT_VERSION = 1;
 
     private final int version = CONFIG_CURRENT_VERSION;
@@ -67,13 +67,13 @@ public class AstralFlowConfiguration {
     }
 
     @Getter
-    public static class Optimization {
+    public static final class Optimization {
         @SerializedName("initial-machine-capacity")
         private final int initialMachineCapacity = 32;
     }
 
     @Getter
-    public static class RecipeSetting {
+    public static final class RecipeSetting {
         @SerializedName("inject-vanilla-crafting")
         private final boolean injectVanillaCraftingTable = true;
         @SerializedName("override-vanilla-recipe")

@@ -37,7 +37,7 @@ import java.util.UUID;
 
 @ApiStatus.Internal
 @RequiredArgsConstructor
-public class JsonMachineSerializer implements JsonSerializer<IMachine>, JsonDeserializer<IMachine> {
+public final class JsonMachineSerializer implements JsonSerializer<IMachine>, JsonDeserializer<IMachine> {
     private static final String KEY_TYPE = "type";
     private static final String KEY_STATE = "state";
     private static final String KEY_LOCATION = "loc";

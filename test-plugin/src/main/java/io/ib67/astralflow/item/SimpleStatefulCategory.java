@@ -27,7 +27,7 @@ import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.util.ItemStacks;
 import org.bukkit.Material;
 
-public class SimpleStatefulCategory implements ItemCategory<ItemKey> {
+public final class SimpleStatefulCategory implements ItemCategory<ItemKey> {
     @Override
     public ItemPrototypeFactory getFactory(ItemKey item) {
         return ItemPrototype

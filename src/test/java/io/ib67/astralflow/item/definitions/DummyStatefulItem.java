@@ -29,7 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DummyStatefulItem implements ItemPrototypeFactory {
+public final class DummyStatefulItem implements ItemPrototypeFactory {
     private final ItemStack item = new ItemStack(Material.EMERALD);
 
     @Override

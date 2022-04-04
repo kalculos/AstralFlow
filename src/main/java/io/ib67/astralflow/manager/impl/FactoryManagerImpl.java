@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class FactoryManagerImpl implements IFactoryManager {
+public final class FactoryManagerImpl implements IFactoryManager {
     private final Map<Class<? extends IMachine>, IMachineFactory<?>> machineFactories = new HashMap<>();
 
     @SuppressWarnings("unchecked")

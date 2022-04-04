@@ -23,7 +23,7 @@ package io.ib67.astralflow.item.internal;
 
 import io.ib67.astralflow.item.ItemState;
 
-public class NullItemState extends ItemState {
+public final class NullItemState extends ItemState {
     public static final NullItemState NULL_ITEM_STATE = new NullItemState();
 
     private NullItemState() {

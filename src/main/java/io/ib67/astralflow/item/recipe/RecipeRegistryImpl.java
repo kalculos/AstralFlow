@@ -26,7 +26,7 @@ import org.bukkit.NamespacedKey;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RecipeRegistryImpl implements IRecipeRegistry {
+public final class RecipeRegistryImpl implements IRecipeRegistry {
     private final Map<NamespacedKey, AstralRecipe> recipesMap = new WeakHashMap<>();
 
     private final Map<RecipeType, List<AstralRecipe>> recipes = new EnumMap<>(RecipeType.class);

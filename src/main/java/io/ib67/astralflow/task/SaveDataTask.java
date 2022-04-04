@@ -26,7 +26,7 @@ import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class SaveDataTask extends BukkitRunnable {
+public final class SaveDataTask extends BukkitRunnable {
     @Override
     public void run() {
         AstralFlow.getInstance().callHooks(HookType.SAVE_DATA, new SaveDataEvent(false));

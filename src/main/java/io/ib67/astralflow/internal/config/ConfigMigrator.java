@@ -26,7 +26,7 @@ import io.ib67.astralflow.config.AstralFlowConfiguration;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ConfigMigrator {
+public final class ConfigMigrator {
     private final JsonObject targetedConfig;
 
     public AstralFlowConfiguration migrate(AstralFlowConfiguration currentConfig) {

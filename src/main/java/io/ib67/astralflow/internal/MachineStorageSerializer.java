@@ -34,7 +34,7 @@ import java.nio.file.Path;
 
 // todo more storage support
 @RequiredArgsConstructor
-public class MachineStorageSerializer implements JsonDeserializer<IMachineStorage>, JsonSerializer<IMachineStorage> {
+public final class MachineStorageSerializer implements JsonDeserializer<IMachineStorage>, JsonSerializer<IMachineStorage> {
     private final Path storage;
     private final IFactoryManager factory;
 

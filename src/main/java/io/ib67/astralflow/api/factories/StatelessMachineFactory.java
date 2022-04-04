@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-public class StatelessMachineFactory<T extends IMachine> implements IMachineFactory<T> {
+public final class StatelessMachineFactory<T extends IMachine> implements IMachineFactory<T> {
     private final Function<MachineProperty, T> factory;
 
     @Override

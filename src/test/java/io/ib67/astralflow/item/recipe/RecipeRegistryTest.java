@@ -36,7 +36,7 @@ import static io.ib67.astralflow.test.TestUtil.init;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class RecipeRegistryTest {
+public final class RecipeRegistryTest {
     private static final NamespacedKey KEY_SHAPED = new NamespacedKey("astralflow", "shaped");
     private static final NamespacedKey KEY_SHAPELESS = new NamespacedKey("astralflow", "shapeless");
 

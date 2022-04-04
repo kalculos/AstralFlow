@@ -25,7 +25,7 @@ import io.ib67.astralflow.Tickable;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class AwaitingTickable<T extends Tickable<T>> {
+public final class AwaitingTickable<T extends Tickable<T>> {
     public Tickable<T> tickable;
     public TickReceipt<T> receipt;
 

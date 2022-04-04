@@ -35,7 +35,7 @@ import io.ib67.astralflow.util.ItemStacks;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
-public class TestModule extends AstralExtension {
+public final class TestModule extends AstralExtension {
     private final NamespacedKey jebWoolKey = new NamespacedKey("tester", "jeb_wool");
 
     public TestModule() {

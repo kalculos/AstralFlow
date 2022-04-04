@@ -27,7 +27,7 @@ import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
 @AutoFactory
-public class JebWool extends AbstractMachine implements Pushable {
+public final class JebWool extends AbstractMachine implements Pushable {
     private static final Material[] WOOLS = new Material[]{
             Material.BLUE_WOOL,
             Material.GREEN_WOOL,

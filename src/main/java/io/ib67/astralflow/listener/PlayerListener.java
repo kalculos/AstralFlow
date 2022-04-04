@@ -30,7 +30,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class PlayerListener implements Listener {
+public final class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) // for server security.
     public void onPlayerLogin(AsyncPlayerPreLoginEvent event) {
         if (!AstralFlow.isInitialized() && !AstralFlow.getInstance().getSettings().isAllowPlayerJoinBeforeInit()) {

@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Data
-public class MachineItemState extends ItemState {
+public final class MachineItemState extends ItemState {
     private IState data;
     private String machineType;
 

@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("unused")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class RecipeHelperTest {
+public final class RecipeHelperTest {
 
     @BeforeAll
     public void setup() {

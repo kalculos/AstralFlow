@@ -25,7 +25,7 @@ import io.ib67.util.bukkit.Log;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class Warnings {
+public final class Warnings {
     public static void warnUnstableServerSoft() {
         Log.warn("Is this server just generated new maps before or you are running some \"Optimized\" Server Software (e.g Mirai, Pufferfish)? These are known to cause issues and we can't help a lot.");
     }

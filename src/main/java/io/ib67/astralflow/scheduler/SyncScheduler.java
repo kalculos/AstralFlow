@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SyncScheduler implements Scheduler {
+public final class SyncScheduler implements Scheduler {
     private final List<AwaitingTickable<?>> tickTargets = new ArrayList<>();
 
     @Override

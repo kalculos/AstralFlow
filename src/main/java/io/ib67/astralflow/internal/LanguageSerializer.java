@@ -35,7 +35,7 @@ import java.nio.file.Path;
 
 @RequiredArgsConstructor
 @ApiStatus.Internal
-public class LanguageSerializer implements JsonSerializer<Language>, JsonDeserializer<Language> {
+public final class LanguageSerializer implements JsonSerializer<Language>, JsonDeserializer<Language> {
     private final Path localeDir;
 
     @Override

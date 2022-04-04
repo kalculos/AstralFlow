@@ -37,7 +37,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 @ApiStatus.AvailableSince("0.1.0")
-public class Shaped implements AstralRecipe {
+public final class Shaped implements AstralRecipe {
     private final NamespacedKey key;
     private final IngredientChoice[] originMatrix; // todo: performance issues.
     private Supplier<ItemStack> factory;

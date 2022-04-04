@@ -31,7 +31,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 
-public class ItemListener implements Listener {
+public final class ItemListener implements Listener {
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event) {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_CONSUME, event));

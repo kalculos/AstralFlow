@@ -38,7 +38,7 @@ import static io.ib67.astralflow.test.TestUtil.init;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ItemBuilderTest {
+public final class ItemBuilderTest {
     @BeforeAll
     public void setup() {
         init();

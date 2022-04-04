@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class InternalItemState extends ItemState implements Cloneable {
+public final class InternalItemState extends ItemState implements Cloneable {
     private final ItemKey prototypeKey;
 
     @Override

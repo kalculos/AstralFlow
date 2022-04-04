@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class AstralItem {
+public final class AstralItem {
     private final ItemStack originalItemStack;
     private final ItemRegistry itemRegistry;
 

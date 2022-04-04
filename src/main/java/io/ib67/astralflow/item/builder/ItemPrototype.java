@@ -31,7 +31,7 @@ import org.bukkit.inventory.ItemStack;
 
 @Getter
 @Builder
-public class ItemPrototype implements ItemPrototypeFactory {
+public final class ItemPrototype implements ItemPrototypeFactory {
     private final ItemStack prototype;
     private final ItemState statePrototype;
     private final ItemKey id;

@@ -29,7 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DummyStatelessItem implements ItemPrototypeFactory {
+public final class DummyStatelessItem implements ItemPrototypeFactory {
     private final ItemStack item = new ItemStack(Material.DIAMOND_SWORD);
 
     @Override

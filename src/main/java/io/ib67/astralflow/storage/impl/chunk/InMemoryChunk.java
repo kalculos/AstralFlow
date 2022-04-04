@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
-public class InMemoryChunk {
+public final class InMemoryChunk {
     @Getter(AccessLevel.PACKAGE)
     private final ChunkMachineIndex index;
     @Getter(AccessLevel.PACKAGE)

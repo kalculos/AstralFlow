@@ -33,7 +33,7 @@ import org.junit.jupiter.api.TestInstance;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class OreDictTest {
+public final class OreDictTest {
     @BeforeAll
     public void setup() {
         TestUtil.init();
