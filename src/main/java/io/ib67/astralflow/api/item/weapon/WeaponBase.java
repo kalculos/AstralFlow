@@ -50,7 +50,7 @@ public abstract class WeaponBase extends ItemBase {
         this.damageTypes = types;
         this.entitySelector = entitySelector;
 
-        HookType.ENTITY_DAMAGE.register(this::onEntityDamage);
+        HookType.ENTITY_DAMAGE_BY_ENTITY.register(this::onEntityDamage);
     }
 
     private void onEntityDamage(EntityDamageByEntityEvent event) {

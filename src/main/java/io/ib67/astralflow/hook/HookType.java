@@ -28,6 +28,7 @@ import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
@@ -59,7 +60,8 @@ public final class HookType<T> {
     public static final HookType<MachineBreakEvent> MACHINE_BREAK = new HookType<>();
     public static final HookType<MachinePlaceEvent> MACHINE_PLACE = new HookType<>();
 
-    public static final HookType<EntityDamageByEntityEvent> ENTITY_DAMAGE = new HookType<>();
+    public static final HookType<EntityDamageByEntityEvent> ENTITY_DAMAGE_BY_ENTITY = new HookType<>();
+    public static final HookType<EntityDamageEvent> ENTITY_DAMAGE = new HookType<>();
     public static final HookType<AsyncPlayerChatEvent> PLAYER_CHAT = new HookType<>();
     public static final HookType<PlayerMoveEvent> PLAYER_MOVE = new HookType<>();
 
