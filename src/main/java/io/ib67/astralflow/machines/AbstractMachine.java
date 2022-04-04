@@ -49,6 +49,10 @@ public abstract class AbstractMachine implements IMachine {
         AstralFlow.getInstance().getMachineManager().updateMachineLocation(prevLoc, this); // todo: decouple this
     }
 
+    protected void setState(IState state) {
+        property.setState(state);
+    }
+
     public static class SimpleMachineState<V> implements IState {
         private final Map<String, V> values = new HashMap<>();
 
