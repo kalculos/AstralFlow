@@ -25,13 +25,14 @@ import io.ib67.astralflow.item.builder.ItemCategory;
 import io.ib67.astralflow.item.builder.ItemPrototype;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 
-public final class WeaponCategory implements ItemCategory<WeaponItem> {
+public final class WeaponCategory implements ItemCategory<WeaponBase> {
     public static final WeaponCategory INSTANCE = new WeaponCategory();
+
     private WeaponCategory() {
     }
 
     @Override
-    public ItemPrototypeFactory getFactory(WeaponItem item) {
+    public ItemPrototypeFactory getFactory(WeaponBase item) {
         return ItemPrototype.builder()
                 .holder(item)
                 .id(item.getId())

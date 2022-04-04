@@ -23,6 +23,7 @@ package io.ib67.astralflow.api.item;
 
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.LogicalHolder;
+import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -34,6 +35,7 @@ import static java.util.Objects.requireNonNull;
 @ApiStatus.AvailableSince("0.1.0")
 public abstract class ItemBase implements LogicalHolder {
     protected final ItemKey itemKey;
+    @Getter
     protected final ItemStack prototype;
 
     protected ItemBase(ItemKey itemKey, ItemStack prototype) {
