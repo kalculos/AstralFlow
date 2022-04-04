@@ -26,6 +26,7 @@ import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IFactoryManager;
+import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.storage.IMachineStorage;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.astralflow.util.LogCategory;
@@ -43,23 +44,22 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     private final MachineCache machineCache;
 
     private final Map<Chunk, InMemoryChunk> chunkMap = new WeakHashMap<>(256);
-    private final InMemoryChunkFactory chunkFactory;
+    private final IFactoryManager factoryManager;
+    private final MachineStorageType defaultSerializer;
+    private InMemoryChunkFactory chunkFactory;
 
     public ChunkBasedMachineStorage(MachineCache cache, IFactoryManager factoryManager, MachineStorageType defaultSerializer) {
         Objects.requireNonNull(factoryManager, "factoryManager cannot be null");
         Objects.requireNonNull(defaultSerializer, "defaultSerializer cannot be null");
         Objects.requireNonNull(cache, "machine cache cannot be null");
-        this.chunkFactory = new InMemoryChunkFactory(
-                factoryManager,
-                defaultSerializer,
-                MACHINE_INDEX_TAG,
-                MACHINE_DATA_TAG
-        );
         this.machineCache = cache;
+        this.factoryManager = factoryManager;
+        this.defaultSerializer = defaultSerializer;
     }
 
     public void finalizeChunk(Chunk unloadingChunk) {
         Objects.requireNonNull(unloadingChunk, "chunk cannot be null");
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         if (!chunkMap.containsKey(unloadingChunk)) {
             Log.warn("CBMS", "It seems that chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " is not registered in the chunk map. This may be a potential bug.");
             return;
@@ -80,31 +80,47 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     }
 
     private void flushChunkCache(Chunk chunk, InMemoryChunk memChunk) {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         var pdc = chunk.getPersistentDataContainer();
         pdc.set(MACHINE_INDEX_TAG, MachineIndexTag.INSTANCE, memChunk.getIndex());
         pdc.set(MACHINE_DATA_TAG, MachineDataTag.INSTANCE, memChunk.getMachineDatas());
     }
 
+    @Override
+    public void init(IMachineManager manager) {
+        this.chunkFactory = new InMemoryChunkFactory(
+                factoryManager,
+                manager,
+                defaultSerializer,
+                MACHINE_INDEX_TAG,
+                MACHINE_DATA_TAG
+        );
+    }
+
     /* DELEGATED */
     @Override
     public Location getLocationByUUID(UUID uuid) {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         return machineCache.getLocationByUUID(uuid);
     }
 
     @Override
     public UUID getUUIDByLocation(Location location) {
         Objects.requireNonNull(location, "location cannot be null");
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         return machineCache.getUUIDByLocation(AstralHelper.purifyLocation(location));
     }
 
     @Override
     public Collection<? extends IMachine> getMachinesByChunk(Chunk chunk) {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         initChunk(chunk);
         return chunkMap.get(chunk).getMachines();
     }
 
     @Override
     public boolean has(Location uuid) {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         Objects.requireNonNull(uuid, "location cannot be null");
         // check cache.
         return getUUIDByLocation(AstralHelper.purifyLocation(uuid)) == null;
@@ -112,6 +128,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
 
     @Override
     public void initChunk(Chunk chunk) {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         Objects.requireNonNull(chunk, "chunk cannot be null");
         chunkMap.computeIfAbsent(chunk, chunkFactory::loadChunk);
     }
@@ -119,6 +136,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
 
     @Override
     public IMachine get(Location aloc) {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         Objects.requireNonNull(aloc, "location cannot be null");
         var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.isChunkLoaded(loc)) {
@@ -134,6 +152,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
 
     @Override
     public void save(Location aloc, IMachine state) {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         Objects.requireNonNull(aloc, "loc cannot be null");
         Objects.requireNonNull(state, "state cannot be null");
 
@@ -150,6 +169,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
 
     @Override
     public void remove(Location aloc) {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         Objects.requireNonNull(aloc, "loc cannot be null");
         var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.isChunkLoaded(loc) || !chunkMap.containsKey(loc.getChunk())) {
@@ -161,6 +181,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
 
     @Override
     public void flush() {
+        Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         for (Chunk chunk : chunkMap.keySet()) {
             finalizeChunk(chunk);
         }

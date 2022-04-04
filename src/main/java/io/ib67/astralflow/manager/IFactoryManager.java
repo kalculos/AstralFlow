@@ -22,7 +22,6 @@
 package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -30,11 +29,11 @@ import java.util.Collection;
 
 @ApiStatus.AvailableSince("0.1.0")
 public interface IFactoryManager {
-    <T extends IMachine, S extends IState> IMachineFactory<T, S> getMachineFactory(Class<T> type);
+    <T extends IMachine> IMachineFactory<T> getMachineFactory(Class<T> type);
 
-    Collection<? extends IMachineFactory<?, ?>> getMachineFactories();
+    Collection<? extends IMachineFactory<?>> getMachineFactories();
 
-    <T extends IMachine, S extends IState> boolean register(Class<T> clazz, IMachineFactory<T, S> factory);
+    <T extends IMachine> boolean register(Class<T> clazz, IMachineFactory<T> factory);
 
-    <T extends IMachine, S extends IState> boolean unregister(Class<T> type);
+    <T extends IMachine> boolean unregister(Class<T> type);
 }

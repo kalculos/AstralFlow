@@ -27,6 +27,7 @@ import org.bukkit.Location;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -36,6 +37,11 @@ public abstract class AbstractMachine implements IMachine {
 
     protected AbstractMachine(MachineProperty property) {
         this.property = property;
+    }
+
+    @Deprecated // for binary compatible only
+    protected AbstractMachine(UUID uuid, Location location) {
+        this(MachineProperty.builder().uuid(uuid).location(location).manager(AstralFlow.getInstance().getMachineManager()).build());
     }
 
     @Override

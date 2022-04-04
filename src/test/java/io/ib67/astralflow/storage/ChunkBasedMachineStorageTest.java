@@ -23,6 +23,7 @@ package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.factories.StatelessMachineFactory;
+import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
 import io.ib67.astralflow.storage.impl.chunk.*;
 import io.ib67.astralflow.test.TestUtil;
@@ -86,13 +87,18 @@ public class ChunkBasedMachineStorageTest {
     @Test
     public void testChunkStorage() throws IOException {
         // register factory
-        AstralFlow.getInstance().getFactories().register(DummyStatefulMachine.class, new StatelessMachineFactory<>((l, u) -> new DummyStatefulMachine(u, l)));
+        AstralFlow.getInstance().getFactories().register(DummyStatefulMachine.class, new StatelessMachineFactory<>(DummyStatefulMachine::new));
         var file = AstralFlow.getInstance().asPlugin().getDataFolder().toPath().resolve("test.index");
         Files.createFile(file);
         var randomLoc = new Location(Bukkit.getWorld("world"), ThreadLocalRandom.current().nextInt(3000), 1, ThreadLocalRandom.current().nextInt(3000));
         var storage = new ChunkBasedMachineStorage(new MachineCache(file), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON);
         storage.initChunk(randomLoc.getChunk());
-        var machine = new DummyStatefulMachine(UUID.randomUUID(), randomLoc);
+        var machine = new DummyStatefulMachine(MachineProperty
+                .builder()
+                .uuid(UUID.randomUUID())
+                .location(randomLoc)
+                .build()
+        );
         storage.save(randomLoc, machine);
 
         // read

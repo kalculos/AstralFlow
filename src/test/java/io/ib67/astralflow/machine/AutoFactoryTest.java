@@ -22,10 +22,7 @@
 package io.ib67.astralflow.machine;
 
 import io.ib67.astralflow.AstralFlow;
-import io.ib67.astralflow.machines.AbstractMachine;
-import io.ib67.astralflow.machines.AutoFactory;
-import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IState;
+import io.ib67.astralflow.machines.*;
 import io.ib67.astralflow.test.TestUtil;
 import org.bukkit.Location;
 import org.junit.jupiter.api.Assertions;
@@ -51,8 +48,8 @@ public class AutoFactoryTest {
         @AutoFactory
         class MachineD extends AbstractMachine { // there is a hidden constructor argument caused by non-static
 
-            protected MachineD(UUID id, Location location) {
-                super(id, location);
+            protected MachineD(MachineProperty p) {
+                super(p);
             }
 
             @Override
