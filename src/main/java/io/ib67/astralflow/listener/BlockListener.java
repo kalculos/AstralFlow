@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.listener;
 
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
@@ -88,16 +89,19 @@ public final class BlockListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         var clickedBlock = event.getBlock();
         if (flow.getMachineManager().isMachine(clickedBlock)) {
+            var machine = flow.getMachineManager().getAndLoadMachine(clickedBlock.getLocation());
             var evt = MachineBlockBreakEvent.builder()
                     .cancelled(false)
                     .dropItem(false)
                     .block(clickedBlock)
                     .player(event.getPlayer())
-                    .machine(flow.getMachineManager().getAndLoadMachine(clickedBlock.getLocation()))
+                    .machine(machine)
                     .build();
             Bukkit.getPluginManager().callEvent(evt);
             if (evt.isCancelled()) {
                 event.setCancelled(true);
+            } else {
+                AstralFlow.getInstance().getMachineManager().terminateAndRemoveMachine(machine);
             }
             event.setDropItems(evt.isDropItem());
         }
