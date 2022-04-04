@@ -21,6 +21,10 @@ public class SimplePeer<T> implements IWirelessPeer<T> {
     private final Location location;
     private final Class<T> type;
 
+    public static <T> SimplePeerBuilder<T> createBuilder() {
+        return new SimplePeerBuilder<>();
+    }
+
     @Override
     public void negotiate(IWirelessPeer<T> peer) {
         negotiator.accept(peer);

@@ -65,7 +65,6 @@ public final class SimpleWirelessRegistry implements IWirelessRegistry {
     public <T> Collection<? extends IWirelessPeer<T>> findPeers(Location location, double range, Class<T> type) {
         AstralHelper.ensureMainThread("findPeers should be called in main thread.");
         requireNonNull(location, "location");
-        requireNonNull(type, "type");
         if (range <= 0) {
             throw new IllegalArgumentException("Range must be positive");
         }
