@@ -22,32 +22,13 @@
 package io.ib67.astralflow.machines.factories;
 
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IState;
-import org.bukkit.Location;
+import io.ib67.astralflow.machines.MachineProperty;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 @ApiStatus.AvailableSince("0.1.0")
 @FunctionalInterface
-public interface IMachineFactory<T extends IMachine, S extends IState> {
-    default T createMachine(Location location) {
-        return createMachine(location, null, null);
-    }
+public interface IMachineFactory<T extends IMachine> {
 
-    default T createMachine(Location location, @Nullable UUID uuid) {
-        return createMachine(location, uuid, null);
-    }
+    T createMachine(MachineProperty property);
 
-    T createMachine(Location location, @Nullable UUID uuid, @Nullable S initialState);
-
-    default T createMachine(Location location, S initialState) {
-        return createMachine(location, null, initialState);
-    }
-
-    @SuppressWarnings("unchecked")
-    default T createMachine(T anotherMachine) {
-        return createMachine(anotherMachine.getLocation(), null, (S) anotherMachine.getState());
-    }
 }

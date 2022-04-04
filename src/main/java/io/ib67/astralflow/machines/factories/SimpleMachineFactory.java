@@ -22,20 +22,14 @@
 package io.ib67.astralflow.machines.factories;
 
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.IState;
+import io.ib67.astralflow.machines.MachineProperty;
+import io.ib67.util.bukkit.Log;
 import lombok.SneakyThrows;
-import org.bukkit.Location;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
-import java.util.UUID;
 
-public class SimpleMachineFactory<M extends IMachine, S extends IState> implements IMachineFactory<M, S> {
+public class SimpleMachineFactory<M extends IMachine> implements IMachineFactory<M> {
     private final Class<M> machineClass;
-    private int argLen = -1;
-    private int locationSlot = -1;
-    private int uuidSlot = -1;
-    private int stateSlot = -1;
 
     private Constructor<M> constructor;
 
@@ -43,77 +37,18 @@ public class SimpleMachineFactory<M extends IMachine, S extends IState> implemen
     public SimpleMachineFactory(Class<M> machineClass) {
         this.machineClass = machineClass;
         // initialization.
-        for (Constructor<?> declaredConstructor : machineClass.getDeclaredConstructors()) {
-            if (argLen >= 0) {
-                constructor.setAccessible(true);
-                break;
-            }
-
-            var types = declaredConstructor.getParameterTypes();
-            argLen = types.length;
-            constructor = (Constructor<M>) declaredConstructor;
-            if (argLen > 3) {
-                resetStates();
-                continue;
-            }
-            for (int i = 0; i < types.length; i++) {
-                if (types[i] != Location.class && types[i] != UUID.class && !IState.class.isAssignableFrom(types[i])) {
-                    resetStates();
-                    break;
-                }
-                if (types[i] == Location.class) {
-                    if (locationSlot == -1) {
-                        locationSlot = i;
-                    } else {
-                        resetStates();
-                        break;
-                    }
-                } else if (types[i] == UUID.class) {
-                    if (uuidSlot == -1) {
-                        uuidSlot = i;
-                    } else {
-                        resetStates();
-                        break;
-                    }
-                } else if (IState.class.isAssignableFrom(types[i])) {
-                    if (stateSlot == -1) {
-                        stateSlot = i;
-                    } else {
-                        resetStates();
-                        break;
-                    }
-                }
-            }
+        try {
+            constructor = machineClass.getDeclaredConstructor(MachineProperty.class);
+            constructor.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            Log.warn("AutoFactory", "Failed to find constructor for " + machineClass.getName());
         }
-        if (argLen <= 0) {
-            throw new IllegalArgumentException("Cannot find any available constructor containing Location, UUID and IState, len <= 3 without repeating.");
-        }
-    }
-
-    private Object[] composeArguments(Location loc, UUID uuid, S state) {
-        var arg = new Object[argLen];
-        if (locationSlot != -1) {
-            arg[locationSlot] = loc;
-        }
-        if (uuidSlot != -1) {
-            arg[uuidSlot] = uuid;
-        }
-        if (stateSlot != -1) {
-            arg[stateSlot] = state;
-        }
-        return arg;
-    }
-
-    private void resetStates() {
-        argLen = -1;
-        locationSlot = -1;
-        uuidSlot = -1;
-        stateSlot = -1;
     }
 
     @Override
     @SneakyThrows
-    public M createMachine(Location location, @Nullable UUID uuid, @Nullable S initialState) {
-        return constructor.newInstance(composeArguments(location, uuid, initialState));
+    public M createMachine(MachineProperty property) {
+        return constructor.newInstance(property);
     }
 }
