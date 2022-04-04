@@ -3,9 +3,7 @@ package io.ib67.astralflow.wireless.impl;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.util.WeakHashSet;
-import io.ib67.astralflow.wireless.IWirelessDiscover;
 import io.ib67.astralflow.wireless.IWirelessPeer;
-import io.ib67.astralflow.wireless.registry.IWirelessDiscoverFactory;
 import io.ib67.astralflow.wireless.registry.IWirelessRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,17 +11,14 @@ import org.bukkit.World;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Objects.requireNonNull;
 
 public final class SimpleWirelessRegistry implements IWirelessRegistry {
-    private final IWirelessDiscoverFactory peerFactory;
 
-    private final Map<World, Set<? extends IWirelessPeer<?>>> peersMap = new ConcurrentHashMap<>(8); // 8 worlds is fully enough for most servers.
+    private final Map<World, Set<? extends IWirelessPeer<?>>> peersMap = new WeakHashMap<>(8); // 8 worlds is fully enough for most servers.
 
     public SimpleWirelessRegistry() {
-        this.peerFactory = new WirelessDiscoverFactoryImpl(this);
 
     }
 
@@ -39,11 +34,6 @@ public final class SimpleWirelessRegistry implements IWirelessRegistry {
                 .filter(e -> e.getLocation().distanceSquared(loc) <= dst)
                 .map(e -> (IWirelessPeer<T>) e)
                 .toList();
-    }
-
-    @Override
-    public <T extends IWirelessPeer<?>> IWirelessDiscover<T> create(Location location) {
-        return peerFactory.create(location);
     }
 
     @Override
