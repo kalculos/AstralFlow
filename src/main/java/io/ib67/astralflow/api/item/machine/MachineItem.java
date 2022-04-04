@@ -27,6 +27,7 @@ import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.LogicalHolder;
+import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.machines.Tickless;
@@ -55,6 +56,21 @@ public class MachineItem implements LogicalHolder {
         }
         HookType.BLOCK_PLACE.register(this::onPlace);
         HookType.MACHINE_BREAK.register(this::onBreak);
+    }
+
+    /**
+     * Utility method to register machine items
+     *
+     * @param id
+     * @param prototype
+     * @param typeOfMachine
+     * @return
+     */
+    public static ItemKey registerItem(ItemKey id, ItemStack prototype, Class<? extends IMachine> typeOfMachine) {
+        ItemBuilder.of(MachineCategory.INSTANCE)
+                .prototype(new MachineItem(id, prototype, typeOfMachine))
+                .register();
+        return id;
     }
 
     private void onPlace(BlockPlaceEvent event) {
