@@ -22,6 +22,7 @@
 package io.ib67.astralflow.api;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.util.bukkit.Log;
 import org.bukkit.Bukkit;
@@ -49,6 +50,10 @@ public enum AstralHelper {
 
     public static boolean hasMachine(Block block) {
         return AstralFlow.getInstance().getMachineManager().isMachine(block);
+    }
+
+    public static boolean isHolder(ItemStack stack, LogicalHolder holder) {
+        return AstralFlow.getInstance().getItemRegistry().getRegistry(stack).filter(e -> e.getHolder() == holder).isPresent();
     }
 
     @Nullable
