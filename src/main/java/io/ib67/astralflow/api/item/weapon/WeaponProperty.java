@@ -21,21 +21,14 @@
 
 package io.ib67.astralflow.api.item.weapon;
 
-import io.ib67.astralflow.item.builder.ItemCategory;
-import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import lombok.Builder;
+import lombok.Getter;
 
-public final class WeaponCategory implements ItemCategory<WeaponItem> {
-    public static final WeaponCategory INSTANCE = new WeaponCategory();
-    private WeaponCategory() {
-    }
-
-    @Override
-    public ItemPrototypeFactory getFactory(WeaponItem item) {
-        return ItemPrototype.builder()
-                .holder(item)
-                .id(item.getId())
-                .prototype(item.getPrototype())
-                .build();
-    }
+@Builder
+@Getter
+public final class WeaponProperty {
+    private final double damage;
+    private final double criticalChance;
+    private final double criticalMultiplexer;
+    private final boolean clearOriginalDamage;
 }

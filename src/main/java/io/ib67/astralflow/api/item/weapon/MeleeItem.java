@@ -21,21 +21,20 @@
 
 package io.ib67.astralflow.api.item.weapon;
 
-import io.ib67.astralflow.item.builder.ItemCategory;
-import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.ItemKey;
+import lombok.Builder;
+import lombok.Getter;
+import org.bukkit.entity.Entity;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
-public final class WeaponCategory implements ItemCategory<WeaponItem> {
-    public static final WeaponCategory INSTANCE = new WeaponCategory();
-    private WeaponCategory() {
-    }
+import java.util.Set;
+import java.util.function.Predicate;
 
-    @Override
-    public ItemPrototypeFactory getFactory(WeaponItem item) {
-        return ItemPrototype.builder()
-                .holder(item)
-                .id(item.getId())
-                .prototype(item.getPrototype())
-                .build();
+@Getter
+public class MeleeItem extends WeaponBase {
+    @Builder
+    protected MeleeItem(ItemKey id, ItemStack prototype, WeaponProperty property, Predicate<Entity> entitySelector, Set<EntityDamageEvent.DamageCause> types) {
+        super(id, prototype, property, entitySelector, types);
     }
 }
