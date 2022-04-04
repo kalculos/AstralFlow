@@ -26,6 +26,7 @@ import io.ib67.astralflow.hook.HookType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 
 public final class EntityListener implements Listener {
     private final AstralFlowAPI flow;
@@ -37,5 +38,10 @@ public final class EntityListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         flow.callHooks(HookType.ENTITY_DAMAGE, event);
+    }
+
+    @EventHandler
+    public void onProjHit(ProjectileHitEvent event) {
+        flow.callHooks(HookType.PROJECTILE_HIT, event);
     }
 }

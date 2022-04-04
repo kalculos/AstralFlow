@@ -28,6 +28,7 @@ import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -64,6 +65,7 @@ public final class HookType<T> {
     // For blocks
     public static final HookType<BlockBreakEvent> BLOCK_BREAK = new HookType<>();
     public static final HookType<BlockPlaceEvent> BLOCK_PLACE = new HookType<>();
+    public static final HookType<ProjectileHitEvent> PROJECTILE_HIT = new HookType<>();
 
     public void register(Consumer<T> acceptor) {
         AstralFlow.getInstance().addHook(this, acceptor);
