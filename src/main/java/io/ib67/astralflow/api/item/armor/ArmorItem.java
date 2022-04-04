@@ -28,12 +28,20 @@ import io.ib67.astralflow.item.ItemKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
+import java.util.Objects;
+
+/**
+ * Create simple armors.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class ArmorItem extends ItemBase {
     private final ArmorProperty property;
 
     protected ArmorItem(ItemKey itemKey, ItemStack prototype, ArmorProperty property) {
         super(itemKey, prototype);
+        Objects.requireNonNull(property);
         this.property = property;
         HookType.ENTITY_DAMAGE.register(this::onEntityDamage);
     }

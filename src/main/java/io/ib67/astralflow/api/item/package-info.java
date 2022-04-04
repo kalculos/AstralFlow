@@ -19,23 +19,9 @@
  *   USA
  */
 
-package io.ib67.astralflow.api.item.armor;
-
-import io.ib67.astralflow.item.builder.ItemCategory;
-import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
-import org.jetbrains.annotations.ApiStatus;
-
-@ApiStatus.AvailableSince("0.1.0")
-public enum ArmorCategory implements ItemCategory<ArmorItem> {
-    INSTANCE;
-
-    @Override
-    public ItemPrototypeFactory getFactory(ArmorItem item) {
-        return ItemPrototype.builder()
-                .prototype(item.getPrototype())
-                .id(item.getId())
-                .holder(item)
-                .build();
-    }
-}
+/**
+ * Here are some presets for the Item API. You can use these components to create some common items (such as ingredients) quickly.
+ * <p/>
+ * A usual case is to create a new item with dummy first, then set states for them in the future (but you will have to do some migration like {@link io.ib67.astralflow.manager.ItemRegistry#saveState(org.bukkit.inventory.ItemStack, io.ib67.astralflow.item.StateScope, io.ib67.astralflow.item.ItemState)})
+ */
+package io.ib67.astralflow.api.item;
