@@ -1,3 +1,0 @@
-## Welcome to AstralFlow
-
-This page is coming soon...
