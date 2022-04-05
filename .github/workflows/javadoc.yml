@@ -28,11 +28,23 @@ jobs:
         uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
         with:
           arguments: javadoc
-      - name: Push to gh-pages
-        uses: s0/git-publish-subdir-action@develop
+  copy:
+    name: Copy JavaDocs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: copy
         env:
-          REPO: self
-          BRANCH: gh-pages # The branch name where you want to push the assets
-          FOLDER: javadoc # The directory where your assets are generated
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-          MESSAGE: "(JAVA_DOC) Build: ({sha}) {msg}" # The commit message
+          SRC_FOLDER_PATH: '/javadoc'
+          TARGET_BRANCH: 'gh-pages'
+        run: |
+          cp -r build/docs/javadoc $SRC_FOLDER_PATH
+          files=$(find $SRC_FOLDER_PATH -type f) # get the file list
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git fetch                         # fetch branches
+          git checkout $TARGET_BRANCH       # checkout to your branch
+          git checkout ${GITHUB_REF##*/} -- $files # copy files from the source branch
+          git add -A
+          git diff-index --quiet HEAD ||  git commit -am "deploy files"  # commit to the repository (ignore if no modification)
+          git push origin $TARGET_BRANCH # push to remote branch

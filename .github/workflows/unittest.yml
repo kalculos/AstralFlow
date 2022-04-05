@@ -30,15 +30,23 @@ jobs:
         with:
           arguments: test
   upload_report:
+    name: Upload Reports
     runs-on: ubuntu-latest
-    needs: [ build ]
-    if: always() && needs.build.result == 'failure'
     steps:
-      - name: Upload Report
-        uses: s0/git-publish-subdir-action@develop
+      - uses: actions/checkout@v2
+      - name: copy
         env:
-          REPO: self
-          BRANCH: gh-pages # The branch name where you want to push the assets
-          FOLDER: build_report # The directory where your assets are generated
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-          MESSAGE: "(REPORT) Build: ({sha}) {msg}" # The commit message
+          SRC_FOLDER_PATH: '/reports'
+          TARGET_BRANCH: 'gh-pages'
+        run: |
+          cp -r build/reports/tests/test $SRC_FOLDER_PATH
+          files=$(find $SRC_FOLDER_PATH -type f) # get the file list
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git fetch                         # fetch branches
+          git checkout $TARGET_BRANCH       # checkout to your branch
+          git checkout ${GITHUB_REF##*/} -- $files # copy files from the source branch
+          git add -A
+          git diff-index --quiet HEAD ||  git commit -am "deploy files"  # commit to the repository (ignore if no modification)
+          git push origin $TARGET_BRANCH # push to remote branch
+
