@@ -20,7 +20,6 @@
  */
 
 /**
- * Internal utilities for AstralFlow.
- * Use at your own risk. Undefined behaviours may occur.
+ * Machine Features.
  */
-package io.ib67.astralflow.internal;
+package io.ib67.astralflow.machines.trait;

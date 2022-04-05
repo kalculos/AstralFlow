@@ -76,7 +76,7 @@ public interface ItemPrototypeFactory {
     }
 
     /**
-     * The logical holder of this item. Such as {@link io.ib67.astralflow.api.item.machine.MachineItems}
+     * The logical holder of this item. Such as {@link io.ib67.astralflow.api.item.machine.MachineItem}
      *
      * @return null if there is no logical holder
      */

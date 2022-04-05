@@ -20,7 +20,6 @@
  */
 
 /**
- * Internal utilities for AstralFlow.
- * Use at your own risk. Undefined behaviours may occur.
+ * Hook events.
  */
-package io.ib67.astralflow.internal;
+package io.ib67.astralflow.hook.event;

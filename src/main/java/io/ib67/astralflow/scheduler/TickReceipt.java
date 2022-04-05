@@ -75,7 +75,7 @@ public final class TickReceipt<T extends Tickable<T>> {
 
     /**
      * Runs a new tickable when the original tickable is called.
-     * Contrary to {@link this#alwaysTicks(Tickable)} ，It is depending on conditions coming from {@link this#requires(Predicate)}
+     * Contrary to {@link #alwaysTicks(Tickable)} ，It is depending on conditions coming from {@link #requires(Predicate)}
      *
      * @param tickable
      * @return the new tickable's receipt.
@@ -101,8 +101,8 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * Like {@link this#alsoTicks(Tickable)}, but this method doesn't returns a new receipt, only returning itself.
-     * Restricted by conditions that comes from {@link this#requires(Predicate)}
+     * Like {@link #alsoTicks(Tickable)}, but this method doesn't returns a new receipt, only returning itself.
+     * Restricted by conditions that comes from {@link #requires(Predicate)}
      *
      * @param tickable
      * @return itself
@@ -129,7 +129,7 @@ public final class TickReceipt<T extends Tickable<T>> {
     /**
      * Mark this receipt is dropped and won't be called.
      * GC will clear this if there is no strong references left.
-     * Also see {@link this#isDropped()}
+     * Also see {@link #isDropped()}
      */
     public void drop() {
         this.dropped = true;

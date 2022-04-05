@@ -20,7 +20,6 @@
  */
 
 /**
- * Internal utilities for AstralFlow.
- * Use at your own risk. Undefined behaviours may occur.
+ * Texture related things. (WIP)
  */
-package io.ib67.astralflow.internal;
+package io.ib67.astralflow.texture;

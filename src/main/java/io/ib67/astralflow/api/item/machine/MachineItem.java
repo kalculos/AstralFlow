@@ -43,7 +43,7 @@ import java.util.UUID;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The machine blockItem, which creates your machine when placed and destroys & save it when broken.
+ * <p>The machine blockItem, which creates your machine when placed and destroys {@literal &} save it when broken.</p>
  */
 @ApiStatus.AvailableSince("0.1.0")
 @Getter

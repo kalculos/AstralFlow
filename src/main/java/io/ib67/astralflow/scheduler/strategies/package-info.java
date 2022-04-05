@@ -20,7 +20,6 @@
  */
 
 /**
- * Internal utilities for AstralFlow.
- * Use at your own risk. Undefined behaviours may occur.
+ * Some built-in presets for {@link io.ib67.astralflow.scheduler.TickReceipt#requires(java.util.function.Predicate)}
  */
-package io.ib67.astralflow.internal;
+package io.ib67.astralflow.scheduler.strategies;

@@ -35,7 +35,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Registry for items. where you can create items and get their state & prototypes.
+ * <p>Registry for items. where you can create items and get their state {@literal & } prototypes.</p>
  */
 @ApiStatus.AvailableSince("0.1.0")
 public interface ItemRegistry {

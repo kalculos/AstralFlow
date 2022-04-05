@@ -74,11 +74,13 @@ public enum AstralHelper {
      * Check if the given itemstack has a given logical holder.
      * Usually used by {@link LogicalHolder} themselves, to check if the item is their.
      *
-     * <code>
+     * <pre>
+     *     {@code
      * if (armorContent != null && AstralHelper.isHolder(armorContent, this)) {
      * finalDamage = finalDamage - costedDamage;
      * }
-     * </code>
+     * }
+     * </pre>
      *
      * @param stack  The itemstack to check
      * @param holder The holder to check

@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A utility class to create & register your custom items quickly.
+ * <p>A utility class to create {@literal & } register your custom items quickly.</p>
  * <p>
  * This "builder" doesn't create an item for you, you should consider using {@link ItemKey#createNewItem()} instead.
  *
