@@ -31,49 +31,55 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Item 所有的动作都通过 Hook 系统实现。
- * 如果需要添加功能可以委托到现有的实现类中
+ * The definition of prototypes for items. Determines how does the item look like ({@link #getPrototype()}) and its empty state ({@link #getStatePrototype()})
  * <p>
  */
 @ApiStatus.AvailableSince("0.1.0")
 public interface ItemPrototypeFactory {
 
     /**
-     * 返回物品原型供矿物辞典和物品创建使用。
+     * Create a sample itemstack, which will be processed for a real astral item. (attach data)
+     * You shouldn't modify the itemstack, always clone it
      *
-     * @return
+     * @return sample itemstack
      */
     @Contract(pure = true)
     @NotNull
     ItemStack getPrototype();
 
     /**
-     * 物品状态原型
+     * The empty state.
+     * You shouldn't modify it, always clone it
      *
-     * @return
+     * @return null if there is a empty state
      */
     @Contract(pure = true)
     @Nullable // stateless item
     ItemState getStatePrototype();
 
     /**
-     * 物品的标识 ID。
+     * The ItemKey of this item
      *
-     * @return
+     * @return item key
      */
     @Contract(pure = true)
     ItemKey getId();
 
     /**
-     * 物品的注册源。一个注册源可能会被多个注册源装饰以完成对原型的修饰,因此用户需要使用 getRegistry 来获取最内层的注册源
+     * The final registry. this is for decorators.
      *
      * @return
-     * @implSpec 装饰者必须返回被装饰者的注册源。
+     * @implSpec Decorators **must** return their decorated prototype.
      */
     default ItemPrototypeFactory getRegistry() {
         return this;
     }
 
+    /**
+     * The logical holder of this item. Such as {@link io.ib67.astralflow.api.item.machine.MachineItems}
+     *
+     * @return null if there is no logical holder
+     */
     default LogicalHolder getHolder() {
         return null;
     }

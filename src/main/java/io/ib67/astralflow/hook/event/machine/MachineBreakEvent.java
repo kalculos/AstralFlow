@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated(forRemoval = true) //todo: use {@link MachineBlockBreakEvent}
 public final class MachineBreakEvent extends MachineEvent implements Cancellable {
     @Nullable
     @Getter

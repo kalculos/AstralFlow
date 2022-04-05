@@ -22,9 +22,16 @@
 package io.ib67.astralflow.api.item.dummy;
 
 import lombok.Builder;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 
+/**
+ * Simple dummy item property.
+ *
+ * @param fetchMethods how can we get this item
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public record DummyItemProperty(
         List<FetchMethod> fetchMethods
 ) {

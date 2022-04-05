@@ -29,6 +29,9 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;
 
+/**
+ * Manager for machines, where you can activate machines and load machines.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface IMachineManager {
     /**

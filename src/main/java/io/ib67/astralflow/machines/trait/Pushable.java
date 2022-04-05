@@ -26,6 +26,9 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 
 
+/**
+ * Represents a trait that can be moved.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 @ApiStatus.Experimental
 public interface Pushable {

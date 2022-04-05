@@ -21,10 +21,18 @@
 
 package io.ib67.astralflow.util;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * A simple hashset implementation that uses weak references to the objects.
+ * Also see {@link java.lang.ref.WeakReference}
+ *
+ * @param <E>
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class WeakHashSet<E> implements Set<E> {
     private static final Object EMPTY_OBJ = new Object();
     private final Map<E, Object> map;

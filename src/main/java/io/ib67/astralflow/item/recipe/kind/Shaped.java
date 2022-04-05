@@ -36,6 +36,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.Supplier;
 
+/**
+ * Shaped crafting recipe, concentrated on how item aligns in the crafting grid.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public final class Shaped implements AstralRecipe {
     private final NamespacedKey key;

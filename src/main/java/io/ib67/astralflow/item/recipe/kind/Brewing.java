@@ -33,6 +33,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * Brewing recipe.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public final class Brewing implements AstralRecipe {
 

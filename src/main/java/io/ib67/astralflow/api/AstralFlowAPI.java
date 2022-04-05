@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.api;
 
+import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
@@ -37,40 +38,101 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+/**
+ * The OPEN Api from AstralFlow.
+ * You can get a reference to this api by using {@link AstralFlow#getInstance()}
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface AstralFlowAPI {
+    /**
+     * @return the {@link IMachineManager}
+     */
     IMachineManager getMachineManager();
 
+    /**
+     * @return the {@link IFactoryManager}
+     */
     IFactoryManager getFactories();
 
+    /**
+     * @return the {@link ItemRegistry}
+     */
     ItemRegistry getItemRegistry();
 
+    /**
+     * @return the {@link ITickManager}
+     */
     ITickManager getTickManager();
 
+    /**
+     * @return the {@link IWirelessRegistry}
+     */
     IWirelessRegistry getWirelessRegistry();
 
+    /**
+     * @return the {@link ITextureRegistry}
+     */
+    @ApiStatus.Experimental
     ITextureRegistry getTextureRegistry();
 
+    /**
+     * @return the {@link AstralFlowConfiguration}
+     */
     AstralFlowConfiguration getSettings();
 
+    /**
+     * @return the {@link IRecipeRegistry}
+     */
     IRecipeRegistry getRecipeRegistry();
 
+    /**
+     * Register hook but don't need an argument.
+     *
+     * @param type     the type of the hook
+     * @param runnable the runnable
+     * @param <T>      the type of the delivering event
+     */
     <T> void addHook(HookType<T> type, Runnable runnable);
 
+    /**
+     * Add a hook into AstralFlow eventbus.
+     * Your hook will be called when the event is fired.
+     *
+     * @param type     the type of the hook
+     * @param runnable the runnable
+     * @param <T>      the type of the delivering event
+     */
     <T> void addHook(HookType<T> type, Consumer<T> runnable);
 
+    /**
+     * Get hooks by a hookType
+     *
+     * @param hook the hook type
+     * @param <T>  the type of the delivering event
+     * @return the collection of the hooks
+     */
     <T> Collection<? extends Consumer<T>> getHooks(HookType<T> hook);
 
     /**
-     * @param hookType
-     * @param event
-     * @param <T>
-     * @return iscancelled
+     * Call registered hooks for an event.
+     *
+     * @param hookType the hook type
+     * @param event    the event
+     * @param <T>      the type of the delivering event
+     * @return cancelled (if this event is cancellable) or not
      */
     <T> boolean callHooks(HookType<T> hookType, T event);
 
+    /**
+     * @return the {@link IExtensionRegistry}
+     */
     IExtensionRegistry getExtensionRegistry();
 
+    /**
+     * As a plugin. For most of bukkit apis.
+     *
+     * @return AstralFlow Instance
+     */
     default Plugin asPlugin() {
         return (Plugin) this;
     }

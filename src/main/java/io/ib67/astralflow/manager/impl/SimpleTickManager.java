@@ -32,6 +32,7 @@ import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
@@ -158,7 +159,7 @@ public final class SimpleTickManager implements ITickManager {
      * @param isRegex       是否是正则
      * @return 可能为空的list
      */
-    public List<? extends TickReceipt<?>> matchReceipt(String prefixOrRegex, boolean isRegex) {
+    public @NotNull List<? extends TickReceipt<?>> matchReceipt(String prefixOrRegex, boolean isRegex) {
         Validate.notNull(prefixOrRegex);
         return receipts.stream().map(Reference::get).filter(e -> e.name() != null && isRegex ? e.name().matches(prefixOrRegex) : e.name().startsWith(prefixOrRegex)).collect(Collectors.toList());
     }

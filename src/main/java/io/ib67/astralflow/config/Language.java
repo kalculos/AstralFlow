@@ -23,6 +23,7 @@ package io.ib67.astralflow.config;
 
 import lombok.Getter;
 
+@Deprecated(forRemoval = true)
 public final class Language {
     public final String serverIsInitializing = """
             &c 服务器正在加载中，请稍候再试。

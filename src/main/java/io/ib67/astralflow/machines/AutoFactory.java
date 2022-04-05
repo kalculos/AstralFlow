@@ -23,15 +23,21 @@ package io.ib67.astralflow.machines;
 
 import io.ib67.astralflow.machines.factories.IMachineFactory;
 import io.ib67.astralflow.machines.factories.SimpleMachineFactory;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.annotation.*;
 
+/**
+ * Marks a machine, and auto-registers factory with the value, specified factory must have an empty constructor.
+ * This may help for many simple machines.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
 public @interface AutoFactory {
     /**
-     * The factory class to be instantiated. Left it default to use the smart one.
+     * The factory class to be instantiated. Left it default to use the smart one (which finds constructor for machine classes.).
      *
      * @return
      */

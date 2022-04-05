@@ -25,6 +25,11 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * A factory that creates machine by a given {@link MachineProperty}.
+ *
+ * @param <T> The type of the machine.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 @FunctionalInterface
 public interface IMachineFactory<T extends IMachine> {

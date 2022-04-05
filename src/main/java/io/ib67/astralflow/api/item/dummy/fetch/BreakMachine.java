@@ -26,6 +26,7 @@ import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 import io.ib67.astralflow.machines.IMachine;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Supplier;
 
@@ -33,7 +34,9 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * You should really consider {@link io.ib67.astralflow.api.item.machine.MachineItem} instead.
+ * A way to fetch item from breaking a machine.
  */
+@ApiStatus.AvailableSince("0.1.0")
 @Deprecated
 public final class BreakMachine implements FetchMethod {
     private final Class<? extends IMachine> machineClass;

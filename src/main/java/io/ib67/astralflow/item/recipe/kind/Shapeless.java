@@ -42,6 +42,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * Shapeless crafting recipes, and item order is ignored
+ */
 @ApiStatus.AvailableSince("0.1.0")
 @Getter
 public final class Shapeless implements AstralRecipe {

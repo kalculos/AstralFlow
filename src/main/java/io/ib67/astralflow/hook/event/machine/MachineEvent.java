@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
+@Deprecated(forRemoval = true)
 public abstract class MachineEvent extends HookEvent {
     private final IMachine machine;
 }

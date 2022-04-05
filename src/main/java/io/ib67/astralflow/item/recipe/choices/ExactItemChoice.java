@@ -25,9 +25,15 @@ import io.ib67.astralflow.item.recipe.IngredientChoice;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 
+/**
+ * An {@link IngredientChoice} that matches exactly one item.
+ * Also see {@link io.ib67.astralflow.item.recipe.AstralRecipe}
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @RequiredArgsConstructor
 @Getter
 public final class ExactItemChoice implements IngredientChoice {

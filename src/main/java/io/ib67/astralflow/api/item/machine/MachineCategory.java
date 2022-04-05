@@ -24,7 +24,12 @@ package io.ib67.astralflow.api.item.machine;
 import io.ib67.astralflow.item.builder.ItemCategory;
 import io.ib67.astralflow.item.builder.ItemPrototype;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * The machine category.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class MachineCategory implements ItemCategory<MachineItem> {
     public static final MachineCategory INSTANCE = new MachineCategory();
 

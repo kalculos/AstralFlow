@@ -34,17 +34,29 @@ import io.ib67.astralflow.machines.Tickless;
 import lombok.Getter;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+/**
+ * The machine blockItem, which creates your machine when placed and destroys & save it when broken.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @Getter
 public class MachineItem extends ItemBase {
     private final Class<? extends IMachine> typeOfMachine;
 
+    /**
+     * Constructor
+     *
+     * @param id            item key
+     * @param prototype     prototype, must be a solid block
+     * @param typeOfMachine machine type
+     */
     public MachineItem(ItemKey id, ItemStack prototype, Class<? extends IMachine> typeOfMachine) {
         super(id, prototype);
         this.typeOfMachine = typeOfMachine;
-        if (!prototype.getType().isBlock()) {
+        if (!prototype.getType().isBlock() || !prototype.getType().isSolid()) {
             throw new IllegalArgumentException("MachineItem must be a block!");
         }
         HookType.BLOCK_PLACE.register(this::onPlace);

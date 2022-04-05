@@ -24,8 +24,18 @@ package io.ib67.astralflow;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Represents a tickable object.
+ *
+ * @param <T>
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface Tickable<T extends Tickable<T>> {
+    /**
+     * Called at each tick.
+     *
+     * @param self
+     */
     void update(T self);
 
     @SuppressWarnings("unchecked")
@@ -33,6 +43,11 @@ public interface Tickable<T extends Tickable<T>> {
         update((T) this);
     }
 
+    /**
+     * Called when the tickable is added to the scheduler.
+     *
+     * @param receipt
+     */
     default void setup(TickReceipt<T> receipt) {
 
     }

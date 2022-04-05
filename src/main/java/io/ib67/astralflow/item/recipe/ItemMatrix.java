@@ -32,7 +32,11 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Objects;
 
+/**
+ * This class represents a matrix of items.
+ */
 @Getter
+@ApiStatus.AvailableSince("0.1.0")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemMatrix {
     private final ItemStack[] matrix;

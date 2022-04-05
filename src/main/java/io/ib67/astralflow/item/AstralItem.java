@@ -24,20 +24,36 @@ package io.ib67.astralflow.item;
 import io.ib67.astralflow.manager.ItemRegistry;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/**
+ * A utility class helps users to interact with custom items.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @RequiredArgsConstructor
 public final class AstralItem {
     private final ItemStack originalItemStack;
     private final ItemRegistry itemRegistry;
 
+    /**
+     * Get as a itemStack
+     *
+     * @return itemStack
+     */
     @NotNull
     public ItemStack asItemStack() {
         return originalItemStack;
     }
 
+    /**
+     * Get the state of item.
+     * You should save state after your operation is done.
+     *
+     * @return
+     */
     public Optional<ItemState> getState() {
         return Optional.ofNullable(itemRegistry.getState(originalItemStack));
     }

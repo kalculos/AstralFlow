@@ -21,8 +21,16 @@
 
 package io.ib67.astralflow.machines;
 
+import org.jetbrains.annotations.ApiStatus;
+
+/**
+ * Data of machine, you can use it for persistence.
+ * Just subclass this and add your properties, we'll load/save/serialize them for you transparently.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public interface IState {
     IState EMPTY_STATE = new IState.EmptyState();
+
     default Class<? extends IState> getType() {
         return this.getClass();
     }

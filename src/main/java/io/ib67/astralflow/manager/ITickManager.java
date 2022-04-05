@@ -24,6 +24,7 @@ package io.ib67.astralflow.manager;
 import io.ib67.astralflow.Tickable;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public interface ITickManager {
     <T extends Tickable<T>> TickReceipt<T> registerTickable(Tickable<T> tickable);
 
     /**
-     * 添加一个 Tick 回执，弱引用储存，请自行注意GC
+     * Add a tick receipt into manager, kept in weak reference.
      * Also see {@link TickReceipt}
      *
      * @param tickReceipt
@@ -43,7 +44,7 @@ public interface ITickManager {
     void addReceipt(TickReceipt<?> tickReceipt);
 
     /**
-     * 回执流
+     * Stream of receipts
      * Also see {@link TickReceipt}
      *
      * @return
@@ -51,8 +52,8 @@ public interface ITickManager {
     Stream<? extends TickReceipt<?>> receiptStream();
 
     /**
-     * 可能导致 {@link ClassCastException}.
-     * 适用于你知道名字但是不确定他是否被回收的情况。
+     * May lead to {@link ClassCastException}.
+     * Used for a situation that you knew name but not sure whether the receipt has been cleared by GC.
      * Also see {@link TickReceipt}
      *
      * @param name
@@ -63,8 +64,8 @@ public interface ITickManager {
     <T extends Tickable<T>> Optional<? extends TickReceipt<T>> getReceipt(String name, Class<T> typeOfT);
 
     /**
-     * 精确查找并直接返回结果，可能导致 {@link AssertionError} 或 {@link ClassCastException}
-     * **只在你完全清楚情况的情况下使用他**
+     * Find receipt exactly，May lead to {@link AssertionError} or {@link ClassCastException}
+     * **Only use it if you knew what are you doing**
      * Also see {@link TickReceipt}
      *
      * @param name
@@ -75,7 +76,7 @@ public interface ITickManager {
     <T extends Tickable<T>> TickReceipt<T> getReceiptExactly(String name, Class<T> typeOfT);
 
     /**
-     * 通过名字查找回执，没有类型转型也不确保能找到。
+     * Find receipt by name without any type cast.
      * Also see {@link TickReceipt}
      *
      * @param name
@@ -84,11 +85,12 @@ public interface ITickManager {
     Optional<? extends TickReceipt<?>> getReceipt(String name);
 
     /**
-     * 根据前缀或者正则匹配一批回执
+     * Find receipt by a prefix or regex.
      *
-     * @param prefixOrRegex 前缀或者正则
-     * @param isRegex       是否是正则
-     * @return 可能为空的list
+     * @param prefixOrRegex prefix or regex
+     * @param isRegex       is the 1st arg a regex expr?
+     * @return List
      */
+    @NotNull
     List<? extends TickReceipt<?>> matchReceipt(String prefixOrRegex, boolean isRegex);
 }

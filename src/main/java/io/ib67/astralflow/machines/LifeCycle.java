@@ -23,13 +23,16 @@ package io.ib67.astralflow.machines;
 
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Represents a lifecycle-able object.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface LifeCycle {
     /**
      * Calls when the chunk is loaded and your machine is ready to initialize.
      * You can get {@link io.ib67.astralflow.scheduler.TickReceipt} by calling {@link io.ib67.astralflow.manager.IMachineManager#getReceiptByMachine(IMachine)}.
      */
-    default void onLoad() {
+    default void onLoad() { //todo: uncalled
     }
 
     /**

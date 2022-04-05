@@ -22,11 +22,16 @@
 package io.ib67.astralflow.item;
 
 import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
 
+/**
+ * Utility class to create ItemKeys without enum.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @UtilityClass
 public final class ItemKeys {
     private final Map<String, ItemKey> cachedItemKeys = new WeakHashMap<>();

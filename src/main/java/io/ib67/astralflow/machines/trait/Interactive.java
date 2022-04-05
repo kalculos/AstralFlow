@@ -24,16 +24,20 @@ package io.ib67.astralflow.machines.trait;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents an interactive trait for machines.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public interface Interactive {
+    /**
+     * Called when a player tries to interact with the machine. (clicking)
+     *
+     * @param clickType  The type of interaction.
+     * @param player     The player that interacted.
+     * @param itemInHand The item in the player's hand.
+     */
     void onInteract(Action clickType, Player player, @Nullable ItemStack itemInHand);
-
-    default void onBreak(Player player, @Nullable ItemStack itemInHand) {
-        //todo save blockstate as item.
-    }
-
-    default void onPlace(Player player) {
-        //todo initialize state.
-    }
 }

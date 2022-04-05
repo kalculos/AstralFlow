@@ -23,8 +23,19 @@ package io.ib67.astralflow.util;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Util for working with ItemStacks.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class ItemStacks {
+    /**
+     * Create an itemstack by a builder pattern.
+     *
+     * @param material The material of the itemstack.
+     * @return The itemstack.
+     */
     public static ItemStackBuilder builder(Material material) {
         return new ItemStackBuilder().material(material);
     }

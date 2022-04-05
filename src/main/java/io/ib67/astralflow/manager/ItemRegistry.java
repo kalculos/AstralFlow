@@ -34,6 +34,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Registry for items. where you can create items and get their state & prototypes.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface ItemRegistry {
     default void registerItem(ItemPrototypeFactory item) {

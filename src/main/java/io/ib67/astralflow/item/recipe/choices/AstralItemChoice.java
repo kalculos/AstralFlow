@@ -30,11 +30,17 @@ import io.ib67.astralflow.item.recipe.IngredientChoice;
 import io.ib67.util.Lazy;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents an item choice for astral items.
+ * {@link io.ib67.astralflow.item.recipe.AstralRecipe}
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @Getter
 public final class AstralItemChoice implements IngredientChoice {
     private final short count;

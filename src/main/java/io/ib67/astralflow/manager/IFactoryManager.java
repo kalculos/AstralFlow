@@ -29,11 +29,39 @@ import java.util.Collection;
 
 @ApiStatus.AvailableSince("0.1.0")
 public interface IFactoryManager {
+    /**
+     * Get a machine factory by a machine class.
+     *
+     * @param type The machine class.
+     * @param <T>  The machine type.
+     * @return The machine factory.
+     * @throws IllegalArgumentException If the machine factory is not registered.
+     */
     <T extends IMachine> IMachineFactory<T> getMachineFactory(Class<T> type);
 
+    /**
+     * Get all registered machine factories.
+     *
+     * @return The machine factories.
+     */
     Collection<? extends IMachineFactory<?>> getMachineFactories();
 
+    /**
+     * Register a machine factory.
+     *
+     * @param clazz   The machine class.
+     * @param factory The machine factory.
+     * @param <T>     The machine type.
+     * @return if already exists
+     */
     <T extends IMachine> boolean register(Class<T> clazz, IMachineFactory<T> factory);
 
+    /**
+     * Unregister a machine factory.
+     *
+     * @param type The machine class.
+     * @param <T>  The machine type.
+     * @return if already exists
+     */
     <T extends IMachine> boolean unregister(Class<T> type);
 }

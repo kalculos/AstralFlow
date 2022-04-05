@@ -22,6 +22,7 @@
 package io.ib67.astralflow.extension;
 
 import io.ib67.astralflow.api.external.AstralExtension;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,12 +33,12 @@ public final class ExtensionRegistryImpl implements IExtensionRegistry {
     private final Map<String, AstralExtension> extensions = new HashMap<>();
 
     @Override
-    public Collection<? extends AstralExtension> getExtensions() {
+    public @NotNull Collection<? extends AstralExtension> getExtensions() {
         return extensions.values();
     }
 
     @Override
-    public Optional<AstralExtension> getExtensionByName(String name) {
+    public @NotNull Optional<AstralExtension> getExtensionByName(String name) {
         return Optional.ofNullable(extensions.get(name));
     }
 
