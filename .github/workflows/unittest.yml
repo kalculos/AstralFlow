@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: copy
         env:
-          SRC_FOLDER_PATH: '/reports'
+          SRC_FOLDER_PATH: 'reports'
           TARGET_BRANCH: 'gh-pages'
         run: |
           cp -r build/reports/tests/test $SRC_FOLDER_PATH

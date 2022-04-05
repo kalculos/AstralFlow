@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: copy
         env:
-          SRC_FOLDER_PATH: '/javadoc'
+          SRC_FOLDER_PATH: 'javadoc'
           TARGET_BRANCH: 'gh-pages'
         run: |
           cp -r build/docs/javadoc $SRC_FOLDER_PATH
