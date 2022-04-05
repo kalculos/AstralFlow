@@ -28,18 +28,11 @@ jobs:
         uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
         with:
           arguments: javadoc
-      - name: copy
-        env:
-          SRC_FOLDER_PATH: 'javadoc'
-          TARGET_BRANCH: 'gh-pages'
-        run: |
-          cp -r build/docs/javadoc $SRC_FOLDER_PATH
-          files=$(find $SRC_FOLDER_PATH -type f) # get the file list
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
-          git fetch                         # fetch branches
-          git checkout $TARGET_BRANCH       # checkout to your branch
-          git checkout ${GITHUB_REF##*/} -- $files # copy files from the source branch
-          git add -A
-          git diff-index --quiet HEAD ||  git commit -am "deploy files"  # commit to the repository (ignore if no modification)
-          git push origin $TARGET_BRANCH # push to remote branch
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@3.5.9
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          CLEAN: true
+          FOLDER: build/docs/javadoc
+          TARGET_FOLDER: javadoc
