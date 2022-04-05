@@ -51,5 +51,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           clean: true
-          folder: build/docs/javadoc
-          target-folder: javadoc
+          folder: build/reports/tests/test
+          target-folder: buildReports
