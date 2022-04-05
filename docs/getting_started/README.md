@@ -36,7 +36,6 @@ maven {
    将下列代码添加到 `<repositories> ... </repositories>` 中，这段代码通常出现在 `pom.xml` 里。
 
  ```xml
-
 <repository>
     <id>Bukkit.RIP Releases</id>
     <name>Bukkit.RIP</name>
