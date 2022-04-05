@@ -25,9 +25,9 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
+import io.ib67.astralflow.api.events.MachineBlockPlaceEvent;
 import io.ib67.astralflow.api.events.PlayerInteractMachineEvent;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.machine.MachinePlaceEvent;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.trait.Pushable;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +62,11 @@ public final class BlockListener implements Listener {
         if (flow.getMachineManager().isMachine(event.getBlockPlaced()) && !event.isCancelled()) {
             event.setCancelled(flow.callHooks(
                     HookType.MACHINE_PLACE,
-                    new MachinePlaceEvent(flow.getMachineManager().getAndLoadMachine(event.getBlockPlaced().getLocation()), event.getBlockPlaced().getLocation(), event.getPlayer())
+                    new MachineBlockPlaceEvent(
+                            event.getBlockPlaced(),
+                            flow.getMachineManager().getAndLoadMachine(event.getBlockPlaced().getLocation()),
+                            event.getPlayer()
+                    )
             ));
         }
     }

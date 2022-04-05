@@ -19,16 +19,47 @@
  *   USA
  */
 
-package io.ib67.astralflow.hook.event.machine;
+package io.ib67.astralflow.api.events;
 
-import io.ib67.astralflow.hook.event.HookEvent;
 import io.ib67.astralflow.machines.IMachine;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @RequiredArgsConstructor
 @Getter
-@Deprecated(forRemoval = true)
-public abstract class MachineEvent extends HookEvent {
+public class MachineBlockPlaceEvent extends MachineEvent implements Cancellable {
+    private static final HandlerList HANDLER_LIST = new HandlerList();
+    /**
+     * The block that was broken.
+     */
+    private final Block block;
+    /**
+     * The machine attached the block
+     */
     private final IMachine machine;
+    @Setter
+    private boolean cancelled;
+    /**
+     * The player who placed the block
+     */
+    @Nullable
+    private final Player player;
+
+
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
+    }
+
+    @NotNull
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLER_LIST;
+    }
 }

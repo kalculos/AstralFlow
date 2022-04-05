@@ -22,8 +22,8 @@
 package io.ib67.astralflow.hook;
 
 import io.ib67.astralflow.AstralFlow;
-import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
-import io.ib67.astralflow.hook.event.machine.MachinePlaceEvent;
+import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
+import io.ib67.astralflow.api.events.MachineBlockPlaceEvent;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -82,11 +82,11 @@ public final class HookType<T> {
     /**
      * Called when a machine is broken by player, etc
      */
-    public static final HookType<MachineBreakEvent> MACHINE_BREAK = new HookType<>();
+    public static final HookType<MachineBlockBreakEvent> MACHINE_BREAK = new HookType<>();
     /**
      * Called when a machine is placed.
      */
-    public static final HookType<MachinePlaceEvent> MACHINE_PLACE = new HookType<>();
+    public static final HookType<MachineBlockPlaceEvent> MACHINE_PLACE = new HookType<>();
 
     public static final HookType<EntityDamageByEntityEvent> ENTITY_DAMAGE_BY_ENTITY = new HookType<>();
     public static final HookType<EntityDamageEvent> ENTITY_DAMAGE = new HookType<>();
