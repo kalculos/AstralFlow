@@ -35,8 +35,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import static java.util.Objects.requireNonNull;
 
 @Getter
 public abstract class WeaponBase extends ItemBase {
@@ -47,9 +50,9 @@ public abstract class WeaponBase extends ItemBase {
     protected WeaponBase(ItemKey id, ItemStack prototype, WeaponProperty property, Predicate<Entity> entitySelector, Set<EntityDamageEvent.DamageCause> types) {
         super(id, prototype);
         this.property = property;
-        this.damageTypes = types;
-        this.entitySelector = entitySelector;
-
+        requireNonNull(property);
+        this.damageTypes = types == null ? Collections.emptySet() : types;
+        this.entitySelector = entitySelector == null ? e -> true : entitySelector;
         HookType.ENTITY_DAMAGE_BY_ENTITY.register(this::onEntityDamage);
     }
 

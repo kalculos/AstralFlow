@@ -27,14 +27,19 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.Collection;
 import java.util.function.Predicate;
 
+/**
+ * An ore dictionary, where you can register same name for more items
+ * You should consider using {@link io.ib67.astralflow.item.builder.ItemBuilder} instead of this class. This class may cause misleading and not very easy to understand.
+ */
 @ApiStatus.AvailableSince("0.1.0")
+@ApiStatus.Internal
 public interface IOreDict {
     /**
-     * 插件完成初始化后将会封锁所有的 registerItem 请求以减小维护成本
+     * Register your item to the ore dictionary with your dictKey.
      *
-     * @param prototype
-     * @param dictKey
-     * @return
+     * @param prototype the item to register
+     * @param dictKey   the key to register the item with
+     * @return this oredict, for fluent use
      * @throws IllegalStateException if locked
      */
     IOreDict registerItem(String dictKey, ItemStack prototype, Predicate<ItemStack> tester);

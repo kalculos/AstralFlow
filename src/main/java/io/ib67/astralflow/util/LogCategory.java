@@ -21,6 +21,12 @@
 
 package io.ib67.astralflow.util;
 
+import org.jetbrains.annotations.ApiStatus;
+
+/**
+ * Categories of logs.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class LogCategory {
     public static final String INIT = "Init";
     public static final String TERMINATION = "Termination";

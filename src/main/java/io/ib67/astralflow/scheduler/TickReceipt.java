@@ -22,7 +22,6 @@
 package io.ib67.astralflow.scheduler;
 
 import io.ib67.astralflow.Tickable;
-import io.ib67.astralflow.manager.impl.SimpleTickManager;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +32,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * 注册 tick 后产生的回执
+ * A Receipt that used to control pre-tick behaviours.
  * Also see {@link Scheduler#add(Tickable)}
  *
  * @param <T> Tick Target
@@ -47,7 +46,6 @@ public final class TickReceipt<T extends Tickable<T>> {
     private String name = null;
 
     /**
-     * 包装。
      * Also see {@link io.ib67.astralflow.scheduler.strategies.PeriodicTicks}
      *
      * @param consumer
@@ -59,9 +57,8 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 触发 tick 的先决条件。
-     * 每个回执可以有多个条件。需要全部通过才能触发
-     * 设置触发更新的间隔: {@link io.ib67.astralflow.scheduler.strategies.PeriodicTicks}
+     * Add a condition to call the real tickable.
+     * A utility class for it: {@link io.ib67.astralflow.scheduler.strategies.PeriodicTicks}
      *
      * @param func
      * @return
@@ -77,12 +74,11 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 在回执目标运行的时候顺便运行新的 tickable，可以用于同步多个实体之间的动作
-     * 与 {@link this#alwaysTicks(Tickable)} 不同，（如果有的话）他必须在 {@link this#requires(Predicate)} 通过后才运行
-     * 这意味着可能会受到 {@link io.ib67.astralflow.scheduler.strategies.PeriodicTicks} 一类的影响
+     * Runs a new tickable when the original tickable is called.
+     * Contrary to {@link this#alwaysTicks(Tickable)} ，It is depending on conditions coming from {@link this#requires(Predicate)}
      *
      * @param tickable
-     * @return 新 tickable 的回执，用于更方便的链式调用
+     * @return the new tickable's receipt.
      */
     public TickReceipt<T> alsoTicks(Tickable<T> tickable) {
         Validate.notNull(tickable);
@@ -92,11 +88,10 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 在回执目标运行的时候顺便运行新的 tickable，可以用于同步多个实体之间的动作
-     * 和 {@link this#alsoTicks(Tickable)} 不同，它无视条件触发。
+     * Calls a new tickable when the original tickable is called, even though the conditions are not passed.
      *
      * @param tickable
-     * @return 新的回执，用于更方便的链式调用
+     * @return the new tickable's receipt
      */
     public TickReceipt<T> alwaysTicks(Tickable<T> tickable) {
         Validate.notNull(tickable);
@@ -106,11 +101,11 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 在回执目标运行的时候顺便运行新的 tickable，可以用于同步多个实体之间的动作
-     * 与 {@link this#alsoTicks(Tickable)} 和 {@link this#alwaysTicks(Tickable)} 不同，他不会返回新的回执，但是会受到同一个条件 ({@link this#requires(Predicate)}) 的影响。
+     * Like {@link this#alsoTicks(Tickable)}, but this method doesn't returns a new receipt, only returning itself.
+     * Restricted by conditions that comes from {@link this#requires(Predicate)}
      *
      * @param tickable
-     * @return 自身，用于更方便的链式调用
+     * @return itself
      */
     public TickReceipt<T> syncWith(Tickable<T> tickable) {
         Validate.notNull(tickable);
@@ -119,11 +114,11 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 设置回执的名字
-     * Also see {@link SimpleTickManager#getReceipt(String)}
+     * Set the name of receipt, for searching
+     * Also see {@link io.ib67.astralflow.manager.ITickManager#getReceipt(String)}
      *
      * @param name receipt name
-     * @return 自身
+     * @return itself
      */
     public TickReceipt<T> name(String name) {
         Validate.notNull(name);
@@ -132,7 +127,8 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 标记回执已经被抛弃，将会被垃圾处理器回收。
+     * Mark this receipt is dropped and won't be called.
+     * GC will clear this if there is no strong references left.
      * Also see {@link this#isDropped()}
      */
     public void drop() {
@@ -140,7 +136,7 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 是否已经被抛弃，通常不应该继续保留被抛弃的回执的引用，其次你将无法通过 {@link SimpleTickManager#receiptStream()} 等方式获取到他
+     * Is it dropped?
      *
      * @return
      */
@@ -149,7 +145,7 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     /**
-     * 获取回执名字
+     * name of the receipt
      *
      * @return
      */

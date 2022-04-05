@@ -21,6 +21,8 @@
 
 package io.ib67.astralflow.machines;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.lang.annotation.*;
 
 /**
@@ -28,6 +30,7 @@ import java.lang.annotation.*;
  * <p>
  * Machines with this annotation will not be ticked.
  */
+@ApiStatus.AvailableSince("0.1.0")
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

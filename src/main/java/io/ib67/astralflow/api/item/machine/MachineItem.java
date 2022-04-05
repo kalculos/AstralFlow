@@ -22,9 +22,10 @@
 package io.ib67.astralflow.api.item.machine;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
+import io.ib67.astralflow.api.events.MachineBlockPlaceEvent;
 import io.ib67.astralflow.api.item.ItemBase;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.builder.ItemBuilder;
@@ -32,19 +33,35 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.machines.Tickless;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+import static java.util.Objects.requireNonNull;
+
+/**
+ * The machine blockItem, which creates your machine when placed and destroys & save it when broken.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @Getter
 public class MachineItem extends ItemBase {
     private final Class<? extends IMachine> typeOfMachine;
 
+    /**
+     * Constructor
+     *
+     * @param id            item key
+     * @param prototype     prototype, must be a solid block
+     * @param typeOfMachine machine type
+     */
     public MachineItem(ItemKey id, ItemStack prototype, Class<? extends IMachine> typeOfMachine) {
         super(id, prototype);
+        requireNonNull(typeOfMachine, "typeOfMachine");
         this.typeOfMachine = typeOfMachine;
-        if (!prototype.getType().isBlock()) {
+        if (!prototype.getType().isBlock() || !prototype.getType().isSolid()) {
             throw new IllegalArgumentException("MachineItem must be a block!");
         }
         HookType.BLOCK_PLACE.register(this::onPlace);
@@ -86,13 +103,18 @@ public class MachineItem extends ItemBase {
                             .manager(AstralFlow.getInstance().getMachineManager())
                             .build()
             );
+            var evt = new MachineBlockPlaceEvent(machine.getLocation().getBlock(), machine, event.getPlayer());
+            Bukkit.getServer().getPluginManager().callEvent(evt);
+            if (evt.isCancelled()) {
+                return;
+            }
             AstralFlow.getInstance().getMachineManager().setupMachine(machine, !typeOfMachine.isAnnotationPresent(Tickless.class));
         } else {
             return;
         }
     }
 
-    private void onBreak(MachineBreakEvent event) {
+    private void onBreak(MachineBlockBreakEvent event) {
         var machine = event.getMachine();
         if (!typeOfMachine.isInstance(event.getMachine())) {
             return;
@@ -102,7 +124,7 @@ public class MachineItem extends ItemBase {
         var emptyState = (MachineItemState) item.getState().get();
         emptyState.setData(state.getData());
         emptyState.setMachineType(machine.getType().getName());
-        var loc = event.getBrokenBlock().getLocation();
+        var loc = event.getBlock().getLocation();
         loc.getWorld().dropItemNaturally(loc, item.asItemStack());
     }
 }

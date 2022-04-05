@@ -24,9 +24,17 @@ package io.ib67.astralflow.hook.event.server;
 import io.ib67.astralflow.hook.event.HookEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * This event is called when we're asking you to save your data.
+ */
 @RequiredArgsConstructor
 @Getter
+@ApiStatus.AvailableSince("0.1.0")
 public final class SaveDataEvent extends HookEvent {
+    /**
+     * If the server is shutting down. Do your finalization
+     */
     private final boolean isShuttingDown;
 }

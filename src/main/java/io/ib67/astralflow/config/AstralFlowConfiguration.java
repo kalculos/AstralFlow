@@ -30,32 +30,58 @@ import io.ib67.astralflow.storage.impl.chunk.MachineCache;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.nio.file.Path;
 import java.util.Objects;
 
+/**
+ * Configuration for the AstralFlow.
+ */
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@ApiStatus.AvailableSince("0.1.0")
 public final class AstralFlowConfiguration {
     public static final int CONFIG_CURRENT_VERSION = 1;
 
+    /**
+     * Config version number, for {@link io.ib67.astralflow.internal.config.ConfigMigrator}
+     */
     private final int version = CONFIG_CURRENT_VERSION;
+    /**
+     * Which language is using
+     */
     private final Language locale;
+    /**
+     * SHould we kick players until our initialization is done?
+     */
     @SerializedName("allow-player-join-before-init")
     private final boolean allowPlayerJoinBeforeInit = false;
+    /**
+     * Where to storage machines
+     */
     @SerializedName("machine-storage-type")
-    private final IMachineStorage storage;
+    private final IMachineStorage storage; //todo: planned for removal
 
+    /**
+     * The interval to trig {@link io.ib67.astralflow.hook.HookType#SAVE_DATA}
+     */
     @SerializedName("data-save-intervals")
     private final int dataSaveIntervals = 300;
 
+    /**
+     * Settings about recipe and crafting.
+     */
     @SerializedName("recipe-settings")
     private final RecipeSetting recipeSetting;
 
+    /**
+     * Some optimizations
+     */
     @SerializedName("optimization-settings")
     private final Optimization optimization = new Optimization();
 
-    public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageIndexes) {
+    public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageIndexes) { // todo: itemStorageDir is unneeded anymore
         Objects.requireNonNull(itemStorageDir, "ItemStorageDir cannot be null");
         Objects.requireNonNull(machineStorageIndexes, "MachineStorageIndexes cannot be null");
 
@@ -66,18 +92,42 @@ public final class AstralFlowConfiguration {
         );
     }
 
+    /**
+     * Optimizations.
+     */
     @Getter
     public static final class Optimization {
+        /**
+         * How much machine slots should be initialized at start-up
+         * This feature may help if your server has tons of machines that are in spawn chunks since it tries to avoid resizing the hashMap.
+         */
         @SerializedName("initial-machine-capacity")
         private final int initialMachineCapacity = 32;
     }
 
+    /**
+     * Settings about recipes
+     */
     @Getter
     public static final class RecipeSetting {
+        /**
+         * Should we add our custom recipes into vanilla crafting tables?
+         * P.S We won't really add recipes in it, only to simulate the process.
+         * For further details, please see {@link io.ib67.astralflow.listener.crafts.RecipeListener}
+         */
         @SerializedName("inject-vanilla-crafting")
         private final boolean injectVanillaCraftingTable = true;
+        /**
+         * Should we override vanilla recipes if there are same match results?
+         * This only affects if {@link RecipeSetting#injectVanillaCraftingTable} is true.
+         */
         @SerializedName("override-vanilla-recipe")
         private final boolean overrideVanillaRecipe = true;
+
+        /**
+         * Should we add vanilla items into our ore dictionaries?
+         * This may be very helpful for many extensions that use vanilla items.
+         */
         @SerializedName("add-vanilla-oredict")
         private final boolean addVanillaOreDict = true;
     }

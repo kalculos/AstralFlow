@@ -26,10 +26,16 @@ import io.ib67.astralflow.hook.HookType;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+/**
+ * A way to fetch {@link io.ib67.astralflow.api.item.dummy.DummyItem}s.
+ * This way listens on breaking a block.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class BreakBlock implements FetchMethod {
     private final Predicate<Block> blockPredicator;
     private Supplier<ItemStack> producer;

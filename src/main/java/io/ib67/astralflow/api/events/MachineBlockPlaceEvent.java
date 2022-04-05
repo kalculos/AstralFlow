@@ -19,40 +19,47 @@
  *   USA
  */
 
-package io.ib67.astralflow.hook.event.machine;
+package io.ib67.astralflow.api.events;
 
 import io.ib67.astralflow.machines.IMachine;
 import lombok.Getter;
-import org.bukkit.Location;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * @author EvanLuo42
- * @date 3/20/22 12:52 PM
- */
-public final class MachinePlaceEvent extends MachineEvent implements Cancellable {
-    @Getter
-    private final Location location;
-
-    @Getter
+@RequiredArgsConstructor
+@Getter
+public class MachineBlockPlaceEvent extends MachineEvent implements Cancellable {
+    private static final HandlerList HANDLER_LIST = new HandlerList();
+    /**
+     * The block that was broken.
+     */
+    private final Block block;
+    /**
+     * The machine attached the block
+     */
+    private final IMachine machine;
+    @Setter
+    private boolean cancelled;
+    /**
+     * The player who placed the block
+     */
+    @Nullable
     private final Player player;
 
-    private boolean cancel;
 
-    public MachinePlaceEvent(IMachine machine, Location location, Player player) {
-        super(machine);
-        this.location = location;
-        this.player = player;
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
     }
 
+    @NotNull
     @Override
-    public boolean isCancelled() {
-        return cancel;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
+    public HandlerList getHandlers() {
+        return HANDLER_LIST;
     }
 }

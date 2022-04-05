@@ -22,27 +22,31 @@
 package io.ib67.astralflow.extension;
 
 import io.ib67.astralflow.api.external.AstralExtension;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Objects.requireNonNull;
+
 public final class ExtensionRegistryImpl implements IExtensionRegistry {
     private final Map<String, AstralExtension> extensions = new HashMap<>();
 
     @Override
-    public Collection<? extends AstralExtension> getExtensions() {
+    public @NotNull Collection<? extends AstralExtension> getExtensions() {
         return extensions.values();
     }
 
     @Override
-    public Optional<AstralExtension> getExtensionByName(String name) {
+    public @NotNull Optional<AstralExtension> getExtensionByName(String name) {
         return Optional.ofNullable(extensions.get(name));
     }
 
     @Override
     public void registerExtension(AstralExtension extension) {
+        requireNonNull(extension, "extension");
         if (extensions.containsKey(extension.getInfo().extensionName())) {
             throw new IllegalArgumentException("Extension with name " + extension.getInfo().extensionName() + " already exists");
         }

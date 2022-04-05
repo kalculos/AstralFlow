@@ -27,6 +27,9 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+/**
+ * Basic definition of a machine. We don't subclass this as usual, see {@link AbstractMachine}
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface IMachine extends Tickable<IMachine>, LifeCycle {
 

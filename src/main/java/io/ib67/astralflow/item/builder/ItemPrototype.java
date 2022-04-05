@@ -28,7 +28,12 @@ import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import lombok.Builder;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Utility class that builds an {@link ItemPrototypeFactory} without having to subclass.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @Getter
 @Builder
 public final class ItemPrototype implements ItemPrototypeFactory {

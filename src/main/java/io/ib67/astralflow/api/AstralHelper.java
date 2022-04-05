@@ -30,6 +30,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -37,40 +38,95 @@ import org.jetbrains.annotations.Nullable;
  */
 @ApiStatus.AvailableSince("0.1.0")
 public enum AstralHelper {
-    @Deprecated
-    USELESS_INSTANCE;
+    ;
 
+    /**
+     * Check if the given item is an astral item.
+     *
+     * @param itemStack The item to check
+     * @return True if the item is an astral item, false otherwise
+     */
     public static boolean isItem(ItemStack itemStack) {
         return AstralFlow.getInstance().getItemRegistry().isItem(itemStack);
     }
 
+    /**
+     * Check if there is a machine at the given location.
+     *
+     * @param location The location to check
+     * @return True if there is a machine at the given location, false otherwise
+     */
     public static boolean hasMachine(Location location) {
         return AstralFlow.getInstance().getMachineManager().isMachine(location.getBlock());
     }
 
+    /**
+     * Check if the given block is a machine.
+     *
+     * @param block The block to check
+     * @return True if the block is a machine, false otherwise
+     */
     public static boolean hasMachine(Block block) {
         return AstralFlow.getInstance().getMachineManager().isMachine(block);
     }
 
+    /**
+     * Check if the given itemstack has a given logical holder.
+     * Usually used by {@link LogicalHolder} themselves, to check if the item is their.
+     *
+     * <code>
+     * if (armorContent != null && AstralHelper.isHolder(armorContent, this)) {
+     * finalDamage = finalDamage - costedDamage;
+     * }
+     * </code>
+     *
+     * @param stack  The itemstack to check
+     * @param holder The holder to check
+     * @return True if the itemstack has the given holder, false otherwise
+     */
     public static boolean isHolder(ItemStack stack, LogicalHolder holder) {
         return AstralFlow.getInstance().getItemRegistry().getRegistry(stack).filter(e -> e.getHolder() == holder).isPresent();
     }
 
+    /**
+     * Get the machine at the given location.
+     *
+     * @param block The block to check
+     * @return The machine at the given location, or null if there is no machine at the given location
+     */
     @Nullable
     public static IMachine getMachine(Block block) {
         return AstralFlow.getInstance().getMachineManager().getAndLoadMachine(block.getLocation());
     }
 
+    /**
+     * Clean the location, removing yaw, pitch (set to 0).
+     *
+     * @param location The location to clean
+     * @return The cleaned location
+     */
+    @Contract("_ -> new")
     public static Location purifyLocation(Location location) {
         return (location.getYaw() != 0 && location.getPitch() != 0)
                 ? new Location(location.getWorld(), Location.locToBlock(location.getX()), Location.locToBlock(location.getY()), Location.locToBlock(location.getZ()))
                 : location;
     }
 
+    /**
+     * Check if the chunk is loaded
+     *
+     * @param loc The location to check
+     * @return True if the chunk is loaded, false otherwise
+     */
     public static boolean isChunkLoaded(Location loc) {
         return loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4);
     }
 
+    /**
+     * Utility to ensure context is in primary thread, very helpful to catch async operations.
+     *
+     * @param reason the reason for users.
+     */
     public static void ensureMainThread(String reason) {
         if (!Bukkit.isPrimaryThread()) {
             Log.warn("Threads", "Thread " + Thread.currentThread().getName() + " is not the main thread but operating some resources that are not thread-safe. ");
@@ -78,6 +134,13 @@ public enum AstralHelper {
         }
     }
 
+    /**
+     * Utility to compare two locations except for yaw and pitch
+     *
+     * @param l1 The first location
+     * @param l2 The second location
+     * @return True if the locations are equal, false otherwise
+     */
     // Only compares for block x-y-z
     public static boolean equalsLocationFuzzily(Location l1, Location l2) {
         return l1 != null && l2 != null

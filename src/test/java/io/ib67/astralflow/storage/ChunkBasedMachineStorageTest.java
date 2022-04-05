@@ -22,7 +22,6 @@
 package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.AstralFlow;
-import io.ib67.astralflow.api.factories.StatelessMachineFactory;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.storage.impl.MachineStorageType;
@@ -88,7 +87,7 @@ public final class ChunkBasedMachineStorageTest {
     @Test
     public void testChunkStorage() throws IOException {
         // register factory
-        AstralFlow.getInstance().getFactories().register(DummyStatefulMachine.class, new StatelessMachineFactory<>(DummyStatefulMachine::new));
+        AstralFlow.getInstance().getFactories().register(DummyStatefulMachine.class, DummyStatefulMachine::new);
         var file = AstralFlow.getInstance().asPlugin().getDataFolder().toPath().resolve("test.index");
         Files.createFile(file);
         var randomLoc = new Location(Bukkit.getWorld("world"), ThreadLocalRandom.current().nextInt(3000), 1, ThreadLocalRandom.current().nextInt(3000));

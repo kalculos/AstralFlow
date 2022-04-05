@@ -24,11 +24,16 @@ package io.ib67.astralflow.item.recipe;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+/**
+ * Determines if the given item(from player) will be a part in {@link AstralRecipe}
+ */
+@ApiStatus.AvailableSince("0.1.0")
 // actually this should be abstract class but that's too late when I found that
 public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<ItemStack> {
     short getCount();

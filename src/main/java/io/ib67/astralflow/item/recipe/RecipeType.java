@@ -21,8 +21,24 @@
 
 package io.ib67.astralflow.item.recipe;
 
+import org.jetbrains.annotations.ApiStatus;
+
+/**
+ * Kinds of recipes.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public enum RecipeType {
+    /**
+     * This kind of recipe is mainly for CraftingTable and player's inventories.
+     * Matrix: 3x3
+     */
     CRAFTING,
+    /**
+     * This kind of recipe is mainly for furnace.
+     */
     SMELTING,
+    /**
+     * This kind of recipe is mainly for brewing stand.
+     */
     BREWING
 }

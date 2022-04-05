@@ -22,6 +22,7 @@
 package io.ib67.astralflow.item.builder;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.texture.Texture;
@@ -32,6 +33,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A utility class to create & register your custom items quickly.
+ * <p>
+ * This "builder" doesn't create an item for you, you should consider using {@link ItemKey#createNewItem()} instead.
+ *
+ * @param <C> The type of category
+ * @param <T> The type of item, which determined by the category type.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class ItemBuilder<C extends ItemCategory<T>, T> {
     private final ItemCategory<T> category;
     private Texture texture;
@@ -43,6 +53,14 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
         this.category = Objects.requireNonNull(category, "Category cannot be null");
     }
 
+    /**
+     * Creating a new item builder.
+     *
+     * @param category The category of the item.
+     * @param <C>      The type of category
+     * @param <P>      The type of item, which determined by the category type.
+     * @return The new item builder.
+     */
     public static <C extends ItemCategory<P>, P>
     ItemBuilder<C, P> of(@NotNull ItemCategory<P> category) {
         return new ItemBuilder<>(category);
@@ -61,17 +79,38 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
         return this;
     }
 
+    /**
+     * Define the ore dictionary id of the item.
+     *
+     * @param oreDictId The ore dictionary id of the item.
+     * @return The item builder.
+     */
+    //todo multiple oredictid support?
     public ItemBuilder<C, T> oreDict(String oreDictId) {
         this.oreDictId = Objects.requireNonNull(oreDictId, "OreDictId cannot be null");
         return this;
     }
 
+    /**
+     * Define how can players craft this item.
+     * See {@link io.ib67.astralflow.item.recipe.kind.Shaped} , {@link io.ib67.astralflow.item.recipe.kind.Shapeless} etc.
+     *
+     * @param recipe The recipe of the item.
+     * @return The item builder.
+     */
     public ItemBuilder<C, T> recipe(AstralRecipe recipe) {
         recipes.add(recipe);
         return this;
     }
 
-
+    /**
+     * Define the item prototype of the item.
+     * Type of parameter is up to the category. For example, if you're using {@link io.ib67.astralflow.api.item.machine.MachineCategory} as the category,
+     * then you'll give us a {@link io.ib67.astralflow.api.item.machine.MachineItem} as the prototype.
+     *
+     * @param prototypeRegistry The item prototype of the item.
+     * @return The item builder.
+     */
     public WrappedBuilder prototype(T prototypeRegistry) {
         this.itemPrototype = prototypeRegistry;
         return new WrappedBuilder(this);
@@ -105,6 +144,9 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
         }
     }
 
+    /**
+     * A view for the item builder.
+     */
     public final class WrappedBuilder {
         private final ItemBuilder<C, T> builder;
 
@@ -112,6 +154,9 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
             this.builder = builder;
         }
 
+        /**
+         * Register your item into ItemRegistry.
+         */
         public void register() {
             builder.register();
         }

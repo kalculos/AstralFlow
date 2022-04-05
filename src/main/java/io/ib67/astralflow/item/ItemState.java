@@ -23,10 +23,16 @@ package io.ib67.astralflow.item;
 
 import io.ib67.astralflow.machines.IState;
 import lombok.experimental.Delegate;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * State of items. Used for persistence.
+ * Just subclass this and add your properties, we'll serialize them for you.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public abstract class ItemState implements IState, Cloneable {
 
     @Override

@@ -22,10 +22,17 @@
 package io.ib67.astralflow.api.item.armor;
 
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Map;
 
+/**
+ * Properties for armor.
+ *
+ * @param damageReduction The factor of damage reduction.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public record ArmorProperty(
-        Map<EntityDamageEvent.DamageCause, Float> damageReduction
+        Map<EntityDamageEvent.DamageCause, Float> damageReduction // todo: add a common reduction factor for all causes
 ) {
 }

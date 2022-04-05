@@ -26,12 +26,17 @@ import io.ib67.astralflow.hook.HookType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * A way to fetch {@link io.ib67.astralflow.api.item.dummy.DummyItem}s from a {@link LivingEntity}'s death
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class KillMob implements FetchMethod {
     private final Predicate<LivingEntity> entitySelector;
     private Supplier<ItemStack> producer;

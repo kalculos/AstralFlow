@@ -31,6 +31,7 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Subclass this to make your own item!
+ * This class provides basic functionality for all items.
  */
 @ApiStatus.AvailableSince("0.1.0")
 public abstract class ItemBase implements LogicalHolder {

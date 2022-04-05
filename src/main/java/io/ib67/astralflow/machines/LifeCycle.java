@@ -23,6 +23,9 @@ package io.ib67.astralflow.machines;
 
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Represents a lifecycle-able object.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface LifeCycle {
     /**

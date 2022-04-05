@@ -21,11 +21,12 @@
 
 package io.ib67.astralflow.api.item.dummy.fetch;
 
+import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.item.dummy.FetchMethod;
 import io.ib67.astralflow.hook.HookType;
-import io.ib67.astralflow.hook.event.machine.MachineBreakEvent;
 import io.ib67.astralflow.machines.IMachine;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Supplier;
 
@@ -33,7 +34,9 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * You should really consider {@link io.ib67.astralflow.api.item.machine.MachineItem} instead.
+ * A way to fetch item from breaking a machine.
  */
+@ApiStatus.AvailableSince("0.1.0")
 @Deprecated
 public final class BreakMachine implements FetchMethod {
     private final Class<? extends IMachine> machineClass;
@@ -53,14 +56,14 @@ public final class BreakMachine implements FetchMethod {
         HookType.MACHINE_BREAK.register(this::onMachineBreak);
     }
 
-    private void onMachineBreak(MachineBreakEvent event) {
+    private void onMachineBreak(MachineBlockBreakEvent event) {
         if (polymorph) {
             if (machineClass.isAssignableFrom(event.getMachine().getClass())) {
-                event.getBrokenBlock().getLocation().getWorld().dropItemNaturally(event.getBrokenBlock().getLocation(), producer.get());
+                event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), producer.get());
             }
         } else {
             if (machineClass.equals(event.getMachine().getClass())) {
-                event.getBrokenBlock().getLocation().getWorld().dropItemNaturally(event.getBrokenBlock().getLocation(), producer.get());
+                event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), producer.get());
             }
         }
     }

@@ -22,19 +22,36 @@
 package io.ib67.astralflow.extension;
 
 import io.ib67.astralflow.api.external.AstralExtension;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Optional;
 
+@ApiStatus.AvailableSince("0.1.0")
 public interface IExtensionRegistry {
+    /**
+     * Get registered extensions.
+     *
+     * @return Collection of registered extensions.
+     */
+    @NotNull
     Collection<? extends AstralExtension> getExtensions();
 
+    /**
+     * Get an extension by its name.
+     *
+     * @param name Name of the extension.
+     * @return the extension.
+     */
+    @NotNull
     Optional<AstralExtension> getExtensionByName(String name);
 
     /**
+     * Register an extension.
      * Only available in init phase. Throws IllegalStateException otherwise.
      *
-     * @param extension
+     * @param extension Extension to register.
      */
     void registerExtension(AstralExtension extension);
 }

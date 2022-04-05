@@ -24,6 +24,7 @@ package io.ib67.astralflow.machines;
 import io.ib67.astralflow.AstralFlow;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,10 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * A basic machine scaffold, subclass this to make your machines.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public abstract class AbstractMachine implements IMachine {
     @Getter
     private final MachineProperty property;
@@ -47,7 +52,7 @@ public abstract class AbstractMachine implements IMachine {
     protected void setLocation(Location location) {
         var prevLoc = getLocation().clone();
         property.setLocation(location);
-        AstralFlow.getInstance().getMachineManager().updateMachineLocation(prevLoc, this); // todo: decouple this
+        property.getManager().updateMachineLocation(prevLoc, this);
     }
 
     protected void setState(IState state) {

@@ -30,15 +30,39 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
+/**
+ * Represents a recipe that can be used to craft an item.
+ */
+//todo refactor
 @ApiStatus.AvailableSince("0.1.0")
 public interface AstralRecipe extends Keyed, Predicate<ItemStack[]>, UnaryOperator<ItemStack[]> {
+    /**
+     * The type of recipe.
+     *
+     * @return the type of recipe.
+     */
     RecipeType getRecipeType();
 
+    /**
+     * The result of the recipe.
+     *
+     * @return the result of the recipe.
+     */
     @Contract(" -> new")
     ItemStack produceResult();
 
+    /**
+     * The sample result of the recipe.
+     *
+     * @return sample
+     */
     ItemStack getPrototype();
 
+    /**
+     * Set the sample
+     *
+     * @param itemStack sample
+     */
     void setPrototype(ItemStack itemStack);
 
     IngredientChoice[] getMatrix();

@@ -21,6 +21,12 @@
 
 package io.ib67.astralflow.item;
 
+import org.jetbrains.annotations.ApiStatus;
+
+/**
+ * The class who is holding the item for a {@link ItemKey}
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public interface LogicalHolder {
     ItemKey getId();
 }
