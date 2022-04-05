@@ -24,6 +24,8 @@ AstralFlow 意图尽可能使更多人参与社区的建设中，因此我们提
 
 点击此处查看 [拓展入门](./getting_started/README.md)，但我们建议您先阅读 [用户指南](./user_guide/README.md)
 
+以及对您有帮助的 [Javadoc](https://flow.bukkit.rip/javadoc)
+
 ## 对于 服主
 
 AstralFlow 仍处于十分原始的状态，但您仍然可以作为一个普通插件安装到服务器中。
