@@ -5,14 +5,13 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Unit Tests
+name: Publish Javadoc
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
+  release:
+    types: [ published ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,17 +27,12 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
         with:
-          arguments: test
-  upload_report:
-    runs-on: ubuntu-latest
-    needs: [ build ]
-    if: always() && needs.build.result == 'failure'
-    steps:
-      - name: Upload Report
+          arguments: javadoc
+      - name: Push to gh-pages
         uses: s0/git-publish-subdir-action@develop
         env:
           REPO: self
           BRANCH: gh-pages # The branch name where you want to push the assets
-          FOLDER: build_report # The directory where your assets are generated
+          FOLDER: javadoc # The directory where your assets are generated
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-          MESSAGE: "(REPORT) Build: ({sha}) {msg}" # The commit message
+          MESSAGE: "(JAVA_DOC) Build: ({sha}) {msg}" # The commit message
