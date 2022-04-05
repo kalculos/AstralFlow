@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Objects.requireNonNull;
+
 public final class ExtensionRegistryImpl implements IExtensionRegistry {
     private final Map<String, AstralExtension> extensions = new HashMap<>();
 
@@ -44,6 +46,7 @@ public final class ExtensionRegistryImpl implements IExtensionRegistry {
 
     @Override
     public void registerExtension(AstralExtension extension) {
+        requireNonNull(extension, "extension");
         if (extensions.containsKey(extension.getInfo().extensionName())) {
             throw new IllegalArgumentException("Extension with name " + extension.getInfo().extensionName() + " already exists");
         }

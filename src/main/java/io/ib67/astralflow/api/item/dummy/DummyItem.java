@@ -29,6 +29,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Item without action.
  *
@@ -42,6 +44,9 @@ public record DummyItem(
         DummyItemProperty property
 ) {
     public DummyItem {
+        requireNonNull(key, "key");
+        requireNonNull(item, "item");
+        requireNonNull(property, "property");
         for (FetchMethod fetchMethod : property.fetchMethods()) {
             fetchMethod.init(() -> key.createNewItem().asItemStack());
         }

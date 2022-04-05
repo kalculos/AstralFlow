@@ -40,6 +40,8 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * The machine blockItem, which creates your machine when placed and destroys & save it when broken.
  */
@@ -57,6 +59,7 @@ public class MachineItem extends ItemBase {
      */
     public MachineItem(ItemKey id, ItemStack prototype, Class<? extends IMachine> typeOfMachine) {
         super(id, prototype);
+        requireNonNull(typeOfMachine, "typeOfMachine");
         this.typeOfMachine = typeOfMachine;
         if (!prototype.getType().isBlock() || !prototype.getType().isSolid()) {
             throw new IllegalArgumentException("MachineItem must be a block!");
