@@ -29,19 +29,37 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+
+/**
+ * Fired when a machine block is broke by player.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @Builder
 @Getter
 public final class MachineBlockBreakEvent extends MachineEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
+    /**
+     * The block that was broken.
+     */
     private final Block block;
+    /**
+     * The machine attached the block
+     */
     private final IMachine machine;
     @Setter
     private boolean cancelled;
+    /**
+     * Should we drop any items (affects the bukkit event)
+     */
     @Setter
     private boolean dropItem;
+    /**
+     * The player who broke the block
+     */
     @Nullable
     private Player player;
 

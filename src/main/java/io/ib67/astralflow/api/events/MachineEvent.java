@@ -23,7 +23,17 @@ package io.ib67.astralflow.api.events;
 
 import io.ib67.astralflow.machines.IMachine;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Events that related to machines.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public abstract class MachineEvent extends Event {
+    /**
+     * Get the involved machine.
+     *
+     * @return machine
+     */
     public abstract IMachine getMachine();
 }
