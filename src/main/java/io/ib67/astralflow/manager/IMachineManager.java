@@ -45,6 +45,7 @@ public interface IMachineManager {
     default void setupMachine(IMachine machine, boolean update) {
         if (update) activateMachine(machine);
         registerMachine(machine);
+        machine.onLoad();
     }
 
     /**
@@ -75,8 +76,6 @@ public interface IMachineManager {
      * @return
      */
     Collection<? extends IMachine> getLoadedMachines();
-
-    // todo: consider removal Collection<? extends Location> getAllMachines();
 
     /**
      * Register the machine and track it in storage
