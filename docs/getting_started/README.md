@@ -23,7 +23,8 @@ AstralFlow 应该作为外部代码库被导入您的项目中。
 
 主流的包管理器通常支持 Maven 仓库。
 
-1. Gradle 将下列代码添加到 `repositories {...}` 中，这段代码通常出现在 `build.gradle` 文件里。
+1. Gradle    
+   将下列代码添加到 `repositories {...}` 中，这段代码通常出现在 `build.gradle` 文件里。
 
 ```groovy
 maven {
@@ -31,14 +32,16 @@ maven {
 }
  ```
 
-2. Maven 将下列代码添加到 `<repositories> ... </repositories>` 中，这段代码通常出现在 `pom.xml` 里。
+2. Maven     
+   将下列代码添加到 `<repositories> ... </repositories>` 中，这段代码通常出现在 `pom.xml` 里。
 
- ```groovy
- < repository >
-        < id > bukkit - rip - releases < /id>
-  <name>Bukkit.RIP</ name >
-        < url > https://mvn.bukkit.rip/releases</url>
-< /repository>
+ ```xml
+
+<repository>
+    <id>Bukkit.RIP Releases</id>
+    <name>Bukkit.RIP</name>
+    <url>https://mvn.bukkit.rip/releases</url>
+</repository>
 ```
 
 > 注意：`https://mvn.bukkit.rip/releases` 即代表您使用 **正式发布版本**，若您需要使用 **预览开发版本** 请更换为 `https://mvn.bukkit.rip/snapshots`  
