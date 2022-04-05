@@ -31,6 +31,8 @@ jobs:
   copy:
     name: Copy JavaDocs
     runs-on: ubuntu-latest
+    needs: [ build ]
+    if: always() && needs.build.result == 'failure'
     steps:
       - uses: actions/checkout@v2
       - name: copy
