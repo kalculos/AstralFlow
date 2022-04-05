@@ -21,8 +21,8 @@
 
 package io.ib67.astralflow.machines;
 
-import io.ib67.astralflow.machines.factories.IMachineFactory;
-import io.ib67.astralflow.machines.factories.SimpleMachineFactory;
+import io.ib67.astralflow.machines.internal.factories.IMachineFactory;
+import io.ib67.astralflow.machines.internal.factories.SimpleMachineFactory;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.annotation.*;

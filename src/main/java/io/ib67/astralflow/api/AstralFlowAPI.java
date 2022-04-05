@@ -22,9 +22,9 @@
 package io.ib67.astralflow.api;
 
 import io.ib67.astralflow.AstralFlow;
-import io.ib67.astralflow.config.AstralFlowConfiguration;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.astralflow.internal.config.AstralFlowConfiguration;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;

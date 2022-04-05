@@ -23,7 +23,7 @@ package io.ib67.astralflow.item;
 
 import io.ib67.astralflow.item.builder.ItemCategory;
 import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.util.ItemStacks;
 import org.bukkit.Material;
 

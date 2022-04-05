@@ -22,7 +22,6 @@
 package io.ib67.astralflow.internal.config;
 
 import com.google.gson.JsonObject;
-import io.ib67.astralflow.config.AstralFlowConfiguration;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

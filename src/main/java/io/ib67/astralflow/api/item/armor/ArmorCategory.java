@@ -23,7 +23,7 @@ package io.ib67.astralflow.api.item.armor;
 
 import io.ib67.astralflow.item.builder.ItemCategory;
 import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.AvailableSince("0.1.0")

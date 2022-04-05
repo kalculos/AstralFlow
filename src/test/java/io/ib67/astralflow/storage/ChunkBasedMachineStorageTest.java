@@ -22,10 +22,10 @@
 package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
+import io.ib67.astralflow.internal.storage.impl.chunk.*;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
-import io.ib67.astralflow.storage.impl.MachineStorageType;
-import io.ib67.astralflow.storage.impl.chunk.*;
 import io.ib67.astralflow.test.TestUtil;
 import io.ib67.util.Pair;
 import org.bukkit.Bukkit;

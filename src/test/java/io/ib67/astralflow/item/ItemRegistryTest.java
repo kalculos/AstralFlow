@@ -23,9 +23,9 @@ package io.ib67.astralflow.item;
 
 import io.ib67.astralflow.item.definitions.DummyStatefulItem;
 import io.ib67.astralflow.item.definitions.DummyStatelessItem;
-import io.ib67.astralflow.item.oredict.SimpleOreDict;
-import io.ib67.astralflow.item.serialization.ItemStorageType;
-import io.ib67.astralflow.item.tag.ItemStateTag;
+import io.ib67.astralflow.item.internal.serialization.ItemStorageType;
+import io.ib67.astralflow.item.internal.tag.ItemStateTag;
+import io.ib67.astralflow.item.oredict.internal.SimpleOreDict;
 import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemRegistryImpl;

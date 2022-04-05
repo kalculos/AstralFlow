@@ -20,6 +20,6 @@
  */
 
 /**
- * Some preset for creating dummy items
+ * Some preset for creating simple armor items
  */
 package io.ib67.astralflow.api.item.armor;

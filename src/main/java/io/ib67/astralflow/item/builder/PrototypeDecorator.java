@@ -24,7 +24,7 @@ package io.ib67.astralflow.item.builder;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.LogicalHolder;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
 import lombok.Builder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

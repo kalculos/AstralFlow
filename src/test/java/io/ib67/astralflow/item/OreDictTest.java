@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.item.oredict.VanillaOreDict;
+import io.ib67.astralflow.item.oredict.internal.VanillaOreDict;
 import io.ib67.astralflow.test.TestUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

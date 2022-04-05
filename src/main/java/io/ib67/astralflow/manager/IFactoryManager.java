@@ -22,7 +22,7 @@
 package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.factories.IMachineFactory;
+import io.ib67.astralflow.machines.internal.factories.IMachineFactory;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;

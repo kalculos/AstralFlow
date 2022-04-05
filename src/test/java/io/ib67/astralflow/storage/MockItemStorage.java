@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.storage;
 
+import io.ib67.astralflow.internal.storage.KeyedStorage;
 import io.ib67.astralflow.item.ItemState;
 
 import java.util.Collection;
