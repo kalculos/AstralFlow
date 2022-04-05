@@ -52,7 +52,7 @@ public abstract class AbstractMachine implements IMachine {
     protected void setLocation(Location location) {
         var prevLoc = getLocation().clone();
         property.setLocation(location);
-        AstralFlow.getInstance().getMachineManager().updateMachineLocation(prevLoc, this); // todo: decouple this
+        property.getManager().updateMachineLocation(prevLoc, this);
     }
 
     protected void setState(IState state) {
