@@ -32,19 +32,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public final class MachineListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST) // latest to know
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true) // latest to know
     private void onInteract(PlayerInteractMachineEvent event) {
         if (event.getMachine() instanceof Interactive) {
             ((Interactive) event.getMachine()).onInteract(event.getClickType(), event.getPlayer(), event.getItemInHand());
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void onBreak(MachineBlockBreakEvent event) {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.MACHINE_BREAK, event));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlace(MachineBlockPlaceEvent event) {
         AstralFlow.getInstance().callHooks(HookType.MACHINE_PLACE, event);
     }

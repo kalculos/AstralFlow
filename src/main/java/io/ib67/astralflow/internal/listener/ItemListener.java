@@ -32,17 +32,17 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 
 public final class ItemListener implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemConsume(PlayerItemConsumeEvent event) {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_CONSUME, event));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemDamaged(PlayerItemDamageEvent event) {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_DAMAGE, event));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInteractBlock(PlayerInteractEvent event) {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT, event));
         if (event.getItem() == null || event.getItem().getType() == Material.AIR) {
@@ -54,7 +54,7 @@ public final class ItemListener implements Listener {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT_BLOCK, event));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInteractEntity(PlayerInteractAtEntityEvent event) {
         if (event.getPlayer().getEquipment() == null) {
             return;

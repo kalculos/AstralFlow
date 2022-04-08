@@ -40,12 +40,12 @@ public final class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         AstralFlow.getInstance().callHooks(HookType.PLAYER_CHAT, event);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         AstralFlow.getInstance().callHooks(HookType.PLAYER_MOVE, event);
     }

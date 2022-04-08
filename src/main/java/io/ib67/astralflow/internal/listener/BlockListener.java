@@ -53,7 +53,7 @@ import java.util.Comparator;
 public final class BlockListener implements Listener {
     private final AstralFlowAPI flow;
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         event.setCancelled(
                 flow.callHooks(
@@ -74,7 +74,8 @@ public final class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH) // plugins like resident may cancell this event
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    // plugins like residence may cancell this event
     public void onBlockInteraction(PlayerInteractEvent event) {
         if (!event.hasBlock()) {
             return;
@@ -92,7 +93,7 @@ public final class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         var clickedBlock = event.getBlock();
         if (flow.getMachineManager().isMachine(clickedBlock)) {
@@ -128,12 +129,12 @@ public final class BlockListener implements Listener {
         else throw new IllegalArgumentException("Invalid direction");
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPistonPush(BlockPistonExtendEvent extendEvent) {
         extendEvent.setCancelled(onBlockMove(extendEvent.getBlocks(), extendEvent.getDirection()));
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPistonPull(BlockPistonRetractEvent event) {
         event.setCancelled(onBlockMove(event.getBlocks(), event.getDirection()));
     }

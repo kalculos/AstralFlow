@@ -37,22 +37,22 @@ public final class EntityListener implements Listener {
         this.flow = flow;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
         flow.callHooks(HookType.ENTITY_DAMAGE_BY_ENTITY, event);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onProjHit(ProjectileHitEvent event) {
         flow.callHooks(HookType.PROJECTILE_HIT, event);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         flow.callHooks(HookType.ENTITY_DEATH, event);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         flow.callHooks(HookType.ENTITY_DAMAGE, event);
     }

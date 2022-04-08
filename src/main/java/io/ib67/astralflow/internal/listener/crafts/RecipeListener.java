@@ -45,7 +45,7 @@ public final class RecipeListener implements Listener {
 
     private final Map<Player, AstralRecipe> recipeSessions = new WeakHashMap<>();
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCraftPrepare(PrepareItemCraftEvent event) {
         boolean override = AstralFlow.getInstance().getSettings().getRecipeSetting().isOverrideVanillaRecipe();
         if (event.getRecipe() != null && !override) {
@@ -61,12 +61,12 @@ public final class RecipeListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTableClose(InventoryCloseEvent event) {
         if (event.getInventory() instanceof CraftingInventory) recipeSessions.remove((Player) event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCraftItem(InventoryClickEvent event) {
         if (event.getClickedInventory() instanceof CraftingInventory) {
             var inv = (CraftingInventory) event.getClickedInventory();
