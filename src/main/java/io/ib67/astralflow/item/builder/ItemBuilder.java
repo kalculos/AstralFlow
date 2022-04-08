@@ -31,7 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * <p>A utility class to create {@literal & } register your custom items quickly.</p>
@@ -50,7 +51,7 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
     private final List<AstralRecipe> recipes = new ArrayList<>();
 
     private ItemBuilder(ItemCategory<T> category) {
-        this.category = Objects.requireNonNull(category, "Category cannot be null");
+        this.category = requireNonNull(category, "Category cannot be null");
     }
 
     /**
@@ -87,7 +88,7 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
      */
     //todo multiple oredictid support?
     public ItemBuilder<C, T> oreDict(String oreDictId) {
-        this.oreDictId = Objects.requireNonNull(oreDictId, "OreDictId cannot be null");
+        this.oreDictId = requireNonNull(oreDictId, "OreDictId cannot be null");
         return this;
     }
 
@@ -99,6 +100,7 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
      * @return The item builder.
      */
     public ItemBuilder<C, T> recipe(AstralRecipe recipe) {
+        requireNonNull(recipe, "Recipe cannot be null");
         recipes.add(recipe);
         return this;
     }
@@ -112,6 +114,7 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
      * @return The item builder.
      */
     public WrappedBuilder prototype(T prototypeRegistry) {
+        requireNonNull(prototypeRegistry, "Item prototype cannot be null");
         this.itemPrototype = prototypeRegistry;
         return new WrappedBuilder(this);
     }

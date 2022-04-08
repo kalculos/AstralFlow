@@ -47,6 +47,7 @@ public final class ExtensionRegistryImpl implements IExtensionRegistry {
     @Override
     public void registerExtension(AstralExtension extension) {
         requireNonNull(extension, "extension");
+        requireNonNull(extension.getInfo(), "extension.getInfo()");
         if (extensions.containsKey(extension.getInfo().extensionName())) {
             throw new IllegalArgumentException("Extension with name " + extension.getInfo().extensionName() + " already exists");
         }
