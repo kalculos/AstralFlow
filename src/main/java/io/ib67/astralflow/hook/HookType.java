@@ -25,6 +25,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.MachineBlockPlaceEvent;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -50,53 +51,59 @@ import java.util.function.Consumer;
  */
 // Constants. 提供一个统一一的监听系统
 @SuppressWarnings("unused")
+@RequiredArgsConstructor
 @ApiStatus.AvailableSince("0.1.0")
 public final class HookType<T> {
     /**
      * Called when plugin is shutting down
      */
-    public static final HookType<?> PLUGIN_SHUTDOWN = new HookType<>();
+    public static final HookType<?> PLUGIN_SHUTDOWN = new HookType<>("Plugin Shutdown");
     /**
      * Called when you should save your data, periodic.
      */
-    public static final HookType<SaveDataEvent> SAVE_DATA = new HookType<>();
+    public static final HookType<SaveDataEvent> SAVE_DATA = new HookType<>("Save Data");
     /**
      * Called when astralflow is ready for all.
      */
-    public static final HookType<?> ASTRALFLOW_STARTUP_COMPLETED = new HookType<>();
+    public static final HookType<?> ASTRALFLOW_STARTUP_COMPLETED = new HookType<>("AstralFlow Startup Completed");
 
 
-    public static final HookType<PlayerItemConsumeEvent> ITEM_CONSUME = new HookType<>();
-    public static final HookType<PlayerItemDamageEvent> ITEM_DAMAGE = new HookType<>();
-    public static final HookType<PlayerInteractEvent> ITEM_USE = new HookType<>();
-    public static final HookType<PlayerInteractEvent> PLAYER_INTERACT = new HookType<>();
-    public static final HookType<PlayerInteractEntityEvent> PLAYER_INTERACT_ENTITY = new HookType<>();
-    public static final HookType<PlayerInteractEvent> PLAYER_INTERACT_BLOCK = new HookType<>();
-    public static final HookType<PlayerItemBreakEvent> ITEM_BROKEN = new HookType<>();
-    public static final HookType<EntityDeathEvent> ENTITY_DEATH = new HookType<>();
+    public static final HookType<PlayerItemConsumeEvent> ITEM_CONSUME = new HookType<>("Item Consume");
+    public static final HookType<PlayerItemDamageEvent> ITEM_DAMAGE = new HookType<>("Item Damage");
+    public static final HookType<PlayerInteractEvent> ITEM_USE = new HookType<>("Item Use");
+    public static final HookType<PlayerInteractEvent> PLAYER_INTERACT = new HookType<>("Player Interact");
+    public static final HookType<PlayerInteractEntityEvent> PLAYER_INTERACT_ENTITY = new HookType<>("Player Interact Entity");
+    public static final HookType<PlayerInteractEvent> PLAYER_INTERACT_BLOCK = new HookType<>("Player Interact Block");
+    public static final HookType<PlayerItemBreakEvent> ITEM_BROKEN = new HookType<>("Item Broken");
+    public static final HookType<EntityDeathEvent> ENTITY_DEATH = new HookType<>("Entity Death");
     // For chunks
-    public static final HookType<ChunkLoadEvent> CHUNK_LOAD = new HookType<>();
-    public static final HookType<ChunkUnloadEvent> CHUNK_UNLOAD = new HookType<>();
+    public static final HookType<ChunkLoadEvent> CHUNK_LOAD = new HookType<>("Chunk Load");
+    public static final HookType<ChunkUnloadEvent> CHUNK_UNLOAD = new HookType<>("Chunk Unload");
 
     // For machines
     /**
      * Called when a machine is broken by player, etc
      */
-    public static final HookType<MachineBlockBreakEvent> MACHINE_BREAK = new HookType<>();
+    public static final HookType<MachineBlockBreakEvent> MACHINE_BREAK = new HookType<>("Machine Break");
     /**
      * Called when a machine is placed.
      */
-    public static final HookType<MachineBlockPlaceEvent> MACHINE_PLACE = new HookType<>();
+    public static final HookType<MachineBlockPlaceEvent> MACHINE_PLACE = new HookType<>("Machine Place");
 
-    public static final HookType<EntityDamageByEntityEvent> ENTITY_DAMAGE_BY_ENTITY = new HookType<>();
-    public static final HookType<EntityDamageEvent> ENTITY_DAMAGE = new HookType<>();
-    public static final HookType<AsyncPlayerChatEvent> PLAYER_CHAT = new HookType<>();
-    public static final HookType<PlayerMoveEvent> PLAYER_MOVE = new HookType<>();
+    public static final HookType<EntityDamageByEntityEvent> ENTITY_DAMAGE_BY_ENTITY = new HookType<>("Entity Damage By Entity");
+    public static final HookType<EntityDamageEvent> ENTITY_DAMAGE = new HookType<>("Entity Damage");
+    public static final HookType<AsyncPlayerChatEvent> PLAYER_CHAT = new HookType<>("Player Chat");
+    public static final HookType<PlayerMoveEvent> PLAYER_MOVE = new HookType<>("Player Move");
 
     // For blocks
-    public static final HookType<BlockBreakEvent> BLOCK_BREAK = new HookType<>();
-    public static final HookType<BlockPlaceEvent> BLOCK_PLACE = new HookType<>();
-    public static final HookType<ProjectileHitEvent> PROJECTILE_HIT = new HookType<>();
+    public static final HookType<BlockBreakEvent> BLOCK_BREAK = new HookType<>("Block Break");
+    public static final HookType<BlockPlaceEvent> BLOCK_PLACE = new HookType<>("Block Place");
+    public static final HookType<ProjectileHitEvent> PROJECTILE_HIT = new HookType<>("Projectile Hit");
+
+    /**
+     * A name for exceptions.
+     */
+    private final String name;
 
     /**
      * Register your callback. We'll call your callback when event is triggered.
