@@ -32,6 +32,7 @@ import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.machines.Tickless;
+import io.ib67.astralflow.util.Blocks;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -61,8 +62,8 @@ public class MachineItem extends ItemBase {
         super(id, prototype);
         requireNonNull(typeOfMachine, "typeOfMachine");
         this.typeOfMachine = typeOfMachine;
-        if (!prototype.getType().isBlock() || !prototype.getType().isSolid()) {
-            throw new IllegalArgumentException("MachineItem must be a block!");
+        if (!prototype.getType().isBlock() || Blocks.isNonPhysical(prototype.getType())) {
+            throw new IllegalArgumentException("MachineItem must be a solid and non-physical block!");
         }
         HookType.BLOCK_PLACE.register(this::onPlace);
         HookType.MACHINE_BREAK.register(this::onBreak);
