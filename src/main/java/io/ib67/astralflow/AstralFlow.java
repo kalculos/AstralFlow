@@ -202,7 +202,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 Log.warn(LogCategory.INIT, "Reloading chunks to fix unregistered machines.");
                 for (World world : Bukkit.getWorlds())
                     for (Chunk chunk : world.getLoadedChunks())
-                        chunk.unload();
+                        configuration.getStorage().initChunk(chunk);
             }
             for (Consumer<?> hook : getHooks(HookType.ASTRALFLOW_STARTUP_COMPLETED)) {
                 hook.accept(null);
