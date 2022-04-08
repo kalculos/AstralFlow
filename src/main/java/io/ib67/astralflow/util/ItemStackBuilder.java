@@ -29,6 +29,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 public final class ItemStackBuilder {
     private Material material = Material.AIR;
     private List<String> lore = new ArrayList<>();
@@ -44,11 +46,16 @@ public final class ItemStackBuilder {
     }
 
     public ItemStackBuilder material(Material material) {
+        requireNonNull(material, "Material cannot be null");
+        if(material.isAir()){
+            throw new IllegalArgumentException("Material cannot be AIR");
+        }
         this.material = material;
         return this;
     }
 
     public ItemStackBuilder lore(String... strings) {
+        requireNonNull(strings, "Lore cannot be null");
         for (String string : strings) {
             lore.add(Text.colored(string));
         }
@@ -56,16 +63,21 @@ public final class ItemStackBuilder {
     }
 
     public ItemStackBuilder customModelId(int customModelId) {
+        if(customModelId < 0){
+            throw new IllegalArgumentException("Custom model id cannot be negative");
+        }
         this.customModelId = customModelId;
         return this;
     }
 
     public ItemStackBuilder displayName(String displayName) {
+        requireNonNull(displayName, "Display name cannot be null");
         this.displayName = Text.colored(displayName);
         return this;
     }
 
     public ItemStackBuilder itemFlags(ItemFlag... flags) {
+        requireNonNull(flags, "Flags cannot be null");
         for (ItemFlag flag : flags) {
             itemFlags.add(flag);
         }
