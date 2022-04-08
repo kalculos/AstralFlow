@@ -36,7 +36,7 @@ import java.util.WeakHashMap;
 public final class ItemKeys {
     private final Map<String, ItemKey> cachedItemKeys = new WeakHashMap<>();
 
-    public static final ItemKey from(String namespace, String id) {
+    public static ItemKey from(String namespace, String id) {
         Objects.requireNonNull(namespace, "Namespace cannot be null");
         Objects.requireNonNull(id, "ID cannot be null");
         return cachedItemKeys.computeIfAbsent(namespace + ":" + id, k -> new SimpleItemKey(id, namespace));
