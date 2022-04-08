@@ -62,7 +62,7 @@ public class MachineItem extends ItemBase {
         super(id, prototype);
         requireNonNull(typeOfMachine, "typeOfMachine");
         this.typeOfMachine = typeOfMachine;
-        if (!prototype.getType().isBlock() || Blocks.isNonPhysical(prototype.getType())) {
+        if (!prototype.getType().isBlock() || !Blocks.isNonPhysical(prototype.getType())) {
             throw new IllegalArgumentException("MachineItem must be a solid and non-physical block!");
         }
         HookType.BLOCK_PLACE.register(this::onPlace);
