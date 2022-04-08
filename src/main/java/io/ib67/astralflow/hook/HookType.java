@@ -25,6 +25,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.MachineBlockPlaceEvent;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -103,6 +104,7 @@ public final class HookType<T> {
     /**
      * A name for exceptions.
      */
+    @Getter
     private final String name;
 
     /**
@@ -122,5 +124,10 @@ public final class HookType<T> {
      */
     public void register(Runnable acceptor) {
         AstralFlow.getInstance().addHook(this, t -> acceptor.run());
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
