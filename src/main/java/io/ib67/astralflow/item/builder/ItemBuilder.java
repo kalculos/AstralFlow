@@ -23,7 +23,7 @@ package io.ib67.astralflow.item.builder;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.item.ItemKey;
-import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.texture.Texture;
 import org.jetbrains.annotations.ApiStatus;
