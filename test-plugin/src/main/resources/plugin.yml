@@ -12,3 +12,5 @@ commands:
     description: give a random state item
   lookup_simple_state:
     description: lookup simple state
+  jbwool:
+    description: give jebwool

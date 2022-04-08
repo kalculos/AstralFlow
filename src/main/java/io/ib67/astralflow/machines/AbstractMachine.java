@@ -50,9 +50,7 @@ public abstract class AbstractMachine implements IMachine {
     }
 
     protected void setLocation(Location location) {
-        var prevLoc = getLocation().clone();
         property.setLocation(location);
-        property.getManager().updateMachineLocation(prevLoc, this);
     }
 
     protected void setState(IState state) {

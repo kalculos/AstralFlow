@@ -191,13 +191,13 @@ public final class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public void updateMachineLocation(Location previousLocation, IMachine machine) {
+    public void updateMachineLocation(Location previousLocation,Location newLocation, IMachine machine) {
         Objects.requireNonNull(previousLocation, "Previous location cannot be null");
         Objects.requireNonNull(machine, "Machine cannot be null");
         if (!isRegistered(machine)) {
             throw new IllegalArgumentException("Machine " + machine + " is not registered");
         }
         machineStorage.remove(AstralHelper.purifyLocation(previousLocation));
-        machineStorage.save(machine.getLocation(), machine);
+        machineStorage.save(AstralHelper.purifyLocation(newLocation), machine);
     }
 }
