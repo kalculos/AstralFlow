@@ -128,7 +128,7 @@ public interface IMachineManager {
      */
     boolean isRegistered(IMachine machine);
 
-    void updateMachineLocation(Location previousLocation, IMachine machine);
+    void updateMachineLocation(Location previousLocation,Location newLocation, IMachine machine);
 
     /**
      * Helper method to remove a machine from storage and tick queue.

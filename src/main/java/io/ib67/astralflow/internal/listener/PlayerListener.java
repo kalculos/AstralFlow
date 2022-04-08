@@ -23,6 +23,7 @@ package io.ib67.astralflow.internal.listener;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
+import io.ib67.util.bukkit.Text;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,7 +36,7 @@ public final class PlayerListener implements Listener {
     public void onPlayerLogin(AsyncPlayerPreLoginEvent event) {
         if (!AstralFlow.isInitialized() && !AstralFlow.getInstance().getSettings().isAllowPlayerJoinBeforeInit()) {
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-            event.setKickMessage(AstralFlow.getInstance().getSettings().getLocale().serverIsInitializing);
+            event.setKickMessage(Text.colored(AstralFlow.getInstance().getSettings().getLocale().serverIsInitializing));
         }
     }
 

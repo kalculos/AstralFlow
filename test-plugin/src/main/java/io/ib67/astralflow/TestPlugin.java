@@ -64,6 +64,10 @@ public final class TestPlugin extends JavaPlugin {
             var simpleState = AstralFlow.getInstance().getItemRegistry().getState(itemInHand);
             if (simpleState == null) return false;
             player.sendMessage(new GsonBuilder().setPrettyPrinting().create().toJson(simpleState));
+        } else if (label.equalsIgnoreCase("jbwool")) {
+            if (!(sender instanceof Player)) return false;
+            var player = (Player) sender;
+            player.getInventory().addItem(TestItems.JEB_WOOL.createNewItem().asItemStack());
         }
         return true;
     }

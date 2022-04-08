@@ -32,6 +32,7 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.trait.Pushable;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,6 +43,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -134,9 +136,16 @@ public final class BlockListener implements Listener {
             if (pulling) comparator = comparator.reversed();
             machines.stream()
                     .sorted(comparator)
+                    .filter(e -> e instanceof Pushable)
                     .map(e -> (Pushable) e)
-                    .forEach(e -> e.push(((IMachine) e).getLocation().add(direction), direction));
+                    .forEach(e -> handleMachineMove(e,((IMachine) e).getLocation().clone().add(direction), direction));
             return false;
         }
+    }
+    private static void handleMachineMove(@NotNull Pushable mach, Location loc, Vector direction) {
+        var machine = (IMachine) mach;
+        var prevLoc = AstralHelper.purifyLocation(machine.getLocation().clone());
+        mach.push(loc,direction);
+        machine.getProperty().getManager().updateMachineLocation(prevLoc,loc,machine);
     }
 }

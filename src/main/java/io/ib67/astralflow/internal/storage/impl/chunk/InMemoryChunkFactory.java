@@ -85,7 +85,6 @@ public final class InMemoryChunkFactory {
                 var location = entry.getKey();
                 var type = entry.getValue();
                 var machineData = machines.getData(location);
-
                 try {
                     var machine = getSerializer(machineData.key).fromData(machineData.value);
                     machinesMap.put(location, machine);
