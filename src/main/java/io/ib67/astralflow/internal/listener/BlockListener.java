@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -113,17 +114,31 @@ public final class BlockListener implements Listener {
         }
     }
 
+    // for slime blocks. Thanks to `Plugindustry/WheelCore` for their codes.
+    private static Comparator<IMachine> getSuitableComparator(BlockFace direction) {
+        if (direction.getModX() == 1)
+            return Comparator.<IMachine>comparingDouble(e -> e.getLocation().getX()).reversed();
+        else if (direction.getModX() == -1) return Comparator.comparingDouble(e -> e.getLocation().getX());
+        else if (direction.getModY() == 1)
+            return Comparator.<IMachine>comparingDouble(e -> e.getLocation().getY()).reversed();
+        else if (direction.getModY() == -1) return Comparator.comparingDouble(e -> e.getLocation().getY());
+        else if (direction.getModZ() == 1)
+            return Comparator.<IMachine>comparingDouble(e -> e.getLocation().getZ()).reversed();
+        else if (direction.getModZ() == -1) return Comparator.comparingDouble(e -> e.getLocation().getZ());
+        else throw new IllegalArgumentException("Invalid direction");
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPistonPush(BlockPistonExtendEvent extendEvent) {
-        extendEvent.setCancelled(onBlockMove(extendEvent.getBlock(), extendEvent.getBlocks(), extendEvent.getDirection().getDirection(), false));
+        extendEvent.setCancelled(onBlockMove(extendEvent.getBlocks(), extendEvent.getDirection()));
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPistonPull(BlockPistonRetractEvent event) {
-        event.setCancelled(onBlockMove(event.getBlock(), event.getBlocks(), event.getDirection().getDirection(), true));
+        event.setCancelled(onBlockMove(event.getBlocks(), event.getDirection()));
     }
 
-    private boolean onBlockMove(Block piston, Collection<? extends Block> movingBlocks, Vector direction, boolean pulling) {
+    private boolean onBlockMove(Collection<? extends Block> movingBlocks, BlockFace direction) {
         var machines = movingBlocks.stream().filter(AstralHelper::hasMachine).map(AstralHelper::getMachine).toList();
         if (machines.isEmpty()) {
             return false;
@@ -132,13 +147,12 @@ public final class BlockListener implements Listener {
             return true;
         } else {
             // all are pushable
-            var comparator = Comparator.<IMachine>comparingDouble(it -> it.getLocation().distanceSquared(piston.getLocation()));
-            if (pulling) comparator = comparator.reversed();
+            var comparator = getSuitableComparator(direction);
             machines.stream()
                     .sorted(comparator)
                     .filter(e -> e instanceof Pushable)
                     .map(e -> (Pushable) e)
-                    .forEach(e -> handleMachineMove(e,((IMachine) e).getLocation().clone().add(direction), direction));
+                    .forEach(e -> handleMachineMove(e, ((IMachine) e).getLocation().clone().add(direction.getDirection()), direction.getDirection()));
             return false;
         }
     }
