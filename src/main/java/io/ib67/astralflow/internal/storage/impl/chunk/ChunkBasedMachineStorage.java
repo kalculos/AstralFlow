@@ -26,6 +26,8 @@ import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.internal.storage.IMachineStorage;
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
+import io.ib67.astralflow.internal.storage.impl.chunk.tag.MachineDataTag;
+import io.ib67.astralflow.internal.storage.impl.chunk.tag.MachineIndexTag;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;

@@ -23,6 +23,8 @@ package io.ib67.astralflow.internal.storage.impl.chunk;
 
 import io.ib67.astralflow.internal.storage.MachineSerializer;
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
+import io.ib67.astralflow.internal.storage.impl.chunk.tag.MachineDataTag;
+import io.ib67.astralflow.internal.storage.impl.chunk.tag.MachineIndexTag;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
@@ -70,10 +72,13 @@ public final class InMemoryChunkFactory {
 
         // load index
         var chunksIndex = pdc.get(machineIndexKey, MachineIndexTag.INSTANCE);
-        if (!chunksIndex.isHasMachines()) {
+        if (chunksIndex == null || !chunksIndex.isHasMachines()) {
             return new InMemoryChunk(chunksIndex, new MachineData(chunk.getX(), chunk.getZ()), new HashMap<>(), storageType, getSerializer(storageType));
         } else {
             var machines = pdc.get(machineDataKey, MachineDataTag.INSTANCE);
+            if(machines == null){
+                throw new IllegalStateException("Machine data tag is missing");
+            }
             var machinesMap = new HashMap<Location, IMachine>();
             // initialize machines.
             for (Map.Entry<Location, String> entry : chunksIndex.getEntries()) {
@@ -81,9 +86,12 @@ public final class InMemoryChunkFactory {
                 var type = entry.getValue();
                 var machineData = machines.getData(location);
 
-                var machine = getSerializer(machineData.key).fromData(machineData.value);
-                location = machine.getLocation(); // to keep same reference with the machine state.
-                machinesMap.put(location, machine);
+                try {
+                    var machine = getSerializer(machineData.key).fromData(machineData.value);
+                    machinesMap.put(location, machine);
+                }catch(Throwable t){
+                    throw new IllegalStateException("Failed to load machine at " + location, t);
+                }
             }
             return new InMemoryChunk(chunksIndex, machines, machinesMap, storageType, getSerializer(storageType));
         }
