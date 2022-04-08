@@ -29,7 +29,13 @@ import org.jetbrains.annotations.ApiStatus;
  */
 @ApiStatus.AvailableSince("0.1.0")
 public interface IState {
+    @SuppressWarnings("unused")
+    IState EMPTY = new EmptyState();
     default Class<? extends IState> getType() {
         return this.getClass();
+    }
+
+    class EmptyState implements IState {
+
     }
 }
