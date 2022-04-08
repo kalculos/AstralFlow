@@ -43,13 +43,10 @@ jobs:
           distribution: 'temurin'
       - name: Build with Gradle
         run: |
-          | chmod +x ./gradlew 
-          | ./gradlew test
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.0
+          chmod +x ./gradlew 
+          ./gradlew test
+      - name: Unit tests results
+        uses: actions/upload-artifact@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          clean: true
-          folder: build/reports/tests/test
-          target-folder: buildReports
+          name: unit-tests-results
+          path: build/reports/tests/test
