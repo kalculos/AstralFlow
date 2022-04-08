@@ -38,10 +38,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +50,7 @@ import java.util.Comparator;
 public final class BlockListener implements Listener {
     private final AstralFlowAPI flow;
 
+    // block placements.
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         event.setCancelled(
@@ -92,6 +90,8 @@ public final class BlockListener implements Listener {
         }
     }
 
+    // block destroy
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreak(BlockBreakEvent event) {
         var clickedBlock = event.getBlock();
@@ -112,6 +112,40 @@ public final class BlockListener implements Listener {
             }
             event.setDropItems(evt.isDropItem());
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockBurnt(BlockBurnEvent event) {
+        var evt = new BlockBreakEvent(event.getBlock(), null);
+        onBlockBreak(evt);
+        if (evt.isCancelled()) {
+            event.setCancelled(true);
+        }
+        flow.callHooks(HookType.BLOCK_BURNT, event);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockFade(BlockFadeEvent event) {
+        var evt = new BlockBreakEvent(event.getBlock(), null);
+        onBlockBreak(evt);
+        if (evt.isCancelled()) {
+            event.setCancelled(true);
+        }
+        flow.callHooks(HookType.BLOCK_FADE, event);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockExplode(BlockExplodeEvent event) {
+        var it = event.blockList().iterator();
+        while (it.hasNext()) {
+            var block = it.next();
+            var evt = new BlockBreakEvent(block, null);
+            onBlockBreak(evt);
+            if (evt.isCancelled()) {
+                it.remove();
+            }
+        }
+        flow.callHooks(HookType.BLOCK_EXPLODE, event);
     }
 
     // for slime blocks. Thanks to `Plugindustry/WheelCore` for their codes.

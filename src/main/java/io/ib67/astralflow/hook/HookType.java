@@ -27,8 +27,7 @@ import io.ib67.astralflow.api.events.MachineBlockPlaceEvent;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -47,6 +46,7 @@ import java.util.function.Consumer;
  * <code>
  * HookType.XXX.register( event -> {xxxx} );
  * </code>
+ * One hook can be called in several conditions, such as (BlockBreakEvent, BlockBurnEvent) -> BLOCK_BREAK
  *
  * @param <T>
  */
@@ -100,6 +100,18 @@ public final class HookType<T> {
     public static final HookType<BlockBreakEvent> BLOCK_BREAK = new HookType<>("Block Break");
     public static final HookType<BlockPlaceEvent> BLOCK_PLACE = new HookType<>("Block Place");
     public static final HookType<ProjectileHitEvent> PROJECTILE_HIT = new HookType<>("Projectile Hit");
+    /**
+     * It also calls {@link #BLOCK_BREAK}
+     */
+    public static final HookType<BlockBurnEvent> BLOCK_BURNT = new HookType<>("Block Burn");
+    /**
+     * It also calls {@link #BLOCK_BREAK}
+     */
+    public static final HookType<BlockFadeEvent> BLOCK_FADE = new HookType<>("Block Fade");
+    /**
+     * It also calls {@link #BLOCK_BREAK}
+     */
+    public static final HookType<BlockExplodeEvent> BLOCK_EXPLODE = new HookType<>("Block Explode");
 
     /**
      * A name for exceptions.
