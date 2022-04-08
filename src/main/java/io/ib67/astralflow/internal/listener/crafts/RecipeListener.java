@@ -73,8 +73,12 @@ public final class RecipeListener implements Listener {
             if (event.getSlotType() == InventoryType.SlotType.RESULT && inv.getResult() != null) {
                 var recipe = recipeSessions.get((Player) event.getWhoClicked());
                 if (recipe != null) {
+                    if (event.isShiftClick()) {
+                        event.setCancelled(true);
+                        // custom shift logics.
+                        return;
+                    }
                     event.setCurrentItem(recipe.produceResult());
-                    ;
                     //inv.setMatrix(recipe.apply(inv.getMatrix()));
                 }
             }
