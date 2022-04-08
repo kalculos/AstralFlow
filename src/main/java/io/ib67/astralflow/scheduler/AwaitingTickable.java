@@ -31,8 +31,12 @@ public final class AwaitingTickable<T extends Tickable<T>> {
 
     @SuppressWarnings("all")
     public void tick() {
-        if (receipt.tick(tickable)) {
-            tickable.update();
+        try {
+            if (receipt.tick(tickable)) {
+                tickable.update();
+            }
+        }catch(Throwable t){
+            new IllegalStateException("Task "+tickable.getClass().getName()+" threw an exception", t).printStackTrace(); // issue-113: avoid unsafe user code disturbing the scheduler
         }
     }
 
@@ -40,7 +44,7 @@ public final class AwaitingTickable<T extends Tickable<T>> {
         if (receipt.isDropped()) {
             return true;
         }
-        tick();
+            tick();
         return false;
     }
 }
