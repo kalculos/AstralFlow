@@ -66,9 +66,16 @@ public final class InMemoryChunk {
     }
 
     public void saveMachine(Location loc, IMachine state) {
-        machines.put(loc, state);
-        index.addMachine(state);
-        machineDatas.save(loc, defaultStorageType, serializer.toData(state));
+
+        var previousMachine = machines.put(loc, state);
+        index.addMachine(loc,state);
+        try {
+            machineDatas.save(loc, defaultStorageType, serializer.toData(state));
+        }catch(Throwable throwable){
+            machines.put(loc, previousMachine);
+            index.removeMachine(loc);
+            throw new IllegalArgumentException("Failed to save machine, operation is rolled back", throwable);
+        }
     }
 
     public void removeMachine(Location loc) {

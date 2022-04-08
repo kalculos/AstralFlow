@@ -25,7 +25,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.item.ItemBase;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.item.ItemKey;
-import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;

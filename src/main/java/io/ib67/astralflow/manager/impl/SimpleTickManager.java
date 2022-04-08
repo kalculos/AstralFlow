@@ -28,19 +28,17 @@ import io.ib67.astralflow.scheduler.Scheduler;
 import io.ib67.astralflow.scheduler.SchedulerAdapter;
 import io.ib67.astralflow.scheduler.SyncScheduler;
 import io.ib67.astralflow.scheduler.TickReceipt;
+import io.ib67.astralflow.util.WeakHashSet;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.ref.Reference;
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,8 +49,7 @@ import java.util.stream.Stream;
 @ApiStatus.AvailableSince("0.1.0")
 public final class SimpleTickManager implements ITickManager {
     private final SchedulerAdapter adapter;
-    private final ReferenceQueue<TickReceipt<?>> refTrashQueue = new ReferenceQueue<>();
-    private final List<WeakReference<TickReceipt<?>>> receipts = new ArrayList<>();
+    private final Set<TickReceipt<?>> receipts = new WeakHashSet<>();
 
     /**
      * 获取到Scheduler/调度器对象
@@ -66,15 +63,7 @@ public final class SimpleTickManager implements ITickManager {
         Bukkit.getScheduler().runTaskLater(AstralFlow.getInstance().asPlugin(), () -> {
             adapter.runTaskTimer(AstralFlow.getInstance().asPlugin(), 0L, 1L);
         }, 1L);
-        Bukkit.getScheduler().runTaskTimer(AstralFlow.getInstance().asPlugin(), () -> {
-            // Remove trashes.
-            var ref = refTrashQueue.poll();
-            while (ref != null) {
-                Reference<? extends TickReceipt<?>> finalRef = ref;
-                receipts.removeIf(i -> i.get() == finalRef.get());
-                ref = refTrashQueue.poll();
-            }
-        }, 0L, 300 * 20L);
+
     }
 
     @Override
@@ -92,7 +81,7 @@ public final class SimpleTickManager implements ITickManager {
      */
     @Deprecated
     public void addReceipt(TickReceipt<?> tickReceipt) {
-        receipts.add(new WeakReference<>(tickReceipt));
+        receipts.add(tickReceipt);
     }
 
     /**
@@ -102,7 +91,7 @@ public final class SimpleTickManager implements ITickManager {
      * @return
      */
     public Stream<? extends TickReceipt<?>> receiptStream() {
-        return receipts.stream().map(e -> e.get()).filter(Objects::nonNull).filter(TickReceipt::isDropped);
+        return receipts.stream().filter(Objects::nonNull).filter(TickReceipt::isDropped);
 
     }
 
@@ -149,7 +138,7 @@ public final class SimpleTickManager implements ITickManager {
      */
     public Optional<? extends TickReceipt<?>> getReceipt(String name) {
         Validate.notNull(name);
-        return receipts.stream().map(Reference::get).filter(e -> name.equals(e.name()) && !e.isDropped()).findFirst();
+        return receipts.stream().filter(e -> name.equals(e.name()) && !e.isDropped()).findFirst();
     }
 
     /**
@@ -161,6 +150,6 @@ public final class SimpleTickManager implements ITickManager {
      */
     public @NotNull List<? extends TickReceipt<?>> matchReceipt(String prefixOrRegex, boolean isRegex) {
         Validate.notNull(prefixOrRegex);
-        return receipts.stream().map(Reference::get).filter(e -> e.name() != null && isRegex ? e.name().matches(prefixOrRegex) : e.name().startsWith(prefixOrRegex)).collect(Collectors.toList());
+        return receipts.stream().filter(e -> e.name() != null && isRegex ? e.name().matches(prefixOrRegex) : e.name().startsWith(prefixOrRegex)).collect(Collectors.toList());
     }
 }

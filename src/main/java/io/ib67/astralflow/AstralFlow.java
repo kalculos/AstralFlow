@@ -339,14 +339,18 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     @SuppressWarnings("unchecked")
     public <T> Collection<? extends Consumer<T>> getHooks(HookType<T> hook) {
-        Object o = HOOKS.getOrDefault(hook, Collections.emptyList());
+        Object o = Collections.unmodifiableCollection(HOOKS.getOrDefault(hook, Collections.emptyList()));
         return (List<? extends Consumer<T>>) o;
     }
 
     @Override
     public <T> boolean callHooks(HookType<T> hookType, T event) {
         for (Consumer<T> hook : getHooks(hookType)) {
-            hook.accept(event);
+            try {
+                hook.accept(event);
+            }catch(Throwable throwable){
+                new IllegalStateException("Error while calling hook (type: "+hookType+" )", throwable).printStackTrace();
+            }
             if (event instanceof Cancellable) {
                 if (((Cancellable) event).isCancelled()) {
                     return true;

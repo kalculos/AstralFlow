@@ -23,7 +23,7 @@ package io.ib67.astralflow.item.itembuilder;
 
 import io.ib67.astralflow.item.builder.ItemCategory;
 import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.itembuilder.weapon.WeaponItems;
 
 public enum Weapon implements ItemCategory<WeaponItems> {

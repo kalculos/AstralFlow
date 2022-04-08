@@ -43,9 +43,13 @@ public interface IMachineManager {
      * @param update  should we tick that
      */
     default void setupMachine(IMachine machine, boolean update) {
-        if (update) activateMachine(machine);
-        registerMachine(machine);
-        machine.onLoad();
+        try {
+            if (update) activateMachine(machine);
+            registerMachine(machine);
+            machine.onLoad();
+        }catch(Throwable t){
+            throw new IllegalStateException("Failed to setup machine "+machine.getClass()+" (t: "+machine.getType()+", s:"+ machine +" )", t);
+        }
     }
 
     /**

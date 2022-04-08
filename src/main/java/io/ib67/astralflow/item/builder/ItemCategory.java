@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.item.builder;
 
-import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.jetbrains.annotations.ApiStatus;
 
 /**

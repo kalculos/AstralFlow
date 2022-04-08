@@ -19,9 +19,10 @@
  *   USA
  */
 
-package io.ib67.astralflow.internal.storage.impl.chunk;
+package io.ib67.astralflow.internal.storage.impl.chunk.tag;
 
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
+import io.ib67.astralflow.internal.storage.impl.chunk.MachineData;
 import io.ib67.util.Pair;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Location;

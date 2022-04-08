@@ -23,7 +23,7 @@ package io.ib67.astralflow.item.definitions;
 
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

@@ -25,7 +25,7 @@ import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.item.StateScope;
-import io.ib67.astralflow.item.internal.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.oredict.IOreDict;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;

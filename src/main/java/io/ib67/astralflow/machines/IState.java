@@ -29,12 +29,7 @@ import org.jetbrains.annotations.ApiStatus;
  */
 @ApiStatus.AvailableSince("0.1.0")
 public interface IState {
-    IState EMPTY_STATE = new IState.EmptyState();
-
     default Class<? extends IState> getType() {
         return this.getClass();
-    }
-
-    class EmptyState implements IState {
     }
 }

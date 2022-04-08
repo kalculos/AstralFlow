@@ -44,7 +44,7 @@ public abstract class AbstractMachine implements IMachine {
         this.property = property;
     }
 
-    @Deprecated // for binary compatible only
+    @Deprecated(forRemoval = true) // for binary compatible only
     protected AbstractMachine(UUID uuid, Location location) {
         this(MachineProperty.builder().uuid(uuid).location(location).manager(AstralFlow.getInstance().getMachineManager()).build());
     }

@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.item.internal.factory;
+package io.ib67.astralflow.item.factory;
 
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;

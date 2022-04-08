@@ -49,9 +49,9 @@ public final class ChunkMachineIndex {
         }
     }
 
-    public void addMachine(IMachine machine) {
+    public void addMachine(Location loc,IMachine machine) {
         hasMachines = true;
-        machines.put(machine.getLocation(), machine.getType().getName());
+        machines.put(loc, machine.getType().getName());
     }
 
     public void removeMachine(Location loc) {
