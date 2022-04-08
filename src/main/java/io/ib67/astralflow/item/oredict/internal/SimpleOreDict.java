@@ -33,6 +33,8 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 public class SimpleOreDict implements IOreDict {
     private final Multimap<String, Pair<ItemStack, Predicate<ItemStack>>> items = ArrayListMultimap.create();
     private volatile boolean locked = false;
@@ -47,6 +49,9 @@ public class SimpleOreDict implements IOreDict {
 
     @Override
     public IOreDict registerItem(String dictKey, ItemStack prototype, Predicate<ItemStack> itemStackPredicate) {
+        requireNonNull(dictKey, "dictKey");
+        requireNonNull(prototype, "prototype");
+        requireNonNull(itemStackPredicate, "itemStackPredicate");
         if (locked) throw new IllegalStateException("OreDict is locked due to server startup completed.");
         items.put(dictKey, Pair.of(prototype, itemStackPredicate));
         return this;
@@ -54,11 +59,14 @@ public class SimpleOreDict implements IOreDict {
 
     @Override
     public boolean matchItem(String oredictId, ItemStack itemStack) {
+        requireNonNull(oredictId, "oredictId");
+        requireNonNull(itemStack, "itemStack");
         return items.get(oredictId).stream().anyMatch(e -> e.value.test(itemStack));
     }
 
     @Override
     public Collection<? extends ItemStack> getItems(String dictKey) {
+        requireNonNull(dictKey, "dictKey");
         return items.get(dictKey).stream().map(e -> e.key).collect(Collectors.toList()); // should we defensive-copy here?
     }
 }
