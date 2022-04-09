@@ -33,6 +33,7 @@ import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.util.LogCategory;
 import io.ib67.util.bukkit.Log;
+import io.ib67.util.reflection.AccessibleClass;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -45,15 +46,19 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     public static final NamespacedKey MACHINE_DATA_TAG = new NamespacedKey(AstralFlow.getInstance().asPlugin(), "machine_data_tag");
     private final MachineCache machineCache;
 
-    private final Map<Chunk, InMemoryChunk> chunkMap = new WeakHashMap<>(256);
+    private final Map<Chunk, InMemoryChunk> chunkMap;
     private final IFactoryManager factoryManager;
     private final MachineStorageType defaultSerializer;
     private InMemoryChunkFactory chunkFactory;
 
-    public ChunkBasedMachineStorage(MachineCache cache, IFactoryManager factoryManager, MachineStorageType defaultSerializer) {
+    public ChunkBasedMachineStorage(MachineCache cache, IFactoryManager factoryManager, MachineStorageType defaultSerializer, int initialCapacity, boolean allowResizing) {
         Objects.requireNonNull(factoryManager, "factoryManager cannot be null");
         Objects.requireNonNull(defaultSerializer, "defaultSerializer cannot be null");
         Objects.requireNonNull(cache, "machine cache cannot be null");
+        chunkMap = new WeakHashMap<>(Math.max(initialCapacity, 256)); // at least you need 256
+        if (!allowResizing) {
+            AccessibleClass.of(WeakHashMap.class).virtualField("threshold").set((WeakHashMap<Chunk, InMemoryChunk>) chunkMap, Integer.MAX_VALUE);
+        }
         this.machineCache = cache;
         this.factoryManager = factoryManager;
         this.defaultSerializer = defaultSerializer;
