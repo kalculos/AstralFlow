@@ -38,8 +38,9 @@ import io.ib67.astralflow.internal.config.Language;
 import io.ib67.astralflow.internal.listener.*;
 import io.ib67.astralflow.internal.listener.crafts.RecipeListener;
 import io.ib67.astralflow.internal.serialization.LanguageSerializer;
-import io.ib67.astralflow.internal.serialization.MachineStorageSerializer;
 import io.ib67.astralflow.internal.storage.IMachineStorage;
+import io.ib67.astralflow.internal.storage.impl.chunk.ChunkBasedMachineStorage;
+import io.ib67.astralflow.internal.storage.impl.chunk.MachineCache;
 import io.ib67.astralflow.internal.task.SaveDataTask;
 import io.ib67.astralflow.item.oredict.internal.CompoundOreDict;
 import io.ib67.astralflow.item.oredict.internal.SimpleOreDict;
@@ -102,6 +103,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private final IExtensionRegistry extensionRegistry = new ExtensionRegistryImpl();
     @Getter
     private ITickManager tickManager;
+
+    private IMachineStorage machineStorage;
 
     private static AstralFlow instance;
 
@@ -202,7 +205,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 Log.warn(LogCategory.INIT, "Reloading chunks to fix unregistered machines.");
                 for (World world : Bukkit.getWorlds())
                     for (Chunk chunk : world.getLoadedChunks())
-                        configuration.getStorage().initChunk(chunk);
+                        machineStorage.initChunk(chunk);
             }
             for (Consumer<?> hook : getHooks(HookType.ASTRALFLOW_STARTUP_COMPLETED)) {
                 hook.accept(null);
@@ -262,7 +265,12 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     }
 
     private void loadMachineManager() {
-        var machineStorage = configuration.getStorage();
+        machineStorage = new ChunkBasedMachineStorage(
+                new MachineCache(machineIndex),
+                factories, configuration.getOptimization().getDefaultMachineStorageType(),
+                configuration.getOptimization().getChunkMapCapacity(),
+                configuration.getOptimization().isAllowChunkMapResizing()
+        );
         machineManager = new MachineManagerImpl(machineStorage, configuration.getOptimization().getInitialMachineCapacity(), tickManager);
     }
 
@@ -278,7 +286,6 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         Gson configSerializer = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
-                .registerTypeHierarchyAdapter(IMachineStorage.class, new MachineStorageSerializer(machineIndex, factories))
                 .create();
         // extract config.
         var confFile = new File(getDataFolder(), "config.json");

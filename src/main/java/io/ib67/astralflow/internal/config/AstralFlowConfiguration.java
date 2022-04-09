@@ -22,12 +22,8 @@
 package io.ib67.astralflow.internal.config;
 
 import com.google.gson.annotations.SerializedName;
-import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.internal.listener.crafts.RecipeListener;
-import io.ib67.astralflow.internal.storage.IMachineStorage;
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
-import io.ib67.astralflow.internal.storage.impl.chunk.ChunkBasedMachineStorage;
-import io.ib67.astralflow.internal.storage.impl.chunk.MachineCache;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -58,11 +54,6 @@ public final class AstralFlowConfiguration {
      */
     @SerializedName("allow-player-join-before-init")
     private final boolean allowPlayerJoinBeforeInit = false;
-    /**
-     * Where to storage machines
-     */
-    @SerializedName("machine-storage-type")
-    private final IMachineStorage storage; //todo: planned for removal
 
     /**
      * The interval to trig {@link io.ib67.astralflow.hook.HookType#SAVE_DATA}
@@ -88,7 +79,6 @@ public final class AstralFlowConfiguration {
 
         return new AstralFlowConfiguration(
                 new Language(),
-                new ChunkBasedMachineStorage(new MachineCache(machineStorageIndexes), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON), //todo
                 new RecipeSetting()
         );
     }
@@ -120,6 +110,12 @@ public final class AstralFlowConfiguration {
          */
         @SerializedName("chunk-map-resizing")
         private final boolean allowChunkMapResizing = false;
+
+        /**
+         * The default serializer to use for machine storage.
+         */
+        @SerializedName("machine-storage-serializer")
+        private final MachineStorageType defaultMachineStorageType = MachineStorageType.JSON;
     }
 
     /**
