@@ -27,13 +27,10 @@ import io.ib67.astralflow.machines.AutoFactory;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.test.TestUtil;
-import org.bukkit.Location;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-
-import java.util.UUID;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public final class AutoFactoryTest {
@@ -74,8 +71,7 @@ public final class AutoFactoryTest {
     static class MachineC extends AbstractMachine {
 
         protected MachineC() {
-            super(UUID.randomUUID(), new Location(null, 1, 2, 3)); // do not do this in production
-
+            super(null); // do not do this in production
         }
 
         @Override
