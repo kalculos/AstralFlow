@@ -101,7 +101,7 @@ public final class AstralFlowConfiguration {
          * Machines usually have lesser elements, so it's recommended to enable this feature.
          * If you don't know what this means, don't change this value.
          */
-        @SerializedName("chunk-map-resizing")
+        @SerializedName("machine-map-resizing")
         private final boolean allowMachineMapResizing = true;
 
         /**

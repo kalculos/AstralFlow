@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.util;
 
+import io.ib67.util.reflection.AccessibleClass;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -113,5 +114,9 @@ public final class WeakHashSet<E> implements Set<E> {
     @Override
     public void clear() {
         map.clear();
+    }
+
+    public void disableResizing() {
+        AccessibleClass.of(WeakHashMap.class).virtualField("threshold").set((WeakHashMap<?, ?>) map, Integer.MAX_VALUE);
     }
 }

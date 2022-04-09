@@ -47,16 +47,31 @@ public final class MachineManagerImpl implements IMachineManager {
     private final Map<IMachine, TickReceipt<IMachine>> tickReceipts;
     private final ITickManager scheduler;
 
-    private final Set<Chunk> checkedChunks = new WeakHashSet<>(128); // to check loaded chunks out of astral flow
+    private final Set<Chunk> checkedChunks; // to check loaded chunks out of astral flow
 
-    public MachineManagerImpl(IMachineStorage storage, int capacity, ITickManager scheduler) {
+    public MachineManagerImpl
+            (IMachineStorage storage,
+             ITickManager scheduler,
+             int machineCapacity,
+             boolean allowResizingMachineMap,
+             int chunkCapacity,
+             boolean allowResizingChunkMap) {
         this.machineStorage = storage;
         storage.init(this);
-        int defaultCapacity = Math.max(capacity, 16);
-        tickReceipts = new WeakHashMap<>(capacity);
+        int defaultCapacity = Math.max(machineCapacity, 16);
+        int defaultChunkCapacity = Math.max(chunkCapacity, 16);
+        tickReceipts = new WeakHashMap<>(machineCapacity);
         this.scheduler = scheduler;
 
         loadedMachines = new WeakHashSet<>(defaultCapacity);
+        if (!allowResizingMachineMap) {
+            ((WeakHashSet<?>) loadedMachines).disableResizing();
+        }
+
+        checkedChunks = new WeakHashSet<>(defaultChunkCapacity);
+        if (!allowResizingChunkMap) {
+            ((WeakHashSet<?>) checkedChunks).disableResizing();
+        }
         HookType.CHUNK_LOAD.register(this::initChunk);
         HookType.CHUNK_UNLOAD.register(t -> finalizeChunk(t.getChunk()));
         HookType.SAVE_DATA.register(this::onSaveData);
@@ -191,7 +206,7 @@ public final class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public void updateMachineLocation(Location previousLocation,Location newLocation, IMachine machine) {
+    public void updateMachineLocation(Location previousLocation, Location newLocation, IMachine machine) {
         Objects.requireNonNull(previousLocation, "Previous location cannot be null");
         Objects.requireNonNull(machine, "Machine cannot be null");
         if (!isRegistered(machine)) {
