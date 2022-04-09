@@ -88,7 +88,8 @@ loadScripts(document, 'script');</script>
  We'll only comment the events that defined by AstralFlow, most events came from Bukkit, You should check their documents instead.
  <code>
  HookType.XXX.register( event -> {xxxx} );
- </code></div>
+ </code>
+ One hook can be called in several conditions, such as (BlockBreakEvent, BlockBurnEvent) -> BLOCK_BREAK</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -109,72 +110,87 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockBreakEvent&gt;</code></div>
 <div class="col-second odd-row-color"><code><a href="#BLOCK_BREAK" class="member-name-link">BLOCK_BREAK</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockPlaceEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#BLOCK_PLACE" class="member-name-link">BLOCK_PLACE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.world.ChunkLoadEvent&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#CHUNK_LOAD" class="member-name-link">CHUNK_LOAD</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.world.ChunkUnloadEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#CHUNK_UNLOAD" class="member-name-link">CHUNK_UNLOAD</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.EntityDamageEvent&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#ENTITY_DAMAGE" class="member-name-link">ENTITY_DAMAGE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.EntityDamageByEntityEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#ENTITY_DAMAGE_BY_ENTITY" class="member-name-link">ENTITY_DAMAGE_BY_ENTITY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.EntityDeathEvent&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#ENTITY_DEATH" class="member-name-link">ENTITY_DEATH</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerItemBreakEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#ITEM_BROKEN" class="member-name-link">ITEM_BROKEN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerItemConsumeEvent&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#ITEM_CONSUME" class="member-name-link">ITEM_CONSUME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerItemDamageEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#ITEM_DAMAGE" class="member-name-link">ITEM_DAMAGE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerInteractEvent&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#ITEM_USE" class="member-name-link">ITEM_USE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;<a href="../api/events/MachineBlockBreakEvent.html" title="class in io.ib67.astralflow.api.events">MachineBlockBreakEvent</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#MACHINE_BREAK" class="member-name-link">MACHINE_BREAK</a></code></div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockBurnEvent&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#BLOCK_BURNT" class="member-name-link">BLOCK_BURNT</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Called when a machine is broken by player, etc</div>
+<div class="block">It also calls <a href="#BLOCK_BREAK"><code>BLOCK_BREAK</code></a></div>
 </div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;<a href="../api/events/MachineBlockPlaceEvent.html" title="class in io.ib67.astralflow.api.events">MachineBlockPlaceEvent</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#MACHINE_PLACE" class="member-name-link">MACHINE_PLACE</a></code></div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockExplodeEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#BLOCK_EXPLODE" class="member-name-link">BLOCK_EXPLODE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Called when a machine is placed.</div>
+<div class="block">It also calls <a href="#BLOCK_BREAK"><code>BLOCK_BREAK</code></a></div>
 </div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.AsyncPlayerChatEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#PLAYER_CHAT" class="member-name-link">PLAYER_CHAT</a></code></div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockFadeEvent&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#BLOCK_FADE" class="member-name-link">BLOCK_FADE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">It also calls <a href="#BLOCK_BREAK"><code>BLOCK_BREAK</code></a></div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockPlaceEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#BLOCK_PLACE" class="member-name-link">BLOCK_PLACE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.world.ChunkLoadEvent&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#CHUNK_LOAD" class="member-name-link">CHUNK_LOAD</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerInteractEvent&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#PLAYER_INTERACT" class="member-name-link">PLAYER_INTERACT</a></code></div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.world.ChunkUnloadEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#CHUNK_UNLOAD" class="member-name-link">CHUNK_UNLOAD</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.EntityDamageEvent&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#ENTITY_DAMAGE" class="member-name-link">ENTITY_DAMAGE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.EntityDamageByEntityEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#ENTITY_DAMAGE_BY_ENTITY" class="member-name-link">ENTITY_DAMAGE_BY_ENTITY</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.EntityDeathEvent&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#ENTITY_DEATH" class="member-name-link">ENTITY_DEATH</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerItemBreakEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#ITEM_BROKEN" class="member-name-link">ITEM_BROKEN</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerItemConsumeEvent&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#ITEM_CONSUME" class="member-name-link">ITEM_CONSUME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerItemDamageEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#ITEM_DAMAGE" class="member-name-link">ITEM_DAMAGE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerInteractEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#PLAYER_INTERACT_BLOCK" class="member-name-link">PLAYER_INTERACT_BLOCK</a></code></div>
+<div class="col-second even-row-color"><code><a href="#ITEM_USE" class="member-name-link">ITEM_USE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerInteractEntityEvent&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#PLAYER_INTERACT_ENTITY" class="member-name-link">PLAYER_INTERACT_ENTITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerMoveEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#PLAYER_MOVE" class="member-name-link">PLAYER_MOVE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;?&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#PLUGIN_SHUTDOWN" class="member-name-link">PLUGIN_SHUTDOWN</a></code></div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;<a href="../api/events/MachineBlockBreakEvent.html" title="class in io.ib67.astralflow.api.events">MachineBlockBreakEvent</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#MACHINE_BREAK" class="member-name-link">MACHINE_BREAK</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Called when a machine is broken by player, etc</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;<a href="../api/events/MachineBlockPlaceEvent.html" title="class in io.ib67.astralflow.api.events">MachineBlockPlaceEvent</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#MACHINE_PLACE" class="member-name-link">MACHINE_PLACE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Called when a machine is placed.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.AsyncPlayerChatEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#PLAYER_CHAT" class="member-name-link">PLAYER_CHAT</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerInteractEvent&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#PLAYER_INTERACT" class="member-name-link">PLAYER_INTERACT</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerInteractEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#PLAYER_INTERACT_BLOCK" class="member-name-link">PLAYER_INTERACT_BLOCK</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerInteractEntityEvent&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#PLAYER_INTERACT_ENTITY" class="member-name-link">PLAYER_INTERACT_ENTITY</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.player.PlayerMoveEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#PLAYER_MOVE" class="member-name-link">PLAYER_MOVE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;?&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#PLUGIN_SHUTDOWN" class="member-name-link">PLUGIN_SHUTDOWN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Called when plugin is shutting down</div>
 </div>
-<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.ProjectileHitEvent&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#PROJECTILE_HIT" class="member-name-link">PROJECTILE_HIT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;<a href="event/server/SaveDataEvent.html" title="class in io.ib67.astralflow.hook.event.server">SaveDataEvent</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#SAVE_DATA" class="member-name-link">SAVE_DATA</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.ProjectileHitEvent&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#PROJECTILE_HIT" class="member-name-link">PROJECTILE_HIT</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;<a href="event/server/SaveDataEvent.html" title="class in io.ib67.astralflow.hook.event.server">SaveDataEvent</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#SAVE_DATA" class="member-name-link">SAVE_DATA</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Called when you should save your data, periodic.</div>
 </div>
 </div>
@@ -188,7 +204,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">HookType</a>()</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String)" class="member-name-link">HookType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -204,22 +220,30 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(java.lang.Runnable)" class="member-name-link">register</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;acceptor)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Register your callback which doesn't care about event.</div>
+<div class="block">A name for exceptions.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(java.util.function.Consumer)" class="member-name-link">register</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="HookType.html" title="type parameter in HookType">T</a>&gt;&nbsp;acceptor)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(java.lang.Runnable)" class="member-name-link">register</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;acceptor)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Register your callback which doesn't care about event.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(java.util.function.Consumer)" class="member-name-link">register</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="HookType.html" title="type parameter in HookType">T</a>&gt;&nbsp;acceptor)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Register your callback.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
@@ -368,6 +392,27 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.entity.ProjectileHitEvent&gt;</span>&nbsp;<span class="element-name">PROJECTILE_HIT</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="BLOCK_BURNT">
+<h3>BLOCK_BURNT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockBurnEvent&gt;</span>&nbsp;<span class="element-name">BLOCK_BURNT</span></div>
+<div class="block">It also calls <a href="#BLOCK_BREAK"><code>BLOCK_BREAK</code></a></div>
+</section>
+</li>
+<li>
+<section class="detail" id="BLOCK_FADE">
+<h3>BLOCK_FADE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockFadeEvent&gt;</span>&nbsp;<span class="element-name">BLOCK_FADE</span></div>
+<div class="block">It also calls <a href="#BLOCK_BREAK"><code>BLOCK_BREAK</code></a></div>
+</section>
+</li>
+<li>
+<section class="detail" id="BLOCK_EXPLODE">
+<h3>BLOCK_EXPLODE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HookType.html" title="class in io.ib67.astralflow.hook">HookType</a>&lt;org.bukkit.event.block.BlockExplodeEvent&gt;</span>&nbsp;<span class="element-name">BLOCK_EXPLODE</span></div>
+<div class="block">It also calls <a href="#BLOCK_BREAK"><code>BLOCK_BREAK</code></a></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -377,9 +422,9 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;()">
+<section class="detail" id="&lt;init&gt;(java.lang.String)">
 <h3>HookType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">HookType</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">HookType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
 </section>
 </li>
 </ul>
@@ -411,6 +456,23 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>acceptor</code> - callback</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toString()">
+<h3>toString</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getName()">
+<h3>getName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
+<div class="block">A name for exceptions.</div>
 </section>
 </li>
 </ul>
