@@ -104,6 +104,22 @@ public final class AstralFlowConfiguration {
          */
         @SerializedName("initial-machine-capacity")
         private final int initialMachineCapacity = 32;
+
+        /**
+         * How much chunk slots should be initialized at start-up
+         * This feature determines the default capacity of the hashmap holding chunks, Higher value may provide a better performance but may cause higher memory usage.
+         * You can decrease this to save memory.
+         */
+        @SerializedName("chunk-map-capacity")
+        private final int chunkMapCapacity = 512;
+
+        /**
+         * Can chunk map be resized?
+         * Resizing happens when the elements amount reaches capacity * 0.75F. For resizing, the map will copy all values and re-process them, which may cause a performance hit.
+         * If you don't know what this means, don't change this value.
+         */
+        @SerializedName("chunk-map-resizing")
+        private final boolean allowChunkMapResizing = false;
     }
 
     /**
