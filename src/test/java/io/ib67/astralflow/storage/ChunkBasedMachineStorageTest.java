@@ -96,7 +96,7 @@ public final class ChunkBasedMachineStorageTest {
         var file = AstralFlow.getInstance().asPlugin().getDataFolder().toPath().resolve("test.index");
         Files.createFile(file);
         var randomLoc = new Location(Bukkit.getWorld("world"), ThreadLocalRandom.current().nextInt(3000), 1, ThreadLocalRandom.current().nextInt(3000));
-        var storage = new ChunkBasedMachineStorage(new MachineCache(file), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON);
+        var storage = new ChunkBasedMachineStorage(new MachineCache(file), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON, 256, false);
         var machineManager = new MachineManagerImpl(storage, 16, null);
         storage.initChunk(randomLoc.getChunk());
         var machine = new DummyStatefulMachine(MachineProperty
