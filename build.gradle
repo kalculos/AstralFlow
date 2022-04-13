@@ -73,14 +73,14 @@ dependencies {
     api('com.github.iceBear67:tools:10254f1e10') {
         exclude module: 'testplug'
     }
-    compileOnly 'io.netty:netty-all:4.1.75.Final'
+    compileOnly 'io.netty:netty-all:4.1.76.Final'
 
     compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
 }
 
 dependencies {
-    testRuntimeOnly 'io.netty:netty-all:4.1.68.Final'
+    testRuntimeOnly 'io.netty:netty-all:4.1.76.Final'
     testCompileOnly 'org.jetbrains:annotations:23.0.0'
     testImplementation 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
