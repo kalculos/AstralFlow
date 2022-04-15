@@ -27,15 +27,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-import org.bukkit.event.world.WorldSaveEvent;
 
 public final class WorldListener implements Listener {
-    @EventHandler(ignoreCancelled = true)
-    private void onWorldSave(WorldSaveEvent event) {
-        // save data.
-        // TODO: WIP configuration delay
-        //Bukkit.getScheduler().runTaskLater(AstralFlow.getInstance().asPlugin(), () -> AstralFlow.getInstance().getHooks(HookType.SAVE_DATA).forEach(e -> e.accept(null)), 10L);
-    }
 
     @EventHandler(ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent event) {
