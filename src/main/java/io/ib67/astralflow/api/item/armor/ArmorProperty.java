@@ -33,6 +33,7 @@ import java.util.Map;
  */
 @ApiStatus.AvailableSince("0.1.0")
 public record ArmorProperty(
-        Map<EntityDamageEvent.DamageCause, Float> damageReduction // todo: add a common reduction factor for all causes
+        Map<EntityDamageEvent.DamageCause, Float> damageReduction,
+        float commonReduction
 ) {
 }

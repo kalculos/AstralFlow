@@ -85,7 +85,7 @@ public class MachineItem extends ItemBase {
     }
 
     private void onPlace(BlockPlaceEvent event) {
-        var item = new AstralItem(event.getItemInHand(), AstralFlow.getInstance().getItemRegistry()); // todo: refactor BlockPlaceEvent
+        var item = new AstralItem(event.getItemInHand(), AstralFlow.getInstance().getItemRegistry());
         if (item.getState().isEmpty() || !(item.getState().get() instanceof MachineItemState)) {
             return;
         }

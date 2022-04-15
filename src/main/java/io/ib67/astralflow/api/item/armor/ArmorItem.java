@@ -61,7 +61,8 @@ public final class ArmorItem extends ItemBase {
                 finalDamage = finalDamage - costedDamage;
             }
         }
-        event.setDamage(finalDamage);
+        finalDamage = finalDamage - finalDamage * property.commonReduction();
+        event.setDamage(Math.max(finalDamage, 0F));
     }
 
 }
