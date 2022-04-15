@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @ApiStatus.Internal
 public final class RecipeHelper {
@@ -141,12 +139,6 @@ public final class RecipeHelper {
         return newMatrix;
     }
 
-    public static int getIngredientKindCount(String... matrix) {
-        return Arrays.stream(matrix).flatMapToInt(String::chars)
-                .boxed() // looking for a better implementation. This might be slow.
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).keySet().size();
-    }
-
     public static String[] toStringMatrix(ItemStack... items) {
         int base = 'a';
         var set = new ArrayList<>(8);
@@ -163,17 +155,7 @@ public final class RecipeHelper {
             var index = set.indexOf(item.getType());
             matrix[i] = (char) (base + index);
         }
-        // todo: fix this?
-//        var delta = matrix.length % 3;
-//        var len = matrix.length - delta;
         var list = new ArrayList<String>();
-//        for (int i = 0; i < len; i++) {
-//            list.add(String.valueOf(Arrays.copyOfRange(matrix,i*3,i*3+3)));
-//        }
-//        if(delta != 0){
-//            list.add(String.valueOf(Arrays.copyOfRange(matrix,len,delta)));
-//        }
-
         var sb = new StringBuilder();
         for (int i = 0; i < matrix.length; i++) {
             sb.append(matrix[i]);
@@ -188,27 +170,4 @@ public final class RecipeHelper {
         return list.toArray(new String[0]);
     }
 
-    public static int generateMatrixPatternHash(String... _matrix) {
-        var matrix = populateEmptyRows(_matrix);
-
-        boolean[] ingredients = new boolean[3 * 3];
-        for (int i = 0; i < matrix.length; i++) {
-            var row = matrix[i].toCharArray();
-            for (int i1 = 0; i1 < row.length; i1++) {
-                if (row[i1] != ' ') {
-                    ingredients[i * 3 + i1] = true;
-                }
-            }
-        }
-
-        //return combineInt2Long(Arrays.hashCode(ingredients), getIngredientKindCount(_matrix));
-        int i = 1;
-        i = i + Arrays.hashCode(ingredients) * 34;
-        i = i + getIngredientKindCount(_matrix) * 34;
-        return i;
-    }
-
-    private static long combineInt2Long(int low, int high) {
-        return ((long) low & 0xFFFFFFFFL) | (((long) high << 32) & 0xFFFFFFFF00000000L);
-    }
 }

@@ -28,7 +28,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import static io.ib67.astralflow.test.TestUtil.init;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings("unused")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -159,22 +160,6 @@ public final class RecipeHelperTest {
                 RecipeHelper.leftAndUpAlignMatrix("", "", ""),
                 "Test Regular EMPTY Matrix #7"
         );
-    }
-
-    @Test
-    public void generateMatrixPatternHash() {
-        var matrixA = new String[]{
-                "A  ",
-                "B  ",
-                "C C"
-        };
-        var matrixB = new String[]{
-                "c  ",
-                "a  ",
-                "D D"
-        };
-        assertEquals(RecipeHelper.generateMatrixPatternHash(matrixA), RecipeHelper.generateMatrixPatternHash(matrixB));
-
     }
 
     @Test
