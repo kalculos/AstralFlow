@@ -90,7 +90,6 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private IMachineManager machineManager;
     private final Path machineIndex = getDataFolder().toPath().resolve("machines.index");
     private final Path languageDir = getDataFolder().toPath().resolve("locales");
-    private final Path itemDir = getDataFolder().toPath().resolve("items");
     @Getter
     private IFactoryManager factories;
     @Getter
@@ -166,7 +165,6 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         }
         Log.info(LogCategory.INIT, "Loading &aComponents");
         languageDir.toFile().mkdirs();
-        itemDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
         loadConfig();
         tickManager = new SimpleTickManager();
@@ -296,7 +294,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         var confFile = new File(getDataFolder(), "config.json");
         if (!confFile.exists() || confFile.length() == 0) {
             confFile.createNewFile();
-            Files.writeString(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex)));
+            Files.writeString(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(machineIndex)));
         }
         try (
                 var config = new FileInputStream(confFile)
@@ -312,7 +310,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 if (configuration.getVersion() > CONFIG_CURRENT_VERSION) {
                     Log.info(MIGRATOR, "Launching Configuration migrator.");
                     var migrator = new ConfigMigrator(JsonParser.parseString(confString).getAsJsonObject());
-                    var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex));
+                    var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(machineIndex));
                     Log.info(MIGRATOR, "Migration complete.");
                     Files.writeString(confFile.toPath(), configSerializer.toJson(conf));
                     configuration = conf;
@@ -324,7 +322,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         } catch (IOException e) {
             e.printStackTrace();
             Log.warn(INIT, "Cannot load configuration. Falling back to default values");
-            configuration = AstralFlowConfiguration.defaultConfiguration(itemDir, machineIndex);
+            configuration = AstralFlowConfiguration.defaultConfiguration(machineIndex);
         }
 
     }

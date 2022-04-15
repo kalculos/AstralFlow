@@ -73,8 +73,7 @@ public final class AstralFlowConfiguration {
     @SerializedName("optimization-settings")
     private final Optimization optimization = new Optimization();
 
-    public static AstralFlowConfiguration defaultConfiguration(Path itemStorageDir, Path machineStorageIndexes) { // todo: itemStorageDir is unneeded anymore
-        Objects.requireNonNull(itemStorageDir, "ItemStorageDir cannot be null");
+    public static AstralFlowConfiguration defaultConfiguration(Path machineStorageIndexes) {
         Objects.requireNonNull(machineStorageIndexes, "MachineStorageIndexes cannot be null");
 
         return new AstralFlowConfiguration(
