@@ -289,8 +289,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 machineStorage, tickManager,
                 configuration.getOptimization().getInitialMachineCapacity(), configuration.getOptimization().isAllowMachineMapResizing(),
                 new SimpleChunkTracker(configuration.getOptimization().getChunkMapCapacity(),
-                        configuration.getOptimization().isAllowChunkMapResizing())
-        );
+                        configuration.getOptimization().isAllowChunkMapResizing()),
+                securityService.getLeakTracker());
     }
 
     private void loadItemManager() {
