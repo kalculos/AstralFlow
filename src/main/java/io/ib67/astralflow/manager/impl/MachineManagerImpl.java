@@ -132,6 +132,7 @@ public final class MachineManagerImpl implements IMachineManager {
             throw new IllegalStateException("Machine " + machine + " is not active");
         }
         Optional.ofNullable(getReceiptByMachine(machine)).ifPresent(TickReceipt::drop);
+        tickReceipts.remove(machine);
     }
 
     @Override
