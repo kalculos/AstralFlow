@@ -83,6 +83,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
             if (memChunk.getMachines().size() != 0)
                 Log.info(LogCategory.DEBUG, "Done. Flushing cache");
         }
+        chunkMap.remove(unloadingChunk);
         flushChunkCache(unloadingChunk, memChunk);
     }
 

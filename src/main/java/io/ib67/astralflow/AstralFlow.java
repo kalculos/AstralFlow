@@ -57,6 +57,9 @@ import io.ib67.astralflow.manager.impl.FactoryManagerImpl;
 import io.ib67.astralflow.manager.impl.ItemRegistryImpl;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.manager.impl.SimpleTickManager;
+import io.ib67.astralflow.security.ISecurityService;
+import io.ib67.astralflow.security.impl.SimpleSecurityService;
+import io.ib67.astralflow.security.mem.impl.SimpleLeakTracker;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.astralflow.util.LogCategory;
 import io.ib67.astralflow.wireless.impl.SimpleWirelessRegistry;
@@ -106,6 +109,9 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private ITickManager tickManager;
 
     private IMachineStorage machineStorage;
+
+    @Getter
+    private ISecurityService securityService;
 
     private static AstralFlow instance;
 
@@ -169,6 +175,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         languageDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
         loadConfig();
+        loadSecurityService();
         var scheduler = new SimpleCatchingScheduler(configuration.getOptimization().getMachineTickExceptionLimit());
         tickManager = new SimpleTickManager(scheduler);
         loadMachineManager();
@@ -218,6 +225,12 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             initialized = true;
         });
 
+    }
+
+    private void loadSecurityService() {
+        var leakTracker = new SimpleLeakTracker();
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, leakTracker::onTick, 0L, configuration.getSecuritySetting().getLeakCheckInterval());
+        securityService = new SimpleSecurityService(leakTracker);
     }
 
     private void injectVanillaCraft() {
@@ -276,8 +289,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 machineStorage, tickManager,
                 configuration.getOptimization().getInitialMachineCapacity(), configuration.getOptimization().isAllowMachineMapResizing(),
                 new SimpleChunkTracker(configuration.getOptimization().getChunkMapCapacity(),
-                        configuration.getOptimization().isAllowChunkMapResizing())
-        );
+                        configuration.getOptimization().isAllowChunkMapResizing()),
+                securityService.getLeakTracker());
     }
 
     private void loadItemManager() {

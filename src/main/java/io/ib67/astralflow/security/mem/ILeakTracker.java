@@ -19,41 +19,26 @@
  *   USA
  */
 
-package io.ib67.astralflow.util;
+package io.ib67.astralflow.security.mem;
 
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * Categories of logs.
+ * A class that tracks object live time and detects memory leaks.
  */
 @ApiStatus.AvailableSince("0.1.0")
-public final class LogCategory {
+public interface ILeakTracker {
     /**
-     * The category for general logs.
+     * Add an object into the track list. Tracker will alert if the object kept in memory for many rounds.
+     *
+     * @param obj
      */
-    public static final String INIT = "Init";
+    void track(Object obj);
+
     /**
-     * The category for logs at plugin termination
+     * Contrary to {@link #track(Object)}
+     *
+     * @param obj
      */
-    public static final String TERMINATION = "Termination";
-    /**
-     * The category for logs at debugging
-     */
-    public static final String DEBUG = "Debug";
-    /**
-     * The category for extensions' log
-     */
-    public static final String EXTENSION = "Extension";
-    /**
-     * The category for config migrator
-     */
-    public static final String MIGRATOR = "Migrator";
-    /**
-     * The category for ticking scheduler. {@link io.ib67.astralflow.machines.scheduler.SimpleCatchingScheduler}
-     */
-    public static final String SCHEDULER = "Scheduler";
-    /**
-     * THe category for memory leak detection.
-     */
-    public static final String LEAK_DETECTOR = "Leak Detector";
+    void untrack(Object obj);
 }

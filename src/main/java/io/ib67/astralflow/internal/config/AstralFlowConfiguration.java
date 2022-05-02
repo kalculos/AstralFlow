@@ -50,12 +50,6 @@ public final class AstralFlowConfiguration {
      */
     private final Language locale;
     /**
-     * SHould we kick players until our initialization is done?
-     */
-    @SerializedName("allow-player-join-before-init")
-    private final boolean allowPlayerJoinBeforeInit = false;
-
-    /**
      * The interval to trig {@link io.ib67.astralflow.hook.HookType#SAVE_DATA}
      */
     @SerializedName("data-save-intervals")
@@ -73,6 +67,12 @@ public final class AstralFlowConfiguration {
     @SerializedName("optimization-settings")
     private final Optimization optimization = new Optimization();
 
+    /**
+     * Settings about security
+     */
+    @SerializedName("security-settings")
+    private final Security securitySetting = new Security();
+
     public static AstralFlowConfiguration defaultConfiguration(Path machineStorageIndexes) {
         Objects.requireNonNull(machineStorageIndexes, "MachineStorageIndexes cannot be null");
 
@@ -80,6 +80,23 @@ public final class AstralFlowConfiguration {
                 new Language(),
                 new RecipeSetting()
         );
+    }
+
+    /**
+     * Security settings.
+     */
+    @Getter
+    public static final class Security {
+        /**
+         * SHould we kick players until our initialization is done?
+         */
+        @SerializedName("allow-player-join-before-init")
+        private final boolean allowPlayerJoinBeforeInit = false;
+        /**
+         * How many ticks is a round of leak check.
+         * If you don't know any better, just set it to 100.
+         */
+        private final int leakCheckInterval = 100;
     }
 
     /**

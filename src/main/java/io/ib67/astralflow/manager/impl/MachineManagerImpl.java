@@ -31,6 +31,7 @@ import io.ib67.astralflow.machines.Tickless;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.scheduler.TickReceipt;
+import io.ib67.astralflow.security.mem.ILeakTracker;
 import io.ib67.astralflow.util.WeakHashSet;
 import io.ib67.util.bukkit.Log;
 import org.bukkit.Chunk;
@@ -50,13 +51,16 @@ public final class MachineManagerImpl implements IMachineManager {
 
     private final IChunkTracker chunkTracker; // to check loaded chunks out of astral flow
 
+    private final ILeakTracker leakTracker;
+
     public MachineManagerImpl
             (IMachineStorage storage,
              ITickManager scheduler,
              int machineCapacity,
              boolean allowResizingMachineMap,
-             IChunkTracker chunkTracker) {
+             IChunkTracker chunkTracker, ILeakTracker leakTracker) {
         this.machineStorage = storage;
+        this.leakTracker = leakTracker;
         storage.init(this);
         int defaultCapacity = Math.max(machineCapacity, 16);
         tickReceipts = new WeakHashMap<>(machineCapacity);
@@ -101,6 +105,7 @@ public final class MachineManagerImpl implements IMachineManager {
             deactivateMachine(machine);
         }
         unregisterMachine(machine);
+        leakTracker.track(machine);
     }
 
     @Override
@@ -127,6 +132,7 @@ public final class MachineManagerImpl implements IMachineManager {
             throw new IllegalStateException("Machine " + machine + " is not active");
         }
         Optional.ofNullable(getReceiptByMachine(machine)).ifPresent(TickReceipt::drop);
+        tickReceipts.remove(machine);
     }
 
     @Override

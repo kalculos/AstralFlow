@@ -19,41 +19,20 @@
  *   USA
  */
 
-package io.ib67.astralflow.util;
+package io.ib67.astralflow.security;
 
+import io.ib67.astralflow.security.mem.ILeakTracker;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * Categories of logs.
+ * A security service holds things related to security, from gaming one to jvm one.
  */
 @ApiStatus.AvailableSince("0.1.0")
-public final class LogCategory {
+public interface ISecurityService {
     /**
-     * The category for general logs.
+     * Get a tracker for mem leak detection.
+     *
+     * @return tracker.
      */
-    public static final String INIT = "Init";
-    /**
-     * The category for logs at plugin termination
-     */
-    public static final String TERMINATION = "Termination";
-    /**
-     * The category for logs at debugging
-     */
-    public static final String DEBUG = "Debug";
-    /**
-     * The category for extensions' log
-     */
-    public static final String EXTENSION = "Extension";
-    /**
-     * The category for config migrator
-     */
-    public static final String MIGRATOR = "Migrator";
-    /**
-     * The category for ticking scheduler. {@link io.ib67.astralflow.machines.scheduler.SimpleCatchingScheduler}
-     */
-    public static final String SCHEDULER = "Scheduler";
-    /**
-     * THe category for memory leak detection.
-     */
-    public static final String LEAK_DETECTOR = "Leak Detector";
+    ILeakTracker getLeakTracker();
 }
