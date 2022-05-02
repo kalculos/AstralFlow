@@ -124,6 +124,13 @@ public final class AstralFlowConfiguration {
          */
         @SerializedName("machine-storage-serializer")
         private final MachineStorageType defaultMachineStorageType = MachineStorageType.JSON;
+
+        /**
+         * How many exceptions in ticks for us to take action for these exceptional machines? (Deactivation)
+         * NOTE: This value WILL NOT decrease at present. If you want to catch frequently occurring exceptions, you can increase this value.
+         * If you want to completely ban errored machines, set this value to 1.
+         */
+        private final int machineTickExceptionLimit = 4;
     }
 
     /**
