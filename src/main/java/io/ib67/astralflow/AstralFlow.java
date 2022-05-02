@@ -47,6 +47,7 @@ import io.ib67.astralflow.item.oredict.internal.SimpleOreDict;
 import io.ib67.astralflow.item.oredict.internal.VanillaOreDict;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
 import io.ib67.astralflow.item.recipe.RecipeRegistryImpl;
+import io.ib67.astralflow.machines.scheduler.SimpleCatchingScheduler;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
@@ -167,7 +168,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         languageDir.toFile().mkdirs();
         loadFactoryManager(); // FileStorage needs.
         loadConfig();
-        tickManager = new SimpleTickManager();
+        var scheduler = new SimpleCatchingScheduler(configuration.getOptimization().getMachineTickExceptionLimit());
+        tickManager = new SimpleTickManager(scheduler);
         loadMachineManager();
         //scheduler = new TickScheduler(machineManager);
         //scheduler.runTaskTimer(this, 0L, 1L); // Every tick.
