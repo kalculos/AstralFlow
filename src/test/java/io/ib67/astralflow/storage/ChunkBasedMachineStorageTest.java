@@ -22,6 +22,7 @@
 package io.ib67.astralflow.storage;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.internal.storage.SimpleChunkTracker;
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
 import io.ib67.astralflow.internal.storage.impl.chunk.ChunkBasedMachineStorage;
 import io.ib67.astralflow.internal.storage.impl.chunk.ChunkMachineIndex;
@@ -97,7 +98,7 @@ public final class ChunkBasedMachineStorageTest {
         Files.createFile(file);
         var randomLoc = new Location(Bukkit.getWorld("world"), ThreadLocalRandom.current().nextInt(3000), 1, ThreadLocalRandom.current().nextInt(3000));
         var storage = new ChunkBasedMachineStorage(new MachineCache(file), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON, 256, false);
-        var machineManager = new MachineManagerImpl(storage, null, 16, true, 256, true);
+        var machineManager = new MachineManagerImpl(storage, null, 16, true, new SimpleChunkTracker(256, true));
         storage.initChunk(randomLoc.getChunk());
         var machine = new DummyStatefulMachine(MachineProperty
                 .builder()

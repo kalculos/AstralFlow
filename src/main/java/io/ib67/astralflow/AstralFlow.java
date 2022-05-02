@@ -39,6 +39,7 @@ import io.ib67.astralflow.internal.listener.*;
 import io.ib67.astralflow.internal.listener.crafts.RecipeListener;
 import io.ib67.astralflow.internal.serialization.LanguageSerializer;
 import io.ib67.astralflow.internal.storage.IMachineStorage;
+import io.ib67.astralflow.internal.storage.SimpleChunkTracker;
 import io.ib67.astralflow.internal.storage.impl.chunk.ChunkBasedMachineStorage;
 import io.ib67.astralflow.internal.storage.impl.chunk.MachineCache;
 import io.ib67.astralflow.internal.task.SaveDataTask;
@@ -274,8 +275,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         machineManager = new MachineManagerImpl(
                 machineStorage, tickManager,
                 configuration.getOptimization().getInitialMachineCapacity(), configuration.getOptimization().isAllowMachineMapResizing(),
-                configuration.getOptimization().getChunkMapCapacity(),
-                configuration.getOptimization().isAllowChunkMapResizing()
+                new SimpleChunkTracker(configuration.getOptimization().getChunkMapCapacity(),
+                        configuration.getOptimization().isAllowChunkMapResizing())
         );
     }
 
