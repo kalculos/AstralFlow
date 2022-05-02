@@ -31,13 +31,13 @@ import io.ib67.astralflow.util.WeakHashSet;
 import io.ib67.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.LinkedBlockingQueue;
 
 @RequiredArgsConstructor
 public class SimpleCatchingScheduler implements Scheduler {
-    private final Queue<AwaitingTickable<? extends Tickable<?>>> tickables = new LinkedBlockingQueue<>();
+    private final Queue<AwaitingTickable<? extends Tickable<?>>> tickables = new LinkedList<>();
     private final Set<Tickable<?>> waitingForRemoval = new WeakHashSet<>();
     private final int exceptionLimiter;
 
@@ -52,7 +52,8 @@ public class SimpleCatchingScheduler implements Scheduler {
             }
             try {
                 tickable.tick();
-            } catch (TickTaskException exception) {
+            } catch (Throwable exception) {
+                new TickTaskException("Task " + tickable.getClass().getName() + " threw an exception", exception, tickable.tickable).printStackTrace(); // issue-113: avoid unsafe user code disturbing the scheduler
                 if (tickable.exceptionCounter.incrementAndGet() > exceptionLimiter) {
                     Log.warn(LogCategory.SCHEDULER, "Tickable " + tickable.getClass().getName() + "#" + System.identityHashCode(tickable) + " has thrown " + exceptionLimiter + " exceptions. It will be deactivated.");
                     tickable.receipt.drop();

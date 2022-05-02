@@ -22,7 +22,6 @@
 package io.ib67.astralflow.scheduler;
 
 import io.ib67.astralflow.Tickable;
-import io.ib67.astralflow.scheduler.exception.TickTaskException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -35,14 +34,9 @@ public final class AwaitingTickable<T extends Tickable<T>> {
     public final AtomicInteger exceptionCounter = new AtomicInteger(); // for SimpleCatchingScheduler.
 
     @SuppressWarnings("all")
-    public void tick() throws TickTaskException {
-        try {
-            if (receipt.tick(tickable)) {
-                tickable.update();
-            }
-        } catch (Throwable t) {
-            //todo Optimization? Throwing too much exception isn't a good idea
-            throw new TickTaskException("Task " + tickable.getClass().getName() + " threw an exception", t, tickable); // issue-113: avoid unsafe user code disturbing the scheduler
+    public void tick() throws Throwable {
+        if (receipt.tick(tickable)) {
+            tickable.update();
         }
     }
 
