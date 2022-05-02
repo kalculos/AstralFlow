@@ -30,6 +30,7 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public final class SimpleLeakTracker implements ILeakTracker {
     private final ReferenceQueue<?> queue = new ReferenceQueue<>();
@@ -64,6 +65,7 @@ public final class SimpleLeakTracker implements ILeakTracker {
 
     @Override
     public void track(Object obj) {
+        Objects.requireNonNull(obj, "obj cannot be null");
         if (trackedObjects.stream().anyMatch(e -> e.ref.get() == obj)) {
             throw new IllegalArgumentException("Object already tracked");
         }
@@ -72,6 +74,7 @@ public final class SimpleLeakTracker implements ILeakTracker {
 
     @Override
     public void untrack(Object obj) {
+        Objects.requireNonNull(obj, "obj cannot be null");
         trackedObjects.removeIf(e -> e.ref.get() == obj);
     }
 }

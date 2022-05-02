@@ -28,7 +28,17 @@ import org.jetbrains.annotations.ApiStatus;
  */
 @ApiStatus.AvailableSince("0.1.0")
 public interface ILeakTracker {
+    /**
+     * Add an object into the track list. Tracker will alert if the object kept in memory for many rounds.
+     *
+     * @param obj
+     */
     void track(Object obj);
 
+    /**
+     * Contrary to {@link #track(Object)}
+     *
+     * @param obj
+     */
     void untrack(Object obj);
 }
