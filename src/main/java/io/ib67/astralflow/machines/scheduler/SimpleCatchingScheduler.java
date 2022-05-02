@@ -22,6 +22,7 @@
 package io.ib67.astralflow.machines.scheduler;
 
 import io.ib67.astralflow.Tickable;
+import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.scheduler.AwaitingTickable;
 import io.ib67.astralflow.scheduler.Scheduler;
 import io.ib67.astralflow.scheduler.TickReceipt;
@@ -43,6 +44,7 @@ public class SimpleCatchingScheduler implements Scheduler {
 
     @Override
     public void tick() {
+        AstralHelper.ensureMainThread("Scheduler tick");
         var iter = tickables.iterator();
         while (iter.hasNext()) {
             var tickable = iter.next();
@@ -65,6 +67,7 @@ public class SimpleCatchingScheduler implements Scheduler {
 
     @Override
     public <T extends Tickable<T>> TickReceipt<T> add(Tickable<T> tickable) {
+        AstralHelper.ensureMainThread("Scheduler add");
         if (tickables.stream().map(e -> e.tickable).anyMatch(e -> e.equals(tickable))) {
             throw new IllegalStateException("Tickable " + tickable.getClass().getName() + "#" + System.identityHashCode(tickable) + " is already registered.");
         }
@@ -75,6 +78,7 @@ public class SimpleCatchingScheduler implements Scheduler {
 
     @Override
     public void remove(Tickable<?> tickable) {
+        AstralHelper.ensureMainThread("Scheduler remove");
         waitingForRemoval.add(tickable);
     }
 }
