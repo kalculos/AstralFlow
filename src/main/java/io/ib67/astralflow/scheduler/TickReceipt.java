@@ -22,6 +22,7 @@
 package io.ib67.astralflow.scheduler;
 
 import io.ib67.astralflow.Tickable;
+import io.ib67.astralflow.scheduler.exception.TickTaskException;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -155,7 +156,7 @@ public final class TickReceipt<T extends Tickable<T>> {
     }
 
     @SuppressWarnings("all")
-    protected boolean tick(Object t) {
+    protected boolean tick(Object t) throws TickTaskException {
         if (always.size() != 0) {
             for (AwaitingTickable<?> alway : always) {
                 alway.tick();
