@@ -48,4 +48,8 @@ public final class LogCategory {
      * The category for config migrator
      */
     public static final String MIGRATOR = "Migrator";
+    /**
+     * The category for ticking scheduler. {@link io.ib67.astralflow.machines.scheduler.SimpleCatchingScheduler}
+     */
+    public static final String SCHEDULER = "Scheduler";
 }
