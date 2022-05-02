@@ -24,6 +24,7 @@ package io.ib67.astralflow.manager.impl;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
+import io.ib67.astralflow.internal.IChunkTracker;
 import io.ib67.astralflow.internal.storage.IMachineStorage;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.Tickless;
@@ -47,19 +48,17 @@ public final class MachineManagerImpl implements IMachineManager {
     private final Map<IMachine, TickReceipt<IMachine>> tickReceipts;
     private final ITickManager scheduler;
 
-    private final Set<Chunk> checkedChunks; // to check loaded chunks out of astral flow
+    private final IChunkTracker chunkTracker; // to check loaded chunks out of astral flow
 
     public MachineManagerImpl
             (IMachineStorage storage,
              ITickManager scheduler,
              int machineCapacity,
              boolean allowResizingMachineMap,
-             int chunkCapacity,
-             boolean allowResizingChunkMap) {
+             IChunkTracker chunkTracker) {
         this.machineStorage = storage;
         storage.init(this);
         int defaultCapacity = Math.max(machineCapacity, 16);
-        int defaultChunkCapacity = Math.max(chunkCapacity, 16);
         tickReceipts = new WeakHashMap<>(machineCapacity);
         this.scheduler = scheduler;
 
@@ -68,22 +67,19 @@ public final class MachineManagerImpl implements IMachineManager {
             ((WeakHashSet<?>) loadedMachines).disableResizing();
         }
 
-        checkedChunks = new WeakHashSet<>(defaultChunkCapacity);
-        if (!allowResizingChunkMap) {
-            ((WeakHashSet<?>) checkedChunks).disableResizing();
-        }
+        this.chunkTracker = chunkTracker;
         HookType.CHUNK_LOAD.register(this::initChunk);
         HookType.CHUNK_UNLOAD.register(t -> finalizeChunk(t.getChunk()));
         HookType.SAVE_DATA.register(this::onSaveData);
     }
 
     private void finalizeAll() {
-        var chunks = List.copyOf(checkedChunks);
+        var chunks = List.copyOf(chunkTracker.getMarkedChunks());
         chunks.stream().forEach(this::finalizeChunk);
     }
 
     private void initChunk(ChunkLoadEvent hook) {
-        checkedChunks.add(hook.getChunk());
+        chunkTracker.markChunk(hook.getChunk());
 
         machineStorage.initChunk(hook.getChunk());
         for (IMachine machine : machineStorage.getMachinesByChunk(hook.getChunk())) {
@@ -92,7 +88,7 @@ public final class MachineManagerImpl implements IMachineManager {
     }
 
     private void finalizeChunk(Chunk chunk) {
-        checkedChunks.remove(chunk);
+        chunkTracker.unmarkChunk(chunk);
 
         machineStorage.getMachinesByChunk(chunk)
                 .forEach(this::terminateMachine);
@@ -112,11 +108,12 @@ public final class MachineManagerImpl implements IMachineManager {
         Objects.requireNonNull(location, "Location cannot be null");
         var loc = AstralHelper.purifyLocation(location);
 
-        if (AstralHelper.isChunkLoaded(loc) && !checkedChunks.contains(loc.getChunk())) {
+        boolean isChunkUnmarked = !chunkTracker.isChunkMarked(loc.getChunk());
+        if (AstralHelper.isChunkLoaded(loc) && isChunkUnmarked) {
             Log.warn("MachineManager", "Chunk is loaded but not initialized by AF. This is a potential bug");
         }
 
-        boolean init = !AstralHelper.isChunkLoaded(loc) || !checkedChunks.contains(loc.getChunk());
+        boolean init = !AstralHelper.isChunkLoaded(loc) || isChunkUnmarked;
         if (init) {
             loc.getChunk().load();
         }
