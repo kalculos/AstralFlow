@@ -229,7 +229,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadSecurityService() {
         var leakTracker = new SimpleLeakTracker();
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, leakTracker::onTick, 0L, 5 * 20L); // todo configurable.
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, leakTracker::onTick, 0L, configuration.getSecuritySetting().getLeakCheckInterval());
         securityService = new SimpleSecurityService(leakTracker);
     }
 

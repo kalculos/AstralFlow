@@ -34,7 +34,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public final class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) // for server security.
     public void onPlayerLogin(AsyncPlayerPreLoginEvent event) {
-        if (!AstralFlow.isInitialized() && !AstralFlow.getInstance().getSettings().isAllowPlayerJoinBeforeInit()) {
+        if (!AstralFlow.isInitialized() && !AstralFlow.getInstance().getSettings().getSecuritySetting().isAllowPlayerJoinBeforeInit()) {
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
             event.setKickMessage(Text.colored(AstralFlow.getInstance().getSettings().getLocale().serverIsInitializing));
         }
