@@ -22,29 +22,36 @@
 package io.ib67.astralflow.scheduler;
 
 import io.ib67.astralflow.Tickable;
-import lombok.AllArgsConstructor;
+import io.ib67.astralflow.scheduler.exception.TickTaskException;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
-@AllArgsConstructor
+import java.util.concurrent.atomic.AtomicInteger;
+
+@RequiredArgsConstructor
 public final class AwaitingTickable<T extends Tickable<T>> {
-    public Tickable<T> tickable;
-    public TickReceipt<T> receipt;
+    public final Tickable<T> tickable;
+    public final TickReceipt<T> receipt;
+    public final AtomicInteger exceptionCounter = new AtomicInteger(); // for SimpleCatchingScheduler.
 
     @SuppressWarnings("all")
-    public void tick() {
+    public void tick() throws TickTaskException {
         try {
             if (receipt.tick(tickable)) {
                 tickable.update();
             }
-        }catch(Throwable t){
-            new IllegalStateException("Task "+tickable.getClass().getName()+" threw an exception", t).printStackTrace(); // issue-113: avoid unsafe user code disturbing the scheduler
+        } catch (Throwable t) {
+            throw new TickTaskException("Task " + tickable.getClass().getName() + " threw an exception", t, tickable); // issue-113: avoid unsafe user code disturbing the scheduler
         }
     }
 
+    @Deprecated
+    @SneakyThrows
     public boolean tickAlsoClean() {
         if (receipt.isDropped()) {
             return true;
         }
-            tick();
+        tick();
         return false;
     }
 }
