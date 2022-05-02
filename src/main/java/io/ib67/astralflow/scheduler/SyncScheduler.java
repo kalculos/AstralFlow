@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Deprecated
 public final class SyncScheduler implements Scheduler {
     private final List<AwaitingTickable<?>> tickTargets = new ArrayList<>();
 
@@ -43,7 +44,7 @@ public final class SyncScheduler implements Scheduler {
         AstralHelper.ensureMainThread("Concurrent Modification to ArrayList");
         Objects.requireNonNull(tickable, "Tickable cannot be null");
         if (tickTargets.stream().anyMatch(e -> e.tickable == tickable)) {
-            throw new IllegalArgumentException(tickable.toString() + " is already in ticking.");
+            throw new IllegalArgumentException(tickable + " is already in ticking.");
         }
         var receipt = new TickReceipt<T>();
         var awaitTickable = new AwaitingTickable<>(tickable, receipt);
