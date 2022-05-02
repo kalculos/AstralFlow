@@ -41,6 +41,7 @@ public final class AwaitingTickable<T extends Tickable<T>> {
                 tickable.update();
             }
         } catch (Throwable t) {
+            //todo Optimization? Throwing too much exception isn't a good idea
             throw new TickTaskException("Task " + tickable.getClass().getName() + " threw an exception", t, tickable); // issue-113: avoid unsafe user code disturbing the scheduler
         }
     }
