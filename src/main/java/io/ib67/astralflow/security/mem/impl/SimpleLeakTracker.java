@@ -22,7 +22,7 @@
 package io.ib67.astralflow.security.mem.impl;
 
 import io.ib67.astralflow.internal.AstralConstants;
-import io.ib67.astralflow.security.mem.LeakDetector;
+import io.ib67.astralflow.security.mem.ILeakTracker;
 import io.ib67.astralflow.util.LogCategory;
 import io.ib67.util.bukkit.Log;
 
@@ -31,11 +31,11 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class SimpleLeakDetector implements LeakDetector {
+public final class SimpleLeakTracker implements ILeakTracker {
     private final ReferenceQueue<?> queue = new ReferenceQueue<>();
     private final List<TrackedObject> trackedObjects = new LinkedList<>();
 
-    public SimpleLeakDetector() {
+    public SimpleLeakTracker() {
 
     }
 

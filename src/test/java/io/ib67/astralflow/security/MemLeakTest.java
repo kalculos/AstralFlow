@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.security;
 
-import io.ib67.astralflow.security.mem.impl.SimpleLeakDetector;
+import io.ib67.astralflow.security.mem.impl.SimpleLeakTracker;
 import io.ib67.astralflow.test.TestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,7 +38,7 @@ public class MemLeakTest {
 
     @Test
     public void onSLDTest() {
-        var leakde = new SimpleLeakDetector();
+        var leakde = new SimpleLeakTracker();
         var object = new Object();
         leakde.track(object);
         for (int i = 0; i < 21; i++) {

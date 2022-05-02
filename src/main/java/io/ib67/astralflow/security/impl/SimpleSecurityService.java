@@ -19,16 +19,15 @@
  *   USA
  */
 
-package io.ib67.astralflow.security.mem;
+package io.ib67.astralflow.security.impl;
 
-import org.jetbrains.annotations.ApiStatus;
+import io.ib67.astralflow.security.ISecurityService;
+import io.ib67.astralflow.security.mem.ILeakTracker;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-/**
- * A class that tracks object live time and detects memory leaks.
- */
-@ApiStatus.AvailableSince("0.1.0")
-public interface LeakDetector {
-    void track(Object obj);
-
-    void untrack(Object obj);
+@RequiredArgsConstructor
+public final class SimpleSecurityService implements ISecurityService {
+    @Getter
+    private final ILeakTracker leakTracker;
 }

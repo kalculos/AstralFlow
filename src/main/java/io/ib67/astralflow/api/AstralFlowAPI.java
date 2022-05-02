@@ -30,6 +30,7 @@ import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.manager.ItemRegistry;
+import io.ib67.astralflow.security.ISecurityService;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.astralflow.wireless.registry.IWirelessRegistry;
 import org.bukkit.plugin.Plugin;
@@ -86,13 +87,20 @@ public interface AstralFlowAPI {
     IRecipeRegistry getRecipeRegistry();
 
     /**
+     * @return the {@link ISecurityService}
+     */
+    ISecurityService getSecurityService();
+
+    /**
      * Register hook but don't need an argument.
      *
      * @param type     the type of the hook
      * @param runnable the runnable
      * @param <T>      the type of the delivering event
      */
-    <T> void addHook(HookType<T> type, Runnable runnable);
+    <T>
+
+    void addHook(HookType<T> type, Runnable runnable);
 
     /**
      * Add a hook into AstralFlow eventbus.
