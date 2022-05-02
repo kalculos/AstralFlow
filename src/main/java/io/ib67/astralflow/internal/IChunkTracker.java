@@ -32,10 +32,7 @@ import java.util.Collection;
 @ApiStatus.AvailableSince("0.1.0")
 public interface IChunkTracker {
     boolean isChunkMarked(Chunk chunk);
-
     void markChunk(Chunk chunk);
-
     void unmarkChunk(Chunk chunk);
-
     Collection<? extends Chunk> getMarkedChunks();
 }

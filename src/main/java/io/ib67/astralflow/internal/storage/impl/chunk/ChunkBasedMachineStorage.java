@@ -24,7 +24,6 @@ package io.ib67.astralflow.internal.storage.impl.chunk;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.internal.AstralConstants;
-import io.ib67.astralflow.internal.IChunkTracker;
 import io.ib67.astralflow.internal.storage.IMachineStorage;
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
 import io.ib67.astralflow.internal.storage.impl.chunk.tag.MachineDataTag;
@@ -33,7 +32,6 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.util.LogCategory;
-import io.ib67.astralflow.util.WeakHashSet;
 import io.ib67.util.bukkit.Log;
 import io.ib67.util.reflection.AccessibleClass;
 import org.bukkit.Chunk;
@@ -42,7 +40,7 @@ import org.bukkit.NamespacedKey;
 
 import java.util.*;
 
-public class ChunkBasedMachineStorage implements IMachineStorage, IChunkTracker {
+public class ChunkBasedMachineStorage implements IMachineStorage {
 
     public static final NamespacedKey MACHINE_INDEX_TAG = new NamespacedKey(AstralFlow.getInstance().asPlugin(), "machine_index_tag");
     public static final NamespacedKey MACHINE_DATA_TAG = new NamespacedKey(AstralFlow.getInstance().asPlugin(), "machine_data_tag");
@@ -53,14 +51,11 @@ public class ChunkBasedMachineStorage implements IMachineStorage, IChunkTracker 
     private final MachineStorageType defaultSerializer;
     private InMemoryChunkFactory chunkFactory;
 
-    private final Set<Chunk> markedChunks;
-
     public ChunkBasedMachineStorage(MachineCache cache, IFactoryManager factoryManager, MachineStorageType defaultSerializer, int initialCapacity, boolean allowResizing) {
         Objects.requireNonNull(factoryManager, "factoryManager cannot be null");
         Objects.requireNonNull(defaultSerializer, "defaultSerializer cannot be null");
         Objects.requireNonNull(cache, "machine cache cannot be null");
-        chunkMap = new WeakHashMap<>(Math.max(initialCapacity, 384)); // at least you need 384
-        markedChunks = new WeakHashSet<>(Math.max(initialCapacity, 384));
+        chunkMap = new WeakHashMap<>(Math.max(initialCapacity, 256)); // at least you need 256
         if (!allowResizing) {
             AccessibleClass.of(WeakHashMap.class).virtualField("threshold").set((WeakHashMap<Chunk, InMemoryChunk>) chunkMap, Integer.MAX_VALUE);
         }
@@ -198,25 +193,5 @@ public class ChunkBasedMachineStorage implements IMachineStorage, IChunkTracker 
             finalizeChunk(chunk);
         }
         machineCache.save();
-    }
-
-    @Override
-    public boolean isChunkMarked(Chunk chunk) {
-        return markedChunks.contains(chunk);
-    }
-
-    @Override
-    public void markChunk(Chunk chunk) {
-        markedChunks.add(chunk);
-    }
-
-    @Override
-    public void unmarkChunk(Chunk chunk) {
-        markedChunks.remove(chunk);
-    }
-
-    @Override
-    public Collection<? extends Chunk> getMarkedChunks() {
-        return markedChunks;
     }
 }
