@@ -57,8 +57,13 @@ public final class SimpleTickManager implements ITickManager {
     @Getter
     private final Scheduler scheduler;
 
+    @Deprecated
     public SimpleTickManager() {
-        this.scheduler = new SyncScheduler();
+        this(new SyncScheduler());
+    }
+
+    public SimpleTickManager(Scheduler scheduler) {
+        this.scheduler = scheduler;
         this.adapter = new SchedulerAdapter(scheduler);
         Bukkit.getScheduler().runTaskLater(AstralFlow.getInstance().asPlugin(), () -> {
             adapter.runTaskTimer(AstralFlow.getInstance().asPlugin(), 0L, 1L);
