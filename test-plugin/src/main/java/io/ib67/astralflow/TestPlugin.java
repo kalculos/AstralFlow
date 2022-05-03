@@ -79,7 +79,7 @@ public final class TestPlugin extends JavaPlugin {
 
             var loc = player.getLocation();
             var offsetX = loc.getBlockX() >= 0 ? loc.getBlockX() & 15 : 16 + (loc.getBlockX() % 16);
-            var offsetZ = loc.getBlockZ() >= 0 ? loc.getBlockZ() & 15 : 16 + (loc.getBlockZ() % 16);
+            var offsetZ = loc.getBlockZ() >= 0 ? loc.getBlockZ() & 15 : loc.getBlockZ() % 16 == 0 ? 0 : 16 + (loc.getBlockZ() % 16);
             player.sendMessage("Offset X: " + offsetX + " Offset Z: " + offsetZ);
             var resultX = chunk.getX() * 16 + offsetX;
             var resultZ = chunk.getZ() * 16 + offsetZ;
