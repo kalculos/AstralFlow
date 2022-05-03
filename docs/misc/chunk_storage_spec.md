@@ -19,8 +19,8 @@ AstralFlow 采用索引记录每个机器的位置和数目，并在 `数目 == 
 主体的数据主要由六个部分组成。
 
 1. `version` *byte 1 byte* - 数据版本，用于自动迁移和检查有效性。当前为 `1`
-2. `chunkX` *short 2 bytes* - 区块的 X 坐标
-3. `chunkZ` *short 2 bytes* - 区块的 Z 坐标
+2. `chunkX` *int 4 bytes* - 区块的 X 坐标
+3. `chunkZ` *int 4 bytes* - 区块的 Z 坐标
 4. `hasMachine` *boolean 1 byte* - 是否有机器
 5. `machineCount` *int 4 bytes* - 机器数量
 6. `machineEntries` *entries ?? bytes* - 机器列表
@@ -62,7 +62,7 @@ AstralFlow 采用索引记录每个机器的位置和数目，并在 `数目 == 
 1. `worldNameLen` *byte 1 bytes* - 世界名的长度
 2. `worldName` *byte[] worldNameLen bytes* - 世界名
 3. `x` *byte 1 bytes* - X 坐标，区块内的相对坐标
-4. `y` *short 2 bytes* - Y 坐标
+4. `y` *int 4 bytes* - Y 坐标
 5. `z` *byte 1 bytes* - Z 坐标，区块内的相对坐标
 
 # 机器数据
@@ -74,8 +74,8 @@ AstralFlow 采用索引记录每个机器的位置和数目，并在 `数目 == 
 ## 数据格式
 
 1. `version` *byte 1 bytes* - 数据的版本号，用于自动迁移和检查有效性。当前为 `0`
-2. `chunkX` *short 2 bytes* - 区块的 X 坐标
-3. `chunkZ` *short 2 bytes* - 区块的 Z 坐标
+2. `chunkX` *int 4 bytes* - 区块的 X 坐标
+3. `chunkZ` *int 4 bytes* - 区块的 Z 坐标
 4. `machineCount` *int 4 bytes* - 机器数量
 5. `machineData` *byte[] ??? bytes* - 机器数据列表
 
