@@ -109,7 +109,7 @@ public final class ChunkBasedMachineStorageTest {
         storage.save(randomLoc, machine);
 
         // read
-        storage.finalizeChunk(randomLoc.getChunk());
+        storage.finalizeChunk(randomLoc.getChunk(), true);
 
         storage.initChunk(randomLoc.getChunk());
         var readMachine = (DummyStatefulMachine) storage.get(randomLoc);
