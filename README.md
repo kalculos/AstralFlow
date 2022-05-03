@@ -25,7 +25,7 @@ And we recommend Lombok.
 2. Providing an immersive experience for players.
 3. Actively maintained.
 4. Data-driven, easier to make extensions.
-5. Texture generate and auto-publish
+5. Texture generation and publish
 
 # Getting Started
 
