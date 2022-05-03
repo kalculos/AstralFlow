@@ -60,34 +60,59 @@ public final class ChunkBasedMachineStorageTest {
 
     @Test
     public void testMachineDataTag() {
-        var machineData = new MachineData(114, 514);
 
         var worldMock = Bukkit.getWorld("world");
+        var first = new Location(worldMock, 22, 2, 41);
+        var sec = new Location(worldMock, -22, 2, 41);
+        var third = new Location(worldMock, -22, 2, -41);
+        var fourth = new Location(worldMock, 22, 2, -41);
+        testMDT(first, "first quad");
+        testMDT(sec, "second quad");
+        testMDT(third, "third quad");
+        testMDT(fourth, " fourth quad");
+    }
 
-        machineData.getMachineData().put(new Location(worldMock, 1, 1, 1), Pair.of(MachineStorageType.JSON, """
-                {"a":"b"}
-                """.trim().getBytes(StandardCharsets.UTF_8)));
+    private void testMDT(Location loc, String reason) {
+        var machineData = new MachineData(loc.getChunk().getX(), loc.getChunk().getZ());
+        machineData.getMachineData().put(
+
+                loc,
+
+                Pair.of(MachineStorageType.JSON, """
+                        {"a":"b"}
+                        """.trim().getBytes(StandardCharsets.UTF_8)));
         // serialize machine data
         var tag = MachineDataTag.INSTANCE;
         var serializedData = tag.toPrimitive(machineData, null);
 
         // deserialize.
         var desMd = tag.fromPrimitive(serializedData, null);
-        assertArrayEquals(machineData.getMachineData().get(new Location(worldMock, 1, 1, 1)).value, desMd.getMachineData().get(new Location(worldMock, 1, 1, 1)).value, "Test MachineData Serialization");
+        assertArrayEquals(machineData.getMachineData().get(loc).value, desMd.getMachineData().get(loc).value, "Test MachineData Serialization # " + reason);
     }
 
     @Test
     public void testMachineIndexTag() {
+        var worldMock = Bukkit.getWorld("world");
+        var first = new Location(worldMock, 22, 2, 41);
+        var sec = new Location(worldMock, -22, 2, 41);
+        var third = new Location(worldMock, -22, 2, -41);
+        var fourth = new Location(worldMock, 22, 2, -41);
+        testMIT(first, "first quad");
+        testMIT(sec, "second quad");
+        testMIT(third, "third quad");
+        testMIT(fourth, " fourth quad");
+        //todo test empty machine index.
+    }
+
+    private void testMIT(Location loc, String reason) {
         var tag = MachineIndexTag.INSTANCE;
         var machineIndex = new ChunkMachineIndex(Map.of(
-                new Location(Bukkit.getWorld("world"), 1, 1, 1),
+                loc,
                 "dummydummy"
-        ), 1, 1);
+        ), loc.getChunk().getX(), loc.getChunk().getZ());
         var serializedData = tag.toPrimitive(machineIndex, null);
         var desMd = tag.fromPrimitive(serializedData, null);
-        assertEquals(machineIndex.getMachineType(new Location(Bukkit.getWorld("world"), 1, 1, 1)), desMd.getMachineType(new Location(Bukkit.getWorld("world"), 1, 1, 1)), "Test MachineIndex Serialization");
-
-        //todo test empty machine index.
+        assertEquals(machineIndex.getMachineType(loc), desMd.getMachineType(loc), "Test MachineIndex Serialization # " + reason);
     }
 
     @Test
