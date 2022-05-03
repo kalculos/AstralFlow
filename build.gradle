@@ -154,6 +154,3 @@ sourceSets {
 shadowJar {
     relocate 'io.ib67.util', 'io.ib67.astralflow.relocate.util'
 }
-configurations {
-
-}
