@@ -1,4 +1,4 @@
-# 区块存储格式 (v1)
+# 区块存储格式 (v2)
 
 AstralFlow 将机器的数据储存在区块内，这是通过 Bukkit 的 `PersistentDataContainer` 实现的。
 
@@ -18,7 +18,7 @@ AstralFlow 采用索引记录每个机器的位置和数目，并在 `数目 == 
 
 主体的数据主要由六个部分组成。
 
-1. `version` *byte 1 byte* - 数据版本，用于自动迁移和检查有效性。当前为 `1`
+1. `version` *byte 1 byte* - 数据版本，用于自动迁移和检查有效性。当前为 `2`
 2. `chunkX` *int 4 bytes* - 区块的 X 坐标
 3. `chunkZ` *int 4 bytes* - 区块的 Z 坐标
 4. `hasMachine` *boolean 1 byte* - 是否有机器
