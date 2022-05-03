@@ -96,7 +96,7 @@ public final class MachineManagerImpl implements IMachineManager {
 
         machineStorage.getMachinesByChunk(chunk)
                 .forEach(this::terminateMachine);
-        machineStorage.finalizeChunk(chunk);
+        machineStorage.finalizeChunk(chunk, true);
     }
 
     private void terminateMachine(IMachine machine) {

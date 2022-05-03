@@ -64,7 +64,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         this.defaultSerializer = defaultSerializer;
     }
 
-    public void finalizeChunk(Chunk unloadingChunk) {
+    public void finalizeChunk(Chunk unloadingChunk, boolean isUnloading) {
         Objects.requireNonNull(unloadingChunk, "chunk cannot be null");
         Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         if (!chunkMap.containsKey(unloadingChunk)) {
@@ -74,7 +74,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         var memChunk = chunkMap.get(unloadingChunk);
         if (AstralConstants.DEBUG) {
             if (memChunk.getMachines().size() != 0)
-                Log.info(LogCategory.DEBUG, memChunk.getMachines().size() + " machines in chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " will be saved.");
+                Log.info(LogCategory.DEBUG, (isUnloading ? "UNLOADING" : "LOADED") + " " + memChunk.getMachines().size() + " machines in chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " will be saved.");
         }
         for (IMachine machine : memChunk.getMachines()) {
             this.save(machine.getLocation(), machine); // avoiding undefined behaviours.
@@ -83,7 +83,9 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
             if (memChunk.getMachines().size() != 0)
                 Log.info(LogCategory.DEBUG, "Done. Flushing cache");
         }
-        chunkMap.remove(unloadingChunk);
+        if (isUnloading) {
+            chunkMap.remove(unloadingChunk);
+        }
         flushChunkCache(unloadingChunk, memChunk);
     }
 
@@ -191,7 +193,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     public void flush() {
         Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         for (Chunk chunk : chunkMap.keySet()) {
-            finalizeChunk(chunk);
+            finalizeChunk(chunk, false);
         }
         machineCache.save();
     }
