@@ -24,10 +24,13 @@ package io.ib67.astralflow.storage;
 import io.ib67.astralflow.machines.AbstractMachine;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
+import io.ib67.astralflow.machines.trait.Pushable;
+import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
-class DummyStatefulMachine extends AbstractMachine {
+public class DummyStatefulMachine extends AbstractMachine implements Pushable {
 
-    protected DummyStatefulMachine(MachineProperty property) {
+    public DummyStatefulMachine(MachineProperty property) {
         super(property);
         var state = new SimpleMachineState<String>();
         state.put("nullcat?", "sexy!");
@@ -43,5 +46,10 @@ class DummyStatefulMachine extends AbstractMachine {
     @Override
     public void update(IMachine self) {
 
+    }
+
+    @Override
+    public void push(Location newLocation, Vector direction) {
+        super.setLocation(newLocation);
     }
 }
