@@ -24,6 +24,8 @@ package io.ib67.astralflow.internal.storage.impl.chunk.tag;
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
 import io.ib67.astralflow.internal.storage.impl.chunk.MachineData;
 import io.ib67.util.Pair;
+import io.ib67.util.bukkit.Log;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Location;
 import org.bukkit.persistence.PersistentDataAdapterContext;
@@ -33,13 +35,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.readLocation;
-import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.writeLocation;
+import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.*;
 
 @ApiStatus.Internal
 public final class MachineDataTag implements PersistentDataType<byte[], MachineData> {
     public static final MachineDataTag INSTANCE = new MachineDataTag();
-    private static final int STORAGE_VERSION = 0;
+    private static final int STORAGE_VERSION = 1;
 
 
     @NotNull
@@ -61,23 +62,36 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
          * [version][chunkXZ][count]{ [int(the loc hash)] [dataType] [dataLen][data] }
          */
         var buf = Unpooled.buffer();
-        buf.writeByte(STORAGE_VERSION);
-        buf.writeInt(complex.getChunkX());
-        buf.writeInt(complex.getChunkZ());
-        buf.writeInt(complex.getMachineData().size());
-        for (Map.Entry<Location, Pair<MachineStorageType, byte[]>> longPairEntry : complex.getMachineData().entrySet()) {
-            var intHash = longPairEntry.getKey();
-            // write loc
-            writeLocation(longPairEntry.getKey(), buf);
+        try {
+            buf.writeByte(STORAGE_VERSION);
+            buf.writeInt(complex.getChunkX());
+            buf.writeInt(complex.getChunkZ());
+            buf.writeInt(complex.getMachineData().size());
+            for (Map.Entry<Location, Pair<MachineStorageType, byte[]>> longPairEntry : complex.getMachineData().entrySet()) {
+                var intHash = longPairEntry.getKey();
+                // write loc
+                writeLocation2(longPairEntry.getKey(), buf);
 
-            buf.writeByte(longPairEntry.getValue().key.getTypeIndex());
-            var data = longPairEntry.getValue().value;
-            buf.writeInt(data.length);
-            buf.writeBytes(data);
+                buf.writeByte(longPairEntry.getValue().key.getTypeIndex());
+                var data = longPairEntry.getValue().value;
+                buf.writeInt(data.length);
+                buf.writeBytes(data);
+            }
+            var result = buf.array();
+            buf.release();
+            return result;
+        } catch (Throwable t) {
+            t.printStackTrace();
+            Log.warn("CBMS", "Failed to write machine data!!");
+            buf.clear();
+            buf.writeByte(STORAGE_VERSION);
+            buf.writeInt(complex.getChunkX());
+            buf.writeInt(complex.getChunkZ());
+            buf.writeInt(0);
+            var result = buf.array();
+            buf.release();
+            return result;
         }
-        var result = buf.array();
-        buf.release();
-        return result;
     }
 
     @NotNull
@@ -86,8 +100,38 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
         var buf = Unpooled.wrappedBuffer(primitive);
         var version = buf.readByte();
         if (version != STORAGE_VERSION) {
-            throw new IllegalArgumentException("Unsupported version: " + version);
+            switch (version) {
+                case 0:
+                    return fromPrimitiveV0(buf);
+                default:
+                    throw new IllegalArgumentException("Unknown version: " + version);
+            }
         }
+        try {
+            var chunkX = buf.readInt();
+            var chunkZ = buf.readInt();
+            var count = buf.readInt();
+            var result = new MachineData(chunkX, chunkZ);
+            for (int i = 0; i < count; i++) {
+                // read loc
+                var loc = readLocation2(chunkX, chunkZ, buf);
+
+                var type = MachineStorageType.getType(buf.readByte());
+                var dataLen = buf.readInt();
+                var data = new byte[dataLen];
+                buf.readBytes(data);
+                result.getMachineData().put(loc, Pair.of(type, data));
+            }
+            return result;
+        } catch (Throwable t) {
+            Log.warn("Failed to read machine data!!");
+            return null;
+        } finally {
+            buf.release();
+        }
+    }
+
+    private MachineData fromPrimitiveV0(ByteBuf buf) {
         var chunkX = buf.readInt();
         var chunkZ = buf.readInt();
         var count = buf.readInt();

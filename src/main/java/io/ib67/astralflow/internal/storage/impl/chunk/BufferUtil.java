@@ -28,6 +28,7 @@ import org.bukkit.Location;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public final class BufferUtil {
+    @Deprecated
     public static void writeLocation(Location loc, ByteBuf buf) {
         // [name len] [name] [x(1 byte)] [y(1b)] [z(1b)]
         var worldName = loc.getWorld().getName();
@@ -38,6 +39,17 @@ public final class BufferUtil {
         buf.writeInt(loc.getBlockZ());
     }
 
+    public static void writeLocation2(Location loc, ByteBuf buf) {
+        // [name len] [name] [x(1 byte)] [y(1b)] [z(1b)]
+        var worldName = loc.getWorld().getName();
+        buf.writeByte(worldName.length());
+        buf.writeBytes(worldName.getBytes(UTF_8));
+        buf.writeByte(loc.getBlockX() >= 0 ? loc.getBlockX() & 15 : loc.getBlockX() % 16 == 0 ? 0 : 16 + (loc.getBlockX() % 16));
+        buf.writeShort(loc.getBlockY());
+        buf.writeByte(loc.getBlockZ() >= 0 ? loc.getBlockZ() & 15 : loc.getBlockZ() % 16 == 0 ? 0 : 16 + (loc.getBlockZ() % 16));
+    }
+
+    @Deprecated
     public static Location readLocation(int chunkX, int chunkZ, ByteBuf buf) {
         var worldNameLen = new byte[buf.readInt()];
         buf.readBytes(worldNameLen);
@@ -45,6 +57,16 @@ public final class BufferUtil {
         var x = buf.readInt();
         var y = buf.readShort();
         var z = buf.readInt();
+        return new Location(Bukkit.getWorld(worldName), x, y, z);
+    }
+
+    public static Location readLocation2(int chunkX, int chunkZ, ByteBuf buf) {
+        var worldNameLen = new byte[buf.readByte()];
+        buf.readBytes(worldNameLen);
+        var worldName = new String(worldNameLen, UTF_8);
+        var x = chunkX * 16 + buf.readByte();
+        var y = buf.readShort();
+        var z = chunkZ * 16 + buf.readByte();
         return new Location(Bukkit.getWorld(worldName), x, y, z);
     }
 }

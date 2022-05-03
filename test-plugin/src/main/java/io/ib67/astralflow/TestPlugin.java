@@ -23,8 +23,8 @@ package io.ib67.astralflow;
 
 import com.google.gson.GsonBuilder;
 import io.ib67.astralflow.item.AnotherSimpleState;
-import io.ib67.astralflow.util.LogCategory;
 import io.ib67.util.bukkit.Log;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,7 +37,6 @@ import java.util.UUID;
 public final class TestPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
-        Log.info(LogCategory.INIT, "Loading TestModule...");
         new TestModule();
     }
 
@@ -68,6 +67,22 @@ public final class TestPlugin extends JavaPlugin {
             if (!(sender instanceof Player)) return false;
             var player = (Player) sender;
             player.getInventory().addItem(TestItems.JEB_WOOL.createNewItem().asItemStack());
+        } else if (label.equalsIgnoreCase("loc")) {
+            if (!(sender instanceof Player)) return false;
+            var player = (Player) sender;
+            var chunk = player.getLocation().getChunk();
+            player.sendMessage("chunkX: " + ChatColor.AQUA + chunk.getX());
+            player.sendMessage("chunkZ: " + ChatColor.AQUA + chunk.getZ());
+            player.sendMessage("BlockX: " + ChatColor.AQUA + player.getLocation().getBlockX());
+            player.sendMessage("BlockZ: " + ChatColor.AQUA + player.getLocation().getBlockZ());
+
+            var loc = player.getLocation();
+            var offsetX = loc.getBlockX() >= 0 ? loc.getBlockX() & 15 : loc.getBlockX() % 16 == 0 ? 0 : (16 + loc.getBlockX() % 16);
+            var offsetZ = loc.getBlockZ() >= 0 ? loc.getBlockZ() & 15 : loc.getBlockZ() % 16 == 0 ? 0 : 16 + (loc.getBlockZ() % 16);
+            player.sendMessage("Offset X: " + offsetX + " Offset Z: " + offsetZ);
+            var resultX = chunk.getX() * 16 + offsetX;
+            var resultZ = chunk.getZ() * 16 + offsetZ;
+            player.sendMessage("Infer: " + "x: " + resultX + ChatColor.GRAY + loc.getBlockX() + ChatColor.RESET + " y: " + resultZ + ChatColor.GRAY + loc.getBlockZ());
         }
         return true;
     }

@@ -60,34 +60,59 @@ public final class ChunkBasedMachineStorageTest {
 
     @Test
     public void testMachineDataTag() {
-        var machineData = new MachineData(114, 514);
 
         var worldMock = Bukkit.getWorld("world");
+        var first = new Location(worldMock, 22, 2, 41);
+        var sec = new Location(worldMock, -22, 2, 41);
+        var third = new Location(worldMock, -22, 2, -41);
+        var fourth = new Location(worldMock, 22, 2, -41);
+        testMDT(first, "first quad");
+        testMDT(sec, "second quad");
+        testMDT(third, "third quad");
+        testMDT(fourth, " fourth quad");
+    }
 
-        machineData.getMachineData().put(new Location(worldMock, 1, 1, 1), Pair.of(MachineStorageType.JSON, """
-                {"a":"b"}
-                """.trim().getBytes(StandardCharsets.UTF_8)));
+    private void testMDT(Location loc, String reason) {
+        var machineData = new MachineData(loc.getChunk().getX(), loc.getChunk().getZ());
+        machineData.getMachineData().put(
+
+                loc,
+
+                Pair.of(MachineStorageType.JSON, """
+                        {"a":"b"}
+                        """.trim().getBytes(StandardCharsets.UTF_8)));
         // serialize machine data
         var tag = MachineDataTag.INSTANCE;
         var serializedData = tag.toPrimitive(machineData, null);
 
         // deserialize.
         var desMd = tag.fromPrimitive(serializedData, null);
-        assertArrayEquals(machineData.getMachineData().get(new Location(worldMock, 1, 1, 1)).value, desMd.getMachineData().get(new Location(worldMock, 1, 1, 1)).value, "Test MachineData Serialization");
+        assertArrayEquals(machineData.getMachineData().get(loc).value, desMd.getMachineData().get(loc).value, "Test MachineData Serialization # " + reason);
     }
 
     @Test
     public void testMachineIndexTag() {
+        var worldMock = Bukkit.getWorld("world");
+        var first = new Location(worldMock, 22, 2, 41);
+        var sec = new Location(worldMock, -22, 2, 41);
+        var third = new Location(worldMock, -22, 2, -41);
+        var fourth = new Location(worldMock, 22, 2, -41);
+        testMIT(first, "first quad");
+        testMIT(sec, "second quad");
+        testMIT(third, "third quad");
+        testMIT(fourth, " fourth quad");
+        //todo test empty machine index.
+    }
+
+    private void testMIT(Location loc, String reason) {
         var tag = MachineIndexTag.INSTANCE;
         var machineIndex = new ChunkMachineIndex(Map.of(
-                new Location(Bukkit.getWorld("world"), 1, 1, 1),
+                loc,
                 "dummydummy"
-        ), 1, 1);
+        ), loc.getChunk().getX(), loc.getChunk().getZ());
         var serializedData = tag.toPrimitive(machineIndex, null);
         var desMd = tag.fromPrimitive(serializedData, null);
-        assertEquals(machineIndex.getMachineType(new Location(Bukkit.getWorld("world"), 1, 1, 1)), desMd.getMachineType(new Location(Bukkit.getWorld("world"), 1, 1, 1)), "Test MachineIndex Serialization");
-
-        //todo test empty machine index.
+        assertEquals(machineIndex.getMachineType(loc), desMd.getMachineType(loc), "Test MachineIndex Serialization # " + reason);
     }
 
     @Test
@@ -96,24 +121,46 @@ public final class ChunkBasedMachineStorageTest {
         AstralFlow.getInstance().getFactories().register(DummyStatefulMachine.class, DummyStatefulMachine::new);
         var file = AstralFlow.getInstance().asPlugin().getDataFolder().toPath().resolve("test.index");
         Files.createFile(file);
-        var randomLoc = new Location(Bukkit.getWorld("world"), ThreadLocalRandom.current().nextInt(3000), 1, ThreadLocalRandom.current().nextInt(3000));
-        var storage = new ChunkBasedMachineStorage(new MachineCache(file), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON, 256, false);
+        storage = new ChunkBasedMachineStorage(new MachineCache(file), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON, 256, false);
         var machineManager = new MachineManagerImpl(storage, null, 16, true, new SimpleChunkTracker(256, true), AstralFlow.getInstance().getSecurityService().getLeakTracker());
-        storage.initChunk(randomLoc.getChunk());
+        var random = ThreadLocalRandom.current();
+        var randomLoc = new Location(Bukkit.getWorld("world"), random.nextInt(0, 3000), 1, random.nextInt(0, 3000)); //first quadrant
+        saveAndTest(randomLoc, "first quad");
+        randomLoc = new Location(Bukkit.getWorld("world"), random.nextInt(-3000, 0), 1, random.nextInt(0, 3000)); //second quadrant
+        saveAndTest(randomLoc, "second quad");
+        randomLoc = new Location(Bukkit.getWorld("world"), random.nextInt(-3000, 0), 1, random.nextInt(-3000, 0)); //third quadrant
+        saveAndTest(randomLoc, "third quad");
+        randomLoc = new Location(Bukkit.getWorld("world"), random.nextInt(0, 3000), 1, random.nextInt(-3000, 0)); //fourth quadrant
+        saveAndTest(randomLoc, "fourth quad");
+        randomLoc = new Location(Bukkit.getWorld("world"), 0, 1, 0); //zero point
+        saveAndTest(randomLoc, "zero point");
+        randomLoc = new Location(Bukkit.getWorld("world"), 2, 1, 0); //x-axis positive
+        saveAndTest(randomLoc, "x-axis positive");
+        randomLoc = new Location(Bukkit.getWorld("world"), -2, 1, 0); //x-axis negative
+        saveAndTest(randomLoc, "x-axis negative");
+        randomLoc = new Location(Bukkit.getWorld("world"), 0, 1, 2); //y-axis positive
+        saveAndTest(randomLoc, "y-axis positive");
+        randomLoc = new Location(Bukkit.getWorld("world"), 0, 1, -2); //y-axis negative
+        saveAndTest(randomLoc, "y-axis negative");
+    }
+
+    private void saveAndTest(Location location, String phase) {
+        storage.initChunk(location.getChunk());
         var machine = new DummyStatefulMachine(MachineProperty
                 .builder()
                 .uuid(UUID.randomUUID())
-                .location(randomLoc)
+                .location(location)
                 .build()
         );
-        storage.save(randomLoc, machine);
+        storage.save(location, machine);
 
         // read
-        storage.finalizeChunk(randomLoc.getChunk(), true);
+        storage.finalizeChunk(location.getChunk(), true);
 
-        storage.initChunk(randomLoc.getChunk());
-        var readMachine = (DummyStatefulMachine) storage.get(randomLoc);
-        assertNotNull(readMachine.getState());
-        assertEquals(readMachine.getState().get("nullcat?"), "sexy!");
+        storage.initChunk(location.getChunk());
+        var readMachine = (DummyStatefulMachine) storage.get(location);
+        assertNotNull(readMachine, phase);
+        assertNotNull(readMachine.getState(), phase);
+        assertEquals(readMachine.getState().get("nullcat?"), "sexy!", phase);
     }
 }
