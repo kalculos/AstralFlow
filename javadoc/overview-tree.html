@@ -61,6 +61,9 @@ loadScripts(document, 'script');</script>
 <li><a href="io/ib67/astralflow/api/item/dummy/fetch/package-tree.html">io.ib67.astralflow.api.item.dummy.fetch</a>, </li>
 <li><a href="io/ib67/astralflow/api/item/machine/package-tree.html">io.ib67.astralflow.api.item.machine</a>, </li>
 <li><a href="io/ib67/astralflow/api/item/weapon/package-tree.html">io.ib67.astralflow.api.item.weapon</a>, </li>
+<li><a href="io/ib67/astralflow/capability/package-tree.html">io.ib67.astralflow.capability</a>, </li>
+<li><a href="io/ib67/astralflow/capability/wireless/package-tree.html">io.ib67.astralflow.capability.wireless</a>, </li>
+<li><a href="io/ib67/astralflow/capability/wireless/registry/package-tree.html">io.ib67.astralflow.capability.wireless.registry</a>, </li>
 <li><a href="io/ib67/astralflow/extension/package-tree.html">io.ib67.astralflow.extension</a>, </li>
 <li><a href="io/ib67/astralflow/hook/package-tree.html">io.ib67.astralflow.hook</a>, </li>
 <li><a href="io/ib67/astralflow/hook/event/package-tree.html">io.ib67.astralflow.hook.event</a>, </li>
@@ -73,15 +76,18 @@ loadScripts(document, 'script');</script>
 <li><a href="io/ib67/astralflow/item/recipe/choices/package-tree.html">io.ib67.astralflow.item.recipe.choices</a>, </li>
 <li><a href="io/ib67/astralflow/item/recipe/kind/package-tree.html">io.ib67.astralflow.item.recipe.kind</a>, </li>
 <li><a href="io/ib67/astralflow/machines/package-tree.html">io.ib67.astralflow.machines</a>, </li>
+<li><a href="io/ib67/astralflow/machines/exception/package-tree.html">io.ib67.astralflow.machines.exception</a>, </li>
+<li><a href="io/ib67/astralflow/machines/scheduler/package-tree.html">io.ib67.astralflow.machines.scheduler</a>, </li>
 <li><a href="io/ib67/astralflow/machines/trait/package-tree.html">io.ib67.astralflow.machines.trait</a>, </li>
 <li><a href="io/ib67/astralflow/manager/package-tree.html">io.ib67.astralflow.manager</a>, </li>
 <li><a href="io/ib67/astralflow/scheduler/package-tree.html">io.ib67.astralflow.scheduler</a>, </li>
+<li><a href="io/ib67/astralflow/scheduler/exception/package-tree.html">io.ib67.astralflow.scheduler.exception</a>, </li>
 <li><a href="io/ib67/astralflow/scheduler/strategies/package-tree.html">io.ib67.astralflow.scheduler.strategies</a>, </li>
+<li><a href="io/ib67/astralflow/security/package-tree.html">io.ib67.astralflow.security</a>, </li>
+<li><a href="io/ib67/astralflow/security/mem/package-tree.html">io.ib67.astralflow.security.mem</a>, </li>
 <li><a href="io/ib67/astralflow/texture/package-tree.html">io.ib67.astralflow.texture</a>, </li>
 <li><a href="io/ib67/astralflow/texture/util/package-tree.html">io.ib67.astralflow.texture.util</a>, </li>
-<li><a href="io/ib67/astralflow/util/package-tree.html">io.ib67.astralflow.util</a>, </li>
-<li><a href="io/ib67/astralflow/wireless/package-tree.html">io.ib67.astralflow.wireless</a>, </li>
-<li><a href="io/ib67/astralflow/wireless/registry/package-tree.html">io.ib67.astralflow.wireless.registry</a></li>
+<li><a href="io/ib67/astralflow/util/package-tree.html">io.ib67.astralflow.util</a></li>
 </ul>
 </div>
 <section class="hierarchy">
@@ -186,12 +192,27 @@ loadScripts(document, 'script');</script>
 <li class="circle">io.ib67.astralflow.item.recipe.kind.<a href="io/ib67/astralflow/item/recipe/kind/Shaped.ShapedBuilder.html" class="type-name-link" title="class in io.ib67.astralflow.item.recipe.kind">Shaped.ShapedBuilder</a></li>
 <li class="circle">io.ib67.astralflow.item.recipe.kind.<a href="io/ib67/astralflow/item/recipe/kind/Shapeless.html" class="type-name-link" title="class in io.ib67.astralflow.item.recipe.kind">Shapeless</a> (implements io.ib67.astralflow.item.recipe.<a href="io/ib67/astralflow/item/recipe/AstralRecipe.html" title="interface in io.ib67.astralflow.item.recipe">AstralRecipe</a>)</li>
 <li class="circle">io.ib67.astralflow.item.recipe.kind.<a href="io/ib67/astralflow/item/recipe/kind/Shapeless.ShapelessBuilder.html" class="type-name-link" title="class in io.ib67.astralflow.item.recipe.kind">Shapeless.ShapelessBuilder</a></li>
-<li class="circle">io.ib67.astralflow.wireless.<a href="io/ib67/astralflow/wireless/SimplePeer.html" class="type-name-link" title="class in io.ib67.astralflow.wireless">SimplePeer</a>&lt;T&gt; (implements io.ib67.astralflow.wireless.<a href="io/ib67/astralflow/wireless/IWirelessPeer.html" title="interface in io.ib67.astralflow.wireless">IWirelessPeer</a>&lt;T&gt;)</li>
-<li class="circle">io.ib67.astralflow.wireless.<a href="io/ib67/astralflow/wireless/SimplePeer.SimplePeerBuilder.html" class="type-name-link" title="class in io.ib67.astralflow.wireless">SimplePeer.SimplePeerBuilder</a>&lt;T&gt;</li>
+<li class="circle">io.ib67.astralflow.machines.scheduler.<a href="io/ib67/astralflow/machines/scheduler/SimpleCatchingScheduler.html" class="type-name-link" title="class in io.ib67.astralflow.machines.scheduler">SimpleCatchingScheduler</a> (implements io.ib67.astralflow.scheduler.<a href="io/ib67/astralflow/scheduler/Scheduler.html" title="interface in io.ib67.astralflow.scheduler">Scheduler</a>)</li>
+<li class="circle">io.ib67.astralflow.capability.wireless.<a href="io/ib67/astralflow/capability/wireless/SimplePeer.html" class="type-name-link" title="class in io.ib67.astralflow.capability.wireless">SimplePeer</a>&lt;T&gt; (implements io.ib67.astralflow.capability.wireless.<a href="io/ib67/astralflow/capability/wireless/IWirelessPeer.html" title="interface in io.ib67.astralflow.capability.wireless">IWirelessPeer</a>&lt;T&gt;)</li>
+<li class="circle">io.ib67.astralflow.capability.wireless.<a href="io/ib67/astralflow/capability/wireless/SimplePeer.SimplePeerBuilder.html" class="type-name-link" title="class in io.ib67.astralflow.capability.wireless">SimplePeer.SimplePeerBuilder</a>&lt;T&gt;</li>
 <li class="circle">io.ib67.astralflow.item.recipe.kind.<a href="io/ib67/astralflow/item/recipe/kind/Smelting.html" class="type-name-link" title="class in io.ib67.astralflow.item.recipe.kind">Smelting</a> (implements io.ib67.astralflow.item.recipe.<a href="io/ib67/astralflow/item/recipe/AstralRecipe.html" title="interface in io.ib67.astralflow.item.recipe">AstralRecipe</a>)</li>
 <li class="circle">io.ib67.astralflow.scheduler.<a href="io/ib67/astralflow/scheduler/SyncScheduler.html" class="type-name-link" title="class in io.ib67.astralflow.scheduler">SyncScheduler</a> (implements io.ib67.astralflow.scheduler.<a href="io/ib67/astralflow/scheduler/Scheduler.html" title="interface in io.ib67.astralflow.scheduler">Scheduler</a>)</li>
 <li class="circle">io.ib67.astralflow.texture.<a href="io/ib67/astralflow/texture/Texture.html" class="type-name-link" title="class in io.ib67.astralflow.texture">Texture</a></li>
 <li class="circle">io.ib67.astralflow.texture.util.<a href="io/ib67/astralflow/texture/util/TextureHelper.html" class="type-name-link" title="class in io.ib67.astralflow.texture.util">TextureHelper</a></li>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" class="type-name-link external-link" title="class or interface in java.lang">Throwable</a> (implements java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<ul>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" class="type-name-link external-link" title="class or interface in java.lang">Exception</a>
+<ul>
+<li class="circle">io.ib67.astralflow.machines.exception.<a href="io/ib67/astralflow/machines/exception/MachineException.html" class="type-name-link" title="class in io.ib67.astralflow.machines.exception">MachineException</a>
+<ul>
+<li class="circle">io.ib67.astralflow.machines.exception.<a href="io/ib67/astralflow/machines/exception/MachineNotPushableException.html" class="type-name-link" title="class in io.ib67.astralflow.machines.exception">MachineNotPushableException</a></li>
+</ul>
+</li>
+<li class="circle">io.ib67.astralflow.scheduler.exception.<a href="io/ib67/astralflow/scheduler/exception/TickTaskException.html" class="type-name-link" title="class in io.ib67.astralflow.scheduler.exception">TickTaskException</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="circle">io.ib67.astralflow.scheduler.<a href="io/ib67/astralflow/scheduler/TickReceipt.html" class="type-name-link" title="class in io.ib67.astralflow.scheduler">TickReceipt</a>&lt;T&gt;</li>
 <li class="circle">io.ib67.astralflow.util.<a href="io/ib67/astralflow/util/WeakHashSet.html" class="type-name-link" title="class in io.ib67.astralflow.util">WeakHashSet</a>&lt;E&gt; (implements java.util.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;E&gt;)</li>
 <li class="circle">io.ib67.astralflow.api.item.weapon.<a href="io/ib67/astralflow/api/item/weapon/WeaponCategory.html" class="type-name-link" title="class in io.ib67.astralflow.api.item.weapon">WeaponCategory</a> (implements io.ib67.astralflow.item.builder.<a href="io/ib67/astralflow/item/builder/ItemCategory.html" title="interface in io.ib67.astralflow.item.builder">ItemCategory</a>&lt;I&gt;)</li>
@@ -216,12 +237,15 @@ loadScripts(document, 'script');</script>
 </li>
 </ul>
 </li>
+<li class="circle">io.ib67.astralflow.capability.<a href="io/ib67/astralflow/capability/ICapabilityService.html" class="type-name-link" title="interface in io.ib67.astralflow.capability">ICapabilityService</a></li>
 <li class="circle">io.ib67.astralflow.extension.<a href="io/ib67/astralflow/extension/IExtensionRegistry.html" class="type-name-link" title="interface in io.ib67.astralflow.extension">IExtensionRegistry</a></li>
 <li class="circle">io.ib67.astralflow.manager.<a href="io/ib67/astralflow/manager/IFactoryManager.html" class="type-name-link" title="interface in io.ib67.astralflow.manager">IFactoryManager</a></li>
+<li class="circle">io.ib67.astralflow.security.mem.<a href="io/ib67/astralflow/security/mem/ILeakTracker.html" class="type-name-link" title="interface in io.ib67.astralflow.security.mem">ILeakTracker</a></li>
 <li class="circle">io.ib67.astralflow.manager.<a href="io/ib67/astralflow/manager/IMachineManager.html" class="type-name-link" title="interface in io.ib67.astralflow.manager">IMachineManager</a></li>
 <li class="circle">io.ib67.astralflow.machines.trait.<a href="io/ib67/astralflow/machines/trait/Interactive.html" class="type-name-link" title="interface in io.ib67.astralflow.machines.trait">Interactive</a></li>
 <li class="circle">io.ib67.astralflow.item.oredict.<a href="io/ib67/astralflow/item/oredict/IOreDict.html" class="type-name-link" title="interface in io.ib67.astralflow.item.oredict">IOreDict</a></li>
 <li class="circle">io.ib67.astralflow.item.recipe.<a href="io/ib67/astralflow/item/recipe/IRecipeRegistry.html" class="type-name-link" title="interface in io.ib67.astralflow.item.recipe">IRecipeRegistry</a></li>
+<li class="circle">io.ib67.astralflow.security.<a href="io/ib67/astralflow/security/ISecurityService.html" class="type-name-link" title="interface in io.ib67.astralflow.security">ISecurityService</a></li>
 <li class="circle">io.ib67.astralflow.machines.<a href="io/ib67/astralflow/machines/IState.html" class="type-name-link" title="interface in io.ib67.astralflow.machines">IState</a></li>
 <li class="circle">io.ib67.astralflow.item.builder.<a href="io/ib67/astralflow/item/builder/ItemCategory.html" class="type-name-link" title="interface in io.ib67.astralflow.item.builder">ItemCategory</a>&lt;I&gt;</li>
 <li class="circle">io.ib67.astralflow.item.<a href="io/ib67/astralflow/item/ItemKey.html" class="type-name-link" title="interface in io.ib67.astralflow.item">ItemKey</a></li>
@@ -230,8 +254,8 @@ loadScripts(document, 'script');</script>
 <li class="circle">io.ib67.astralflow.texture.<a href="io/ib67/astralflow/texture/ITextureExporter.html" class="type-name-link" title="interface in io.ib67.astralflow.texture">ITextureExporter</a></li>
 <li class="circle">io.ib67.astralflow.texture.<a href="io/ib67/astralflow/texture/ITextureRegistry.html" class="type-name-link" title="interface in io.ib67.astralflow.texture">ITextureRegistry</a></li>
 <li class="circle">io.ib67.astralflow.manager.<a href="io/ib67/astralflow/manager/ITickManager.html" class="type-name-link" title="interface in io.ib67.astralflow.manager">ITickManager</a></li>
-<li class="circle">io.ib67.astralflow.wireless.<a href="io/ib67/astralflow/wireless/IWirelessPeer.html" class="type-name-link" title="interface in io.ib67.astralflow.wireless">IWirelessPeer</a>&lt;T&gt;</li>
-<li class="circle">io.ib67.astralflow.wireless.registry.<a href="io/ib67/astralflow/wireless/registry/IWirelessRegistry.html" class="type-name-link" title="interface in io.ib67.astralflow.wireless.registry">IWirelessRegistry</a></li>
+<li class="circle">io.ib67.astralflow.capability.wireless.<a href="io/ib67/astralflow/capability/wireless/IWirelessPeer.html" class="type-name-link" title="interface in io.ib67.astralflow.capability.wireless">IWirelessPeer</a>&lt;T&gt;</li>
+<li class="circle">io.ib67.astralflow.capability.wireless.registry.<a href="io/ib67/astralflow/capability/wireless/registry/IWirelessRegistry.html" class="type-name-link" title="interface in io.ib67.astralflow.capability.wireless.registry">IWirelessRegistry</a></li>
 <li class="circle">org.bukkit.Keyed
 <ul>
 <li class="circle">io.ib67.astralflow.item.recipe.<a href="io/ib67/astralflow/item/recipe/AstralRecipe.html" class="type-name-link" title="interface in io.ib67.astralflow.item.recipe">AstralRecipe</a> (also extends java.util.function.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;T&gt;, java.util.function.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/UnaryOperator.html" title="class or interface in java.util.function" class="external-link">UnaryOperator</a>&lt;T&gt;)</li>
