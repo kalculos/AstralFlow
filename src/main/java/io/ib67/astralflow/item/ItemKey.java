@@ -22,6 +22,7 @@
 package io.ib67.astralflow.item;
 
 import io.ib67.astralflow.AstralFlow;
+import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -49,5 +50,10 @@ public interface ItemKey {
 
     default String asString() {
         return getNamespace() + ":" + getId();
+    }
+
+    @SuppressWarnings("deprecation")
+    default NamespacedKey toNamespacedKey() {
+        return new NamespacedKey(getNamespace(), getId());
     }
 }
