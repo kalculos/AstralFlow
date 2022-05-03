@@ -22,6 +22,7 @@
 package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.exception.MachineNotPushableException;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -128,7 +129,7 @@ public interface IMachineManager {
      */
     boolean isRegistered(IMachine machine);
 
-    void updateMachineLocation(Location previousLocation,Location newLocation, IMachine machine);
+    void updateMachineLocation(Location previousLocation, Location newLocation, IMachine machine) throws MachineNotPushableException;
 
     /**
      * Helper method to remove a machine from storage and tick queue.
