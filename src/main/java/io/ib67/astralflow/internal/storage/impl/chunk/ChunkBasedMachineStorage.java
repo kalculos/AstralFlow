@@ -55,9 +55,9 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         Objects.requireNonNull(factoryManager, "factoryManager cannot be null");
         Objects.requireNonNull(defaultSerializer, "defaultSerializer cannot be null");
         Objects.requireNonNull(cache, "machine cache cannot be null");
-        chunkMap = new WeakHashMap<>(Math.max(initialCapacity, 256)); // at least you need 256
+        chunkMap = new HashMap<>(Math.max(initialCapacity, 256)); // at least you need 256
         if (!allowResizing) {
-            AccessibleClass.of(WeakHashMap.class).virtualField("threshold").set((WeakHashMap<Chunk, InMemoryChunk>) chunkMap, Integer.MAX_VALUE);
+            AccessibleClass.of(HashMap.class).virtualField("threshold").set((HashMap<Chunk, InMemoryChunk>) chunkMap, Integer.MAX_VALUE);
         }
         this.machineCache = cache;
         this.factoryManager = factoryManager;
