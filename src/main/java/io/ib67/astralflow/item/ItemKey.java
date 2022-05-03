@@ -35,6 +35,10 @@ public interface ItemKey {
         return ItemKeys.from(namespace, id);
     }
 
+    static ItemKey clone(ItemKey key) {
+        return ItemKeys.clone(key);
+    }
+
     String getId();
 
     String getNamespace();

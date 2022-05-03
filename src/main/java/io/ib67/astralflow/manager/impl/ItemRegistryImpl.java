@@ -22,10 +22,7 @@
 package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.internal.item.state.InternalItemState;
-import io.ib67.astralflow.item.AstralItem;
-import io.ib67.astralflow.item.ItemKey;
-import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.item.StateScope;
+import io.ib67.astralflow.item.*;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.internal.serialization.ItemStorageType;
 import io.ib67.astralflow.item.internal.tag.ItemStateTag;
@@ -52,7 +49,7 @@ public final class ItemRegistryImpl implements ItemRegistry {
     @Override
     public void registerItem(ItemPrototypeFactory item, String oredict) {
         Objects.requireNonNull(item);
-        itemMap.put(item.getId(), item);
+        itemMap.put(ItemKeys.clone(item.getId()), item);
         if (oredict != null) {
             oreDict.registerItem(oredict, item.getPrototype().clone(), this::isItem);
         }
@@ -72,7 +69,7 @@ public final class ItemRegistryImpl implements ItemRegistry {
     @Override
     public ItemPrototypeFactory getRegistry(ItemKey key) {
         Objects.requireNonNull(key);
-        return itemMap.get(key);
+        return itemMap.get(ItemKeys.clone(key));
     }
 
     @Override

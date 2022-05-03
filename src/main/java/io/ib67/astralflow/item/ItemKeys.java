@@ -51,6 +51,13 @@ public final class ItemKeys {
         return from(a[0], a[1]);
     }
 
+    public static ItemKey clone(ItemKey anotherItemKey) {
+        if (anotherItemKey instanceof SimpleItemKey) {
+            return anotherItemKey;
+        }
+        return from(anotherItemKey.getNamespace(), anotherItemKey.getId());
+    }
+
     private record SimpleItemKey(
             String id,
             String namespace
