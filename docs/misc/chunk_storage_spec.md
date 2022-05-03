@@ -31,8 +31,8 @@ AstralFlow 采用索引记录每个机器的位置和数目，并在 `数目 == 
 
 机器列表由以下部分组成：
 
-1`cpool` *constant pool ?? bytes* - 常量池
-2`machines` *machineList ?? bytes* - 真正的机器列表
+1. `cpool` *constant pool ?? bytes* - 常量池  
+2. `machines` *machineList ?? bytes* - 真正的机器列表
 
 ### cpool
 
