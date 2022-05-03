@@ -44,17 +44,6 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
     public static final MachineIndexTag INSTANCE = new MachineIndexTag();
     private static final int STORAGE_VERSION = 1;
 
-    public static void writeEntries0(Collection<? extends Map.Entry<Location, String>> collection, ByteBuf buffer) {
-        // [typeNameLen] [typeName] [Location]
-        for (Map.Entry<Location, String> pair : collection) {
-            var loc = pair.getKey();
-            var type = pair.getValue();
-            buffer.writeInt(type.length());
-            buffer.writeBytes(type.getBytes(UTF_8));
-            writeLocation(loc, buffer);
-        }
-    }
-
     public static Map<Location, String> readEntries0(int chunkX, int chunkZ, int count, ByteBuf buf) {
         var result = new HashMap<Location, String>(count, 2); // avoid-resizing at loading
         for (int i = 0; i < count; i++) {
