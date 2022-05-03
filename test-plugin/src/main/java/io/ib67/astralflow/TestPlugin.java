@@ -23,7 +23,6 @@ package io.ib67.astralflow;
 
 import com.google.gson.GsonBuilder;
 import io.ib67.astralflow.item.AnotherSimpleState;
-import io.ib67.astralflow.util.LogCategory;
 import io.ib67.util.bukkit.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -72,13 +71,13 @@ public final class TestPlugin extends JavaPlugin {
             if (!(sender instanceof Player)) return false;
             var player = (Player) sender;
             var chunk = player.getLocation().getChunk();
-            player.sendMessage(String.valueOf(chunk.getX()));
-            player.sendMessage(String.valueOf(chunk.getZ()));
-            player.sendMessage(String.valueOf(player.getLocation().getBlockX()));
-            player.sendMessage(String.valueOf(player.getLocation().getBlockZ()));
+            player.sendMessage("chunkX: " + ChatColor.AQUA + chunk.getX());
+            player.sendMessage("chunkZ: " + ChatColor.AQUA + chunk.getZ());
+            player.sendMessage("BlockX: " + ChatColor.AQUA + player.getLocation().getBlockX());
+            player.sendMessage("BlockZ: " + ChatColor.AQUA + player.getLocation().getBlockZ());
 
             var loc = player.getLocation();
-            var offsetX = loc.getBlockX() >= 0 ? loc.getBlockX() & 15 : 16 + (loc.getBlockX() % 16);
+            var offsetX = loc.getBlockX() >= 0 ? loc.getBlockX() & 15 : loc.getBlockX() % 16 == 0 ? 0 : (16 + loc.getBlockX() % 16);
             var offsetZ = loc.getBlockZ() >= 0 ? loc.getBlockZ() & 15 : loc.getBlockZ() % 16 == 0 ? 0 : 16 + (loc.getBlockZ() % 16);
             player.sendMessage("Offset X: " + offsetX + " Offset Z: " + offsetZ);
             var resultX = chunk.getX() * 16 + offsetX;
