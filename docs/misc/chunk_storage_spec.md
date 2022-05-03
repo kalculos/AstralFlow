@@ -73,7 +73,7 @@ AstralFlow 采用索引记录每个机器的位置和数目，并在 `数目 == 
 
 ## 数据格式
 
-1. `version` *byte 1 bytes* - 数据的版本号，用于自动迁移和检查有效性。当前为 `0`
+1. `version` *byte 1 bytes* - 数据的版本号，用于自动迁移和检查有效性。当前为 `1`
 2. `chunkX` *int 4 bytes* - 区块的 X 坐标
 3. `chunkZ` *int 4 bytes* - 区块的 Z 坐标
 4. `machineCount` *int 4 bytes* - 机器数量
