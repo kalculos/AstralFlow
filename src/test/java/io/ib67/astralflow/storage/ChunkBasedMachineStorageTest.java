@@ -96,24 +96,46 @@ public final class ChunkBasedMachineStorageTest {
         AstralFlow.getInstance().getFactories().register(DummyStatefulMachine.class, DummyStatefulMachine::new);
         var file = AstralFlow.getInstance().asPlugin().getDataFolder().toPath().resolve("test.index");
         Files.createFile(file);
-        var randomLoc = new Location(Bukkit.getWorld("world"), ThreadLocalRandom.current().nextInt(3000), 1, ThreadLocalRandom.current().nextInt(3000));
-        var storage = new ChunkBasedMachineStorage(new MachineCache(file), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON, 256, false);
+        storage = new ChunkBasedMachineStorage(new MachineCache(file), AstralFlow.getInstance().getFactories(), MachineStorageType.JSON, 256, false);
         var machineManager = new MachineManagerImpl(storage, null, 16, true, new SimpleChunkTracker(256, true), AstralFlow.getInstance().getSecurityService().getLeakTracker());
-        storage.initChunk(randomLoc.getChunk());
+        var random = ThreadLocalRandom.current();
+        var randomLoc = new Location(Bukkit.getWorld("world"), random.nextInt(0, 3000), 1, random.nextInt(0, 3000)); //first quadrant
+        saveAndTest(randomLoc, "first quad");
+        randomLoc = new Location(Bukkit.getWorld("world"), random.nextInt(-3000, 0), 1, random.nextInt(0, 3000)); //second quadrant
+        saveAndTest(randomLoc, "second quad");
+        randomLoc = new Location(Bukkit.getWorld("world"), random.nextInt(-3000, 0), 1, random.nextInt(-3000, 0)); //third quadrant
+        saveAndTest(randomLoc, "third quad");
+        randomLoc = new Location(Bukkit.getWorld("world"), random.nextInt(0, 3000), 1, random.nextInt(-3000, 0)); //fourth quadrant
+        saveAndTest(randomLoc, "fourth quad");
+        randomLoc = new Location(Bukkit.getWorld("world"), 0, 1, 0); //zero point
+        saveAndTest(randomLoc, "zero point");
+        randomLoc = new Location(Bukkit.getWorld("world"), 2, 1, 0); //x-axis positive
+        saveAndTest(randomLoc, "x-axis positive");
+        randomLoc = new Location(Bukkit.getWorld("world"), -2, 1, 0); //x-axis negative
+        saveAndTest(randomLoc, "x-axis negative");
+        randomLoc = new Location(Bukkit.getWorld("world"), 0, 1, 2); //y-axis positive
+        saveAndTest(randomLoc, "y-axis positive");
+        randomLoc = new Location(Bukkit.getWorld("world"), 0, 1, -2); //y-axis negative
+        saveAndTest(randomLoc, "y-axis negative");
+    }
+
+    private void saveAndTest(Location location, String phase) {
+        storage.initChunk(location.getChunk());
         var machine = new DummyStatefulMachine(MachineProperty
                 .builder()
                 .uuid(UUID.randomUUID())
-                .location(randomLoc)
+                .location(location)
                 .build()
         );
-        storage.save(randomLoc, machine);
+        storage.save(location, machine);
 
         // read
-        storage.finalizeChunk(randomLoc.getChunk(), true);
+        storage.finalizeChunk(location.getChunk(), true);
 
-        storage.initChunk(randomLoc.getChunk());
-        var readMachine = (DummyStatefulMachine) storage.get(randomLoc);
-        assertNotNull(readMachine.getState());
-        assertEquals(readMachine.getState().get("nullcat?"), "sexy!");
+        storage.initChunk(location.getChunk());
+        var readMachine = (DummyStatefulMachine) storage.get(location);
+        assertNotNull(readMachine, phase);
+        assertNotNull(readMachine.getState(), phase);
+        assertEquals(readMachine.getState().get("nullcat?"), "sexy!", phase);
     }
 }
