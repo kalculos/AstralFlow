@@ -51,12 +51,19 @@ public final class RecipeListener implements Listener {
         if (event.getRecipe() != null && !override) {
             return;
         }
-        var matrix = event.getInventory().getMatrix();
+        if (event.getViewers().size() > 1) {
+            return; // we don't handle this situation right now.
+        }
+        matchAndSetSession(event.getInventory(), (Player) event.getViewers().get(0));
+    }
+
+    private void matchAndSetSession(CraftingInventory inventory, Player player) {
+        var matrix = inventory.getMatrix();
         var recipe = recipeRegistry.matchRecipe(RecipeHelper.leftAlignMatrixItems(matrix));
-        recipeSessions.put((Player) event.getViewers().get(0), recipe);
+        recipeSessions.put(player, recipe);
         if (recipe != null) {
             //var modifiedMatrix = recipe.apply(matrix);
-            event.getInventory().setResult(recipe.getPrototype().clone());
+            inventory.setResult(recipe.getPrototype().clone());
             //event.getInventory().setMatrix(modifiedMatrix);
         }
     }
@@ -75,7 +82,22 @@ public final class RecipeListener implements Listener {
                 if (recipe != null) {
                     if (event.isShiftClick()) {
                         event.setCancelled(true);
+                        var playerInventory = event.getWhoClicked().getInventory();
                         // custom shift logics.
+                        var demo = recipe.getPrototype().clone(); // avoid different recipes from being crafted.
+                        while (recipe != null && recipe.getPrototype().isSimilar(demo)) {
+                            var item = recipe.produceResult();
+                            var result = playerInventory.addItem(item);
+                            if (result.isEmpty()) {
+                                // Successful applied.
+                                inv.setMatrix(recipe.apply(inv.getMatrix()));
+                            } else {
+                                matchAndSetSession(inv, (Player) event.getWhoClicked());
+                                return;
+                            }
+                            matchAndSetSession(inv, (Player) event.getWhoClicked());
+                            recipe = recipeSessions.get((Player) event.getWhoClicked());
+                        }
                         return;
                     }
                     event.setCurrentItem(recipe.produceResult());
