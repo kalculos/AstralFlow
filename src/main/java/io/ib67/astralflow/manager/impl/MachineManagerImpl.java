@@ -28,6 +28,8 @@ import io.ib67.astralflow.internal.IChunkTracker;
 import io.ib67.astralflow.internal.storage.IMachineStorage;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.Tickless;
+import io.ib67.astralflow.machines.exception.MachineNotPushableException;
+import io.ib67.astralflow.machines.trait.Pushable;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.scheduler.TickReceipt;
@@ -209,12 +211,16 @@ public final class MachineManagerImpl implements IMachineManager {
     }
 
     @Override
-    public void updateMachineLocation(Location previousLocation, Location newLocation, IMachine machine) {
+    public void updateMachineLocation(Location previousLocation, Location newLocation, IMachine machine) throws MachineNotPushableException {
         Objects.requireNonNull(previousLocation, "Previous location cannot be null");
         Objects.requireNonNull(machine, "Machine cannot be null");
         if (!isRegistered(machine)) {
             throw new IllegalArgumentException("Machine " + machine + " is not registered");
         }
+        if (!(machine instanceof Pushable pushMachine)) {
+            throw new MachineNotPushableException("Machine " + machine + " is not pushable", machine);
+        }
+        pushMachine.push(newLocation, newLocation.toVector().subtract(previousLocation.toVector()));
         machineStorage.remove(AstralHelper.purifyLocation(previousLocation));
         machineStorage.save(AstralHelper.purifyLocation(newLocation), machine);
     }
