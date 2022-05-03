@@ -43,7 +43,8 @@ public final class RecipeHelperTest {
     @Test
     public void populateEmptyRows() {
         assertArrayEquals(new String[]{"   ", "   ", "   "}, RecipeHelper.populateEmptyRows(""), "Empty input #1");
-        assertArrayEquals(new String[]{"   ", "   ", "   "}, RecipeHelper.populateEmptyRows(), "Empty input #2");
+        assertArrayEquals(new String[]{"   ", "   ", "   "}, RecipeHelper.populateEmptyRows(new String[0]), "Empty input #2");
+        assertArrayEquals(new ItemStack[9], RecipeHelper.populateEmptyRows(new ItemStack[0]), "Empty input #3");
         assertArrayEquals(
                 new String[]{
                         "   ",

@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.item.recipe;
 
+import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import io.ib67.astralflow.item.recipe.kind.Shapeless;
@@ -125,7 +126,7 @@ public final class RecipeRegistryTest {
         recipe = (Shapeless) registry.matchRecipe(newItems);
         var expectedResult = new ItemStack(Material.FIREWORK_ROCKET);
         assertEquals(expectedResult, recipe.produceResult(), "Test Shapeless Consume #1");
-        var expectedArray = new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR)};
+        var expectedArray = RecipeHelper.populateEmptyRows(new ItemStack(Material.AIR), new ItemStack(Material.AIR));
         assertArrayEquals(expectedArray, recipe.apply(newItems), "Test Shapeless Consume #1");
     }
 
