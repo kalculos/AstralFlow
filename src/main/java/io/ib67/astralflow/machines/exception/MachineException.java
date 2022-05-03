@@ -19,37 +19,35 @@
  *   USA
  */
 
-package io.ib67.astralflow.storage;
+package io.ib67.astralflow.machines.exception;
 
-import io.ib67.astralflow.machines.AbstractMachine;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.MachineProperty;
-import io.ib67.astralflow.machines.trait.Pushable;
-import org.bukkit.Location;
-import org.bukkit.util.Vector;
 
-public class DummyStatefulMachine extends AbstractMachine implements Pushable {
+public class MachineException extends Exception {
+    private final IMachine machine;
 
-    public DummyStatefulMachine(MachineProperty property) {
-        super(property);
-        var state = new SimpleMachineState<String>();
-        state.put("nullcat?", "sexy!");
-        this.setState(state);
+    public MachineException(IMachine machine) {
+        super();
+        this.machine = machine;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public SimpleMachineState<String> getState() {
-        return (SimpleMachineState<String>) super.getState();
+    public MachineException(String message, IMachine machine) {
+        super(message);
+        this.machine = machine;
     }
 
-    @Override
-    public void update(IMachine self) {
-
+    public MachineException(String message, Throwable cause, IMachine machine) {
+        super(message, cause);
+        this.machine = machine;
     }
 
-    @Override
-    public void push(Location newLocation, Vector direction) {
-        super.setLocation(newLocation);
+    public MachineException(Throwable cause, IMachine machine) {
+        super(cause);
+        this.machine = machine;
+    }
+
+    protected MachineException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, IMachine machine) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.machine = machine;
     }
 }

@@ -31,6 +31,7 @@ import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.trait.Pushable;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -188,10 +189,12 @@ public final class BlockListener implements Listener {
             return false;
         }
     }
+
+    @SneakyThrows
     private static void handleMachineMove(@NotNull Pushable mach, Location loc, Vector direction) {
         var machine = (IMachine) mach;
         var prevLoc = AstralHelper.purifyLocation(machine.getLocation().clone());
-        mach.push(loc,direction);
-        machine.getProperty().getManager().updateMachineLocation(prevLoc,loc,machine);
+        mach.push(loc, direction);
+        machine.getProperty().getManager().updateMachineLocation(prevLoc, loc, machine);
     }
 }
