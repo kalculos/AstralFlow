@@ -22,6 +22,9 @@
 package io.ib67.astralflow.internal.storage.impl.chunk.tag;
 
 import io.ib67.astralflow.internal.storage.impl.chunk.ChunkMachineIndex;
+import io.ib67.util.Randomly;
+import io.ib67.util.Util;
+import io.ib67.util.bukkit.Log;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Location;
@@ -30,19 +33,21 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.readLocation;
-import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.writeLocation;
+import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @ApiStatus.Internal
 public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMachineIndex> {
     public static final MachineIndexTag INSTANCE = new MachineIndexTag();
-    private static final int STORAGE_VERSION = 1;
+    private static final int STORAGE_VERSION = 2;
 
     public static Map<Location, String> readEntries0(int chunkX, int chunkZ, int count, ByteBuf buf) {
         var result = new HashMap<Location, String>(count, 2); // avoid-resizing at loading
@@ -56,7 +61,7 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
         return new HashMap<>(result); // or the map cannot be resized.
     }
 
-    public static void writeEntries1(Collection<? extends Map.Entry<Location, String>> collection, ByteBuf buffer) {
+    public static void writeEntries2(Collection<? extends Map.Entry<Location, String>> collection, ByteBuf buffer) {
         // cpool [size] { [Len][Data] } [typeCPoolId] [Location]
         var constants = new ArrayList<String>(collection.size());
         for (Map.Entry<Location, String> locationStringEntry : collection) {
@@ -65,7 +70,7 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
         // write cpool
         buffer.writeInt(constants.size());
         for (var constant : constants) {
-            buffer.writeInt(constant.length());
+            buffer.writeShort(constant.length());
             buffer.writeBytes(constant.getBytes(UTF_8));
         }
 
@@ -74,7 +79,7 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
             var loc = pair.getKey();
             var type = constants.indexOf(pair.getValue());
             buffer.writeInt(type);
-            writeLocation(loc, buffer);
+            writeLocation2(loc, buffer);
         }
     }
 
@@ -93,6 +98,26 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
         for (int i = 0; i < count; i++) {
             var typeName = constants[buf.readInt()];
             var loc = readLocation(chunkX, chunkZ, buf);
+            result.put(loc, typeName);
+        }
+        return new HashMap<>(result); // or the map cannot be resized.
+    }
+
+    public static Map<Location, String> readEntries2(int chunkX, int chunkZ, int count, ByteBuf buf) {
+        // read constant pool
+        var poolSize = buf.readInt();
+        var constants = new String[poolSize];
+        for (int i = 0; i < poolSize; i++) {
+            var nameLen = new byte[buf.readShort()];
+            buf.readBytes(nameLen);
+            constants[i] = new String(nameLen, UTF_8);
+        }
+
+        //read entries
+        var result = new HashMap<Location, String>(count, 2); // avoid-resizing at loading
+        for (int i = 0; i < count; i++) {
+            var typeName = constants[buf.readInt()];
+            var loc = readLocation2(chunkX, chunkZ, buf);
             result.put(loc, typeName);
         }
         return new HashMap<>(result); // or the map cannot be resized.
@@ -124,15 +149,32 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
          * [machineType]
          */
         var buffer = Unpooled.buffer();
-        buffer.writeByte(STORAGE_VERSION);
-        buffer.writeInt(complex.getChunkX());
-        buffer.writeInt(complex.getChunkZ());
-        buffer.writeBoolean(complex.isHasMachines());
-        buffer.writeInt(complex.getMachineTypes().size());
-        writeEntries1(complex.getEntries(), buffer);
-        var result = buffer.array();
-        buffer.release();
-        return result;
+        try {
+            buffer.writeByte(STORAGE_VERSION);
+            buffer.writeInt(complex.getChunkX());
+            buffer.writeInt(complex.getChunkZ());
+            buffer.writeBoolean(complex.isHasMachines());
+            buffer.writeInt(complex.getMachineTypes().size());
+            writeEntries2(complex.getEntries(), buffer);
+            return buffer.array();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            Log.warn("CBMS", "Cannot save data for chunk " + complex.getChunkX() + ", " + complex.getChunkZ());
+            Log.warn("CBMS", "Trying to dump data...");
+            var fileName = "astralflow-error-chunkdump-" + Randomly.pick(complex.getLocations()).map(e -> e.getWorld().getName()).orElse("UNKNOWN_WORLD") + "-" + Instant.now() + "-" + complex.getChunkX() + "-" + complex.getChunkZ() + ".json";
+            Util.runCatching(() -> Files.writeString(Path.of(fileName), Util.BukkitAPI.gsonForBukkit().toJson(complex))).getResult();
+            Log.warn("CBMS", "Dumped data to " + fileName);
+
+            // create a empty one.
+            buffer.clear();
+            buffer.writeByte(STORAGE_VERSION);
+            buffer.writeInt(complex.getChunkX());
+            buffer.writeInt(complex.getChunkZ());
+            buffer.writeBoolean(false);
+            return buffer.array();
+        } finally {
+            buffer.release();
+        }
     }
 
     @NotNull
@@ -147,11 +189,29 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
             switch (version) {
                 case 0:
                     return readVersion0(buf, chunkX, chunkZ);
+                case 1:
+                    return readVersion1(buf, chunkX, chunkZ);
                 default:
                     throw new UnsupportedOperationException("Unknown version: " + version);
             }
         }
+        try {
+            var hasMachines = buf.readBoolean();
+            if (!hasMachines) {
+                return new ChunkMachineIndex(new HashMap<>(), chunkX, chunkZ);
+            }
+            var count = buf.readInt();
+            var entries = readEntries2(chunkX, chunkZ, count, buf);
+            buf.release();
+            return new ChunkMachineIndex(entries, chunkX, chunkZ);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            Log.warn("CBMS", "Cannot load chunk data!");
+            return new ChunkMachineIndex(new HashMap<>(), chunkX, chunkZ);
+        }
+    }
 
+    private ChunkMachineIndex readVersion1(ByteBuf buf, int chunkX, int chunkZ) {
         var hasMachines = buf.readBoolean();
         if (!hasMachines) {
             return new ChunkMachineIndex(new HashMap<>(), chunkX, chunkZ);
