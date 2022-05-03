@@ -2,3 +2,5 @@
     - [配置文件](./user_guide/configuration.md)
     - [更新类型](./user_guide/update_type.md)
 - [拓展入门](./getting_started/README.md)
+- [其他](./misc/README.md)
+  - [区块储存格式](./misc/chunk_storage_spec.md)
