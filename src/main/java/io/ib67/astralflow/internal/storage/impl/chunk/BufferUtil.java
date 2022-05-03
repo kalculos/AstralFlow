@@ -44,7 +44,7 @@ public final class BufferUtil {
         var worldName = loc.getWorld().getName();
         buf.writeByte(worldName.length());
         buf.writeBytes(worldName.getBytes(UTF_8));
-        buf.writeByte(loc.getBlockX() >= 0 ? loc.getBlockX() & 15 : 16 + (loc.getBlockX() % 16));
+        buf.writeByte(loc.getBlockX() >= 0 ? loc.getBlockX() & 15 : loc.getBlockX() % 16 == 0 ? 0 : 16 + (loc.getBlockX() % 16));
         buf.writeShort(loc.getBlockY());
         buf.writeByte(loc.getBlockZ() >= 0 ? loc.getBlockZ() & 15 : loc.getBlockZ() % 16 == 0 ? 0 : 16 + (loc.getBlockZ() % 16));
     }
