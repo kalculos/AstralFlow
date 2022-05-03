@@ -22,6 +22,7 @@
 package io.ib67.astralflow.api;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.capability.ICapabilityService;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.internal.config.AstralFlowConfiguration;
@@ -32,7 +33,6 @@ import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.manager.ItemRegistry;
 import io.ib67.astralflow.security.ISecurityService;
 import io.ib67.astralflow.texture.ITextureRegistry;
-import io.ib67.astralflow.wireless.registry.IWirelessRegistry;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -66,9 +66,9 @@ public interface AstralFlowAPI {
     ITickManager getTickManager();
 
     /**
-     * @return the {@link IWirelessRegistry}
+     * @return the {@link ICapabilityService}
      */
-    IWirelessRegistry getWirelessRegistry();
+    ICapabilityService getCapabilityService();
 
     /**
      * @return the {@link ITextureRegistry}

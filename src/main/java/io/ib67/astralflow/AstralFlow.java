@@ -26,6 +26,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.api.external.AstralExtension;
+import io.ib67.astralflow.capability.ICapabilityService;
+import io.ib67.astralflow.capability.impl.SimpleCapabilityService;
+import io.ib67.astralflow.capability.wireless.impl.SimpleWirelessRegistry;
 import io.ib67.astralflow.extension.ExtensionRegistryImpl;
 import io.ib67.astralflow.extension.IExtensionRegistry;
 import io.ib67.astralflow.hook.HookType;
@@ -62,8 +65,6 @@ import io.ib67.astralflow.security.impl.SimpleSecurityService;
 import io.ib67.astralflow.security.mem.impl.SimpleLeakTracker;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.astralflow.util.LogCategory;
-import io.ib67.astralflow.wireless.impl.SimpleWirelessRegistry;
-import io.ib67.astralflow.wireless.registry.IWirelessRegistry;
 import io.ib67.util.Util;
 import io.ib67.util.bukkit.Log;
 import lombok.Getter;
@@ -98,7 +99,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     @Getter
     private IFactoryManager factories;
     @Getter
-    private final IWirelessRegistry wirelessRegistry = new SimpleWirelessRegistry();
+    private final ICapabilityService capabilityService = new SimpleCapabilityService(new SimpleWirelessRegistry());
     @Getter
     private ItemRegistry itemRegistry;
     @Getter

@@ -20,6 +20,6 @@
  */
 
 /**
- * Things about {@link io.ib67.astralflow.wireless.registry.IWirelessRegistry}
+ * These things are related to security management.
  */
-package io.ib67.astralflow.wireless.registry;
+package io.ib67.astralflow.security;
