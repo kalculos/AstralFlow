@@ -19,13 +19,13 @@
  *   USA
  */
 
-package io.ib67.astralflow.wireless.impl;
+package io.ib67.astralflow.capability.wireless.impl;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralHelper;
+import io.ib67.astralflow.capability.wireless.IWirelessPeer;
+import io.ib67.astralflow.capability.wireless.registry.IWirelessRegistry;
 import io.ib67.astralflow.util.WeakHashSet;
-import io.ib67.astralflow.wireless.IWirelessPeer;
-import io.ib67.astralflow.wireless.registry.IWirelessRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

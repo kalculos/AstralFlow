@@ -24,6 +24,7 @@ package io.ib67.astralflow.wireless;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.WorldMock;
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.capability.wireless.SimplePeer;
 import io.ib67.astralflow.test.TestUtil;
 import org.bukkit.Location;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,12 +49,12 @@ public class WirelessTest {
     public void testPeerDiscoveryAsync() throws InterruptedException, ExecutionException {
         SimplePeer.createBuilder()
                 .location(new Location(peerWorld, 3333, 0, 0)).build();
-        assertFalse(AstralFlow.getInstance().getWirelessRegistry().findPeersAsync(new Location(peerWorld, 3333, 2, 0), 3).get().isEmpty());
+        assertFalse(AstralFlow.getInstance().getCapabilityService().getWirelessRegistry().findPeersAsync(new Location(peerWorld, 3333, 2, 0), 3).get().isEmpty());
     }
 
     @Test
     public void testPeerDiscovery() {
         SimplePeer.createBuilder().location(new Location(peerWorld, 0, 0, 0)).build();
-        assertFalse(AstralFlow.getInstance().getWirelessRegistry().findPeers(new Location(peerWorld, 0, 2, 0), 3).isEmpty());
+        assertFalse(AstralFlow.getInstance().getCapabilityService().getWirelessRegistry().findPeers(new Location(peerWorld, 0, 2, 0), 3).isEmpty());
     }
 }

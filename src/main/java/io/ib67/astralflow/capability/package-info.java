@@ -20,6 +20,6 @@
  */
 
 /**
- * Things about wireless discovery, etc.
+ * These things are related to machine capabilities, Flow and Wireless Discovery API for example.
  */
-package io.ib67.astralflow.wireless;
+package io.ib67.astralflow.capability;
