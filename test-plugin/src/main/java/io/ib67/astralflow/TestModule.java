@@ -27,9 +27,11 @@ import io.ib67.astralflow.api.item.machine.MachineCategory;
 import io.ib67.astralflow.api.item.machine.MachineItem;
 import io.ib67.astralflow.item.SimpleStatefulCategory;
 import io.ib67.astralflow.item.SimpleStatelessCategory;
+import io.ib67.astralflow.item.SimpleStatelessUnstackableCategory;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
+import io.ib67.astralflow.item.recipe.kind.Shapeless;
 import io.ib67.astralflow.machines.JebWool;
 import io.ib67.astralflow.util.ItemStacks;
 import org.bukkit.Material;
@@ -72,6 +74,13 @@ public final class TestModule extends AstralExtension {
                 .register();
         ItemBuilder.of(new SimpleStatefulCategory())
                 .prototype(TestItems.STATEFUL_ITEM)
+                .register();
+        ItemBuilder.of(new SimpleStatelessUnstackableCategory())
+                .recipe(Shapeless.of(TestItems.CANT_STACK.toNamespacedKey(), null)
+                        .addIngredients(new MaterialChoice(Material.GOLD_INGOT))
+                        .build()
+                )
+                .prototype(TestItems.CANT_STACK)
                 .register();
     }
 }

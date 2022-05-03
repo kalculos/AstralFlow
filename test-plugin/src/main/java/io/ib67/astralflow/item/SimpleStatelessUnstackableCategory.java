@@ -19,30 +19,21 @@
  *   USA
  */
 
-package io.ib67.astralflow;
+package io.ib67.astralflow.item;
 
-import io.ib67.astralflow.item.ItemKey;
+import io.ib67.astralflow.item.builder.ItemCategory;
+import io.ib67.astralflow.item.builder.ItemPrototype;
+import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import io.ib67.astralflow.util.ItemStacks;
+import org.bukkit.Material;
 
-public enum TestItems implements ItemKey {
-    JEB_WOOL("jeb_wool"),
-    STATELESS_ITEM("stateless_item"),
-
-    CANT_STACK("cantstack"),
-    STATEFUL_ITEM("simple_stateful_item");
-
-    private final String id;
-
-    TestItems(String id) {
-        this.id = id;
-    }
-
+public final class SimpleStatelessUnstackableCategory implements ItemCategory<ItemKey> {
     @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public String getNamespace() {
-        return "tester";
+    public ItemPrototypeFactory getFactory(ItemKey item) {
+        return ItemPrototype.builder()
+                .statePrototype(null)
+                .prototype(ItemStacks.builder(Material.IRON_SWORD).build())
+                .id(item)
+                .build();
     }
 }

@@ -22,6 +22,7 @@
 package io.ib67.astralflow.item.recipe.kind;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
@@ -126,7 +127,7 @@ public final class Shapeless implements AstralRecipe {
         if (cleanItemStacks.size() != choices.length) {
             throw new IllegalArgumentException("itemStacks size does not match choices size");
         }
-        var tran = Arrays.copyOf(itemStacks, itemStacks.length);
+        var tran = List.copyOf(cleanItemStacks).toArray(new ItemStack[0]);
         var copy = new ArrayList<IngredientChoice>(List.of(choices));
         for (int i = 0; i < tran.length; i++) {
             var cleanItemStack = cleanItemStacks.get(i);
@@ -138,10 +139,10 @@ public final class Shapeless implements AstralRecipe {
             copy.remove(choice);
             if (!choice.test(cleanItemStack))
                 throw new IllegalArgumentException("THE itemStack does not match choices ,key: " + key);
-            cleanItemStack = choice.apply(cleanItemStack);
+            cleanItemStack = choice.apply(cleanItemStack); // override the reference. DO NOT REMOVE THIS LINE
         }
 
-        return tran;
+        return RecipeHelper.populateEmptyRows(tran);
     }
 
 
