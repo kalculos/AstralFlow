@@ -42,5 +42,5 @@ public interface IMachineStorage extends KeyedStorage<Location, IMachine> {
 
     void initChunk(Chunk chunk);
 
-    void finalizeChunk(Chunk chunk);
+    void finalizeChunk(Chunk chunk, boolean isUnloading);
 }
