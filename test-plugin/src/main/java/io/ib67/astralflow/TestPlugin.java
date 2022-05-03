@@ -38,7 +38,6 @@ import java.util.UUID;
 public final class TestPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
-        Log.info(LogCategory.INIT, "Loading TestModule...");
         new TestModule();
     }
 
