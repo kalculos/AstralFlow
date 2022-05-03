@@ -170,4 +170,14 @@ public final class RecipeHelper {
         return list.toArray(new String[0]);
     }
 
+    public static ItemStack[] populateEmptyRows(ItemStack... tran) {
+        if (tran.length >= 9) {
+            return tran;
+        }
+        var newTran = new ItemStack[9];
+        for (int i = 0; i < tran.length; i++) {
+            newTran[i] = tran[i];
+        }
+        return newTran;
+    }
 }
