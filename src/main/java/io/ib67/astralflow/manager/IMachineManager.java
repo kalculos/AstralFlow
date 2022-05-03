@@ -139,5 +139,6 @@ public interface IMachineManager {
     default void terminateAndRemoveMachine(IMachine machine) {
         removeMachine(machine);
         deactivateMachine(machine);
+        unregisterMachine(machine);
     }
 }
