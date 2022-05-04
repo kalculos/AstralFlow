@@ -19,19 +19,21 @@
  *   USA
  */
 
-package io.ib67.astralflow.scheduler;
+package io.ib67.astralflow.machines.factories;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.scheduler.BukkitRunnable;
+import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.MachineProperty;
+import org.jetbrains.annotations.ApiStatus;
 
-@RequiredArgsConstructor
-@Getter
-public final class SchedulerAdapter extends BukkitRunnable {
-    private final Scheduler delegatedScheduler;
+/**
+ * A factory that creates machine by a given {@link MachineProperty}.
+ *
+ * @param <T> The type of the machine.
+ */
+@ApiStatus.AvailableSince("0.1.0")
+@FunctionalInterface
+public interface IMachineFactory<T extends IMachine> {
 
-    @Override
-    public void run() {
-        delegatedScheduler.tick();
-    }
+    T createMachine(MachineProperty property);
+
 }

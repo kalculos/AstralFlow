@@ -29,9 +29,14 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Fired when a machine block is placed.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @RequiredArgsConstructor
 @Getter
 public class MachineBlockPlaceEvent extends MachineEvent implements Cancellable {

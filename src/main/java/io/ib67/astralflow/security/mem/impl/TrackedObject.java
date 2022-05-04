@@ -26,7 +26,7 @@ import lombok.AllArgsConstructor;
 import java.lang.ref.WeakReference;
 
 @AllArgsConstructor
-public final class TrackedObject {
+final class TrackedObject {
     public WeakReference<Object> ref;
     public int counter;
 }

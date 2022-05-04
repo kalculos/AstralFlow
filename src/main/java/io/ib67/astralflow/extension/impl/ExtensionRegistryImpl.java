@@ -19,9 +19,11 @@
  *   USA
  */
 
-package io.ib67.astralflow.extension;
+package io.ib67.astralflow.extension.impl;
 
 import io.ib67.astralflow.api.external.AstralExtension;
+import io.ib67.astralflow.extension.IExtensionRegistry;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -31,6 +33,7 @@ import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
+@ApiStatus.Internal
 public final class ExtensionRegistryImpl implements IExtensionRegistry {
     private final Map<String, AstralExtension> extensions = new HashMap<>();
 

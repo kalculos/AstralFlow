@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * Manager for tick receipts.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface ITickManager {
 

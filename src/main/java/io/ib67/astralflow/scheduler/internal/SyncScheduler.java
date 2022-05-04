@@ -19,16 +19,21 @@
  *   USA
  */
 
-package io.ib67.astralflow.scheduler;
+package io.ib67.astralflow.scheduler.internal;
 
 
 import io.ib67.astralflow.Tickable;
 import io.ib67.astralflow.api.AstralHelper;
+import io.ib67.astralflow.scheduler.AwaitingTickable;
+import io.ib67.astralflow.scheduler.Scheduler;
+import io.ib67.astralflow.scheduler.TickReceipt;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@ApiStatus.Internal
 @Deprecated
 public final class SyncScheduler implements Scheduler {
     private final List<AwaitingTickable<?>> tickTargets = new ArrayList<>();

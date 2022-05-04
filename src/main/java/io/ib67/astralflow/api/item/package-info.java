@@ -20,8 +20,8 @@
  */
 
 /**
- * Here are some presets for the Item API. You can use these components to create some common items (such as ingredients) quickly.
- * <p/>
+ * Here are some presets for the Item API. You can use these components to create some common items (such as ingredients) quickly.<br />
+ * <p/><br />
  * A usual case is to create a new item with dummy first, then set states for them in the future (but you will have to do some migration like {@link io.ib67.astralflow.manager.ItemRegistry#saveState(org.bukkit.inventory.ItemStack, io.ib67.astralflow.item.StateScope, io.ib67.astralflow.item.ItemState)})
  */
 package io.ib67.astralflow.api.item;

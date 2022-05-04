@@ -20,6 +20,6 @@
  */
 
 /**
- * Utilities for developers, which easier your life {@literal <3}
+ * Safety about memory leak
  */
-package io.ib67.astralflow.util;
+package io.ib67.astralflow.security.mem;

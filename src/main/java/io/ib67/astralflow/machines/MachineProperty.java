@@ -38,8 +38,20 @@ import java.util.UUID;
 @Setter
 @Getter
 public final class MachineProperty {
+    /**
+     * The related machine manager.
+     */
     private final IMachineManager manager;
+    /**
+     * The unique machine ID.
+     */
     private final UUID uuid;
+    /**
+     * The machine's location.
+     */
     private Location location;
+    /**
+     * The machine's data.
+     */
     private IState state;
 }

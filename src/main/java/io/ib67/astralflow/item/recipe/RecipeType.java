@@ -29,7 +29,7 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.AvailableSince("0.1.0")
 public enum RecipeType {
     /**
-     * This kind of recipe is mainly for CraftingTable and player's inventories.
+     * This kind of recipe is mainly for CraftingTable and player's inventories.<br />
      * Matrix: 3x3
      */
     CRAFTING,

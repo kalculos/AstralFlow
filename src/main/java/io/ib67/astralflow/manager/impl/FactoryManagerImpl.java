@@ -23,8 +23,8 @@ package io.ib67.astralflow.manager.impl;
 
 import io.ib67.astralflow.machines.AutoFactory;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.internal.factories.IMachineFactory;
-import io.ib67.astralflow.machines.internal.factories.SimpleMachineFactory;
+import io.ib67.astralflow.machines.factories.IMachineFactory;
+import io.ib67.astralflow.machines.factories.internal.SimpleMachineFactory;
 import io.ib67.astralflow.manager.IFactoryManager;
 
 import java.lang.reflect.InvocationTargetException;

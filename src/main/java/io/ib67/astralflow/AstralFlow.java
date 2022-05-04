@@ -29,8 +29,8 @@ import io.ib67.astralflow.api.external.AstralExtension;
 import io.ib67.astralflow.capability.ICapabilityService;
 import io.ib67.astralflow.capability.impl.SimpleCapabilityService;
 import io.ib67.astralflow.capability.wireless.impl.SimpleWirelessRegistry;
-import io.ib67.astralflow.extension.ExtensionRegistryImpl;
 import io.ib67.astralflow.extension.IExtensionRegistry;
+import io.ib67.astralflow.extension.impl.ExtensionRegistryImpl;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import io.ib67.astralflow.internal.AstralConstants;
@@ -51,7 +51,7 @@ import io.ib67.astralflow.item.oredict.internal.SimpleOreDict;
 import io.ib67.astralflow.item.oredict.internal.VanillaOreDict;
 import io.ib67.astralflow.item.recipe.IRecipeRegistry;
 import io.ib67.astralflow.item.recipe.RecipeRegistryImpl;
-import io.ib67.astralflow.machines.scheduler.SimpleCatchingScheduler;
+import io.ib67.astralflow.machines.internal.scheduler.SimpleCatchingScheduler;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
@@ -77,6 +77,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -90,6 +91,7 @@ import static io.ib67.astralflow.internal.config.AstralFlowConfiguration.CONFIG_
 import static io.ib67.astralflow.util.LogCategory.INIT;
 import static io.ib67.astralflow.util.LogCategory.MIGRATOR;
 
+@ApiStatus.Internal
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private AstralFlowConfiguration configuration;
     @Getter

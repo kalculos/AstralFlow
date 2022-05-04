@@ -35,9 +35,9 @@ import java.util.List;
 import static java.util.Objects.requireNonNull;
 
 /**
- * <p>A utility class to create {@literal & } register your custom items quickly.</p>
+ * <p>A utility class to create {@literal & } register your custom items quickly.</p><br />
  * <p>
- * This "builder" doesn't create an item for you, you should consider using {@link ItemKey#createNewItem()} instead.
+ * This "builder" doesn't create an item for you, you should consider using {@link ItemKey#createNewItem()} instead.<br />
  *
  * @param <C> The type of category
  * @param <T> The type of item, which determined by the category type.

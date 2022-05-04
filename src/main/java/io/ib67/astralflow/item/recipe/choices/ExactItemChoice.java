@@ -30,7 +30,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.List;
 
 /**
- * An {@link IngredientChoice} that matches exactly one item.
+ * An {@link IngredientChoice} that matches exactly one item.<br />
  * Also see {@link io.ib67.astralflow.item.recipe.AstralRecipe}
  */
 @ApiStatus.AvailableSince("0.1.0")

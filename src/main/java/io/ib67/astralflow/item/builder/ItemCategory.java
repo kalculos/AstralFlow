@@ -25,8 +25,8 @@ import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * A category of items.
- * This class defines how {@link ItemPrototypeFactory}s are created from your custom item types.
+ * A category of items.<br />
+ * This class defines how {@link ItemPrototypeFactory}s are created from your custom item types.<br />
  * See {@link io.ib67.astralflow.api.item.weapon.WeaponCategory} for an example.
  *
  * @param <I> The type of item this category is for.

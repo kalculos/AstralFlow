@@ -20,6 +20,6 @@
  */
 
 /**
- * Utilities for developers, which easier your life {@literal <3}
+ * Exceptions may throw in tick loop
  */
-package io.ib67.astralflow.util;
+package io.ib67.astralflow.scheduler.exception;

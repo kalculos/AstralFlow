@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * A way to fetch {@link io.ib67.astralflow.api.item.dummy.DummyItem}s.
+ * A way to fetch {@link io.ib67.astralflow.api.item.dummy.DummyItem}s.<br />
  * This way listens on breaking a block.
  */
 @ApiStatus.AvailableSince("0.1.0")

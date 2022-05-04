@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 
 /**
- * An ore dictionary, where you can register same name for more items
+ * An ore dictionary, where you can register same name for more items<br />
  * You should consider using {@link io.ib67.astralflow.item.builder.ItemBuilder} instead of this class. This class may cause misleading and not very easy to understand.
  */
 @ApiStatus.AvailableSince("0.1.0")

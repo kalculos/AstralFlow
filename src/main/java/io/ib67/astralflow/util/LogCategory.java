@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.util;
 
+import io.ib67.astralflow.machines.internal.scheduler.SimpleCatchingScheduler;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -49,7 +50,7 @@ public final class LogCategory {
      */
     public static final String MIGRATOR = "Migrator";
     /**
-     * The category for ticking scheduler. {@link io.ib67.astralflow.machines.scheduler.SimpleCatchingScheduler}
+     * The category for ticking scheduler. {@link SimpleCatchingScheduler}
      */
     public static final String SCHEDULER = "Scheduler";
     /**

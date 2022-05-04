@@ -34,6 +34,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collections;
 import java.util.Set;
@@ -41,6 +42,10 @@ import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * A simple template for weapon items.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @Getter
 public abstract class WeaponBase extends ItemBase {
     private final Predicate<Entity> entitySelector;

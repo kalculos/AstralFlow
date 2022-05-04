@@ -24,9 +24,11 @@ package io.ib67.astralflow.scheduler;
 import io.ib67.astralflow.Tickable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+@ApiStatus.Internal
 @RequiredArgsConstructor
 public final class AwaitingTickable<T extends Tickable<T>> {
     public final Tickable<T> tickable;

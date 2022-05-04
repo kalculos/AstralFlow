@@ -40,7 +40,7 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * The OPEN Api from AstralFlow.
+ * The OPEN Api from AstralFlow.<br />
  * You can get a reference to this api by using {@link AstralFlow#getInstance()}
  */
 @ApiStatus.AvailableSince("0.1.0")

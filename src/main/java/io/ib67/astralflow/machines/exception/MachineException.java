@@ -22,7 +22,12 @@
 package io.ib67.astralflow.machines.exception;
 
 import io.ib67.astralflow.machines.IMachine;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Represents a kind of exception that related to a {@link IMachine}.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public class MachineException extends Exception {
     private final IMachine machine;
 

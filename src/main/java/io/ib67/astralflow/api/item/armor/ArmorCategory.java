@@ -26,6 +26,9 @@ import io.ib67.astralflow.item.builder.ItemPrototype;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Category for {@link ArmorItem}. {@link io.ib67.astralflow.item.builder.ItemBuilder#of(ItemCategory)}
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public enum ArmorCategory implements ItemCategory<ArmorItem> {
     INSTANCE;

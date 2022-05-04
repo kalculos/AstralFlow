@@ -21,5 +21,11 @@
 
 package io.ib67.astralflow.hook.event;
 
+import org.jetbrains.annotations.ApiStatus;
+
+/**
+ * Events that are fired by the hook system.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public abstract class HookEvent {
 }

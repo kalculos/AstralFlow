@@ -25,7 +25,9 @@ import io.ib67.astralflow.security.ISecurityService;
 import io.ib67.astralflow.security.mem.ILeakTracker;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 @RequiredArgsConstructor
 public final class SimpleSecurityService implements ISecurityService {
     @Getter

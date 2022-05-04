@@ -29,9 +29,9 @@ import java.util.Objects;
 
 
 /**
- * A class that represents an extension.
+ * A class that represents an extension.<br />
  * <p>
- * Registering your own contents' by subclassing this first. Extensions will be registered automatically by the constructor.
+ * Registering your own contents' by subclassing this first. Extensions will be registered automatically by the constructor.<br />
  * Also check the doc.
  */
 @ApiStatus.AvailableSince("0.1.0")

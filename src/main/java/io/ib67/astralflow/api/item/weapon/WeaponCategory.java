@@ -24,7 +24,12 @@ package io.ib67.astralflow.api.item.weapon;
 import io.ib67.astralflow.item.builder.ItemCategory;
 import io.ib67.astralflow.item.builder.ItemPrototype;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * The weapon category. {@link io.ib67.astralflow.item.builder.ItemBuilder#of(ItemCategory)}
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public final class WeaponCategory implements ItemCategory<WeaponBase> {
     public static final WeaponCategory INSTANCE = new WeaponCategory();
 

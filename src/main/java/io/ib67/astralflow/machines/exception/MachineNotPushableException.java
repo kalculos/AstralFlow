@@ -22,7 +22,12 @@
 package io.ib67.astralflow.machines.exception;
 
 import io.ib67.astralflow.machines.IMachine;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Thrown when a machine is not pushable.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 public class MachineNotPushableException extends MachineException {
 
     public MachineNotPushableException(IMachine machine) {

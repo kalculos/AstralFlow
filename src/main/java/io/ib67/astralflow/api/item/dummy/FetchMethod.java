@@ -26,7 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Supplier;
 
 /**
- * Way to fetch dummy items.
+ * Way to fetch dummy items.<br />
  * see {@link io.ib67.astralflow.api.item.dummy.fetch}
  */
 public interface FetchMethod {

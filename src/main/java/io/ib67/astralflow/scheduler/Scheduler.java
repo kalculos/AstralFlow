@@ -25,8 +25,8 @@ import io.ib67.astralflow.Tickable;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * 任务调度器。
- * 每 tick 触发一次调度队列里的所有元素
+ * Task Scheduler.<br />
+ * Calls every element for every tick.<br />
  * Also see {@link Tickable}
  */
 @ApiStatus.AvailableSince("0.1.0")

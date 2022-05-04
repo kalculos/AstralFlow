@@ -19,14 +19,17 @@
  *   USA
  */
 
-package io.ib67.astralflow.machines.internal.factories;
+package io.ib67.astralflow.machines.factories.internal;
 
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineProperty;
+import io.ib67.astralflow.machines.factories.IMachineFactory;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.reflect.Constructor;
 
+@ApiStatus.Internal
 public final class SimpleMachineFactory<M extends IMachine> implements IMachineFactory<M> {
     private final Class<M> machineClass;
 

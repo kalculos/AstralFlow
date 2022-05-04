@@ -26,7 +26,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.lang.annotation.*;
 
 /**
- * An annotation that represents tick-less machines.
+ * An annotation that represents tick-less machines.<br />
  * <p>
  * Machines with this annotation will not be ticked.
  */

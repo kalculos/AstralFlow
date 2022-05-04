@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * State of items. Used for persistence.
+ * State of items. Used for persistence.<br />
  * Just subclass this and add your properties, we'll serialize them for you.
  */
 @ApiStatus.AvailableSince("0.1.0")

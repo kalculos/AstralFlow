@@ -23,12 +23,29 @@ package io.ib67.astralflow.api.item.weapon;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * Properties that defines a weapon. Build it by its builder method {@link WeaponProperty#builder()}.
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @Builder
 @Getter
 public final class WeaponProperty {
+    /**
+     * The direct damage
+     */
     private final double damage;
+    /**
+     * Possibility of critical hit (0~1)
+     */
     private final double criticalChance;
+    /**
+     * The critical damage multiplier
+     */
     private final double criticalMultiplexer;
+    /**
+     * Should we override the original damage?
+     */
     private final boolean clearOriginalDamage;
 }

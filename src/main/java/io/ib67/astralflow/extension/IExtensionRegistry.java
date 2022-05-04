@@ -28,6 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Where you can register your module at startup time.
+ */
 @ApiStatus.AvailableSince("0.1.0")
 public interface IExtensionRegistry {
     /**

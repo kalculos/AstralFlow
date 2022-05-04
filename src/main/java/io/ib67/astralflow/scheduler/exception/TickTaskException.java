@@ -24,6 +24,10 @@ package io.ib67.astralflow.scheduler.exception;
 import io.ib67.astralflow.Tickable;
 import lombok.Getter;
 
+/**
+ * Fired when an exception occurs while executing a {@link Tickable}<br />
+ * Not for users.
+ */
 public final class TickTaskException extends Exception {
     @Getter
     private final Tickable tickable;

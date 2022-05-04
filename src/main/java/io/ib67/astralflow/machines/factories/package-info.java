@@ -20,6 +20,7 @@
  */
 
 /**
- * Utilities for developers, which easier your life {@literal <3}
+ * About machine creation. Users can customize their machine initialization by registering a {@link io.ib67.astralflow.machines.factories.IMachineFactory}
+ * Also see: {@link io.ib67.astralflow.api.AstralFlowAPI#getFactories()}
  */
-package io.ib67.astralflow.util;
+package io.ib67.astralflow.machines.factories;

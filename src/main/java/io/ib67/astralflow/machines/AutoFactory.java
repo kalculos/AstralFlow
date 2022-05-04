@@ -21,14 +21,14 @@
 
 package io.ib67.astralflow.machines;
 
-import io.ib67.astralflow.machines.internal.factories.IMachineFactory;
-import io.ib67.astralflow.machines.internal.factories.SimpleMachineFactory;
+import io.ib67.astralflow.machines.factories.IMachineFactory;
+import io.ib67.astralflow.machines.factories.internal.SimpleMachineFactory;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.annotation.*;
 
 /**
- * Marks a machine, and auto-registers factory with the value, specified factory must have an empty constructor.
+ * Marks a machine, and auto-registers factory with the value, specified factory must have an empty constructor.<br />
  * This may help for many simple machines.
  */
 @ApiStatus.AvailableSince("0.1.0")

@@ -22,10 +22,12 @@
 package io.ib67.astralflow.item.recipe;
 
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@ApiStatus.Internal
 public final class RecipeRegistryImpl implements IRecipeRegistry {
     private final Map<NamespacedKey, AstralRecipe> recipesMap = new WeakHashMap<>();
 

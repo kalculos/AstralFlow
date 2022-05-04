@@ -34,7 +34,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * An {@link IngredientChoice} that chooses an item from a list of items. (ore dict)
+ * An {@link IngredientChoice} that chooses an item from a list of items. (ore dict)<br />
  * Also see {@link io.ib67.astralflow.item.recipe.AstralRecipe} and {@link io.ib67.astralflow.item.oredict.IOreDict}.
  */
 @ApiStatus.AvailableSince("0.1.0")

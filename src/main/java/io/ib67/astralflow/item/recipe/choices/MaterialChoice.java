@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * A {@link IngredientChoice} that matches {@link Material}
+ * A {@link IngredientChoice} that matches {@link Material}<br />
  * Also see {@link io.ib67.astralflow.item.recipe.AstralRecipe}.
  */
 @ApiStatus.AvailableSince("0.1.0")

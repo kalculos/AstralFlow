@@ -19,7 +19,22 @@
  *   USA
  */
 
-/**
- * Utilities for developers, which easier your life {@literal <3}
- */
-package io.ib67.astralflow.util;
+package io.ib67.astralflow.scheduler.internal;
+
+import io.ib67.astralflow.scheduler.Scheduler;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.ApiStatus;
+
+@RequiredArgsConstructor
+@Getter
+@ApiStatus.Internal
+public final class SchedulerAdapter extends BukkitRunnable {
+    private final Scheduler delegatedScheduler;
+
+    @Override
+    public void run() {
+        delegatedScheduler.tick();
+    }
+}

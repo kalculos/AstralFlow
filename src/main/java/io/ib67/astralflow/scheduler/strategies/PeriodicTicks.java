@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.function.Predicate;
 
 /**
- * 用于收集 tick 做到控制间隔的工具
+ * Control your tickable's execution frequency.
  * Also see {@link io.ib67.astralflow.scheduler.TickReceipt#requires(Predicate)}
  */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

@@ -19,21 +19,21 @@
  *   USA
  */
 
-package io.ib67.astralflow.machines.internal.factories;
+package io.ib67.astralflow.api.item.machine.internal;
 
-import io.ib67.astralflow.machines.IMachine;
-import io.ib67.astralflow.machines.MachineProperty;
+import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.machines.IState;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.ApiStatus;
 
-/**
- * A factory that creates machine by a given {@link MachineProperty}.
- *
- * @param <T> The type of the machine.
- */
-@ApiStatus.AvailableSince("0.1.0")
-@FunctionalInterface
-public interface IMachineFactory<T extends IMachine> {
-
-    T createMachine(MachineProperty property);
+@ApiStatus.Internal
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@Data
+public final class SimpleMachineItemState extends ItemState {
+    private IState data;
+    private String machineType;
 
 }

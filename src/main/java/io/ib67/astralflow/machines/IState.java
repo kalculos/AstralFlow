@@ -24,7 +24,7 @@ package io.ib67.astralflow.machines;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * Data of machine, you can use it for persistence.
+ * Data of machine, you can use it for persistence.<br />
  * Just subclass this and add your properties, we'll load/save/serialize them for you transparently.
  */
 @ApiStatus.AvailableSince("0.1.0")

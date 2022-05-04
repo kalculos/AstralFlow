@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.api.item.machine;
 
+import io.ib67.astralflow.api.item.machine.internal.SimpleMachineItemState;
 import io.ib67.astralflow.item.builder.ItemCategory;
 import io.ib67.astralflow.item.builder.ItemPrototype;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
@@ -43,7 +44,7 @@ public final class MachineCategory implements ItemCategory<MachineItem> {
                 .id(item.getId())
                 .prototype(item.getPrototype())
                 .holder(item)
-                .statePrototype(new MachineItemState(null, item.getTypeOfMachine().getName()))
+                .statePrototype(new SimpleMachineItemState(null, item.getTypeOfMachine().getName()))
                 .build();
     }
 }

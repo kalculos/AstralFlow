@@ -25,6 +25,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.events.MachineBlockBreakEvent;
 import io.ib67.astralflow.api.events.MachineBlockPlaceEvent;
 import io.ib67.astralflow.api.item.ItemBase;
+import io.ib67.astralflow.api.item.machine.internal.SimpleMachineItemState;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.ItemKey;
@@ -86,10 +87,10 @@ public class MachineItem extends ItemBase {
 
     private void onPlace(BlockPlaceEvent event) {
         var item = new AstralItem(event.getItemInHand(), AstralFlow.getInstance().getItemRegistry());
-        if (item.getState().isEmpty() || !(item.getState().get() instanceof MachineItemState)) {
+        if (item.getState().isEmpty() || !(item.getState().get() instanceof SimpleMachineItemState)) {
             return;
         }
-        var state = (MachineItemState) item.getState().get();
+        var state = (SimpleMachineItemState) item.getState().get();
         if (typeOfMachine.getName().equals(state.getMachineType())) {
             // setup machine.
             var machineLoc = event.getBlock().getLocation();
@@ -120,9 +121,9 @@ public class MachineItem extends ItemBase {
         if (!typeOfMachine.isInstance(event.getMachine())) {
             return;
         }
-        var state = new MachineItemState(machine.getState(), machine.getType().getName());
+        var state = new SimpleMachineItemState(machine.getState(), machine.getType().getName());
         var item = AstralFlow.getInstance().getItemRegistry().createItem(getId());
-        var emptyState = (MachineItemState) item.getState().get();
+        var emptyState = (SimpleMachineItemState) item.getState().get();
         emptyState.setData(state.getData());
         emptyState.setMachineType(machine.getType().getName());
         var loc = event.getBlock().getLocation();

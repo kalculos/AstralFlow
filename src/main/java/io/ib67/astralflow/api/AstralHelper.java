@@ -71,7 +71,7 @@ public enum AstralHelper {
     }
 
     /**
-     * Check if the given itemstack has a given logical holder.
+     * Check if the given itemstack has a given logical holder.<br />
      * Usually used by {@link LogicalHolder} themselves, to check if the item is their.
      *
      * <pre>

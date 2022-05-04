@@ -26,8 +26,8 @@ import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * This class represents a key to identity {@link io.ib67.astralflow.item.builder.ItemPrototype}s.
- * <p>
+ * This class represents a key to identity {@link io.ib67.astralflow.item.builder.ItemPrototype}s.<br />
+ * <p><br />
  * You should use it with an enum, which easier your life.
  */
 @ApiStatus.AvailableSince("0.1.0")

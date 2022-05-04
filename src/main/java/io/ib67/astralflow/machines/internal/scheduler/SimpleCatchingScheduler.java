@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.astralflow.machines.scheduler;
+package io.ib67.astralflow.machines.internal.scheduler;
 
 import io.ib67.astralflow.Tickable;
 import io.ib67.astralflow.api.AstralHelper;

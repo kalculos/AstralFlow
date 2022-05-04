@@ -40,9 +40,9 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.function.Consumer;
 
 /**
- * A convenient hooks for events.
- * You can register your callback from here and receive events.
- * We'll only comment the events that defined by AstralFlow, most events came from Bukkit, You should check their documents instead.
+ * A convenient hooks for events.<br />
+ * You can register your callback from here and receive events.<br />
+ * We'll only comment the events that defined by AstralFlow, most events came from Bukkit, You should check their documents instead.<br />
  * <code>
  * HookType.XXX.register( event -> {xxxx} );
  * </code>

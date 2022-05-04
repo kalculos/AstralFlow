@@ -20,6 +20,9 @@
  */
 
 /**
- * The root package
+ * The root package. <br />
+ * Before diving into AstralFlow, You should mention that there're many `Simple` or `XXImpl` classes.<br />
+ * Generally, these classes are for internal use only and you're not supposed to use them due to not clearly defined behaviours.<br />
+ * Always use these abstract classes (or interfaces), have fun!<br />
  */
 package io.ib67.astralflow;

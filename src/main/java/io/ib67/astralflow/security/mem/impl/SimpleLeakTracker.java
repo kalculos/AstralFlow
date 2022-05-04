@@ -25,6 +25,7 @@ import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.security.mem.ILeakTracker;
 import io.ib67.astralflow.util.LogCategory;
 import io.ib67.util.bukkit.Log;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -32,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+@ApiStatus.Internal
 public final class SimpleLeakTracker implements ILeakTracker {
     private final ReferenceQueue<?> queue = new ReferenceQueue<>();
     private final List<TrackedObject> trackedObjects = new LinkedList<>();

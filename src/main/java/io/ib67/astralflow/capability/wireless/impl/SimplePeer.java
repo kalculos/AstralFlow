@@ -19,20 +19,23 @@
  *   USA
  */
 
-package io.ib67.astralflow.capability.wireless;
+package io.ib67.astralflow.capability.wireless.impl;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.capability.wireless.IWirelessPeer;
 import io.ib67.astralflow.capability.wireless.registry.IWirelessRegistry;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
+@ApiStatus.Internal
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SimplePeer<T> implements IWirelessPeer<T> {
     @Getter

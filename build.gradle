@@ -105,7 +105,8 @@ task delombok(type: DelombokTask, dependsOn: compileJava) {
 }
 javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 javadoc {
-    exclude Set.of('**/internal/**', '**/impl/**', '**Impl', 'Simple**')
+    title("${project.name} JavaDoc v${project.version}")
+    exclude Set.of('**/internal/**', '**/impl/**', '**Impl', 'Simple**', '**/test-plugin/**')
     dependsOn delombok
     source = delombok.outputDir
     failOnError = false

@@ -20,6 +20,6 @@
  */
 
 /**
- * Utilities for developers, which easier your life {@literal <3}
+ * Low level API for item creation
  */
-package io.ib67.astralflow.util;
+package io.ib67.astralflow.item.factory;

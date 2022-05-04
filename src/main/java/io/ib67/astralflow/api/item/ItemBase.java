@@ -30,7 +30,7 @@ import org.jetbrains.annotations.ApiStatus;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Subclass this to make your own item!
+ * Subclass this to make your own item!<br />
  * This class provides basic functionality for all items.
  */
 @ApiStatus.AvailableSince("0.1.0")

@@ -37,7 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * This class represents an item choice for astral items.
+ * This class represents an item choice for astral items.<br />
  * {@link io.ib67.astralflow.item.recipe.AstralRecipe}
  */
 @ApiStatus.AvailableSince("0.1.0")

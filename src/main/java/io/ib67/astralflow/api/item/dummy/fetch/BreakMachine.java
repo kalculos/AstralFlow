@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 import static java.util.Objects.requireNonNull;
 
 /**
- * You should really consider {@link io.ib67.astralflow.api.item.machine.MachineItem} instead.
+ * You should really consider {@link io.ib67.astralflow.api.item.machine.MachineItem} instead.<br />
  * A way to fetch item from breaking a machine.
  */
 @ApiStatus.AvailableSince("0.1.0")

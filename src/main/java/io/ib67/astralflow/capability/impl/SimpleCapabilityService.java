@@ -25,9 +25,11 @@ import io.ib67.astralflow.capability.ICapabilityService;
 import io.ib67.astralflow.capability.wireless.registry.IWirelessRegistry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.ApiStatus;
 
 @RequiredArgsConstructor
 @Getter
+@ApiStatus.Internal
 public final class SimpleCapabilityService implements ICapabilityService {
     private final IWirelessRegistry wirelessRegistry;
 }
