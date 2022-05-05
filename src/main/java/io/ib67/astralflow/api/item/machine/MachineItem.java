@@ -36,10 +36,14 @@ import io.ib67.astralflow.machines.Tickless;
 import io.ib67.astralflow.util.Blocks;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Item;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -127,6 +131,17 @@ public class MachineItem extends ItemBase {
         emptyState.setData(state.getData());
         emptyState.setMachineType(machine.getType().getName());
         var loc = event.getBlock().getLocation();
-        loc.getWorld().dropItemNaturally(loc, item.asItemStack());
+        var actuallyDroppedItems = List.of(loc.getWorld().dropItemNaturally(loc, item.asItemStack()));
+        var itemToDrop = new ArrayList<>(actuallyDroppedItems);
+        if (event.getPlayer() != null) {
+            var bdie = new BlockDropItemEvent(loc.getBlock(), loc.getBlock().getState(), event.getPlayer(), itemToDrop);
+            Bukkit.getPluginManager().callEvent(bdie);
+            if (bdie.isCancelled() || itemToDrop.isEmpty()) {
+                for (Item actuallyDroppedItem : actuallyDroppedItems) {
+                    actuallyDroppedItem.remove();
+                }
+            }
+        }
+
     }
 }
