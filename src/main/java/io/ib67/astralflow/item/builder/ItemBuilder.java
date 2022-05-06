@@ -22,10 +22,19 @@
 package io.ib67.astralflow.item.builder;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.item.armor.ArmorCategory;
+import io.ib67.astralflow.api.item.armor.ArmorItem;
+import io.ib67.astralflow.api.item.dummy.DummyCategory;
+import io.ib67.astralflow.api.item.dummy.DummyItem;
+import io.ib67.astralflow.api.item.machine.MachineCategory;
+import io.ib67.astralflow.api.item.machine.MachineItem;
+import io.ib67.astralflow.api.item.weapon.WeaponBase;
+import io.ib67.astralflow.api.item.weapon.WeaponCategory;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.texture.Texture;
+import org.bukkit.Material;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +47,7 @@ import static java.util.Objects.requireNonNull;
  * <p>A utility class to create {@literal & } register your custom items quickly.</p><br />
  * <p>
  * This "builder" doesn't create an item for you, you should consider using {@link ItemKey#createNewItem()} instead.<br />
+ * If you're looking for creating itemstacks conveniently, you'd better take a look at {@link io.ib67.astralflow.util.ItemStacks#builder(Material)}
  *
  * @param <C> The type of category
  * @param <T> The type of item, which determined by the category type.
@@ -65,6 +75,42 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
     public static <C extends ItemCategory<P>, P>
     ItemBuilder<C, P> of(@NotNull ItemCategory<P> category) {
         return new ItemBuilder<>(category);
+    }
+
+    /**
+     * Create a new itemBuilder with {@link WeaponCategory} preset.
+     *
+     * @return the weapon builder
+     */
+    public static ItemBuilder<WeaponCategory, WeaponBase> ofSimpleWeapon() {
+        return of(WeaponCategory.INSTANCE);
+    }
+
+    /**
+     * Create a new itemBuilder with {@link ArmorCategory} preset.
+     *
+     * @return the armor builder
+     */
+    public static ItemBuilder<ArmorCategory, ArmorItem> ofSimpleArmor() {
+        return of(ArmorCategory.INSTANCE);
+    }
+
+    /**
+     * Create a new itemBuilder with {@link DummyCategory} preset.
+     *
+     * @return the dummy item builder
+     */
+    public static ItemBuilder<DummyCategory, DummyItem> ofDummyItem() {
+        return of(DummyCategory.INSTANCE);
+    }
+
+    /**
+     * Create a new itemBuilder with {@link MachineItem} preset.
+     *
+     * @return the machine item builder.
+     */
+    public static ItemBuilder<MachineCategory, MachineItem> ofMachineItem() {
+        return of(MachineCategory.INSTANCE);
     }
 
     @ApiStatus.Experimental
