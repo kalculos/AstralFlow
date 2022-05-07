@@ -31,6 +31,7 @@ import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.util.ItemStacks;
 import org.bukkit.Material;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.junit.jupiter.api.BeforeAll;
@@ -55,25 +56,21 @@ public class MeleeItemTest {
 
     @Test
     public void testMeleeItem() {
-        var itemKey = ItemKey.from("test", "test_melee");
-
-        var protoType = ItemStacks.builder(Material.getMaterial("DIAMOND_SWORD"))
-                .customModelId(1)
-                .itemFlags(ItemFlag.HIDE_DYE)
-                .displayName("test_melee")
-                .build();
-
-        var property = WeaponProperty.builder()
-                .clearOriginalDamage(true)
-                .damage(999)
-                .criticalChance(0.1)
-                .criticalMultiplexer(1.5)
-                .build();
-
         var meleeItem = MeleeItem.builder()
-                .id(itemKey)
-                .prototype(protoType)
-                .property(property)
+                .id(ItemKey.from("test", "test_melee"))
+                .prototype(
+                        ItemStacks.builder(Material.getMaterial("DIAMOND_SWORD"))
+                                .customModelId(1)
+                                .itemFlags(ItemFlag.HIDE_DYE)
+                                .displayName("test_melee")
+                                .build()
+                )
+                .property(
+                        WeaponProperty.builder()
+                                .clearOriginalDamage(true)
+                                .damage(999)
+                                .build()
+                )
                 .build();
 
         ItemBuilder.of(WeaponCategory.INSTANCE)
@@ -83,8 +80,40 @@ public class MeleeItemTest {
         var player = MockBukkit.mock().addPlayer();
 
         Objects.requireNonNull(player.getEquipment()).setItemInMainHand(meleeItem.getId().createNewItem().asItemStack());
-        var event = new EntityDamageEvent(player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1);
+        var event = new EntityDamageByEntityEvent(player, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1);
         AstralFlow.getInstance().callHooks(HookType.ENTITY_DAMAGE, event);
         assertSame(event.getDamage(), 999);
+    }
+
+    @Test
+    public void testCritical() {
+        var meleeItem = MeleeItem.builder()
+                .id(ItemKey.from("test", "test_melee"))
+                .prototype(
+                        ItemStacks.builder(Material.getMaterial("DIAMOND_SWORD"))
+                                .customModelId(1)
+                                .itemFlags(ItemFlag.HIDE_DYE)
+                                .displayName("test_melee")
+                                .build()
+                )
+                .property(
+                        WeaponProperty.builder()
+                                .clearOriginalDamage(true)
+                                .damage(999)
+                                .criticalChance(1)
+                                .criticalMultiplexer(1.5)
+                                .build()
+                )
+                .build();
+        ItemBuilder.of(WeaponCategory.INSTANCE)
+                .prototype(meleeItem)
+                .register();
+
+        var player = MockBukkit.mock().addPlayer();
+
+        Objects.requireNonNull(player.getEquipment()).setItemInMainHand(meleeItem.getId().createNewItem().asItemStack());
+        var event = new EntityDamageByEntityEvent(player, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1);
+        AstralFlow.getInstance().callHooks(HookType.ENTITY_DAMAGE, event);
+        assertSame(event.getDamage(), 999 * 1.5);
     }
 }
