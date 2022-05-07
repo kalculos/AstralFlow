@@ -167,6 +167,12 @@ public final class BlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBlockDropItem(BlockDropItemEvent event) {
+        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.BLOCK_DROP_ITEM, event));
+
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPistonPull(BlockPistonRetractEvent event) {
         event.setCancelled(onBlockMove(event.getBlocks(), event.getDirection()));
     }

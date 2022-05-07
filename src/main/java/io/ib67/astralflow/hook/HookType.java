@@ -99,6 +99,7 @@ public final class HookType<T> {
     // For blocks
     public static final HookType<BlockBreakEvent> BLOCK_BREAK = new HookType<>("Block Break");
     public static final HookType<BlockPlaceEvent> BLOCK_PLACE = new HookType<>("Block Place");
+    public static final HookType<BlockDropItemEvent> BLOCK_DROP_ITEM = new HookType<>("Block Drop Item");
     public static final HookType<ProjectileHitEvent> PROJECTILE_HIT = new HookType<>("Projectile Hit");
     /**
      * It also calls {@link #BLOCK_BREAK}
