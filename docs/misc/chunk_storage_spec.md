@@ -66,7 +66,7 @@ AstralFlow 采用索引记录每个机器的位置和数目，并在 `数目 == 
 3. `x` *byte 1 bytes* - X 坐标，区块内的相对坐标  
    在负数的情况下，通过如下的公式写入：`blockX >= 0 ? blockX & 15 : blockX % 16 == 0 ? 0 : 16 + (blockX % 16)`
 4. `y` *int 4 bytes* - Y 坐标
-5. `z` *byte 1 bytes* - Z 坐标，区块内的相对坐标
+5. `z` *byte 1 bytes* - Z 坐标，区块内的相对坐标  
    在负数的情况下，通过如下的公式写入：`blockZ >= 0 ? blockZ & 15 : blockZ % 16 == 0 ? 0 : 16 + (blockZ % 16)`
 
 # 机器数据
