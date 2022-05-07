@@ -57,13 +57,17 @@ AstralFlow 采用索引记录每个机器的位置和数目，并在 `数目 == 
 
 ### location
 
+此部分的读写代码在 [BufferUtil](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/internal/storage/impl/chunk/BufferUtil.java)
+中。  
 代表一个 `org.bukkit.Location` 的数据，由以下部分组成:
 
 1. `worldNameLen` *byte 1 bytes* - 世界名的长度
 2. `worldName` *byte[] worldNameLen bytes* - 世界名
-3. `x` *byte 1 bytes* - X 坐标，区块内的相对坐标
+3. `x` *byte 1 bytes* - X 坐标，区块内的相对坐标  
+   在负数的情况下，通过如下的公式写入：`blockX >= 0 ? blockX & 15 : blockX % 16 == 0 ? 0 : 16 + (blockX % 16)`
 4. `y` *int 4 bytes* - Y 坐标
 5. `z` *byte 1 bytes* - Z 坐标，区块内的相对坐标
+   在负数的情况下，通过如下的公式写入：`blockZ >= 0 ? blockZ & 15 : blockZ % 16 == 0 ? 0 : 16 + (blockZ % 16)`
 
 # 机器数据
 
