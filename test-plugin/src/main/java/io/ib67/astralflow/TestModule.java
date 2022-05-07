@@ -23,13 +23,10 @@ package io.ib67.astralflow;
 
 import io.ib67.astralflow.api.external.AstralExtension;
 import io.ib67.astralflow.api.external.ExtensionInfo;
-import io.ib67.astralflow.api.item.machine.MachineCategory;
 import io.ib67.astralflow.api.item.machine.MachineItem;
 import io.ib67.astralflow.item.SimpleStatefulCategory;
 import io.ib67.astralflow.item.SimpleStatelessCategory;
 import io.ib67.astralflow.item.SimpleStatelessUnstackableCategory;
-import io.ib67.astralflow.item.builder.ItemBuilder;
-import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import io.ib67.astralflow.item.recipe.kind.Shapeless;
 import io.ib67.astralflow.machines.JebWool;
@@ -49,16 +46,17 @@ public final class TestModule extends AstralExtension {
                 .extensionDescription("A module for testing purposes")
                 .build()
         );
+        registerThis();
     }
 
     @Override
     public void init() {
         // register items.
-        ItemBuilder.of(MachineCategory.INSTANCE)
+        itemMachine()
                 .oreDict("wool")
                 .recipe(Shaped.of(jebWoolKey)
                         .shape("AAA", "A A", "AAA")
-                        .setIngredient('A', new MaterialChoice(Material.BLACK_WOOL, Material.WHITE_WOOL))
+                        .setIngredient('A', materialChoice(Material.BLACK_WOOL, Material.WHITE_WOOL))
                         .build()
                 ).prototype(new MachineItem(
                         TestItems.JEB_WOOL,
@@ -69,15 +67,15 @@ public final class TestModule extends AstralExtension {
                         JebWool.class
                 ))
                 .register();
-        ItemBuilder.of(new SimpleStatelessCategory())
+        item(new SimpleStatelessCategory())
                 .prototype(TestItems.STATELESS_ITEM)
                 .register();
-        ItemBuilder.of(new SimpleStatefulCategory())
+        item(new SimpleStatefulCategory())
                 .prototype(TestItems.STATEFUL_ITEM)
                 .register();
-        ItemBuilder.of(new SimpleStatelessUnstackableCategory())
+        item(new SimpleStatelessUnstackableCategory())
                 .recipe(Shapeless.of(TestItems.CANT_STACK.toNamespacedKey(), null)
-                        .addIngredients(new MaterialChoice(Material.GOLD_INGOT))
+                        .addIngredients(materialChoice(Material.GOLD_INGOT))
                         .build()
                 )
                 .prototype(TestItems.CANT_STACK)
