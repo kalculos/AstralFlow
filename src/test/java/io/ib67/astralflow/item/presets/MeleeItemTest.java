@@ -77,7 +77,7 @@ public class MeleeItemTest {
                 .prototype(meleeItem)
                 .register();
 
-        var player = MockBukkit.mock().addPlayer();
+        var player = MockBukkit.getMock().addPlayer();
 
         Objects.requireNonNull(player.getEquipment()).setItemInMainHand(meleeItem.getId().createNewItem().asItemStack());
         var event = new EntityDamageByEntityEvent(player, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1);
@@ -109,7 +109,7 @@ public class MeleeItemTest {
                 .prototype(meleeItem)
                 .register();
 
-        var player = MockBukkit.mock().addPlayer();
+        var player = MockBukkit.getMock().addPlayer();
 
         Objects.requireNonNull(player.getEquipment()).setItemInMainHand(meleeItem.getId().createNewItem().asItemStack());
         var event = new EntityDamageByEntityEvent(player, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1);
