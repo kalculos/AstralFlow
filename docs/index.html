@@ -7,6 +7,7 @@
     <meta content="AstralFlow's document" name="description">
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
     <link href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" rel="stylesheet">
+    >
 </head>
 <body>
 <div id="app">Loading...</div>
@@ -24,5 +25,33 @@
 </script>
 <!-- Docsify v4 -->
 <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+<script>
+    Prism.languages['hocon'] = {
+        'number': {
+            pattern: /(?<![^\s\u00a0\u2007\u202f\ufeff$"{}\[\]:=,+#`^?!@*&])(-?(0|[1-9]\d*)((\.\d+)?([eE][+-]?\d+)?)?)(?![^\s\u00a0\u2007\u202f\ufeff$"{}\[\]:=,+#`^?!@*&])/i,
+        },
+        'punctuation': /[{}[\]]/,
+        'property': {
+            pattern: /(^|[^\\])"?(?:\\.-|[^\\"\r\n])*"?(?=\s*=)/,
+            lookbehind: true,
+            greedy: true
+        },
+        'string': {
+            pattern: /(")(([^"\\n]|\\["\\bfnrt/]|\\u[0-9a-fA-F]{4})*)(")/,
+        },
+        'comment': {
+            pattern: /(#|\/\/).*/
+        },
+        'boolean': /(?<![^\\s\u00a0\u2007\u202f\ufeff$"{}\[\]:=,+#`^?!@*&])(include|true|false|yes|no|on|off)(?![^\s\u00a0\u2007\u202f\ufeff$"{}\[\]:=,+#`^?!@*&])/,
+        'operator': {
+            pattern: /[=:]/,
+            lookbehind: true
+        },
+        'null': {
+            pattern: /\bnull\b/,
+            alias: 'keyword'
+        }
+    }
+</script>
 </body>
 </html>
