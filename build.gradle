@@ -43,7 +43,6 @@ allprojects {
             url = "https://jitpack.io"
         }
         maven { url "https://repo.dmulloy2.net/repository/public/" }
-        maven { url 'https://repo.panda-lang.org/releases' }
     }
 }
 
@@ -87,7 +86,7 @@ dependencies {
     testRuntimeOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0";
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.24.1'
-    implementation 'net.dzikoysk:cdn:1.13.22'
+    compileOnly 'org.spongepowered:configurate-hocon:4.1.2'
 }
 lombok {
     version = "1.18.24"

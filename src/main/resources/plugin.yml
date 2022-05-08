@@ -3,3 +3,5 @@ version: '${version}'
 main: io.ib67.astralflow.AstralFlow
 api-version: 1.18
 depend: [ ProtocolLib ]
+libraries:
+  - "org.spongepowered:configurate-hocon:4.0.0"

@@ -47,7 +47,7 @@ public final class RecipeListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCraftPrepare(PrepareItemCraftEvent event) {
-        boolean override = AstralFlow.getInstance().getSettings().getRecipeSetting().isOverrideVanillaRecipe();
+        boolean override = AstralFlow.getInstance().getSettings().recipeSetting.overrideVanillaRecipe;
         if (event.getRecipe() != null && !override) {
             return;
         }

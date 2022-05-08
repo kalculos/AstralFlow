@@ -22,7 +22,9 @@
 package io.ib67.astralflow.internal.config;
 
 import lombok.Getter;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
+@ConfigSerializable
 public final class Language {
     public final String serverIsInitializing = """
             &c 服务器正在加载中，请稍候再试。
