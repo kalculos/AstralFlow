@@ -156,3 +156,20 @@ sourceSets {
 shadowJar {
     relocate 'io.ib67.util', 'io.ib67.astralflow.relocate.util'
 }
+/*
+ * I18N
+ */
+task generateI18NBundle(type: Zip, dependsOn: processResources) {
+    from 'translations'
+    archiveName 'locale.zip'
+    destinationDir file('build/resources/i18n/')
+}
+
+jar.dependsOn generateI18NBundle
+shadowJar.dependsOn generateI18NBundle
+jar {
+    from("build/resources/i18n")
+}
+shadowJar {
+    from("build/resources/i18n")
+}

@@ -78,9 +78,11 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.zip.ZipFile;
 
 import static io.ib67.astralflow.internal.config.AstralFlowConfiguration.CONFIG_CURRENT_VERSION;
 import static io.ib67.astralflow.util.LogCategory.INIT;
@@ -307,6 +309,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         // extract config.
 
         var confFile = new File(getDataFolder(), "config.conf");
+        if (!AstralConstants.MOCKING) extractLanguage();
         configHolder = new ConfigManager<>(confFile.toPath(), t -> t.serializers(e -> e.register(Language.class, new LanguageSerializer(languageDir))));
         if (!confFile.exists() || confFile.length() == 0) {
             confFile.createNewFile();
@@ -336,6 +339,32 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             configuration = AstralFlowConfiguration.defaultConfiguration(machineIndex);
         }
 
+    }
+
+    private void extractLanguage() {
+        var defaultLang = languageDir.resolve("zh_CN.conf");
+        if (!defaultLang.toFile().exists()) {
+            var cnf = new ConfigManager<>(defaultLang, t -> t);
+            cnf.saveConfig(new Language());
+        }
+        saveResource("locale.zip", true);
+        try (
+                var res = new ZipFile(getDataFolder().toPath().resolve("locale.zip").toFile())
+        ) {
+            var iter = res.entries().asIterator();
+            while (iter.hasNext()) {
+                var zipEntry = iter.next();
+                if (AstralConstants.DEBUG) {
+                    Log.info(INIT, "Extracting locale: " + zipEntry.getName());
+                }
+                try (var in = res.getInputStream(zipEntry)) {
+                    Files.write(languageDir.resolve(zipEntry.getName()), in.readAllBytes());
+                }
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            Log.warn(INIT, "Cannot load locales.");
+        }
     }
 
     @Override
