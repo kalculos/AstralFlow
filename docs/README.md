@@ -24,7 +24,7 @@
 
 点击此处查看 [拓展入门](./getting_started/README.md)，但我们建议您先阅读 [用户指南](./user_guide/README.md)
 
-以及对您有帮助的 [Javadoc](https://flow.bukkit.rip/javadoc)
+以及对您有帮助的 [Javadoc](https://flow.bukkit.rip/javadoc/)
 
 ## 对于 服主
 
