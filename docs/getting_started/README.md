@@ -141,3 +141,5 @@ public void onEnable(){
 ```
 
 因为我们已经在 `TestModule` 的构造器中写了 `registerThis();` ，因此不需要再用更多代码把他注册到 AstralFlow 里，他已经自己注册了。
+
+在[下一章](getting_started/jeb_wool.md)，我们将会通过编写一个自动变色的羊毛来熟悉一下 AstralFlow 中的常用组件。  
