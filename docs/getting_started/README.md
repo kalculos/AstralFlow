@@ -80,3 +80,64 @@ depend: [ AstralFlow ]
 ```
 
 接下來，尝试在 IDE 中补全 AstralFlow ，若出现 `io.ib67.astralflow.AstralFlow` 则表示成功。
+
+![效果图](../../assets/tab_comp.png)
+
+# 注册扩展
+
+为了保证正确的初始化顺序，AstralFlow 提供了专门的扩展接口。  
+这些扩展接口会在 AstralFlow 的所有必要初始化工作结束后被通知，此时你可以初始化你的模块内容，例如注册物品。  
+
+## AstralExtension
+
+首先，我们需要一个 `AstralExtension` 的子类。这是一个抽象类，他提供了一些工具方法以及代表了一个拓展对象。  
+
+```java
+import io.ib67.astralflow.api.external.AstralExtension;
+
+public final class TestModule extends AstralExtension {
+  // .. 代码被省略
+}
+```
+
+接着，我们需要重写构造器，传入我们的扩展信息。
+
+```java
+import io.ib67.astralflow.api.external.ExtensionInfo;
+
+//... 代码被省略
+
+    public TestModule() {
+        super(ExtensionInfo.builder()
+                .extensionAuthors(new String[]{"iceBear67"}) // 在此填入作者的名字，可空
+                .extensionName("TestModule") // 扩展的名字，不可为空
+                .extensionVersion("0.0.1") // 扩展的版本，不可为空
+                .issueTrackerUrl("https://...") // 反馈地址，可以写 issues 也可以写联系方式
+                .extensionDescription("A module for testing purposes") // 扩展描述
+                .build()
+        );
+        registerThis(); // 将这个扩展注册到 AstralFlow 的扩展注册中心
+    }
+
+//... 代码被省略
+```
+
+除了传递必要的扩展信息，你也可以在构造器里进行材质的初始化工作。
+
+> Builder  
+Builder 对象的每个方法都代表了一个构造参数，最终通过 `build()` 方法产生最终的对象。  
+> 
+>  在 AstralFlow 中，你可能会发现许多代码都采用了这个设计模式。  
+得利于 Builder, 你可以避免编写过长的构造器参数并且以一种相对清晰的方式构造对象  
+
+接着，我们需要创建一个 TestModule，此处假设你在插件主类初始化时进行创建（实际上这也是推荐的做法）。
+
+```java
+
+public void onEnable(){
+    new TestModule();
+}
+
+```
+
+因为我们已经在 `TestModule` 的构造器中写了 `registerThis();` ，因此不需要再用更多代码把他注册到 AstralFlow 里，他已经自己注册了。
