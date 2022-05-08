@@ -42,7 +42,6 @@ dependencies {
    将下列代码添加到 `pom.xml` 里。
 
  ```xml
-
 <repositories>
     <repository>
         <id>Bukkit.RIP Releases</id>
@@ -53,7 +52,6 @@ dependencies {
 ```
 
 ```xml
-
 <dependencies>
     <dependency>
         <groupId>io.ib67</groupId>
