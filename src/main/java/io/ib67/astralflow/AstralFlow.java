@@ -21,9 +21,6 @@
 
 package io.ib67.astralflow;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
 import io.ib67.astralflow.api.AstralFlowAPI;
 import io.ib67.astralflow.api.external.AstralExtension;
 import io.ib67.astralflow.capability.ICapabilityService;
@@ -36,11 +33,11 @@ import io.ib67.astralflow.hook.event.server.SaveDataEvent;
 import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.internal.Warnings;
 import io.ib67.astralflow.internal.config.AstralFlowConfiguration;
-import io.ib67.astralflow.internal.config.ConfigMigrator;
+import io.ib67.astralflow.internal.config.ConfigManager;
 import io.ib67.astralflow.internal.config.Language;
 import io.ib67.astralflow.internal.listener.*;
 import io.ib67.astralflow.internal.listener.crafts.RecipeListener;
-import io.ib67.astralflow.internal.serialization.LanguageSerializer;
+import io.ib67.astralflow.internal.serialization.config.LanguageSerializer;
 import io.ib67.astralflow.internal.storage.IMachineStorage;
 import io.ib67.astralflow.internal.storage.SimpleChunkTracker;
 import io.ib67.astralflow.internal.storage.impl.chunk.ChunkBasedMachineStorage;
@@ -80,9 +77,7 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
@@ -94,6 +89,7 @@ import static io.ib67.astralflow.util.LogCategory.MIGRATOR;
 @ApiStatus.Internal
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private AstralFlowConfiguration configuration;
+    private ConfigManager<AstralFlowConfiguration> configHolder;
     @Getter
     private IMachineManager machineManager;
     private final Path machineIndex = getDataFolder().toPath().resolve("machines.index");
@@ -179,7 +175,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         loadFactoryManager(); // FileStorage needs.
         loadConfig();
         loadSecurityService();
-        var scheduler = new SimpleCatchingScheduler(configuration.getOptimization().getMachineTickExceptionLimit());
+        var scheduler = new SimpleCatchingScheduler(configuration.optimization.machineTickExceptionLimit);
         tickManager = new SimpleTickManager(scheduler);
         loadMachineManager();
         //scheduler = new TickScheduler(machineManager);
@@ -187,7 +183,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         loadItemManager();
         loadListeners();
 
-        if (configuration.getRecipeSetting().isInjectVanillaCraftingTable()) {
+        if (configuration.recipeSetting.injectVanillaCraftingTable) {
             injectVanillaCraft();
         }
         Bukkit.getScheduler().runTask(this, () -> {
@@ -221,7 +217,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
             for (Consumer<?> hook : getHooks(HookType.ASTRALFLOW_STARTUP_COMPLETED)) {
                 hook.accept(null);
             }
-            var dataSaveInterval = getSettings().getDataSaveIntervals();
+            var dataSaveInterval = getSettings().dataSaveIntervals;
             if (dataSaveInterval != -1) {
                 new SaveDataTask().runTaskTimer(this, 0L, dataSaveInterval * 20L);
             }
@@ -232,7 +228,10 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     private void loadSecurityService() {
         var leakTracker = new SimpleLeakTracker();
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, leakTracker::onTick, 0L, configuration.getSecuritySetting().getLeakCheckInterval());
+        var interval = configuration.securitySetting.leakCheckInterval;
+        if (interval > 0) {
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, leakTracker::onTick, 0L, configuration.securitySetting.leakCheckInterval);
+        }
         securityService = new SimpleSecurityService(leakTracker);
     }
 
@@ -284,20 +283,20 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private void loadMachineManager() {
         machineStorage = new ChunkBasedMachineStorage(
                 new MachineCache(machineIndex),
-                factories, configuration.getOptimization().getDefaultMachineStorageType(),
-                configuration.getOptimization().getChunkMapCapacity(),
-                configuration.getOptimization().isAllowChunkMapResizing()
+                factories, configuration.optimization.defaultMachineStorageType,
+                configuration.optimization.chunkMapCapacity,
+                configuration.optimization.allowChunkMapResizing
         );
         machineManager = new MachineManagerImpl(
                 machineStorage, tickManager,
-                configuration.getOptimization().getInitialMachineCapacity(), configuration.getOptimization().isAllowMachineMapResizing(),
-                new SimpleChunkTracker(configuration.getOptimization().getChunkMapCapacity(),
-                        configuration.getOptimization().isAllowChunkMapResizing()),
+                configuration.optimization.initialMachineCapacity, configuration.optimization.allowMachineMapResizing,
+                new SimpleChunkTracker(configuration.optimization.chunkMapCapacity,
+                        configuration.optimization.allowChunkMapResizing),
                 securityService.getLeakTracker());
     }
 
     private void loadItemManager() {
-        itemRegistry = new ItemRegistryImpl(configuration.getRecipeSetting().isAddVanillaOreDict()
+        itemRegistry = new ItemRegistryImpl(configuration.recipeSetting.addVanillaOreDict
                 ? new CompoundOreDict(List.of(new SimpleOreDict(), new VanillaOreDict()))
                 : new SimpleOreDict(),
                 factories);
@@ -305,34 +304,27 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
     @SneakyThrows
     private void loadConfig() {
-        Gson configSerializer = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(Language.class, new LanguageSerializer(languageDir))
-                .create();
         // extract config.
-        var confFile = new File(getDataFolder(), "config.json");
+
+        var confFile = new File(getDataFolder(), "config.conf");
+        configHolder = new ConfigManager<>(confFile.toPath(), t -> t.serializers(e -> e.register(Language.class, new LanguageSerializer(languageDir))));
         if (!confFile.exists() || confFile.length() == 0) {
             confFile.createNewFile();
-            Files.writeString(confFile.toPath(), configSerializer.toJson(AstralFlowConfiguration.defaultConfiguration(machineIndex)));
+            configHolder.saveConfig(AstralFlowConfiguration.defaultConfiguration(machineIndex));
         }
-        try (
-                var config = new FileInputStream(confFile)
-        ) {
-            var confString = new String(config.readAllBytes());
-            configuration = configSerializer.fromJson(confString, AstralFlowConfiguration.class);
-            if (configuration == null) {
-                throw new IOException("Can't parse config");
-            }
-            if (configuration.getVersion() != CONFIG_CURRENT_VERSION) {
-                Log.warn(MIGRATOR, "Configuration version mismatch! Expected " + CONFIG_CURRENT_VERSION + " but got " + configuration.getVersion());
+        try {
+            configuration = configHolder.getConfig(AstralFlowConfiguration.class);
+            if (configuration.version != CONFIG_CURRENT_VERSION) {
+                Log.warn(MIGRATOR, "Configuration version mismatch! Expected " + CONFIG_CURRENT_VERSION + " but got " + configuration.version);
                 Log.info(MIGRATOR, "Looking for automatic solutions..");
-                if (configuration.getVersion() > CONFIG_CURRENT_VERSION) {
+                if (configuration.version > CONFIG_CURRENT_VERSION) {
                     Log.info(MIGRATOR, "Launching Configuration migrator.");
-                    var migrator = new ConfigMigrator(JsonParser.parseString(confString).getAsJsonObject());
-                    var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(machineIndex));
-                    Log.info(MIGRATOR, "Migration complete.");
-                    Files.writeString(confFile.toPath(), configSerializer.toJson(conf));
-                    configuration = conf;
+                    //   var migrator = new ConfigMigrator(JsonParser.parseString(confString).getAsJsonObject());
+                    //   var conf = migrator.migrate(AstralFlowConfiguration.defaultConfiguration(machineIndex));
+                    //    Log.info(MIGRATOR, "Migration complete.");
+                    //   Files.writeString(confFile.toPath(), configSerializer.toJson(conf));
+                    //    configuration = conf;
+                    throw new IOException("Unsupported Feature");
                 } else {
                     // higher.
                     Log.warn(MIGRATOR, "Can't migrate configuration. Please update AstralFlow.");

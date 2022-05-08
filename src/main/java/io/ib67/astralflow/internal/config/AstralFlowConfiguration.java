@@ -24,10 +24,9 @@ package io.ib67.astralflow.internal.config;
 import com.google.gson.annotations.SerializedName;
 import io.ib67.astralflow.internal.listener.crafts.RecipeListener;
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.ApiStatus;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 
 import java.nio.file.Path;
 import java.util.Objects;
@@ -35,81 +34,94 @@ import java.util.Objects;
 /**
  * Configuration for the AstralFlow.
  */
-@Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+//@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @ApiStatus.AvailableSince("0.1.0")
+@ConfigSerializable
 public final class AstralFlowConfiguration {
-    public static final int CONFIG_CURRENT_VERSION = 1;
-
+    public static int CONFIG_CURRENT_VERSION = 1;
     /**
      * Config version number, for {@link io.ib67.astralflow.internal.config.ConfigMigrator}
      */
-    private final int version = CONFIG_CURRENT_VERSION;
+    @Comment("Config version number, do not change")
+    public int version = CONFIG_CURRENT_VERSION;
     /**
      * Which language is using
      */
-    private final Language locale;
+    @Comment("Which language to use for the plugin")
+    public Language locale = new Language();
     /**
      * The interval to trig {@link io.ib67.astralflow.hook.HookType#SAVE_DATA}
      */
+    @Comment("How often should we save data, in ticks. Set -1 to disable")
     @SerializedName("data-save-intervals")
-    private final int dataSaveIntervals = 300;
-
+    public int dataSaveIntervals = 300;
     /**
      * Settings about recipe and crafting.
      */
+    @Comment("Settings about recipe and crafting.")
     @SerializedName("recipe-settings")
-    private final RecipeSetting recipeSetting;
-
+    public RecipeSetting recipeSetting = new RecipeSetting();
     /**
      * Some optimizations
      */
     @SerializedName("optimization-settings")
-    private final Optimization optimization = new Optimization();
-
+    @Comment("Some optimizations")
+    public Optimization optimization = new Optimization();
     /**
      * Settings about security
      */
     @SerializedName("security-settings")
-    private final Security securitySetting = new Security();
+    @Comment("Settings about security")
+    public Security securitySetting = new Security();
+
+    public AstralFlowConfiguration() {
+        // empty constructor for CDN
+    }
 
     public static AstralFlowConfiguration defaultConfiguration(Path machineStorageIndexes) {
         Objects.requireNonNull(machineStorageIndexes, "MachineStorageIndexes cannot be null");
 
-        return new AstralFlowConfiguration(
-                new Language(),
-                new RecipeSetting()
-        );
+        return new AstralFlowConfiguration();
     }
 
     /**
      * Security settings.
      */
-    @Getter
-    public static final class Security {
+    @ConfigSerializable
+    public static class Security {
         /**
          * SHould we kick players until our initialization is done?
          */
+        @Comment("Should we kick players until our initialization is done?")
         @SerializedName("allow-player-join-before-init")
-        private final boolean allowPlayerJoinBeforeInit = false;
+        public boolean allowPlayerJoinBeforeInit = false;
         /**
          * How many ticks is a round of leak check.
          * If you don't know any better, just set it to 100.
          */
-        private final int leakCheckInterval = 100;
+        @Comment("""
+                How many ticks is a round of leak check. Set -1 to disable
+                If you don't know any better, just set it to 100.
+                """)
+        public int leakCheckInterval = 100;
     }
 
     /**
      * Optimizations.
      */
-    @Getter
-    public static final class Optimization {
+    @ConfigSerializable
+    public static class Optimization {
         /**
          * How much machine slots should be initialized at start-up
          * This feature may help if your server has tons of machines that are in spawn chunks since it tries to avoid resizing the hashMap.
          */
+        @Comment("""
+                How much machine slots should be initialized at start-up
+                This feature may help if your server has tons of machines that are in spawn chunks since it tries to avoid resizing the hashMap.
+                If you don't know any better, just set it to default.
+                """)
         @SerializedName("initial-machine-capacity")
-        private final int initialMachineCapacity = 32;
+        public int initialMachineCapacity = 32;
 
         /**
          * Can machine map be resized?
@@ -117,63 +129,96 @@ public final class AstralFlowConfiguration {
          * Machines usually have lesser elements, so it's recommended to enable this feature.
          * If you don't know what this means, don't change this value.
          */
+        @Comment("""
+                Can we resize the machine map?
+                Resizing happens when the elements amount reaches capacity * 0.75F. For resizing, the map will copy all values and re-process them, which may cause a performance hit.
+                Machines usually have lesser elements, so it's recommended to enable this feature. If you don't know what this means, don't change this value.
+                """)
         @SerializedName("machine-map-resizing")
-        private final boolean allowMachineMapResizing = true;
+        public boolean allowMachineMapResizing = true;
 
         /**
          * How much chunk slots should be initialized at start-up
          * This feature determines the default capacity of the hashmap holding chunks, Higher value may provide a better performance but may cause higher memory usage.
          * You can decrease this to save memory.
          */
+        @Comment("""
+                How much chunk slots should be initialized at start-up
+                This feature determines the default capacity of the hashmap holding chunks, Higher value may provide a better performance but may cause higher memory usage.
+                You can decrease this to save memory. If you don't know any better, just set it to default.
+                """)
         @SerializedName("chunk-map-capacity")
-        private final int chunkMapCapacity = 512;
+        public int chunkMapCapacity = 512;
 
         /**
          * Can chunk map be resized?
          * Resizing happens when the elements amount reaches capacity * 0.75F. For resizing, the map will copy all values and re-process them, which may cause a performance hit.
-         * If you don't know what this means, don't change this value.
+         * If you don't know what does it mean, don't change this value.
          */
+        @Comment("""
+                Can we resize the chunk map?
+                Resizing happens when the elements amount reaches capacity * 0.75F. For resizing, the map will copy all values and re-process them, which may cause a performance hit.
+                If you don't know what does it mean, don't change this value.
+                """)
         @SerializedName("chunk-map-resizing")
-        private final boolean allowChunkMapResizing = false;
+        public boolean allowChunkMapResizing = false;
 
         /**
          * The default serializer to use for machine storage.
          */
         @SerializedName("machine-storage-serializer")
-        private final MachineStorageType defaultMachineStorageType = MachineStorageType.JSON;
+        @Comment("The default serializer to use for machine storage.")
+        public MachineStorageType defaultMachineStorageType = MachineStorageType.JSON;
 
         /**
          * How many exceptions in ticks for us to take action for these exceptional machines? (Deactivation)
          * NOTE: This value WILL NOT decrease at present. If you want to catch frequently occurring exceptions, you can increase this value.
          * If you want to completely ban errored machines, set this value to 0.
          */
-        private final int machineTickExceptionLimit = 4;
+        @Comment("""
+                How many exceptions in ticks for us to take action for these exceptional machines?
+                NOTE: This value WILL NOT decrease at present. If you want to catch frequently occurring exceptions, you can increase this value.
+                If you want to completely ban errored machines, set this value to 0.
+                """)
+        public int machineTickExceptionLimit = 4;
     }
 
     /**
      * Settings about recipes
      */
-    @Getter
-    public static final class RecipeSetting {
+    @ConfigSerializable
+    public static class RecipeSetting {
         /**
          * Should we add our custom recipes into vanilla crafting tables?
          * P.S We won't really add recipes in it, only to simulate the process.
          * For further details, please see {@link RecipeListener}
          */
+        @Comment("""
+                Should we add our custom recipes into vanilla crafting tables?
+                P.S. We won't really add recipes in it, only to simulate the process, and there are can be some issues with some plugins related to recipes.
+                """)
         @SerializedName("inject-vanilla-crafting")
-        private final boolean injectVanillaCraftingTable = true;
+        public boolean injectVanillaCraftingTable = true;
         /**
          * Should we override vanilla recipes if there are same match results?
          * This only affects if {@link RecipeSetting#injectVanillaCraftingTable} is true.
          */
+        @Comment("""
+                Should we override vanilla recipes if there are same matched results?
+                This only affects if injectVanillaCraftingTable is true.
+                """)
         @SerializedName("override-vanilla-recipe")
-        private final boolean overrideVanillaRecipe = true;
+        public boolean overrideVanillaRecipe = true;
 
         /**
          * Should we add vanilla items into our ore dictionaries?
          * This may be very helpful for many extensions that use vanilla items.
          */
+        @Comment("""
+                Should we add vanilla items into our ore dictionaries?
+                This may be very helpful for many extensions that use vanilla items.
+                """)
         @SerializedName("add-vanilla-oredict")
-        private final boolean addVanillaOreDict = true;
+        public boolean addVanillaOreDict = true;
     }
 }
