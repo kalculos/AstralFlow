@@ -8,12 +8,12 @@
 - [GitHub Releases](https://github.com/InlinedLambdas/AstralFlow/releases)
 
 以及插件本身出于安全考虑也会进行自动更新。
-> 若要关闭自动更新，请详见 [配置文件](./configuration.md)
+> 若要关闭自动更新，请详见 [配置文件](./user_guide/configuration.md)
 
 在一般情况下，我们总是推荐您使用最新的 Spigot/Paper 来配合最新的星流使用。若您正好正在使用最新的 Spigot/Paper，那么您可以直接在 Release 上下载最新的星流。
 > 在 Github Release 上下载星流时，请选择正式发布版本 ，即标题右边是绿色的 *Release*
 
-> 若您正巧没有在使用最新的 Spigot/Paper，请参见 [支持的版本列表](./maintained_versions.md)
+> 若您正巧没有在使用最新的 Spigot/Paper，请参见 [支持的版本列表](./user_guide/maintained_versions.md)
 
 ## 版本类型
 
@@ -32,4 +32,4 @@
 
 加载成功后，插件将会在控制台输出构建信息和它的 logo ，以及在插件目录下生成对应的数据文件夹。
 
-接下来：[配置插件](./configuration.md)
+接下来：[配置插件](./user_guide/configuration.md)
