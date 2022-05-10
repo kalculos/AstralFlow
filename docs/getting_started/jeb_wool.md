@@ -142,7 +142,7 @@ public void init(){
 
 上述代码是一个注册你的变色羊毛的例子，我们接下来会逐条讲解这些代码的意思。  
 
-- `itemKey` 是在 AstralFlow 中你的物品的"名字"（也就是id），它由命名空间和名字组成，以此避免名字上的冲突/污染，你也可以用它创建一个新的物品。
+- `itemKey` 是在 AstralFlow 中你的物品的"名字"（也就是id），它由命名空间和名字组成，以此避免名字上的冲突/污染，你也可以用它创建一个新的物品。以及，`ItemKey.from` 是有缓存的，大多数情况它不会创建新的对象出来。
 - `MachineCategory` 是机器物品的类别。大多数类别都以这样一个单例的模式呈现（也就是：只有一个开放的 `INSTANCE` 字段作为他的唯一实例）
 - `prototype` 定义了你的物品的原型，这是由你上文中声明的 `MachineCategory` 来决定的。对于不同的物品类别，他们的原型的类型也不一致，这使得自定义物品的编写工作能够轻松不少。  
 - `register()` 不返回任何东西，它会直接注册你的物品到 AstralFlow 中。
@@ -152,14 +152,18 @@ public void init(){
 ```java
 var machineItem = itemKey.createNewItem(); // ItemStack
 ```
+## 物品与原型
 
-要注意的是，对于`有状态`的物品，它们几乎总是不相似的，而且创建新物品的过程有可能会因为数据序列化带来额外的开销。  
-因此，当你需要一些物品占位符的时候，请获取它们对应的物品原型：  
+在 AstralFlow 中，新物品的创建是通过对原型的拷贝以及再次修改完成的。而且对于`有状态`的物品来说，它们总是不相似( `isSimliar() == false` )的，而且创建新物品的过程有可能会因为数据的序列化带来额外的开销。因此，当你需要一些物品占位符的时候，请获取它们对应的物品原型：  
 
 ```java
-flow.getItemRegistry().getRegistry(TestItems.JEB_WOOL).getPrototype().clone(); // flow 由 AstralExtension 提供，你也可以用 AstralFlow.getInstance() 得到一个 flow
+@Override
+public void init(){
+  flow.getItemRegistry().getRegistry(TestItems.JEB_WOOL).getPrototype().clone();
+}
 ```
 
+此处的 `flow` 由 `AstralExtension` 提供，你也可以用 `AstralFlow.getInstance()`。
 
 ### 一些捷径
 
@@ -190,7 +194,7 @@ public void init(){
 
 等等，枚举是怎么回事？
 
-如果你有自己上手写的话，你可能会发现 `ItemKey` 是一个接口，而这是有意为之。在 Java 中，枚举是可以实现接口的，由此我们可以写出这样的代码：  
+如果你有自己上手写的话，你可能会发现 `ItemKey` 是一个接口，而这是有意为之。在 Java 中，枚举是可以实现接口的，由此我们可以写出：  
 
 ```java
 public enum TestItems implements ItemKey {
@@ -216,4 +220,58 @@ public enum TestItems implements ItemKey {
 
 由此，我们可以充分利用枚举的特性来为你的各种 `ItemKey` 服务。
 
-## 物品配方
+## 回到机器
+
+但我们发现变色羊毛变得有点太快了（20 changes/s) ，感觉眼睛要瞎。  
+
+AstralFlow 也提供了一些 API 用于 Tick 时的附加行为控制，也就是 [TickReceipt](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/scheduler/TickReceipt.java)
+
+借助 TickReceipt 和一些内建的工具类，我们可以控制他的变化速度。
+
+```java
+    @Override
+    public void setup(TickReceipt<IMachine> receipt) { // 这段代码在 JebWool 内
+        super.setup(receipt);
+        receipt.requires(PeriodicTicks.bySeconds(2));
+    }
+```
+
+对于 `TickReceipt` 和更多模块，我们将会在以后介绍，你也可以在 [Javadoc](https://flow.bukkit.rip/javadoc/) 上看到它的介绍。
+
+## 注册配方
+
+鉴于上文提到的"原型"问题，直接利用 Bukkit 提供的配方表注册 API 来注册自定义物品的配方已经变得不太可能——或者说很麻烦。AstralFlow 提供了一套完全重写的配方系统，以便于适配你的自定义物品。 
+
+让我们回到注册代码的地方，现在我们新加入一些东西。  
+
+```java
+itemMachine()
+        .oreDict("wool") // 3
+        .recipe(Shaped.of(jebWoolKey) // 1
+                .shape(
+                    "AAA",
+                    "A A",
+                    "AAA")
+                .setIngredient('A', materialChoice(Material.BLACK_WOOL, Material.WHITE_WOOL)) //2
+                .build()
+        ).prototype(new MachineItem(
+                TestItems.JEB_WOOL,
+                ItemStacks.builder(Material.WHITE_WOOL)
+                        .displayName("&aJeb Wool!")
+                        .lore("&b Such a colorful woooooool")
+                        .build(),
+                JebWool.class
+        ))
+        .register();
+```
+
+接下来逐条解释新增代码的意思。
+
+- `recipe(AstralRecipe)` 由 `ItemBuilder` 提供，用于定义这个物品的配方，且配方可以添加多个，只需要再调用几次 `recipe(AstralRecipe)` 即可。
+- `AstralRecipe` 的构造过程和 Bukkit 的版本类似，他们都有 `ingredient` 和 `choice` 的概念。而 `Shaped` 则是典型的有序配方，关于可用的 [配方类型](./spec/recipe_types.md)
+- `oreDict` 即是矿物辞典，这个方法定义了这个物品的辞典名，目前只能单个。
+
+关于矿物词典的概念以及可用的辞典名，请参考 [矿物词典](./spec/oredict.md)  
+
+
+到此，你已经可以在游戏中用八块羊毛围成熔炉的样子来合成一个变色羊毛了，Congratulations!
