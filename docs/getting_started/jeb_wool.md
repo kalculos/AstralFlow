@@ -153,6 +153,14 @@ public void init(){
 var machineItem = itemKey.createNewItem(); // ItemStack
 ```
 
+要注意的是，对于`有状态`的物品，它们几乎总是不相似的，而且创建新物品的过程有可能会因为数据序列化带来额外的开销。  
+因此，当你需要一些物品占位符的时候，请获取它们对应的物品原型：  
+
+```java
+flow.getItemRegistry().getRegistry(TestItems.JEB_WOOL).getPrototype().clone(); // flow 由 AstralExtension 提供，你也可以用 AstralFlow.getInstance() 得到一个 flow
+```
+
+
 ### 一些捷径
 
 其实在写扩展的时候我们有更快捷的写法，先来看一个精简过后的注册物品流程。
@@ -207,3 +215,5 @@ public enum TestItems implements ItemKey {
 ```
 
 由此，我们可以充分利用枚举的特性来为你的各种 `ItemKey` 服务。
+
+## 物品配方
