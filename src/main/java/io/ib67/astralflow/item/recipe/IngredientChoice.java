@@ -44,6 +44,7 @@ public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<It
 
     @Override
     default ItemStack apply(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) return itemStack;
         var result = itemStack.getAmount() - getCount();
         if (result == 0) {
             itemStack.setType(Material.AIR);

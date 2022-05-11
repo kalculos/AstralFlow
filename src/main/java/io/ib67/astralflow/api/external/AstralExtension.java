@@ -35,10 +35,7 @@ import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemKeys;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.item.builder.ItemCategory;
-import io.ib67.astralflow.item.recipe.choices.AstralItemChoice;
-import io.ib67.astralflow.item.recipe.choices.ExactItemChoice;
-import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
-import io.ib67.astralflow.item.recipe.choices.OreDictChoice;
+import io.ib67.astralflow.item.recipe.choices.*;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
 import org.bukkit.Material;
@@ -178,6 +175,10 @@ public abstract class AstralExtension {
      */
     protected final AstralItemChoice astralItemChoice(ItemKey... items) {
         return new AstralItemChoice(items);
+    }
+
+    protected final AnyChoice anyChoice() {
+        return new AnyChoice();
     }
 
     /**

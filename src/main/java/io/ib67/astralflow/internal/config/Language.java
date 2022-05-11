@@ -30,6 +30,7 @@ public final class Language {
             &c 服务器正在加载中，请稍候再试。
             &8&o 这通常不需要太长时间 ( < 3min )
             """;
+    public final String anyItemName = "&a?? 任何物品 ??";
     @Getter
     private final String name = "zh_CN";
 }
