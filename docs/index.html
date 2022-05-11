@@ -1,0 +1,80 @@
+<!--
+  ~
+  ~   AstralFlow - The plugin enriches bukkit servers
+  ~   Copyright (C) 2022 The Inlined Lambdas and Contributors
+  ~
+  ~   This library is free software; you can redistribute it and/or
+  ~   modify it under the terms of the GNU Lesser General Public
+  ~   License as published by the Free Software Foundation; either
+  ~   version 2.1 of the License, or (at your option) any later version.
+  ~
+  ~   This library is distributed in the hope that it will be useful,
+  ~   but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  ~   Lesser General Public License for more details.
+  ~
+  ~   You should have received a copy of the GNU Lesser General Public
+  ~   License along with this library; if not, write to the Free Software
+  ~   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
+  ~   USA
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AstralFlow 文档</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+    <meta content="AstralFlow's document" name="description">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
+    <link href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">Loading...</div>
+<script>
+    window.$docsify = {
+        name: 'AstralFlow',
+        repo: 'https://github.com/InlinedLambdas/AstralFlow',
+        loadSidebar: true,
+        alias: {
+            '/.*/_sidebar.md': '/_sidebar.md'
+        },
+        subMaxLevel: 2,
+        loadNavbar: true
+    }
+</script>
+<!-- Docsify v4 -->
+<script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-groovy.min.js"></script>
+<script>
+    Prism.languages['hocon'] = {
+        'number': {
+            pattern: /(?<![^\s\u00a0\u2007\u202f\ufeff$"{}\[\]:=,+#`^?!@*&])(-?(0|[1-9]\d*)((\.\d+)?([eE][+-]?\d+)?)?)(?![^\s\u00a0\u2007\u202f\ufeff$"{}\[\]:=,+#`^?!@*&])/i,
+        },
+        'punctuation': /[{}[\]]/,
+        'property': {
+            pattern: /(^|[^\\])"?(?:\\.-|[^\\"\r\n])*"?(?=\s*=)/,
+            lookbehind: true,
+            greedy: true
+        },
+        'string': {
+            pattern: /(")(([^"\\n]|\\["\\bfnrt/]|\\u[0-9a-fA-F]{4})*)(")/,
+        },
+        'comment': {
+            pattern: /(#|\/\/).*/
+        },
+        'boolean': /(?<![^\\s\u00a0\u2007\u202f\ufeff$"{}\[\]:=,+#`^?!@*&])(include|true|false|yes|no|on|off)(?![^\s\u00a0\u2007\u202f\ufeff$"{}\[\]:=,+#`^?!@*&])/,
+        'operator': {
+            pattern: /[=:]/,
+            lookbehind: true
+        },
+        'null': {
+            pattern: /\bnull\b/,
+            alias: 'keyword'
+        }
+    }
+</script>
+</body>
+</html>
