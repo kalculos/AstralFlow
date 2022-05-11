@@ -23,7 +23,6 @@ package io.ib67.astralflow.item.recipe;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
@@ -49,18 +48,6 @@ public interface IngredientChoice extends Predicate<ItemStack>, UnaryOperator<It
             itemStack.setType(Material.AIR);
         } else {
             itemStack.setAmount(result);
-        }
-
-        if (itemStack.hasItemMeta()) {
-            var im = itemStack.getItemMeta();
-            if (im instanceof Damageable dm) {
-                if (dm.getDamage() - getDurability() <= 0) {
-                    itemStack.setType(Material.AIR);
-                    // broken!
-                } else {
-                    dm.setDamage(dm.getDamage() - getDurability());
-                }
-            }
         }
         return itemStack;
     }
