@@ -30,6 +30,7 @@ import io.ib67.astralflow.item.recipe.IngredientChoice;
 import io.ib67.util.Lazy;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
@@ -65,6 +66,16 @@ public class AstralItemChoice implements IngredientChoice {
     public boolean test(ItemStack itemStack) {
         if (itemStack == null) {
             return false;
+        }
+        if (getDurability() > 0) {
+            var meta = itemStack.getItemMeta();
+            if (meta instanceof Damageable damageable) {
+                if (damageable.getDamage() - getDurability() < 0) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
         var ir = AstralFlow.getInstance().getItemRegistry();
         var isItem = ir.isItem(itemStack);
