@@ -53,7 +53,7 @@ public class AstralItemChoice implements IngredientChoice {
     );
 
     public AstralItemChoice(ItemKey... itemIds) {
-        this((short) 1, (short) 0, itemIds);
+        this((short) 0, (short) 1, itemIds);
     }
 
     public AstralItemChoice(short durability, short count, ItemKey... itemIds) {

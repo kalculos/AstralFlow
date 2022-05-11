@@ -49,7 +49,7 @@ public class OreDictChoice implements IngredientChoice {
     );
 
     public OreDictChoice(String... itemIds) {
-        this((short) 1, (short) 0, itemIds);
+        this((short) 0, (short) 1, itemIds);
     }
 
     public OreDictChoice(short durability, short count, String... oredictIds) {
