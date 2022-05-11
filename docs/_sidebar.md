@@ -6,5 +6,6 @@
 - [组件及参考]
   - [矿物辞典](./spec/oredict.md)
   - [配方类型](./spec/recipe_types.md)
+  - [合成系统](./spec/crafting.md)
 - [其他](./misc/README.md)
   - [区块储存格式](./misc/chunk_storage_spec.md)
