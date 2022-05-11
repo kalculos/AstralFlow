@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  */
 @ApiStatus.AvailableSince("0.1.0")
 @Getter
-public final class MaterialChoice implements IngredientChoice {
+public class MaterialChoice implements IngredientChoice {
     private final Set<Material> material;
     private final Lazy<Set<Material>, List<ItemStack>> compiledRItems = Lazy.by(t -> t.stream().map(ItemStack::new).collect(Collectors.toUnmodifiableList()));
     private final short count;

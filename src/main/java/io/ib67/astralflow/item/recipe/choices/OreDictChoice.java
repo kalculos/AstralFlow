@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  */
 @ApiStatus.AvailableSince("0.1.0")
 @Getter
-public final class OreDictChoice implements IngredientChoice {
+public class OreDictChoice implements IngredientChoice {
     private final short count;
     private final short durability;
     private final Set<String> materials;

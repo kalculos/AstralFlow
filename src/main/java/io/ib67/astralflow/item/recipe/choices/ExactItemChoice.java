@@ -36,7 +36,7 @@ import java.util.List;
 @ApiStatus.AvailableSince("0.1.0")
 @RequiredArgsConstructor
 @Getter
-public final class ExactItemChoice implements IngredientChoice {
+public class ExactItemChoice implements IngredientChoice {
     private final short count;
     private final short durability;
     private final List<ItemStack> material;

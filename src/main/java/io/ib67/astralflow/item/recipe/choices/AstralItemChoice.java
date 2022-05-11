@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  */
 @ApiStatus.AvailableSince("0.1.0")
 @Getter
-public final class AstralItemChoice implements IngredientChoice {
+public class AstralItemChoice implements IngredientChoice {
     private final short count;
     private final short durability;
     private final Set<ItemKey> materials;
