@@ -104,16 +104,24 @@ public final class Brewing implements AstralRecipe {
         }
         var result = Arrays.copyOf(itemStacks, itemStacks.length);
         ingredient.apply(result[0]);
-        target.apply(result[1]);
+        for (int i = 1; i < itemStacks.length; i++) { // skipping the first one
+            target.apply(result[i]);
+        }
         return result;
     }
 
     @Override
     public boolean test(ItemStack[] itemStacks) {
-        if (itemStacks.length != 2) {
+        if (itemStacks.length != 4) {
             return false;
         }
-        return ingredient.test(itemStacks[0]) && target.test(itemStacks[1]);
+        if (!ingredient.test(itemStacks[0])) {
+            return false;
+        }
+        for (int i = 1; i < itemStacks.length; i++) { // skipping the first one
+            if (!target.test(itemStacks[i])) return false;
+        }
+        return true;
     }
 
     @NotNull

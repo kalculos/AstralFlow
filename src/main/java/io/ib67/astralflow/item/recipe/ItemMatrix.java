@@ -74,7 +74,9 @@ public final class ItemMatrix {
         return new ItemMatrix(
                 new ItemStack[]{
                         inventory.getIngredient(),
-                        inventory.getFuel()
+                        inventory.getItem(0),
+                        inventory.getItem(1),
+                        inventory.getItem(2)
                 },
                 RecipeType.BREWING
         );
