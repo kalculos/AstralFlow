@@ -29,10 +29,7 @@ And we recommend Lombok.
 
 # Getting Started
 
-[Example `JebWool`](./test-plugin/src/main/java/io/ib67/astralflow/machines/JebWool.java)
-
-![jeb_wool](https://user-images.githubusercontent.com/48877375/161483058-422f9375-a1b3-4aca-815d-3edb11170c24.gif)
-
+[Documentation](https://flow.bukkit.rip/docs#/) only Chinese at present.
 
 # Sponsor
 

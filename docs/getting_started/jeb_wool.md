@@ -289,3 +289,5 @@ itemMachine()
 关于矿物词典的概念以及可用的辞典名，请参考 [矿物词典](./spec/oredict.md)
 
 到此，你已经可以在游戏中用八块羊毛围成熔炉的样子来合成一个变色羊毛了，Congratulations!
+
+![jeb_wool](https://user-images.githubusercontent.com/48877375/161483058-422f9375-a1b3-4aca-815d-3edb11170c24.gif)
