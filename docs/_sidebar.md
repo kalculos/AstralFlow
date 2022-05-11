@@ -3,7 +3,7 @@
     - [版本支持情况](./user_guide/maintained_versions.md)
 - [拓展入门](./getting_started/README.md)
   - [变色羊毛](./getting_started/jeb_wool.md)
-- [组件及参考]
+- 组件及参考
   - [矿物辞典](./spec/oredict.md)
   - [配方类型](./spec/recipe_types.md)
   - [合成系统](./spec/crafting.md)
