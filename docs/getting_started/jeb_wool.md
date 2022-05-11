@@ -125,7 +125,7 @@ AstralFlow 提供了注册自定义物品以及绑定逻辑的 API。
 ## 注册物品
 
 注册过程很简单，只需要借助 [ItemBuilder](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/item/builder/ItemBuilder.java)
-即可。但是物品的注册过程最好在模块的 `init` 中进行，否则可能会遇到某些东西（矿物词典）已经被锁定的情况。
+即可。但是物品的注册过程最好在模块的 `init` 中进行，否则可能会遇到某些东西（矿物辞典）已经被锁定的情况。
 
 ```java
 @Override
@@ -286,8 +286,8 @@ itemMachine()
   则是典型的有序配方，关于可用的 [配方类型](./spec/recipe_types.md)
 - `oreDict` 即是矿物辞典，这个方法定义了这个物品的辞典名，目前只能单个。
 
-关于矿物词典的概念以及可用的辞典名，请参考 [矿物词典](./spec/oredict.md)
+关于矿物辞典的概念以及可用的辞典名，请参考 [矿物辞典](./spec/oredict.md)
 
-到此，你已经可以在游戏中用八块羊毛围成熔炉的样子来合成一个变色羊毛了，Congratulations!
+到此，你已经可以在游戏中用八块黑白羊毛围成熔炉的样子来合成一个变色羊毛了，Congratulations!
 
 ![jeb_wool](https://user-images.githubusercontent.com/48877375/161483058-422f9375-a1b3-4aca-815d-3edb11170c24.gif)
