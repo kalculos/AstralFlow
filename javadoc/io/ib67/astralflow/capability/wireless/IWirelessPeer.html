@@ -76,6 +76,10 @@ loadScripts(document, 'script');</script>
 <dt>Type Parameters:</dt>
 <dd><code>T</code> - transferring data</dd>
 </dl>
+<dl class="notes">
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="SimplePeer.html" title="class in io.ib67.astralflow.capability.wireless">SimplePeer</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="annotations">@AvailableSince("0.1.0")
 </span><span class="modifiers">public interface </span><span class="element-name type-name-label">IWirelessPeer&lt;T&gt;</span></div>
@@ -105,14 +109,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="IWirelessPeer.html" title="type parameter in IWirelessPeer">T</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getMessageClass()" class="member-name-link">getMessageClass</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#negotiate(io.ib67.astralflow.capability.wireless.IWirelessPeer)" class="member-name-link">negotiate</a><wbr>(<a href="IWirelessPeer.html" title="interface in io.ib67.astralflow.capability.wireless">IWirelessPeer</a>&lt;<a href="IWirelessPeer.html" title="type parameter in IWirelessPeer">T</a>&gt;&nbsp;peer)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isAvailable()" class="member-name-link">isAvailable</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#negotiate(io.ib67.astralflow.capability.wireless.IWirelessPeer)" class="member-name-link">negotiate</a><wbr>(<a href="IWirelessPeer.html" title="interface in io.ib67.astralflow.capability.wireless">IWirelessPeer</a>&lt;<a href="IWirelessPeer.html" title="type parameter in IWirelessPeer">T</a>&gt;&nbsp;peer)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Establish connection with this peer</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#receiveMessage(T)" class="member-name-link">receiveMessage</a><wbr>(<a href="IWirelessPeer.html" title="type parameter in IWirelessPeer">T</a>&nbsp;message)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#receiveMessage(T)" class="member-name-link">receiveMessage</a><wbr>(<a href="IWirelessPeer.html" title="type parameter in IWirelessPeer">T</a>&nbsp;message)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Receives a message from other peers.</div>
 </div>
 </div>
@@ -149,6 +156,12 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>message</code> - </dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isAvailable()">
+<h3>isAvailable</h3>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">isAvailable</span>()</div>
 </section>
 </li>
 <li>

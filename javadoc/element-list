@@ -10,6 +10,7 @@ io.ib67.astralflow.api.item.machine
 io.ib67.astralflow.api.item.weapon
 io.ib67.astralflow.capability
 io.ib67.astralflow.capability.wireless
+io.ib67.astralflow.capability.wireless.message
 io.ib67.astralflow.capability.wireless.registry
 io.ib67.astralflow.extension
 io.ib67.astralflow.hook
