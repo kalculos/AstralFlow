@@ -71,6 +71,9 @@ public final class HookType<T> {
 
     public static final HookType<PlayerItemConsumeEvent> ITEM_CONSUME = new HookType<>("Item Consume");
     public static final HookType<PlayerItemDamageEvent> ITEM_DAMAGE = new HookType<>("Item Damage");
+    /**
+     * Fired when a player is interacting with air.
+     */
     public static final HookType<PlayerInteractEvent> ITEM_USE = new HookType<>("Item Use");
     public static final HookType<PlayerInteractEvent> PLAYER_INTERACT = new HookType<>("Player Interact");
     public static final HookType<PlayerInteractEntityEvent> PLAYER_INTERACT_ENTITY = new HookType<>("Player Interact Entity");
