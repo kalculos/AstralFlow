@@ -56,7 +56,7 @@ import static java.util.Objects.requireNonNull;
 public final class ItemBuilder<C extends ItemCategory<T>, T> {
     private final ItemCategory<T> category;
     private Texture texture;
-    private String oreDictId;
+    private final List<String> oreDictId = new ArrayList<>();
     private T itemPrototype;
     private final List<AstralRecipe> recipes = new ArrayList<>();
 
@@ -132,9 +132,9 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
      * @param oreDictId The ore dictionary id of the item.
      * @return The item builder.
      */
-    //todo multiple oredictid support?
     public ItemBuilder<C, T> oreDict(String oreDictId) {
-        this.oreDictId = requireNonNull(oreDictId, "OreDictId cannot be null");
+        requireNonNull(oreDictId, "OreDictId cannot be null");
+        this.oreDictId.add(oreDictId);
         return this;
     }
 
@@ -183,7 +183,9 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
                 })
                 .build();
         // register item.
-        AstralFlow.getInstance().getItemRegistry().registerItem(p, oreDictId);
+        for (String s : oreDictId) {
+            AstralFlow.getInstance().getItemRegistry().registerItem(p, s);
+        }
         // recipes
         for (AstralRecipe recipe : recipes) {
             ItemPrototypeFactory finalP = p;

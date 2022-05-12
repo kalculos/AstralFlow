@@ -285,7 +285,7 @@ itemMachine()
 - `recipe(AstralRecipe)` 由 `ItemBuilder` 提供，用于定义这个物品的配方，且配方可以添加多个，只需要再调用几次 `recipe(AstralRecipe)` 即可。
 - `AstralRecipe` 的构造过程和 Bukkit 的版本类似，他们都有 `ingredient` 和 `choice` 的概念。而 `Shaped`
   则是典型的有序配方，关于可用的 [配方类型](./spec/recipe_types.md)
-- `oreDict` 即是矿物辞典，这个方法定义了这个物品的辞典名，目前只能单个。
+- `oreDict` 即是矿物辞典，这个方法定义了这个物品的辞典名，可以多个。
 
 关于矿物辞典的概念以及可用的辞典名，请参考 [矿物辞典](./spec/oredict.md)
 
