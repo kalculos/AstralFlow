@@ -68,6 +68,10 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         Objects.requireNonNull(unloadingChunk, "chunk cannot be null");
         Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         if (!chunkMap.containsKey(unloadingChunk)) {
+            var inmem = chunkFactory.loadChunk(unloadingChunk); // todo: faster cache
+            if (inmem.getMachines().size() == 0) {
+                return;
+            }
             Log.warn("CBMS", "It seems that chunk " + unloadingChunk.getX() + "," + unloadingChunk.getZ() + " is not registered in the chunk map. This may be a potential bug.");
             return;
         }
@@ -124,7 +128,10 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     @Override
     public Collection<? extends IMachine> getMachinesByChunk(Chunk chunk) {
         Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
-        initChunk(chunk);
+        var imc = initChunk$lazy(chunk, false);
+        if (imc == null) {
+            return Collections.emptyList();
+        }
         return chunkMap.get(chunk).getMachines();
     }
 
@@ -140,7 +147,25 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     public void initChunk(Chunk chunk) {
         Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
         Objects.requireNonNull(chunk, "chunk cannot be null");
-        chunkMap.computeIfAbsent(chunk, chunkFactory::loadChunk);
+        initChunk$lazy(chunk, false);
+    }
+
+    private InMemoryChunk initChunk$lazy(Chunk chunk, boolean create) { // actually it's a lazy init, returning the chunk can be used or null
+        if (chunkMap.containsKey(chunk)) {
+            return chunkMap.get(chunk); // or it will override the original data.
+        }
+        var IMChunk = chunkFactory.loadChunk(chunk);
+        if (IMChunk.getMachines().size() == 0) {
+            if (create) {
+                chunkMap.put(chunk, IMChunk);
+                return IMChunk;
+            } else {
+                return null;
+            }
+        } else {
+            chunkMap.put(chunk, IMChunk);
+            return IMChunk;
+        }
     }
 
 
@@ -150,9 +175,16 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         Objects.requireNonNull(aloc, "location cannot be null");
         var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.isChunkLoaded(loc)) {
-            initChunk(loc.getChunk());
+            var imc = initChunk$lazy(loc.getChunk(), false);
+            if (imc == null) {
+                return null;
+            }
         }
-        return chunkMap.get(loc.getChunk()).getMachine(loc);
+        var inMemoryChunk = chunkMap.get(loc.getChunk());
+        if (inMemoryChunk == null) {
+            return null;
+        }
+        return inMemoryChunk.getMachine(loc);
     }
 
     @Override
@@ -171,7 +203,7 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
             Log.warn("CBMS", "Location and machine location are not equal! " + loc + " != " + state.getLocation() + " ,this may cause SECURITY issues.");
         }
         if (!AstralHelper.isChunkLoaded(loc) || !chunkMap.containsKey(loc.getChunk())) {
-            initChunk(loc.getChunk());
+            initChunk$lazy(loc.getChunk(), true);
         }
         chunkMap.get(loc.getChunk()).saveMachine(loc, state);
         machineCache.update(state.getId(), loc);
@@ -183,7 +215,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         Objects.requireNonNull(aloc, "loc cannot be null");
         var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.isChunkLoaded(loc) || !chunkMap.containsKey(loc.getChunk())) {
-            initChunk(loc.getChunk());
+            var imc = initChunk$lazy(loc.getChunk(), true);
+            if (imc == null) return;
         }
         chunkMap.get(loc.getChunk()).removeMachine(loc);
         machineCache.remove(loc);

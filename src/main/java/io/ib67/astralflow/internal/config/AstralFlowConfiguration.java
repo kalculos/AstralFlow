@@ -148,7 +148,7 @@ public final class AstralFlowConfiguration {
                 You can decrease this to save memory. If you don't know any better, just set it to default.
                 """)
         @SerializedName("chunk-map-capacity")
-        public int chunkMapCapacity = 512;
+        public int chunkMapCapacity = 64;
 
         /**
          * Can chunk map be resized?
@@ -157,11 +157,11 @@ public final class AstralFlowConfiguration {
          */
         @Comment("""
                 Can we resize the chunk map?
-                Resizing happens when the elements amount reaches capacity * 0.75F. For resizing, the map will copy all values and re-process them, which may cause a performance hit.
-                If you don't know what does it mean, don't change this value.
+                Resizing happens when the elements amount reaches capacity * 0.75F. For resizing, the map will copy all values and re-process them, which may cause a performance hit if there're lots of chunk (with machines) loaded.
+                For larger servers, it's recommended to disable this feature. If you don't know what does it mean, don't change this value.
                 """)
         @SerializedName("chunk-map-resizing")
-        public boolean allowChunkMapResizing = false;
+        public boolean allowChunkMapResizing = true;
 
         /**
          * The default serializer to use for machine storage.
