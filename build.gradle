@@ -177,21 +177,23 @@ shadowJar {
 /*
   Publish
  */
-publishing {
-    repositories {
-        maven {
-            name = "bukkit.rip"
-            url = uri("https://mvn.bukkit.rip/releases")
-            credentials {
-                username = bkrip_user
-                password = bkrip_token
+if (System.getProperty("user.name").equals("icybear")) {
+    publishing {
+        repositories {
+            maven {
+                name = "bukkit.rip"
+                url = uri("https://mvn.bukkit.rip/releases")
+                credentials {
+                    username = bkrip_user
+                    password = bkrip_token
+                }
             }
         }
-    }
-    publications {
-        ilrepo(MavenPublication) {
-            artifactId 'astralflow'
-            from components.java
+        publications {
+            ilrepo(MavenPublication) {
+                artifactId 'astralflow'
+                from components.java
+            }
         }
     }
 }
