@@ -36,114 +36,114 @@ public final class PeriodicTicks<T> implements Predicate<T> {
     private int ticks;
 
     /**
-     * 一秒
+     * one second
      *
      * @return
      */
-    public static PeriodicTicks bySecond() {
+    public static PeriodicTicks<?> bySecond() {
         return bySeconds(0.5f);
     }
 
     /**
-     * 半秒
+     * half second
      *
      * @return
      */
-    public static PeriodicTicks byHalfSecond() {
+    public static PeriodicTicks<?> byHalfSecond() {
         return bySeconds(0.5f);
     }
 
     /**
-     * 一分钟
+     * one minute
      *
      * @return
      */
-    public static PeriodicTicks byMinute() {
+    public static PeriodicTicks<?> byMinute() {
         return byMinutes(1);
     }
 
     /**
-     * 半分钟
+     * half minute
      *
      * @return
      */
-    public static PeriodicTicks byHalfMinute() {
+    public static PeriodicTicks<?> byHalfMinute() {
         return byMinutes(0.5f);
     }
 
     /**
-     * 五分钟
+     * five minutes
      *
      * @return
      */
-    public static PeriodicTicks byFiveMinutes() {
+    public static PeriodicTicks<?> byFiveMinutes() {
         return byMinutes(5f);
     }
 
     /**
-     * 十分钟
+     * ten minutes
      *
      * @return
      */
-    public static PeriodicTicks byTenMinutes() {
+    public static PeriodicTicks<?> byTenMinutes() {
         return byMinutes(10f);
     }
 
     /**
-     * 半小时
+     * half hour
      *
      * @return
      */
-    public static PeriodicTicks byHalfHour() {
+    public static PeriodicTicks<?> byHalfHour() {
         return byHour(0.5f);
     }
 
     /**
-     * 一小时
+     * one hour
      *
      * @return
      */
-    public static PeriodicTicks byHour() {
+    public static PeriodicTicks<?> byHour() {
         return byHour(1f);
     }
 
     /**
-     * 具体小时
+     * X hours
      *
      * @param hours
      * @return
      */
-    public static PeriodicTicks byHour(float hours) {
+    public static PeriodicTicks<?> byHour(float hours) {
         return byMinutes(hours * 60);
     }
 
     /**
-     * 具体秒
+     * X seconds
      *
      * @param second
      * @return
      */
-    public static PeriodicTicks bySeconds(float second) {
+    public static PeriodicTicks<?> bySeconds(float second) {
         return new PeriodicTicks((int) (20 * second));
     }
 
     /**
-     * 具体分钟
+     * X minutes
      *
      * @param minutes
      * @return
      */
-    public static PeriodicTicks byMinutes(float minutes) {
+    public static PeriodicTicks<?> byMinutes(float minutes) {
         return bySeconds(60 * minutes);
     }
 
     /**
-     * 具体游戏刻
+     * X ticks
      *
      * @param ticks
      * @return
      */
-    public static PeriodicTicks byTicks(int ticks) {
+    public static PeriodicTicks<?> byTicks(int ticks) {
         return new PeriodicTicks(ticks);
     }
 
