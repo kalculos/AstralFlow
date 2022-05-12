@@ -23,19 +23,20 @@ package io.ib67.astralflow.internal.storage.impl.chunk.tag;
 
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
 import io.ib67.astralflow.internal.storage.impl.chunk.MachineData;
-import io.ib67.util.Pair;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Location;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
+import org.inlambda.kiwi.tuple.Pair;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
 import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.*;
+import static org.inlambda.kiwi.Kiwi.pairOf;
 
 @ApiStatus.Internal
 public final class MachineDataTag implements PersistentDataType<byte[], MachineData> {
@@ -72,8 +73,8 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
                 // write loc
                 writeLocation2(longPairEntry.getKey(), buf);
 
-                buf.writeByte(longPairEntry.getValue().key.getTypeIndex());
-                var data = longPairEntry.getValue().value;
+                buf.writeByte(longPairEntry.getValue().left.getTypeIndex());
+                var data = longPairEntry.getValue().right;
                 buf.writeInt(data.length);
                 buf.writeBytes(data);
             }
@@ -120,7 +121,7 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
                 var dataLen = buf.readInt();
                 var data = new byte[dataLen];
                 buf.readBytes(data);
-                result.getMachineData().put(loc, Pair.of(type, data));
+                result.getMachineData().put(loc, new Pair<>(type, data));
             }
             return result;
         } catch (Throwable t) {
@@ -131,6 +132,7 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
         }
     }
 
+    @Deprecated
     private MachineData fromPrimitiveV0(ByteBuf buf) {
         var chunkX = buf.readInt();
         var chunkZ = buf.readInt();
@@ -144,7 +146,7 @@ public final class MachineDataTag implements PersistentDataType<byte[], MachineD
             var dataLen = buf.readInt();
             var data = new byte[dataLen];
             buf.readBytes(data);
-            result.getMachineData().put(loc, Pair.of(type, data));
+            result.getMachineData().put(loc, pairOf(type, data));
         }
         buf.release();
         return result;

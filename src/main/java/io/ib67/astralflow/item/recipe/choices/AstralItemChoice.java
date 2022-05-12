@@ -27,7 +27,6 @@ import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
-import io.ib67.util.Lazy;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -35,7 +34,10 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.inlambda.kiwi.Kiwi.byLazy;
 
 /**
  * This class represents an item choice for astral items.<br />
@@ -47,7 +49,7 @@ public class AstralItemChoice implements IngredientChoice {
     private final short count;
     private final short durability;
     private final Set<ItemKey> materials;
-    private final Lazy<Set<ItemKey>, List<ItemStack>> compiledRItems = Lazy.by(t ->
+    private final Function<Set<ItemKey>, List<ItemStack>> compiledRItems = byLazy(t ->
             t.stream().map(e -> AstralFlow.getInstance().getItemRegistry().getRegistry(e))
                     .map(ItemPrototypeFactory::getPrototype).collect(Collectors.toList())
     );
@@ -91,6 +93,6 @@ public class AstralItemChoice implements IngredientChoice {
 
     @Override
     public List<? extends ItemStack> getRepresentativeItems() {
-        return compiledRItems.get();
+        return compiledRItems.apply(materials);
     }
 }

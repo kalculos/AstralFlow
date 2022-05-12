@@ -62,8 +62,7 @@ import io.ib67.astralflow.security.impl.SimpleSecurityService;
 import io.ib67.astralflow.security.mem.impl.SimpleLeakTracker;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.astralflow.util.LogCategory;
-import io.ib67.util.Util;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -87,6 +86,7 @@ import java.util.zip.ZipFile;
 import static io.ib67.astralflow.internal.config.AstralFlowConfiguration.CONFIG_CURRENT_VERSION;
 import static io.ib67.astralflow.util.LogCategory.INIT;
 import static io.ib67.astralflow.util.LogCategory.MIGRATOR;
+import static org.inlambda.kiwi.Kiwi.fromAny;
 
 @ApiStatus.Internal
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
@@ -168,7 +168,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         }
         Log.info(LogCategory.INIT, "Loading &aConfigurations");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
-        if (Util.runCatching(() -> machineIndex.toFile().createNewFile()).alsoPrintStack().isFailed()) {
+        if (fromAny(() -> machineIndex.toFile().createNewFile()).isEmpty()) {
             setEnabled(false);
             return;
         }

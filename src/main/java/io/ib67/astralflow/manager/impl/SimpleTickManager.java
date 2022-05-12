@@ -28,10 +28,10 @@ import io.ib67.astralflow.scheduler.Scheduler;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.scheduler.internal.SchedulerAdapter;
 import io.ib67.astralflow.scheduler.internal.SyncScheduler;
-import io.ib67.astralflow.util.WeakHashSet;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.inlambda.kiwi.WeakHashSet;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 

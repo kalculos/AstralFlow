@@ -86,7 +86,7 @@ public final class InMemoryChunkFactory {
                 var type = entry.getValue();
                 var machineData = machines.getData(location);
                 try {
-                    var machine = getSerializer(machineData.key).fromData(machineData.value);
+                    var machine = getSerializer(machineData.left).fromData(machineData.right);
                     machinesMap.put(location, machine);
                 }catch(Throwable t){
                     throw new IllegalStateException("Failed to load machine at " + location, t);

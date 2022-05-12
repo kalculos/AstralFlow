@@ -23,7 +23,7 @@ package io.ib67.astralflow.internal.storage.impl.chunk;
 
 import com.google.common.reflect.TypeToken;
 import io.ib67.astralflow.api.AstralHelper;
-import io.ib67.util.Util;
+import io.ib67.internal.util.bukkit.BukkitGson;
 import lombok.SneakyThrows;
 import org.bukkit.Location;
 
@@ -44,7 +44,7 @@ public final class MachineCache {
         if (!Files.isRegularFile(pathToCache)) {
             throw new IllegalArgumentException("Path is not a file");
         }
-        var map = (Map<UUID, Location>) Util.BukkitAPI.gsonForBukkit().fromJson(Files.readString(pathToCache), new TypeToken<Map<UUID, Location>>() {
+        var map = (Map<UUID, Location>) BukkitGson.INSTANCE.fromJson(Files.readString(pathToCache), new TypeToken<Map<UUID, Location>>() {
         }.getType());
         if (map != null) {
             uuid2Loc = map;
@@ -85,7 +85,7 @@ public final class MachineCache {
 
     @SneakyThrows
     public void save() {
-        var gson = Util.BukkitAPI.gsonForBukkit();
+        var gson = BukkitGson.INSTANCE;
         var json = gson.toJson(uuid2Loc);
         Files.writeString(path, json);
     }

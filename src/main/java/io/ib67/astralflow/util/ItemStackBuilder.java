@@ -21,12 +21,13 @@
 
 package io.ib67.astralflow.util;
 
-import io.ib67.util.bukkit.Text;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -57,7 +58,7 @@ public final class ItemStackBuilder {
     public ItemStackBuilder lore(String... strings) {
         requireNonNull(strings, "Lore cannot be null");
         for (String string : strings) {
-            lore.add(Text.colored(string));
+            lore.add(string.replaceAll("&", ChatColor.COLOR_CHAR + ""));
         }
         return this;
     }
@@ -72,15 +73,13 @@ public final class ItemStackBuilder {
 
     public ItemStackBuilder displayName(String displayName) {
         requireNonNull(displayName, "Display name cannot be null");
-        this.displayName = Text.colored(displayName);
+        this.displayName = displayName.replaceAll("&", ChatColor.COLOR_CHAR + "");
         return this;
     }
 
     public ItemStackBuilder itemFlags(ItemFlag... flags) {
         requireNonNull(flags, "Flags cannot be null");
-        for (ItemFlag flag : flags) {
-            itemFlags.add(flag);
-        }
+        itemFlags.addAll(Arrays.asList(flags));
         return this;
     }
 
