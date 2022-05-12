@@ -104,6 +104,14 @@ public final class AstralFlowConfiguration {
                 If you don't know any better, just set it to 100.
                 """)
         public int leakCheckInterval = 100;
+
+        @Comment("""
+                Should we check for update?
+                We'll connect to GitHub API to check for update. If you're in China (i.e User Locale == zh_CN ) we'll try to access GitHub via mirror provided by Inlined Lambdas.
+                Newer available updates will be sent to admins (astralflow.notification.update) so that they can know what's new and contact admin to update plugin.
+                Note: Update Check Services will know your IP, running AstralFlow version. But services cannot identify who you're, what you do, etc. You don't have to worry about that so much.
+                """)
+        public boolean updateCheck = true;
     }
 
     /**

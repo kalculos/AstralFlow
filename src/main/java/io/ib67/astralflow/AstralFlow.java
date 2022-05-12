@@ -43,6 +43,7 @@ import io.ib67.astralflow.internal.storage.SimpleChunkTracker;
 import io.ib67.astralflow.internal.storage.impl.chunk.ChunkBasedMachineStorage;
 import io.ib67.astralflow.internal.storage.impl.chunk.MachineCache;
 import io.ib67.astralflow.internal.task.SaveDataTask;
+import io.ib67.astralflow.internal.update.UpdateChecker;
 import io.ib67.astralflow.item.oredict.internal.CompoundOreDict;
 import io.ib67.astralflow.item.oredict.internal.SimpleOreDict;
 import io.ib67.astralflow.item.oredict.internal.VanillaOreDict;
@@ -224,6 +225,16 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                 new SaveDataTask().runTaskTimer(this, 0L, dataSaveInterval * 20L);
             }
             initialized = true;
+            if (configuration.securitySetting.updateCheck) {
+                var isZhCn = Locale.getDefault().toString().equals("zh_CN");
+                var sourceUrl = isZhCn
+                        ? "https://api.bukkit.rip/gh/AstralFlow/releases"
+                        : "https://api.github.com/repos/InlinedLambdas/AstralFlow/releases";
+                new UpdateChecker(sourceUrl, getDescription().getVersion()).runTaskTimerAsynchronously(this, 0L, 3 * 600 * 20L); // 30 minutes.
+                if (isZhCn) {
+                    Log.info(LogCategory.UPDATE_CHECKER, "检测到系统语言为中文，已经自动使用了更新镜像源。");
+                }
+            }
         });
 
     }

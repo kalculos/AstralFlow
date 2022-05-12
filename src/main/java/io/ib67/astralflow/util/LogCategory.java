@@ -54,7 +54,11 @@ public final class LogCategory {
      */
     public static final String SCHEDULER = "Scheduler";
     /**
-     * THe category for memory leak detection.
+     * The category for memory leak detection.
      */
     public static final String LEAK_DETECTOR = "Leak Detector";
+    /**
+     * The category for update checker.
+     */
+    public static final String UPDATE_CHECKER = "Update Checker";
 }
