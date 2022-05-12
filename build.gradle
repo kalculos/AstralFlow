@@ -26,6 +26,8 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '5.0.0'
 }
 
+apply plugin: "maven-publish"
+
 group = 'io.ib67'
 version = properties.get("version")
 allprojects {
@@ -170,4 +172,26 @@ jar {
 }
 shadowJar {
     from("build/resources/i18n")
+}
+
+/*
+  Publish
+ */
+publishing {
+    repositories {
+        maven {
+            name = "bukkit.rip"
+            url = uri("https://mvn.bukkit.rip/releases")
+            credentials {
+                username = bkrip_user
+                password = bkrip_token
+            }
+        }
+    }
+    publications {
+        ilrepo(MavenPublication) {
+            artifactId 'astralflow'
+            from components.java
+        }
+    }
 }
