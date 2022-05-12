@@ -21,7 +21,7 @@
 ## 一个简单机器
 
 在 AstralFlow
-中，一个 [IMachine](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/machines/IMachine.java)
+中，一个 [IMachine](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/machines/IMachine.html)
 代表了一个机器。但我们不推荐开发者直接实现这个接口，我们推荐你继承 `AbstractMachine` 。
 
 ```java
@@ -41,7 +41,7 @@ public final class JebWool extends AbstractMachine {
   在 AstralFlow 中，我们将机器的创建委托给 `MachineFactory` 完成，而 `MachineFactory` 需要用户手动注册来定义机器的创建行为。  
   但是大多数情况下，我们并不需要那么复杂的功能。因此，如果你的机器 **有一个公开的，而且只有`MachineProperty`作为参数的构造器** 就可以直接用 `@AutoFactory` 从而避免繁琐的注册过程。
 
-关于 `MachineFactory` 的使用，我们会在后续的章节中提到。
+关于 `MachineFactory`，可以在学习完本章后查阅文档找到相应介绍。
 
 - ` extends AbstractMachine` 表示这个简单机器类继承 `AbstractMachine`。 这是一个面向用户的机器骨架（因为 IMachine 的方法真的是太多了），他可以让你把更多的时间专注在编写具体的逻辑上。
 
@@ -70,7 +70,7 @@ public final class JebWool extends AbstractMachine {
 在机器的构造器内，我们得到了一个 `MachineProperty`，其中包含了一个 `Location` ，也就是机器的位置信息。
 
 但是我们不能太着急。机器被创建的时机是不确定的，因此 AstralFlow
-提供了[机器生命周期](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/machines/LifeCycle.java)
+提供了[机器生命周期](./spec/machine/machine_lifecycle.md)
 来解决这个问题。
 
 接下来，在区块加载时对对应位置的方块进行初始化。
@@ -117,14 +117,14 @@ AstralFlow 提供了注册自定义物品以及绑定逻辑的 API。
 
 这个问题并不难以回答，他们都是吃的，也就是`食物`。`食物`都有相同的属性，因此我们可以把它们划为一类，也就是`物品类别`。  
 在 AstralFlow
-中，一个 [ItemCategory](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/item/builder/ItemCategory.java)
+中，一个 [ItemCategory](./spec/item_categories.md)
 代表了对这类物品行为的定义以及创建他们原型的方法。
 
 机器物品也是一种类别，那么现在让我们试试看。
 
 ## 注册物品
 
-注册过程很简单，只需要借助 [ItemBuilder](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/item/builder/ItemBuilder.java)
+注册过程很简单，只需要借助 [ItemBuilder](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/item/builder/ItemBuilder.html)
 即可。但是物品的注册过程最好在模块的 `init` 中进行，否则可能会遇到某些东西（矿物辞典）已经被锁定的情况。
 
 ```java
@@ -153,7 +153,8 @@ public void init(){
 - `itemKey` 是在 AstralFlow 中你的物品的"名字"（也就是id），它由命名空间和名字组成，以此避免名字上的冲突/污染，你也可以用它创建一个新的物品。以及，`ItemKey.from`
   是有缓存的，大多数情况它不会创建新的对象出来。
 - `MachineCategory` 是机器物品的类别。大多数类别都以这样一个单例的模式呈现（也就是：只有一个开放的 `INSTANCE` 字段作为他的唯一实例）
-- `prototype` 定义了你的物品的原型，这是由你上文中声明的 `MachineCategory` 来决定的。对于不同的物品类别，他们的原型的类型也不一致，这使得自定义物品的编写工作能够轻松不少。
+- `prototype` 定义了你的物品的原型，这是由你上文中声明的 `MachineCategory` 来决定的。对于不同的 [物品类别](./spec/item_categories.md)
+  ，他们的原型的类型也不一致，这使得自定义物品的编写工作能够轻松不少。
 - `register()` 不返回任何东西，它会直接注册你的物品到 AstralFlow 中。
 
 稍后，我们可以用 `ItemKey#createNewItem()` 来得到你的新物品。
@@ -238,7 +239,7 @@ public enum TestItems implements ItemKey {
 但我们发现变色羊毛变得有点太快了（20 changes/s) ，感觉眼睛要瞎。
 
 AstralFlow 也提供了一些 API 用于 Tick
-时的附加行为控制，也就是 [TickReceipt](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/scheduler/TickReceipt.java)
+时的附加行为控制，也就是 [TickReceipt](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/scheduler/TickReceipt.html)
 
 借助 TickReceipt 和一些内建的工具类，我们可以控制他的变化速度。
 

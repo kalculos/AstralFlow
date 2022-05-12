@@ -5,9 +5,11 @@ AstralFlow 有一套自己完全重写的合成系统，并且支持注入原版
 # RecipeRegistry
 
 AstralFlow
-中的合成系统主要由 [IRecipeRegistry](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/item/recipe/IRecipeRegistry.java)
+中的合成系统主要由 [IRecipeRegistry](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/item/recipe/IRecipeRegistry.html)
 管理，通过 `AstralFlowAPI` 可以得到一个默认 `RecipeRegistry` 示例。
 
 ```java
 flow.getRecipeRegistry();
 ```
+
+接着你就可以通过它来匹配配方和注册配方，做一个自己的工作台。
