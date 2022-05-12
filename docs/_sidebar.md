@@ -19,3 +19,4 @@
 - [其他](./misc/README.md)
   - [区块储存格式](./misc/chunk_storage_spec.md)
   - [内存泄漏检测](./misc/memleakcheck.md)
+- [贡献星流](./guide/contributing.md)  
