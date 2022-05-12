@@ -23,7 +23,7 @@ package io.ib67.astralflow;
 
 import com.google.gson.GsonBuilder;
 import io.ib67.astralflow.item.AnotherSimpleState;
-import io.ib67.internal.util.bukkit.Log;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -52,7 +52,7 @@ public final class TestPlugin extends JavaPlugin {
             var item = TestItems.STATEFUL_ITEM.createNewItem();
             var simpleState = item.getState().map(e -> (AnotherSimpleState) e).orElseThrow();
             simpleState.setData(UUID.randomUUID().toString());
-            Log.info("testplug", "Created state: " + new GsonBuilder().setPrettyPrinting().create().toJson(simpleState));
+            Bukkit.getLogger().info("testplug" + " Created state: " + new GsonBuilder().setPrettyPrinting().create().toJson(simpleState));
             item.saveState(simpleState);
             player.getInventory().addItem(item.asItemStack());
         } else if (label.equalsIgnoreCase("lookup_simple_state")) {
