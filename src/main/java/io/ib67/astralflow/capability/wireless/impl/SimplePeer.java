@@ -27,6 +27,7 @@ import io.ib67.astralflow.capability.wireless.registry.IWirelessRegistry;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +45,10 @@ public class SimplePeer<T> implements IWirelessPeer<T> {
     private final Consumer<T> messageReceiver;
     private final Location location;
     private final Class<T> type;
+    
+    @Getter
+    @Setter
+    private boolean available;
 
     public static <T> SimplePeerBuilder<T> createBuilder() {
         return new SimplePeerBuilder<>();

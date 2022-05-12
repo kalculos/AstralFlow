@@ -49,6 +49,8 @@ public interface IWirelessPeer<T> {
      */
     void receiveMessage(T message);
 
+    boolean isAvailable();
+
     /**
      * The location of this peer.
      *
