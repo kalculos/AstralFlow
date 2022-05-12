@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.util.bukkit;
+package io.ib67.internal.util.bukkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

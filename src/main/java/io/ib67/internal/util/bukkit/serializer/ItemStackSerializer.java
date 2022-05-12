@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.util.bukkit.serializer;
+package io.ib67.internal.util.bukkit.serializer;
 
 import com.comphenix.protocol.utility.StreamSerializer;
 import com.google.gson.*;

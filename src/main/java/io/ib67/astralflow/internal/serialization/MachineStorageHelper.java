@@ -28,7 +28,7 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.util.bukkit.BukkitGson;
+import io.ib67.internal.util.bukkit.BukkitGson;
 
 import java.nio.charset.StandardCharsets;
 

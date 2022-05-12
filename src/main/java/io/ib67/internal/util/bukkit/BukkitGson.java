@@ -19,12 +19,12 @@
  *   USA
  */
 
-package io.ib67.util.bukkit;
+package io.ib67.internal.util.bukkit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.ib67.util.bukkit.serializer.ItemStackSerializer;
-import io.ib67.util.bukkit.serializer.LocationSerializer;
+import io.ib67.internal.util.bukkit.serializer.ItemStackSerializer;
+import io.ib67.internal.util.bukkit.serializer.LocationSerializer;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 

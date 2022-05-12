@@ -62,7 +62,7 @@ import io.ib67.astralflow.security.impl.SimpleSecurityService;
 import io.ib67.astralflow.security.mem.impl.SimpleLeakTracker;
 import io.ib67.astralflow.texture.ITextureRegistry;
 import io.ib67.astralflow.util.LogCategory;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;

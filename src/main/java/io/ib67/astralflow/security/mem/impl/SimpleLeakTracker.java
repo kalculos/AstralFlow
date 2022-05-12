@@ -24,7 +24,7 @@ package io.ib67.astralflow.security.mem.impl;
 import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.security.mem.ILeakTracker;
 import io.ib67.astralflow.util.LogCategory;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.ref.ReferenceQueue;

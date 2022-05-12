@@ -22,8 +22,8 @@
 package io.ib67.astralflow.internal.storage.impl.chunk.tag;
 
 import io.ib67.astralflow.internal.storage.impl.chunk.ChunkMachineIndex;
-import io.ib67.util.bukkit.BukkitGson;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.BukkitGson;
+import io.ib67.internal.util.bukkit.Log;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Location;

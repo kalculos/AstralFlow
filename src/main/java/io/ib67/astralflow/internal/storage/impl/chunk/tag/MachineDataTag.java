@@ -23,7 +23,7 @@ package io.ib67.astralflow.internal.storage.impl.chunk.tag;
 
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
 import io.ib67.astralflow.internal.storage.impl.chunk.MachineData;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Location;

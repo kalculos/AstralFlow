@@ -19,7 +19,7 @@
  *   USA
  */
 
-package io.ib67.util.bukkit.serializer;
+package io.ib67.internal.util.bukkit.serializer;
 
 import com.google.gson.*;
 import org.bukkit.Bukkit;

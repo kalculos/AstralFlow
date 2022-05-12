@@ -23,7 +23,7 @@ package io.ib67.astralflow.internal.storage.impl.chunk;
 
 import com.google.common.reflect.TypeToken;
 import io.ib67.astralflow.api.AstralHelper;
-import io.ib67.util.bukkit.BukkitGson;
+import io.ib67.internal.util.bukkit.BukkitGson;
 import lombok.SneakyThrows;
 import org.bukkit.Location;
 

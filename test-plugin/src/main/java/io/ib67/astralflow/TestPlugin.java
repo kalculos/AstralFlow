@@ -23,7 +23,7 @@ package io.ib67.astralflow;
 
 import com.google.gson.GsonBuilder;
 import io.ib67.astralflow.item.AnotherSimpleState;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
