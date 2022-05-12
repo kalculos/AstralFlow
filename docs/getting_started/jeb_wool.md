@@ -285,10 +285,12 @@ itemMachine()
 - `recipe(AstralRecipe)` 由 `ItemBuilder` 提供，用于定义这个物品的配方，且配方可以添加多个，只需要再调用几次 `recipe(AstralRecipe)` 即可。
 - `AstralRecipe` 的构造过程和 Bukkit 的版本类似，他们都有 `ingredient` 和 `choice` 的概念。而 `Shaped`
   则是典型的有序配方，关于可用的 [配方类型](./spec/recipe_types.md)
-- `oreDict` 即是矿物辞典，这个方法定义了这个物品的辞典名，目前只能单个。
+- `oreDict` 即是矿物辞典，这个方法定义了这个物品的辞典名，可以多个。
 
 关于矿物辞典的概念以及可用的辞典名，请参考 [矿物辞典](./spec/oredict.md)
 
 到此，你已经可以在游戏中用八块黑白羊毛围成熔炉的样子来合成一个变色羊毛了，Congratulations!
 
 ![jeb_wool](https://user-images.githubusercontent.com/48877375/161483058-422f9375-a1b3-4aca-815d-3edb11170c24.gif)
+
+[下一章，自定义物品逻辑](./getting_started/magica_wand.md)
