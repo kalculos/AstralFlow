@@ -186,6 +186,9 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
         for (String s : oreDictId) {
             AstralFlow.getInstance().getItemRegistry().registerItem(p, s);
         }
+        if (oreDictId.isEmpty()) {
+            AstralFlow.getInstance().getItemRegistry().registerItem(p, null);
+        }
         // recipes
         for (AstralRecipe recipe : recipes) {
             ItemPrototypeFactory finalP = p;
