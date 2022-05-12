@@ -69,3 +69,6 @@ AstralFlow 使用 Java 编写，为了提交代码，你需要先学会写 Java�
 - Javadoc 生成的时候会忽略掉所有文件夹路径上有 `impl` 或者 `internal` 的文件。
 - 请不要随便暴露可见性，总是采用 Getter 和 `private`。
 - 请尝试编写 [不可变](https://www.cnblogs.com/shamo89/p/10330080.html) 的代码。
+- 对于公开的 API，请记得加上 `@ApiStatus.AvailableSince(当前版本)`
+- 以及给公开的 API 加上 Javadoc (不要漏了`package-info.java`)
+- 不公开的部分请放到 `internal` 或者 `impl` 里面，以避免出现在 Javadoc 里。
