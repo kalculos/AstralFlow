@@ -23,7 +23,6 @@ package io.ib67.astralflow.item.recipe.choices;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
-import io.ib67.util.Lazy;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -32,7 +31,10 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.inlambda.kiwi.Kiwi.byLazy;
 
 /**
  * An {@link IngredientChoice} that chooses an item from a list of items. (ore dict)<br />
@@ -44,7 +46,7 @@ public class OreDictChoice implements IngredientChoice {
     private final short count;
     private final short durability;
     private final Set<String> materials;
-    private final Lazy<Set<String>, List<ItemStack>> compiledRItems = Lazy.by(t ->
+    private final Function<Set<String>, List<ItemStack>> compiledRItems = byLazy(t ->
             t.stream().map(e -> AstralFlow.getInstance().getItemRegistry().getOreDict().getItems(e)).flatMap(Collection::stream).collect(Collectors.toList())
     );
 
@@ -79,6 +81,6 @@ public class OreDictChoice implements IngredientChoice {
 
     @Override
     public List<? extends ItemStack> getRepresentativeItems() {
-        return compiledRItems.get();
+        return compiledRItems.apply(materials);
     }
 }

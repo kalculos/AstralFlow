@@ -22,7 +22,6 @@
 package io.ib67.astralflow.item.recipe.choices;
 
 import io.ib67.astralflow.item.recipe.IngredientChoice;
-import io.ib67.util.Lazy;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +30,9 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.function.Function;
+
+import static org.inlambda.kiwi.Kiwi.byLazy;
 
 /**
  * A {@link IngredientChoice} that matches {@link Material}<br />
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
 @Getter
 public class MaterialChoice implements IngredientChoice {
     private final Set<Material> material;
-    private final Lazy<Set<Material>, List<ItemStack>> compiledRItems = Lazy.by(t -> t.stream().map(ItemStack::new).collect(Collectors.toUnmodifiableList()));
+    private final Function<Set<Material>, List<ItemStack>> compiledRItems = byLazy(t -> t.stream().map(ItemStack::new).toList());
     private final short count;
     private final short durability;
 
@@ -75,6 +76,6 @@ public class MaterialChoice implements IngredientChoice {
 
     @Override
     public List<ItemStack> getRepresentativeItems() {
-        return compiledRItems.get(material);
+        return compiledRItems.apply(material);
     }
 }

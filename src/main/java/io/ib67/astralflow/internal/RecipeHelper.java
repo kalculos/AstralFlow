@@ -21,15 +21,11 @@
 
 package io.ib67.astralflow.internal;
 
-import io.ib67.util.Functional;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 @ApiStatus.Internal
 public final class RecipeHelper {
@@ -77,7 +73,7 @@ public final class RecipeHelper {
         for (int i = 0; i < alignedMatrix.length; i++) {
             var chars = alignedMatrix[i].toCharArray();
             for (int q = 0; q < chars.length; q++) {
-                newMatrix[i * 3 + q] = Functional.alsoMap(map.get(chars[q]), t -> t == null ? null : t.clone());
+                newMatrix[i * 3 + q] = Optional.ofNullable(map.get(chars[q])).map(ItemStack::clone).orElse(null);
             }
         }
         return newMatrix;

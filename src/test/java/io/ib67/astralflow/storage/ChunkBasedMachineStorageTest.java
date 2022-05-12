@@ -33,7 +33,6 @@ import io.ib67.astralflow.internal.storage.impl.chunk.tag.MachineIndexTag;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.manager.impl.MachineManagerImpl;
 import io.ib67.astralflow.test.TestUtil;
-import io.ib67.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,6 +46,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.inlambda.kiwi.Kiwi.pairOf;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -78,7 +78,7 @@ public final class ChunkBasedMachineStorageTest {
 
                 loc,
 
-                Pair.of(MachineStorageType.JSON, """
+                pairOf(MachineStorageType.JSON, """
                         {"a":"b"}
                         """.trim().getBytes(StandardCharsets.UTF_8)));
         // serialize machine data
@@ -87,7 +87,7 @@ public final class ChunkBasedMachineStorageTest {
 
         // deserialize.
         var desMd = tag.fromPrimitive(serializedData, null);
-        assertArrayEquals(machineData.getMachineData().get(loc).value, desMd.getMachineData().get(loc).value, "Test MachineData Serialization # " + reason);
+        assertArrayEquals(machineData.getMachineData().get(loc).right, desMd.getMachineData().get(loc).right, "Test MachineData Serialization # " + reason);
     }
 
     @Test

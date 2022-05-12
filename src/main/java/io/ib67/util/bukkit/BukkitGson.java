@@ -19,35 +19,18 @@
  *   USA
  */
 
-package io.ib67.astralflow.internal.storage.impl.chunk;
+package io.ib67.util.bukkit;
 
-import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import io.ib67.util.bukkit.serializer.ItemStackSerializer;
+import io.ib67.util.bukkit.serializer.LocationSerializer;
 import org.bukkit.Location;
-import org.inlambda.kiwi.tuple.Pair;
-import org.jetbrains.annotations.ApiStatus;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@ApiStatus.Internal
-@RequiredArgsConstructor
-@Getter
-public final class MachineData {
-    private final Map<Location, Pair<MachineStorageType, byte[]>> machineData = new HashMap<>();
-    private final int chunkX;
-    private final int chunkZ;
-
-    public void save(Location loc, MachineStorageType type, byte[] data) {
-        machineData.put(loc, new Pair<>(type, data));
-    }
-
-    public Pair<MachineStorageType, byte[]> getData(Location loc) {
-        return machineData.get(loc);
-    }
-
-    public void remove(Location loc) {
-        machineData.remove(loc);
-    }
+public class BukkitGson {
+    public static final GsonBuilder BUILDER = new GsonBuilder()
+            .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
+            .registerTypeAdapter(Location.class, new LocationSerializer());
+    public static final Gson INSTANCE = BUILDER.create();
 }

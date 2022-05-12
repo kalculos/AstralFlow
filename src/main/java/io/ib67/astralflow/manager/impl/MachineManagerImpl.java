@@ -34,12 +34,12 @@ import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.manager.ITickManager;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.security.mem.ILeakTracker;
-import io.ib67.astralflow.util.WeakHashSet;
 import io.ib67.util.bukkit.Log;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.inlambda.kiwi.WeakHashSet;
 
 import java.util.*;
 

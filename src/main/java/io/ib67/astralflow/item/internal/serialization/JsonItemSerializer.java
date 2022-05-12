@@ -28,7 +28,7 @@ import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.ItemState;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
-import io.ib67.util.Util;
+import io.ib67.util.bukkit.BukkitGson;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -36,10 +36,10 @@ public final class JsonItemSerializer implements ItemSerializer {
     private final Gson serializer;
 
     public JsonItemSerializer(IFactoryManager factoryManager) {
-        var serializer = Util.BukkitAPI.gsonBuilderForBukkit()
+        var serializer = BukkitGson.BUILDER
                 .registerTypeHierarchyAdapter(ItemKey.class, new ItemKeySerializer())
                 .create();
-        this.serializer = Util.BukkitAPI.gsonBuilderForBukkit()
+        this.serializer = BukkitGson.BUILDER
                 .registerTypeHierarchyAdapter(IState.class, new StateSerializer(serializer))
                 .create();
     }

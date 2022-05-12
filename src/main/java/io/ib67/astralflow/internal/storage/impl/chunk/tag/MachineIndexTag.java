@@ -22,14 +22,14 @@
 package io.ib67.astralflow.internal.storage.impl.chunk.tag;
 
 import io.ib67.astralflow.internal.storage.impl.chunk.ChunkMachineIndex;
-import io.ib67.util.Randomly;
-import io.ib67.util.Util;
+import io.ib67.util.bukkit.BukkitGson;
 import io.ib67.util.bukkit.Log;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Location;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
+import org.inlambda.kiwi.RandomHelper;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,6 +43,7 @@ import java.util.Map;
 
 import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.inlambda.kiwi.Kiwi.runAny;
 
 @ApiStatus.Internal
 public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMachineIndex> {
@@ -161,8 +162,8 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
             t.printStackTrace();
             Log.warn("CBMS", "Cannot save data for chunk " + complex.getChunkX() + ", " + complex.getChunkZ());
             Log.warn("CBMS", "Trying to dump data...");
-            var fileName = "astralflow-error-chunkdump-" + Randomly.pick(complex.getLocations()).map(e -> e.getWorld().getName()).orElse("UNKNOWN_WORLD") + "-" + Instant.now() + "-" + complex.getChunkX() + "-" + complex.getChunkZ() + ".json";
-            Util.runCatching(() -> Files.writeString(Path.of(fileName), Util.BukkitAPI.gsonForBukkit().toJson(complex))).getResult();
+            var fileName = "astralflow-error-chunkdump-" + RandomHelper.pick(complex.getLocations()).map(e -> e.getWorld().getName()).orElse("UNKNOWN_WORLD") + "-" + Instant.now() + "-" + complex.getChunkX() + "-" + complex.getChunkZ() + ".json";
+            runAny(() -> Files.writeString(Path.of(fileName), BukkitGson.INSTANCE.toJson(complex)));
             Log.warn("CBMS", "Dumped data to " + fileName);
 
             // create a empty one.
