@@ -2,7 +2,8 @@
     - [配置文件](./user_guide/configuration.md)
     - [版本支持情况](./user_guide/maintained_versions.md)
 - [拓展入门](./getting_started/README.md)
-    - [变色羊毛](./getting_started/jeb_wool.md)
+  - [变色羊毛](./getting_started/jeb_wool.md)
+  - [色色手杖](./getting_started/magica_wand.md)
 - 通用组件
   - [AstralHelper](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/api/AstralHelper.html)
   - [Hook 系统](./spec/universal/hook.md)

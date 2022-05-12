@@ -21,11 +21,10 @@
 
 package io.ib67.astralflow.api.item.weapon;
 
-import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.api.item.ItemBase;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.item.ItemKey;
-import io.ib67.astralflow.item.factory.ItemPrototypeFactory;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -72,10 +71,7 @@ public abstract class WeaponBase extends ItemBase {
             if (itemInHand.getType() == Material.AIR) {
                 return;
             }
-            var state = AstralFlow.getInstance().getItemRegistry().getRegistry(itemInHand);
-            var isItem = state.map(ItemPrototypeFactory::getHolder)
-                    .filter(holder -> holder == this)
-                    .isPresent();
+            var isItem = AstralHelper.isHolder(itemInHand, this);
             if (!isItem) return;
             // apply damage.
             event.setDamage(damageCalc(event.getEntity(), event.getFinalDamage()));
