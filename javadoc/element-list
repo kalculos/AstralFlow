@@ -24,7 +24,7 @@ io.ib67.astralflow.item.recipe.choices
 io.ib67.astralflow.item.recipe.kind
 io.ib67.astralflow.machines
 io.ib67.astralflow.machines.exception
-io.ib67.astralflow.machines.scheduler
+io.ib67.astralflow.machines.factories
 io.ib67.astralflow.machines.trait
 io.ib67.astralflow.manager
 io.ib67.astralflow.scheduler
