@@ -6,6 +6,8 @@
 因此 AstralFlow
 提供了 [IWirelessPeer](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/capability/wireless/IWirelessPeer.html) 来解决这个问题。
 
+不过，虽说是 *机器能力* ，但是未必只有机器可以用。只要符合被搜索的条件就可以被找到，搜索其他节点更不需要任何条件了。
+
 # 发现机器
 
 我们规定，所有希望被发现的节点都应该实现 `IWirelessPeer` 接口，并且注册到 `WirelessRegistry` 中。
