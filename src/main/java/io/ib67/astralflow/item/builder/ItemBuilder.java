@@ -22,6 +22,8 @@
 package io.ib67.astralflow.item.builder;
 
 import io.ib67.astralflow.AstralFlow;
+import io.ib67.astralflow.api.item.BaseCategory;
+import io.ib67.astralflow.api.item.ItemBase;
 import io.ib67.astralflow.api.item.armor.ArmorCategory;
 import io.ib67.astralflow.api.item.armor.ArmorItem;
 import io.ib67.astralflow.api.item.dummy.DummyCategory;
@@ -111,6 +113,15 @@ public final class ItemBuilder<C extends ItemCategory<T>, T> {
      */
     public static ItemBuilder<MachineCategory, MachineItem> ofMachineItem() {
         return of(MachineCategory.INSTANCE);
+    }
+
+    /**
+     * Create a new itemBuilder for any {@link ItemBase} preset.
+     *
+     * @return the item builder
+     */
+    public static ItemBuilder<ItemCategory<ItemBase>, ItemBase> ofBase() {
+        return of(BaseCategory.INSTANCE);
     }
 
     @ApiStatus.Experimental

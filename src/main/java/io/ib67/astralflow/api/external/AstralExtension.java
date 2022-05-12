@@ -23,6 +23,7 @@ package io.ib67.astralflow.api.external;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.api.AstralFlowAPI;
+import io.ib67.astralflow.api.item.ItemBase;
 import io.ib67.astralflow.api.item.armor.ArmorCategory;
 import io.ib67.astralflow.api.item.armor.ArmorItem;
 import io.ib67.astralflow.api.item.dummy.DummyCategory;
@@ -99,6 +100,15 @@ public abstract class AstralExtension {
      */
     protected final <C extends ItemCategory<T>, T> ItemBuilder<C, T> item(C itemCategory) {
         return ItemBuilder.of(itemCategory);
+    }
+
+    /**
+     * Short-cut for {@link ItemBuilder#ofBase()}
+     *
+     * @return the item builder
+     */
+    protected final ItemBuilder<ItemCategory<ItemBase>, ItemBase> item() {
+        return ItemBuilder.ofBase();
     }
 
     /**
