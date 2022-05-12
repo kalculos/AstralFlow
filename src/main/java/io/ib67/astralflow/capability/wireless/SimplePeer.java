@@ -52,7 +52,7 @@ public class SimplePeer<T> implements IWirelessPeer<T> {
 
     @Getter
     @Setter
-    private boolean available;
+    private boolean available = true;
 
     public static <T> SimplePeerBuilder<T> createBuilder() {
         return new SimplePeerBuilder<>();
