@@ -36,4 +36,6 @@ public interface ItemCategory<I> {
 在 [io.ib67.astralflow.api.item](https://github.com/InlinedLambdas/AstralFlow/tree/main/src/main/java/io/ib67/astralflow/api/item)
 下有详尽的参考对象。
 
+> 编写自定义物品的时候经常会需要监听事件（比如交互），这正是你应该用 [Hook](./spec/universal/hook.md) 的时候了。
+
 以及，我们通常推荐你的新物品使用 `ItemBase` 作为基类，正如你在 AstralFlow 内置的物品类型内看到的，它可以节省掉一些样版代码。

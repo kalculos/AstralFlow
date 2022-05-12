@@ -70,7 +70,7 @@ public final class JebWool extends AbstractMachine {
 在机器的构造器内，我们得到了一个 `MachineProperty`，其中包含了一个 `Location` ，也就是机器的位置信息。
 
 但是我们不能太着急。机器被创建的时机是不确定的，因此 AstralFlow
-提供了[机器生命周期](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/machines/LifeCycle.html)
+提供了[机器生命周期](./spec/machine/machine_lifecycle.md)
 来解决这个问题。
 
 接下来，在区块加载时对对应位置的方块进行初始化。

@@ -4,7 +4,7 @@
 - [拓展入门](./getting_started/README.md)
     - [变色羊毛](./getting_started/jeb_wool.md)
 - 通用组件
-  - [AstralHelper](./spec/universal/astral_helper.md)
+  - [AstralHelper](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/api/AstralHelper.html)
   - [Hook 系统](./spec/universal/hook.md)
 - 机器
   - [机器工厂](./spec/machine/machine_factory.md)
@@ -17,4 +17,5 @@
   - [配方类型](./spec/recipe_types.md)
   - [合成系统](./spec/crafting.md)
 - [其他](./misc/README.md)
-    - [区块储存格式](./misc/chunk_storage_spec.md)
+  - [区块储存格式](./misc/chunk_storage_spec.md)
+  - [内存泄漏检测](./misc/memleakcheck.md)
