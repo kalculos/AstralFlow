@@ -41,7 +41,7 @@ public final class JebWool extends AbstractMachine {
   在 AstralFlow 中，我们将机器的创建委托给 `MachineFactory` 完成，而 `MachineFactory` 需要用户手动注册来定义机器的创建行为。  
   但是大多数情况下，我们并不需要那么复杂的功能。因此，如果你的机器 **有一个公开的，而且只有`MachineProperty`作为参数的构造器** 就可以直接用 `@AutoFactory` 从而避免繁琐的注册过程。
 
-关于 `MachineFactory` 的使用，我们会在后续的章节中提到。
+关于 `MachineFactory`，可以在学习完本章后查阅文档找到相应介绍。
 
 - ` extends AbstractMachine` 表示这个简单机器类继承 `AbstractMachine`。 这是一个面向用户的机器骨架（因为 IMachine 的方法真的是太多了），他可以让你把更多的时间专注在编写具体的逻辑上。
 

@@ -4,13 +4,17 @@
 - [拓展入门](./getting_started/README.md)
     - [变色羊毛](./getting_started/jeb_wool.md)
 - 通用组件
-    - [AstralHelper](./spec/universal/astral_helper.md)
-    - [Hook 系统](./spec/universal/hook.md)
+  - [AstralHelper](./spec/universal/astral_helper.md)
+  - [Hook 系统](./spec/universal/hook.md)
+- 机器
+  - [机器工厂](./spec/machine/machine_factory.md)
+  - 机器能力
+    - [无线通信与发现](./spec/machine/wireless_communication.md)
 - 物品
-    - [物品与原型](./spec/item_prototype.md)
-    - [物品类别](./spec/item_categories.md)
-    - [矿物辞典](./spec/oredict.md)
-    - [配方类型](./spec/recipe_types.md)
-    - [合成系统](./spec/crafting.md)
+  - [物品与原型](./spec/item_prototype.md)
+  - [物品类别](./spec/item_categories.md)
+  - [矿物辞典](./spec/oredict.md)
+  - [配方类型](./spec/recipe_types.md)
+  - [合成系统](./spec/crafting.md)
 - [其他](./misc/README.md)
     - [区块储存格式](./misc/chunk_storage_spec.md)
