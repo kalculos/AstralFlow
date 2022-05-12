@@ -30,7 +30,7 @@ import static org.inlambda.kiwi.Kiwi.fromAny;
 public final class AstralConstants {
     public static final boolean MOCKING = fromAny(() -> {
         try {
-            Class.forName("org.junit.jupiter.api.Test");
+            Class.forName("io.ib67.astralflow.test.TestUtil");
             return true;
         } catch (Throwable t) {
             return false;
