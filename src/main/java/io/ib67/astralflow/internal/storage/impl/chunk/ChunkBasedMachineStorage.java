@@ -128,11 +128,11 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
     @Override
     public Collection<? extends IMachine> getMachinesByChunk(Chunk chunk) {
         Objects.requireNonNull(chunkFactory, "MachineStorage hasn't been initialized");
-        var imchunk = initChunk$lazy(chunk, false);
-        if (imchunk == null) {
+        var imc = initChunk$lazy(chunk, false);
+        if (imc == null) {
             return Collections.emptyList();
         }
-        return imchunk.getMachines();
+        return chunkMap.get(chunk).getMachines();
     }
 
     @Override
@@ -150,7 +150,10 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         initChunk$lazy(chunk, false);
     }
 
-    private InMemoryChunk initChunk$lazy(Chunk chunk, boolean create) {
+    private InMemoryChunk initChunk$lazy(Chunk chunk, boolean create) { // actually it's a lazy init, returning the chunk can be used or null
+        if (chunkMap.containsKey(chunk)) {
+            return chunkMap.get(chunk); // or it will override the original data.
+        }
         var IMChunk = chunkFactory.loadChunk(chunk);
         if (IMChunk.getMachines().size() == 0) {
             if (create) {
@@ -172,8 +175,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         Objects.requireNonNull(aloc, "location cannot be null");
         var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.isChunkLoaded(loc)) {
-            var inmem = initChunk$lazy(loc.getChunk(), false);
-            if (inmem == null) {
+            var imc = initChunk$lazy(loc.getChunk(), false);
+            if (imc == null) {
                 return null;
             }
         }
@@ -212,7 +215,8 @@ public class ChunkBasedMachineStorage implements IMachineStorage {
         Objects.requireNonNull(aloc, "loc cannot be null");
         var loc = AstralHelper.purifyLocation(aloc);
         if (!AstralHelper.isChunkLoaded(loc) || !chunkMap.containsKey(loc.getChunk())) {
-            initChunk$lazy(loc.getChunk(), true);
+            var imc = initChunk$lazy(loc.getChunk(), true);
+            if (imc == null) return;
         }
         chunkMap.get(loc.getChunk()).removeMachine(loc);
         machineCache.remove(loc);
