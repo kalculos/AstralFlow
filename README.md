@@ -22,10 +22,9 @@ And we recommend Lombok.
 # Feature
 
 1. Easy to use, for Developers and Server Operators.
-2. Providing an immersive experience for players.
-3. Actively maintained.
-4. Data-driven, easier to make extensions.
-5. Texture generation and publish
+2. Actively maintained.
+3. Data-driven, easier to make extensions. (COMING)
+4. Texture generation and publish (COMING)
 
 # Getting Started
 
@@ -35,7 +34,8 @@ And we recommend Lombok.
 
 Maintaining AstralFlow isn't an easy work, it takes maintainers tons of time and effort to make it feature-rich and
 reliable.    
-If you meet any problems, please [submit an issue here](https://github.com/iceBear67/AstralFlow/issues/new/choose)  
+If you meet any problems, feeling free
+to [submit an issue here](https://github.com/iceBear67/AstralFlow/issues/new/choose)  
 If you want to support our work, please consider donate us by clicking the sponsor button above or leave your star!
 
 Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!
