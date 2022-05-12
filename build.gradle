@@ -75,6 +75,8 @@ dependencies {
     implementation 'com.github.InlinedLambdas:kiwi:d374cff1e9'
     compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
+
+    implementation 'org.bstats:bstats-bukkit:3.0.0'
 }
 
 dependencies {
@@ -155,6 +157,7 @@ sourceSets {
 }
 shadowJar {
     relocate 'org.inlambda.kiwi', 'io.ib67.astralflow.relocate.kiwi'
+    relocate 'org.bstats', 'io.ib67.astralflow.relocate.bstats'
 }
 /*
  * I18N

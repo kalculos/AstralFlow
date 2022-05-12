@@ -66,6 +66,8 @@ import io.ib67.astralflow.util.LogCategory;
 import io.ib67.internal.util.bukkit.Log;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -116,6 +118,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private ISecurityService securityService;
 
     private static AstralFlow instance;
+    private Metrics metric;
 
     AstralFlow(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file); // for mock bukkit
@@ -235,6 +238,9 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                     Log.info(LogCategory.UPDATE_CHECKER, "检测到系统语言为中文，已经自动使用了更新镜像源。");
                 }
             }
+            metric = new Metrics(this, 15179);
+
+            metric.addCustomChart(new SimplePie("machinecount", () -> String.valueOf(Math.max(5, Math.floor(machineStorage.getKeys().size() / 10) * 10))));
         });
 
     }
