@@ -135,7 +135,7 @@ processResources {
     def props = [
             version   : version,
             buildTime : buildDate,
-            buildBy   : (buildBy.equals("runner") || buildBy.equals("icybear")) ? buildBy : "Unknown",
+            buildBy   : (buildBy.equals("runner") || buildBy.equals("icybear")) ? buildBy : "Unknown / $buildBy",
             commitHash: commitHash
     ]
     inputs.properties props
