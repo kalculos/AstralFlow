@@ -69,11 +69,8 @@ def buildBy = System.getProperty("user.name")
 def commitHash = getCheckedOutGitCommitHash()
 
 dependencies {
-    api('com.github.iceBear67:tools:10254f1e10') {
-        exclude module: 'testplug'
-    }
     compileOnly 'io.netty:netty-all:4.1.75.Final'
-
+    implementation 'com.github.InlinedLambdas:kiwi:d374cff1e9'
     compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
 }
@@ -84,6 +81,7 @@ dependencies {
     testImplementation 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0";
+    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0";
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.24.1'
     compileOnly 'org.spongepowered:configurate-hocon:4.1.2'
@@ -154,7 +152,7 @@ sourceSets {
     }
 }
 shadowJar {
-    relocate 'io.ib67.util', 'io.ib67.astralflow.relocate.util'
+    relocate 'org.inlambda.kiwi', 'io.ib67.astralflow.relocate.kiwi'
 }
 /*
  * I18N

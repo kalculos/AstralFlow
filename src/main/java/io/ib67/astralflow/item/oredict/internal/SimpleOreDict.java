@@ -26,14 +26,15 @@ import com.google.common.collect.Multimap;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.item.oredict.IOreDict;
-import io.ib67.util.Pair;
 import org.bukkit.inventory.ItemStack;
+import org.inlambda.kiwi.tuple.Pair;
 
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
+import static org.inlambda.kiwi.Kiwi.pairOf;
 
 public class SimpleOreDict implements IOreDict {
     private final Multimap<String, Pair<ItemStack, Predicate<ItemStack>>> items = ArrayListMultimap.create();
@@ -53,7 +54,7 @@ public class SimpleOreDict implements IOreDict {
         requireNonNull(prototype, "prototype");
         requireNonNull(itemStackPredicate, "itemStackPredicate");
         if (locked) throw new IllegalStateException("OreDict is locked due to server startup completed.");
-        items.put(dictKey, Pair.of(prototype, itemStackPredicate));
+        items.put(dictKey, pairOf(prototype, itemStackPredicate));
         return this;
     }
 
@@ -61,12 +62,12 @@ public class SimpleOreDict implements IOreDict {
     public boolean matchItem(String oredictId, ItemStack itemStack) {
         requireNonNull(oredictId, "oredictId");
         requireNonNull(itemStack, "itemStack");
-        return items.get(oredictId).stream().anyMatch(e -> e.value.test(itemStack));
+        return items.get(oredictId).stream().anyMatch(e -> e.right.test(itemStack));
     }
 
     @Override
     public Collection<? extends ItemStack> getItems(String dictKey) {
         requireNonNull(dictKey, "dictKey");
-        return items.get(dictKey).stream().map(e -> e.key).collect(Collectors.toList()); // should we defensive-copy here?
+        return items.get(dictKey).stream().map(e -> e.left).collect(Collectors.toList()); // should we defensive-copy here?
     }
 }

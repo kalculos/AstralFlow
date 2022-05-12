@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.internal;
 
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

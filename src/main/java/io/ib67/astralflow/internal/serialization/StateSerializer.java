@@ -23,10 +23,11 @@ package io.ib67.astralflow.internal.serialization;
 
 import com.google.gson.*;
 import io.ib67.astralflow.machines.IState;
-import io.ib67.util.Util;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Type;
+
+import static org.inlambda.kiwi.Kiwi.fromAny;
 
 @RequiredArgsConstructor
 public final class StateSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {
@@ -39,13 +40,9 @@ public final class StateSerializer implements JsonSerializer<IState>, JsonDeseri
         // assertion 1. context is a bukkit compatible serializer
         var jo = json.getAsJsonObject();
         var clazName = jo.get(KEY_TYPE).getAsString();
-        var result = Util.runCatching(() -> (Object) Class.forName(clazName)).onSuccess(claz -> {
-            return defaultSerializer.fromJson(jo.getAsJsonObject(KEY_DATA), (Type) claz);
-        }).getResult();
-        if (result == null) {
-            throw new JsonParseException("Can't find state type: " + clazName); // constant if-condition fixes idea highlight rendering.
-        }
-        return (IState) result;
+        return (IState) fromAny(() -> Class.forName(clazName))
+                .map(claz -> defaultSerializer.fromJson(jo.getAsJsonObject(KEY_DATA), (Type) claz))
+                .orElseThrow(() -> new JsonParseException("Can't find state type: " + clazName));
     }
 
     @Override

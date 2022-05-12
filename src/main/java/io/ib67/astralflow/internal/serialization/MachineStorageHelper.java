@@ -28,7 +28,7 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.util.Util;
+import io.ib67.internal.util.bukkit.BukkitGson;
 
 import java.nio.charset.StandardCharsets;
 
@@ -36,9 +36,9 @@ public final class MachineStorageHelper implements MachineSerializer {
     private final Gson MACHINE_SERIALIZER;
 
     public MachineStorageHelper(IFactoryManager factories, IMachineManager manager) {
-        var a = Util.BukkitAPI.gsonBuilderForBukkit()
+        var a = BukkitGson.BUILDER
                 .registerTypeHierarchyAdapter(ItemKey.class, new ItemKeySerializer()).create();
-        MACHINE_SERIALIZER = Util.BukkitAPI.gsonBuilderForBukkit()
+        MACHINE_SERIALIZER = BukkitGson.BUILDER
                 .registerTypeHierarchyAdapter(IMachine.class, new JsonMachineSerializer(factories, manager))
                 .registerTypeHierarchyAdapter(IState.class, new StateSerializer(a))
                 .create();

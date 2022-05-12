@@ -25,7 +25,7 @@ import io.ib67.astralflow.internal.RecipeHelper;
 import io.ib67.astralflow.item.recipe.AstralRecipe;
 import io.ib67.astralflow.item.recipe.IngredientChoice;
 import io.ib67.astralflow.item.recipe.RecipeType;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

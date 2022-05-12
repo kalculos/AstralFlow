@@ -21,19 +21,21 @@
 
 package io.ib67.astralflow.internal;
 
-import io.ib67.util.Functional;
+
 import org.jetbrains.annotations.ApiStatus;
+
+import static org.inlambda.kiwi.Kiwi.fromAny;
 
 @ApiStatus.Internal
 public final class AstralConstants {
-    public static final boolean MOCKING = Functional.from(() -> {
+    public static final boolean MOCKING = fromAny(() -> {
         try {
             Class.forName("org.junit.jupiter.api.Test");
             return true;
         } catch (Throwable t) {
             return false;
         }
-    });
+    }).get();
     public static final boolean DEBUG = Boolean.getBoolean("astralflow.debug");
     public static final String[] LOGO = ("    _        _             _ _____ _               \n" +
             "   / \\   ___| |_ _ __ __ _| |  ___| | _____      __\n" +

@@ -24,7 +24,7 @@ package io.ib67.astralflow.api;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.item.LogicalHolder;
 import io.ib67.astralflow.machines.IMachine;
-import io.ib67.util.bukkit.Log;
+import io.ib67.internal.util.bukkit.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;

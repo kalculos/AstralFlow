@@ -32,11 +32,11 @@ import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
 import io.ib67.astralflow.util.LogCategory;
-import io.ib67.util.bukkit.Log;
-import io.ib67.util.reflection.AccessibleClass;
+import io.ib67.internal.util.bukkit.Log;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.inlambda.kiwi.reflection.AccessibleClass;
 
 import java.util.*;
 

@@ -27,13 +27,14 @@ import io.ib67.astralflow.machines.IState;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.manager.IFactoryManager;
 import io.ib67.astralflow.manager.IMachineManager;
-import io.ib67.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.reflect.Type;
 import java.util.UUID;
+
+import static org.inlambda.kiwi.Kiwi.fromAny;
 
 @ApiStatus.Internal
 @RequiredArgsConstructor
@@ -55,10 +56,8 @@ public final class JsonMachineSerializer implements JsonSerializer<IMachine>, Js
         Location location = context.deserialize(jo.get(KEY_LOCATION), Location.class);
         var type = jo.getAsJsonPrimitive(KEY_TYPE).getAsString();
 
-        return (IMachine) Util.runCatching(() -> (Object) Class.forName(type)) // to be caught.
-                .onFailure(t -> {
-                    throw new JsonParseException("Can't find machine type: " + type, t);
-                }).onSuccess(clazz -> {
+        return fromAny(() -> (Object) Class.forName(type)) // to be caught.
+                .map(clazz -> {
                     var factory = factories.getMachineFactory((Class<? extends IMachine>) clazz);
                     if (factory == null) {
                         throw new JsonParseException("No factories have registered for this type: " + type);
@@ -72,7 +71,7 @@ public final class JsonMachineSerializer implements JsonSerializer<IMachine>, Js
                                     .uuid(uuid)
                                     .build()
                     );
-                }).getResult();
+                }).orElseThrow(() -> new JsonParseException("Can't find machine type: " + type));
     }
 
     @Override
