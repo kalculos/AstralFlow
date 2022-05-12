@@ -36,7 +36,7 @@ import java.util.Objects;
  * Create simple armors.
  */
 @ApiStatus.AvailableSince("0.1.0")
-public final class ArmorItem extends ItemBase {
+public class ArmorItem extends ItemBase {
     private final ArmorProperty property;
 
     protected ArmorItem(ItemKey itemKey, ItemStack prototype, ArmorProperty property) {
