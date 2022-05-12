@@ -19,10 +19,9 @@
  *   USA
  */
 
-package io.ib67.astralflow.capability.wireless.impl;
+package io.ib67.astralflow.capability.wireless;
 
 import io.ib67.astralflow.AstralFlow;
-import io.ib67.astralflow.capability.wireless.IWirelessPeer;
 import io.ib67.astralflow.capability.wireless.registry.IWirelessRegistry;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,7 +35,12 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
-@ApiStatus.Internal
+/**
+ * A simple {@link IWirelessPeer} implementation with a builder.
+ *
+ * @param <T>
+ */
+@ApiStatus.AvailableSince("0.1.0")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SimplePeer<T> implements IWirelessPeer<T> {
     @Getter
@@ -45,7 +49,7 @@ public class SimplePeer<T> implements IWirelessPeer<T> {
     private final Consumer<T> messageReceiver;
     private final Location location;
     private final Class<T> type;
-    
+
     @Getter
     @Setter
     private boolean available;

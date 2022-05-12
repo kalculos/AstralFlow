@@ -24,7 +24,7 @@ package io.ib67.astralflow.wireless;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.WorldMock;
 import io.ib67.astralflow.AstralFlow;
-import io.ib67.astralflow.capability.wireless.impl.SimplePeer;
+import io.ib67.astralflow.capability.wireless.SimplePeer;
 import io.ib67.astralflow.test.TestUtil;
 import org.bukkit.Location;
 import org.junit.jupiter.api.BeforeAll;
