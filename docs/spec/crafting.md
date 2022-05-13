@@ -13,3 +13,13 @@ flow.getRecipeRegistry();
 ```
 
 接着你就可以通过它来匹配配方和注册配方，做一个自己的工作台。
+
+## ItemMatrix
+
+由于各类配方的物品矩阵结构不同，因此向 `matchRecipe` 传入物品的时候需要按照规矩。    
+对此，AstralFlow 提供了一个 [ItemMatrix](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/item/recipe/ItemMatrix.html)
+类，可以帮助你构建一个矩阵。
+
+```java
+ItemMatrix.of(...any...machine...inventory...);
+```
