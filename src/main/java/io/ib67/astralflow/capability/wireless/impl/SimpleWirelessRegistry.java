@@ -46,7 +46,7 @@ public final class SimpleWirelessRegistry implements IWirelessRegistry {
     private static <T> Collection<? extends IWirelessPeer<T>> find(Location location, double range, Class<T> type, Collection<? extends IWirelessPeer<T>> originalList) {
         requireNonNull(location, "location");
         requireNonNull(originalList, "originalList");
-        if(range < 0){
+        if (range <= 0) {
             throw new IllegalArgumentException("Range must be positive");
         }
         var stream = originalList.stream();
