@@ -28,6 +28,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
@@ -58,6 +59,19 @@ public class TagChoice implements IngredientChoice {
 
     @Override
     public boolean test(ItemStack itemStack) {
+        if (itemStack == null) {
+            return false;
+        }
+        if (getDurability() > 0) {
+            var meta = itemStack.getItemMeta();
+            if (meta instanceof Damageable damageable) {
+                if (damageable.getDamage() - getDurability() < 0) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
         return tag.isTagged(itemStack.getType());
     }
 
