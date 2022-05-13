@@ -40,6 +40,7 @@ import io.ib67.astralflow.item.recipe.choices.*;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.factories.IMachineFactory;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -189,6 +190,10 @@ public abstract class AstralExtension {
 
     protected final AnyChoice anyChoice() {
         return new AnyChoice();
+    }
+
+    protected final TagChoice tagChoice(Tag<Material> tag) {
+        return new TagChoice(tag);
     }
 
     /**

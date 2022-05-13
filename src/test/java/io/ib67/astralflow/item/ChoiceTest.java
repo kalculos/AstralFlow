@@ -23,14 +23,13 @@ package io.ib67.astralflow.item;
 
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.item.builder.ItemPrototype;
-import io.ib67.astralflow.item.recipe.choices.AstralItemChoice;
-import io.ib67.astralflow.item.recipe.choices.ExactItemChoice;
-import io.ib67.astralflow.item.recipe.choices.MaterialChoice;
-import io.ib67.astralflow.item.recipe.choices.OreDictChoice;
+import io.ib67.astralflow.item.recipe.choices.*;
 import io.ib67.astralflow.test.TestUtil;
 import io.ib67.astralflow.util.ItemStacks;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -108,5 +107,14 @@ public final class ChoiceTest {
         assertFalse(choice.test(fakeItem));
         AstralFlow.getInstance().getItemRegistry().registerItem(ItemPrototype.builder().id(CAT_WOOL_KEY).prototype(new ItemStack(Material.BROWN_WOOL)).build(), "testing_wool");
         assertTrue(choice.test(CAT_WOOL_KEY.createNewItem().asItemStack()));
+    }
+
+    @Test
+    public void testTagChoice() {
+        var tag = Tag.WALLS; // MockBukkit only supports very few Tags.
+        var choice = new TagChoice(tag);
+        for (Material value : tag.getValues()) {
+            Assertions.assertTrue(choice.test(new ItemStack(value)));
+        }
     }
 }
