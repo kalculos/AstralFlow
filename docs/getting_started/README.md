@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly group: "io.ib67", name: "astralflow", version: "0.1.0-build+1"
+    compileOnly group: "io.ib67", name: "astralflow", version: "0.1.1-build+2"
 }
  ```
 
@@ -58,7 +58,7 @@ dependencies {
     <dependency>
         <groupId>io.ib67</groupId>
         <artifactId>astralflow</artifactId>
-        <version>0.1.0-build+1</version>
+        <version>0.1.1-build+2</version>
     </dependency>
 </dependencies>
 ```
