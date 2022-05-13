@@ -9,8 +9,11 @@
   - [Hook 系统](./spec/universal/hook.md)
 - 机器
   - [机器工厂](./spec/machine/machine_factory.md)
-  - 机器能力
-    - [无线通信与发现](./spec/machine/wireless_communication.md)
+  - 机器能力与特质
+    - [能力: 无线通信与发现](./spec/machine/wireless_communication.md)
+    - [特质: 交互式机器](./spec/machine/interactive.md)
+    - [特质: 可推动机器](./spec/machine/pushable.md)
+    - [特质: 取消更新](./spec/machine/tickless.md)
 - 物品
   - [物品与原型](./spec/item_prototype.md)
   - [物品类别](./spec/item_categories.md)
