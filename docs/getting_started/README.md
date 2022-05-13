@@ -23,7 +23,8 @@ AstralFlow 应该作为外部代码库被导入您的插件项目中，本文假
 
 ### 通过主流包管理器
 
-主流的包管理器通常支持 Maven 仓库。
+主流的包管理器通常支持 Maven 仓库。当前最新的 AstralFlow
+版本为：![](https://img.shields.io/github/v/release/iceBear67/AstralFlow?style=flat-square)
 
 1. Gradle    
    将下列代码添加到 `build.gradle` 文件里。
@@ -36,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly group: "io.ib67", name: "astralflow", version: "0.1.1-build+2"
+    compileOnly group: "io.ib67", name: "astralflow", version: "版本"
 }
  ```
 
@@ -58,7 +59,7 @@ dependencies {
     <dependency>
         <groupId>io.ib67</groupId>
         <artifactId>astralflow</artifactId>
-        <version>0.1.1-build+2</version>
+        <version>版本</version>
     </dependency>
 </dependencies>
 ```
