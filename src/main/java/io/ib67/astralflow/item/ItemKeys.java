@@ -24,9 +24,9 @@ package io.ib67.astralflow.item;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.WeakHashMap;
 
 /**
  * Utility class to create ItemKeys without enum.
@@ -34,7 +34,7 @@ import java.util.WeakHashMap;
 @ApiStatus.AvailableSince("0.1.0")
 @UtilityClass
 public final class ItemKeys {
-    private final Map<String, ItemKey> cachedItemKeys = new WeakHashMap<>();
+    private final Map<String, ItemKey> cachedItemKeys = new HashMap<>();
 
     public static ItemKey from(String namespace, String id) {
         Objects.requireNonNull(namespace, "Namespace cannot be null");
