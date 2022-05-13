@@ -23,6 +23,7 @@ package io.ib67.astralflow.internal.update;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.internal.util.bukkit.Log;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -44,7 +45,7 @@ import static io.ib67.astralflow.util.LogCategory.UPDATE_CHECKER;
 @RequiredArgsConstructor
 public final class UpdateChecker extends BukkitRunnable {
     private static final HttpClient httpClient = HttpClient.newHttpClient();
-    private static final int BUILD = 1;
+    private static final int BUILD = 0;
     private static final Pattern REGEX = Pattern.compile("build\\+(?=\\d+)(\\d+)");
     public static List<String> updateMessages;
     private final String sourceUrl;
@@ -86,7 +87,7 @@ public final class UpdateChecker extends BukkitRunnable {
                     var body = relInf.get("body").getAsString();
                     String[] strings = body.split("\\r\\n"); // github does...
                     for (int i = 0; i < strings.length; i++) {
-                        if (i > 6) {
+                        if (i > 3) {
                             messageComposer.add("... and more.");
                             break;
                         }
@@ -94,22 +95,22 @@ public final class UpdateChecker extends BukkitRunnable {
                     }
                     messageComposer.add(ChatColor.GREEN + "You can download it from: " + ChatColor.AQUA + ChatColor.UNDERLINE + relInf.get("html_url").getAsString());
                     updateMessages = messageComposer;
+                    var targetPlayers = Bukkit.getOnlinePlayers().stream().filter(e -> e.hasPermission("astralflow.notification.update")).toList();
+
+                    for (String updateMessage : updateMessages) {
+                        Log.info(UPDATE_CHECKER, updateMessage);
+                        targetPlayers.forEach(e -> e.sendMessage(updateMessage));
+                    }
                     return; // end
                 }
                 counter++;
             }
             // latest version!
             updateMessages = Collections.emptyList();
+            if (AstralConstants.DEBUG) Log.info(UPDATE_CHECKER, "No updates available.");
         } catch (InterruptedException | IOException e) {
             Log.warn(UPDATE_CHECKER, "Failed to check for updates. " + e.getMessage());
             Log.warn(UPDATE_CHECKER, "Do we connected to the internet?");
-        }
-
-        var targetPlayers = Bukkit.getOnlinePlayers().stream().filter(e -> e.hasPermission("astralflow.notification.update")).toList();
-
-        for (String updateMessage : updateMessages) {
-            Log.info(UPDATE_CHECKER, updateMessage);
-            targetPlayers.forEach(e -> e.sendMessage(updateMessage));
         }
     }
 }
