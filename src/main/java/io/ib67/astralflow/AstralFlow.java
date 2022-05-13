@@ -94,7 +94,6 @@ import static org.inlambda.kiwi.Kiwi.fromAny;
 @ApiStatus.Internal
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
     private AstralFlowConfiguration configuration;
-    private ConfigManager<AstralFlowConfiguration> configHolder;
     @Getter
     private IMachineManager machineManager;
     private final Path machineIndex = getDataFolder().toPath().resolve("machines.index");
@@ -327,7 +326,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
 
         var confFile = new File(getDataFolder(), "config.conf");
         if (!AstralConstants.MOCKING) extractLanguage();
-        configHolder = new ConfigManager<>(confFile.toPath(), t -> t.serializers(e -> e.register(Language.class, new LanguageSerializer(languageDir))));
+        ConfigManager<AstralFlowConfiguration> configHolder = new ConfigManager<>(confFile.toPath(), t -> t.serializers(e -> e.register(Language.class, new LanguageSerializer(languageDir))));
         if (!confFile.exists() || confFile.length() == 0) {
             confFile.createNewFile();
             configHolder.saveConfig(AstralFlowConfiguration.defaultConfiguration(machineIndex));

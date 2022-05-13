@@ -119,9 +119,7 @@ public final class Shapeless implements AstralRecipe {
 
     @Override
     public ItemStack[] apply(ItemStack[] itemStacks) {
-        if (itemStacks == null) {
-            throw new NullPointerException("itemStacks cannot be null");
-        }
+        Objects.requireNonNull(itemStacks, "itemStacks cannot be null");
         // clean itemStack array
         List<ItemStack> cleanItemStacks = Arrays.stream(itemStacks).filter(Objects::nonNull).toList();
         if (cleanItemStacks.size() != choices.length) {
@@ -155,9 +153,7 @@ public final class Shapeless implements AstralRecipe {
 
         public ShapelessBuilder addIngredients(IngredientChoice... choices) {
             for (IngredientChoice choice : choices) {
-                if (choice == null) {
-                    throw new NullPointerException("IngredientChoice cannot be null");
-                }
+                Objects.requireNonNull(choice, "IngredientChoice cannot be null");
             }
             this.choices.addAll(List.of(choices));
             return this;

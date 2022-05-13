@@ -31,13 +31,11 @@ import java.lang.reflect.Constructor;
 
 @ApiStatus.Internal
 public final class SimpleMachineFactory<M extends IMachine> implements IMachineFactory<M> {
-    private final Class<M> machineClass;
 
-    private Constructor<M> constructor;
+    private final Constructor<M> constructor;
 
 
     public SimpleMachineFactory(Class<M> machineClass) {
-        this.machineClass = machineClass;
         // initialization.
         try {
             constructor = machineClass.getDeclaredConstructor(MachineProperty.class);

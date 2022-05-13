@@ -173,9 +173,7 @@ public final class Shaped implements AstralRecipe {
 
         public Shaped build() {
             // compiles matrix.
-            if (stringMatrix == null) {
-                throw new NullPointerException("Matrix is null. " + key);
-            }
+            Objects.requireNonNull(stringMatrix, "Matrix is null. " + key);
 
             stringMatrix = RecipeHelper.populateEmptyRows(RecipeHelper.leftAndUpAlignMatrix(stringMatrix));
             IngredientChoice[] matrix = new IngredientChoice[9];
