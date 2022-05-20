@@ -35,7 +35,7 @@ public final class AstralConstants {
         } catch (Throwable t) {
             return false;
         }
-    }).get();
+    }).orElseThrow();
     public static final boolean DEBUG = Boolean.getBoolean("astralflow.debug");
     public static final String[] LOGO = ("    _        _             _ _____ _               \n" +
             "   / \\   ___| |_ _ __ __ _| |  ___| | _____      __\n" +
