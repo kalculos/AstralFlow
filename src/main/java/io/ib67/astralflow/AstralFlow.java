@@ -171,7 +171,7 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
         }
         Log.info(LogCategory.INIT, "Loading &aConfigurations");
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
-        if (fromAny(() -> machineIndex.toFile().createNewFile()).isEmpty()) {
+        if (fromAny(() -> machineIndex.toFile().createNewFile()).isFailed()) {
             setEnabled(false);
             return;
         }

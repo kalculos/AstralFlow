@@ -162,7 +162,7 @@ public final class MachineIndexTag implements PersistentDataType<byte[], ChunkMa
             t.printStackTrace();
             Log.warn("CBMS", "Cannot save data for chunk " + complex.getChunkX() + ", " + complex.getChunkZ());
             Log.warn("CBMS", "Trying to dump data...");
-            var fileName = "astralflow-error-chunkdump-" + RandomHelper.pick(complex.getLocations()).map(e -> e.getWorld().getName()).orElse("UNKNOWN_WORLD") + "-" + Instant.now() + "-" + complex.getChunkX() + "-" + complex.getChunkZ() + ".json";
+            var fileName = "astralflow-error-chunkdump-" + RandomHelper.pick(complex.getLocations()).map(e -> e.getWorld().getName()).or("UNKNOWN_WORLD") + "-" + Instant.now() + "-" + complex.getChunkX() + "-" + complex.getChunkZ() + ".json";
             runAny(() -> Files.writeString(Path.of(fileName), BukkitGson.INSTANCE.toJson(complex)));
             Log.warn("CBMS", "Dumped data to " + fileName);
 
