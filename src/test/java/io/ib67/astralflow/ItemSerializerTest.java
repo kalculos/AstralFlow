@@ -22,6 +22,7 @@
 package io.ib67.astralflow;
 
 import com.google.gson.GsonBuilder;
+import io.ib67.astralflow.api.AstralHelper;
 import io.ib67.astralflow.api.item.dummy.DummyItem;
 import io.ib67.astralflow.api.item.dummy.DummyItemProperty;
 import io.ib67.astralflow.item.ItemKey;
@@ -61,6 +62,7 @@ public class ItemSerializerTest {
         System.out.println(result);
         // de
         var item2 = serializer.fromJson(result, ItemStack.class);
+        Assertions.assertTrue(AstralHelper.isItem(item2));
         Assertions.assertTrue(item.isSimilar(item2), "ItemStack should be simliar.");
     }
 }
