@@ -21,27 +21,26 @@
 
 package io.ib67.internal.util.bukkit.serializer;
 
-import com.comphenix.protocol.utility.StreamSerializer;
 import com.google.gson.*;
+import io.leangen.geantyref.TypeToken;
 import lombok.SneakyThrows;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 public class ItemStackSerializer implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
-    protected static final StreamSerializer SERIALIZER = new StreamSerializer();
 
     @SneakyThrows
     @Override
     public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context) {
-        JsonObject jo = new JsonObject();
-        jo.addProperty("item", SERIALIZER.serializeItemStack(src));
-        return jo;
+        return context.serialize(src.serialize());
     }
 
     @SneakyThrows
     @Override
     public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return ItemStackSerializer.SERIALIZER.deserializeItemStack(json.getAsJsonObject().get("item").toString());
+        return ItemStack.deserialize(context.deserialize(json, new TypeToken<Map<String, Object>>() {
+        }.getType()));
     }
 }
