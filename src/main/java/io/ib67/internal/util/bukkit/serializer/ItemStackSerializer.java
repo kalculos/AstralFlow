@@ -21,7 +21,6 @@
 
 package io.ib67.internal.util.bukkit.serializer;
 
-import com.comphenix.protocol.utility.StreamSerializer;
 import com.google.gson.*;
 import io.leangen.geantyref.TypeToken;
 import lombok.SneakyThrows;
@@ -31,7 +30,6 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 public class ItemStackSerializer implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
-    protected static final StreamSerializer SERIALIZER = new StreamSerializer();
 
     @SneakyThrows
     @Override
