@@ -37,6 +37,8 @@ public record DummyItemProperty(
 ) {
     @Builder
     public DummyItemProperty {
-
+        if (fetchMethods == null) {
+            fetchMethods = List.of();
+        }
     }
 }
