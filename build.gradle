@@ -85,7 +85,7 @@ dependencies {
     testImplementation 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.24.1'
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:2.0.0'
     compileOnly 'org.spongepowered:configurate-hocon:4.1.2'
     testRuntimeOnly 'org.spongepowered:configurate-hocon:4.1.2' // mockbukkit doesn't support loadlibraries yet.
 }
