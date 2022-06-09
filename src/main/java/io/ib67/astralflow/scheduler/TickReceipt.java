@@ -21,8 +21,8 @@
 
 package io.ib67.astralflow.scheduler;
 
+import com.google.common.base.Preconditions;
 import io.ib67.astralflow.Tickable;
-import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,7 +52,7 @@ public final class TickReceipt<T extends Tickable<T>> {
      * @return
      */
     public TickReceipt<T> requires(Supplier<Predicate<T>> consumer) {
-        Validate.notNull(consumer);
+        Preconditions.checkNotNull(consumer);
         return requires(consumer.get());
     }
 
@@ -64,7 +64,7 @@ public final class TickReceipt<T extends Tickable<T>> {
      * @return
      */
     public TickReceipt<T> requires(Predicate<T> func) {
-        Validate.notNull(func);
+        Preconditions.checkNotNull(func);
         if (requirement != null) {
             requirement = requirement.and(func);
             return this;
@@ -81,7 +81,7 @@ public final class TickReceipt<T extends Tickable<T>> {
      * @return the new tickable's receipt.
      */
     public TickReceipt<T> alsoTicks(Tickable<T> tickable) {
-        Validate.notNull(tickable);
+        Preconditions.checkNotNull(tickable);
         var receipt = new TickReceipt<T>();
         syncs.add(new AwaitingTickable<>(tickable, receipt));
         return receipt;
@@ -94,7 +94,7 @@ public final class TickReceipt<T extends Tickable<T>> {
      * @return the new tickable's receipt
      */
     public TickReceipt<T> alwaysTicks(Tickable<T> tickable) {
-        Validate.notNull(tickable);
+        Preconditions.checkNotNull(tickable);
         var receipt = new TickReceipt<T>();
         always.add(new AwaitingTickable<>(tickable, receipt));
         return receipt;
@@ -108,7 +108,7 @@ public final class TickReceipt<T extends Tickable<T>> {
      * @return itself
      */
     public TickReceipt<T> syncWith(Tickable<T> tickable) {
-        Validate.notNull(tickable);
+        Preconditions.checkNotNull(tickable);
         alsoTicks(tickable);
         return this;
     }
@@ -121,7 +121,7 @@ public final class TickReceipt<T extends Tickable<T>> {
      * @return itself
      */
     public TickReceipt<T> name(String name) {
-        Validate.notNull(name);
+        Preconditions.checkNotNull(name);
         this.name = name;
         return this;
     }

@@ -21,6 +21,7 @@
 
 package io.ib67.astralflow.manager.impl;
 
+import com.google.common.base.Preconditions;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.Tickable;
 import io.ib67.astralflow.manager.ITickManager;
@@ -29,7 +30,6 @@ import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.scheduler.internal.SchedulerAdapter;
 import io.ib67.astralflow.scheduler.internal.SyncScheduler;
 import lombok.Getter;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.inlambda.kiwi.WeakHashSet;
 import org.jetbrains.annotations.ApiStatus;
@@ -112,8 +112,8 @@ public final class SimpleTickManager implements ITickManager {
      */
     @SuppressWarnings("all")
     public <T extends Tickable<T>> Optional<? extends TickReceipt<T>> getReceipt(String name, Class<T> typeOfT) {
-        Validate.notNull(name);
-        Validate.notNull(typeOfT);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(typeOfT);
         return (Optional<? extends TickReceipt<T>>) getReceipt(name);
     }
 
@@ -129,8 +129,8 @@ public final class SimpleTickManager implements ITickManager {
      */
     @SuppressWarnings("all")
     public <T extends Tickable<T>> TickReceipt<T> getReceiptExactly(String name, Class<T> typeOfT) {
-        Validate.notNull(name);
-        Validate.notNull(typeOfT);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(typeOfT);
         return getReceipt(name, typeOfT).orElseThrow(AssertionError::new);
     }
 
@@ -142,7 +142,7 @@ public final class SimpleTickManager implements ITickManager {
      * @return
      */
     public Optional<? extends TickReceipt<?>> getReceipt(String name) {
-        Validate.notNull(name);
+        Preconditions.checkNotNull(name);
         return receipts.stream().filter(e -> name.equals(e.name()) && !e.isDropped()).findFirst();
     }
 
@@ -154,7 +154,7 @@ public final class SimpleTickManager implements ITickManager {
      * @return 可能为空的list
      */
     public @NotNull List<? extends TickReceipt<?>> matchReceipt(String prefixOrRegex, boolean isRegex) {
-        Validate.notNull(prefixOrRegex);
+        Preconditions.checkNotNull(prefixOrRegex);
         return receipts.stream().filter(e -> e.name() != null && isRegex ? e.name().matches(prefixOrRegex) : e.name().startsWith(prefixOrRegex)).collect(Collectors.toList());
     }
 }
