@@ -63,6 +63,7 @@ public final class BlockListener implements Listener {
                     )
             ));
         }
+        event.setCancelled(flow.callHooks(HookType.BLOCK_PLACE_LOW, event));
         if (event.isCancelled()) {
             return;
         }
@@ -112,6 +113,10 @@ public final class BlockListener implements Listener {
                 AstralFlow.getInstance().getMachineManager().terminateAndRemoveMachine(machine);
             }
             event.setDropItems(evt.isDropItem());
+        }
+        event.setCancelled(flow.callHooks(HookType.BLOCK_BREAK_LOW, event));
+        if (!event.isCancelled()) {
+            flow.callHooks(HookType.BLOCK_BREAK, event);
         }
     }
 

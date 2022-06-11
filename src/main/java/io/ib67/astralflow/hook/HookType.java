@@ -78,6 +78,11 @@ public final class HookType<T> {
     public static final HookType<PlayerInteractEvent> PLAYER_INTERACT = new HookType<>("Player Interact");
     public static final HookType<PlayerInteractEntityEvent> PLAYER_INTERACT_ENTITY = new HookType<>("Player Interact Entity");
     public static final HookType<PlayerInteractEvent> PLAYER_INTERACT_BLOCK = new HookType<>("Player Interact Block");
+    /**
+     * Fired when a player is interacting with a block, but happens before {@link #PLAYER_INTERACT_BLOCK} and Machine Interactions.
+     * Use it only if you want to override upstream behavior of interactive machines or you want to receive any block interaction in spite of there are some machines mixed in.
+     */
+    public static final HookType<PlayerInteractEvent> PLAYER_INTERACT_BLOCK_LOW = new HookType<>("Player Interact Block (LOW)");
     public static final HookType<PlayerItemBreakEvent> ITEM_BROKEN = new HookType<>("Item Broken");
     public static final HookType<EntityDeathEvent> ENTITY_DEATH = new HookType<>("Entity Death");
     // For chunks
@@ -100,7 +105,17 @@ public final class HookType<T> {
     public static final HookType<PlayerMoveEvent> PLAYER_MOVE = new HookType<>("Player Move");
 
     // For blocks
+    /**
+     * happens before {@link #BLOCK_BREAK} and Machine Interactions.
+     * Use it only if you want to override upstream behavior, or you want to receive any block interaction in spite of there are some machines mixed in.
+     */
+    public static final HookType<BlockBreakEvent> BLOCK_BREAK_LOW = new HookType<>("Block Break (LOW)");
     public static final HookType<BlockBreakEvent> BLOCK_BREAK = new HookType<>("Block Break");
+    /**
+     * happens before {@link #BLOCK_PLACE} and Machine Interactions.
+     * Use it only if you want to override upstream behavior, or you want to receive any block interaction in spite of there are some machines mixed in.
+     */
+    public static final HookType<BlockPlaceEvent> BLOCK_PLACE_LOW = new HookType<>("Block Place (LOW)");
     public static final HookType<BlockPlaceEvent> BLOCK_PLACE = new HookType<>("Block Place");
     public static final HookType<BlockDropItemEvent> BLOCK_DROP_ITEM = new HookType<>("Block Drop Item");
     public static final HookType<ProjectileHitEvent> PROJECTILE_HIT = new HookType<>("Projectile Hit");
