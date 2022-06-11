@@ -53,13 +53,6 @@ public final class BlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        event.setCancelled(
-                flow.callHooks(
-                        HookType.BLOCK_PLACE,
-                        event
-                )
-        );
-
         if (flow.getMachineManager().isMachine(event.getBlockPlaced()) && !event.isCancelled()) {
             event.setCancelled(flow.callHooks(
                     HookType.MACHINE_PLACE,
@@ -70,6 +63,15 @@ public final class BlockListener implements Listener {
                     )
             ));
         }
+        if (event.isCancelled()) {
+            return;
+        }
+        event.setCancelled(
+                flow.callHooks(
+                        HookType.BLOCK_PLACE,
+                        event
+                )
+        );
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
