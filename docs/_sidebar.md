@@ -23,4 +23,5 @@
 - [其他](./misc/README.md)
   - [区块储存格式](./misc/chunk_storage_spec.md)
   - [内存泄漏检测](./misc/memleakcheck.md)
+  - [事件触发顺序](./misc/event_order.md)
 - [贡献星流](./guide/contributing.md)  
