@@ -61,6 +61,55 @@ public enum AstralHelper {
     }
 
     /**
+     * Check if there is a machine at the given location and given type.
+     *
+     * @param location The location to check
+     * @return True if there is a machine at the given location, false otherwise
+     */
+    public static boolean hasMachine(Location location, Class<? extends IMachine> machineType) {
+        return hasMachine(location) && machineType.isInstance(AstralFlow.getInstance().getMachineManager().getAndLoadMachine(location));
+    }
+
+    /**
+     * Get a machine with a given type at the given location, otherwise null.
+     *
+     * @param loc   location of machine
+     * @param clazz type of machine
+     * @param <M>   type of machine
+     * @return machine
+     */
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <M extends IMachine> M getMachine(Location loc, Class<M> clazz) {
+        var m = AstralFlow.getInstance().getMachineManager().getAndLoadMachine(loc);
+        if (!clazz.isInstance(m)) return null;
+        return (M) m;
+    }
+    
+    /**
+     * Get a machine with a given type at the given block, otherwise null.
+     *
+     * @param block block of machine
+     * @param clazz type of machine
+     * @param <M>   type of machine
+     * @return machine
+     */
+    @Nullable
+    public static <M extends IMachine> M getMachine(Block block, Class<M> clazz) {
+        return getMachine(block.getLocation(), clazz);
+    }
+
+    /**
+     * Check if the given block is a machine with given type.
+     *
+     * @param block The block to check
+     * @return True if the block is a machine, false otherwise
+     */
+    public static boolean hasMachine(Block block, Class<? extends IMachine> machineType) {
+        return hasMachine(block) && machineType.isInstance(AstralFlow.getInstance().getMachineManager().getAndLoadMachine(block.getLocation()));
+    }
+
+    /**
      * Check if the given block is a machine.
      *
      * @param block The block to check
