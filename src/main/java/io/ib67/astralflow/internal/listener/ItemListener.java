@@ -25,6 +25,7 @@ import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -42,19 +43,24 @@ public final class ItemListener implements Listener {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_DAMAGE, event));
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onInteractBlock(PlayerInteractEvent event) {
-        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT, event));
+        boolean upstreamCancelled = AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT, event);
+        event.setCancelled(upstreamCancelled);
         if (event.getItem() == null || event.getItem().getType() == Material.AIR) {
             return;
         }
         if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.AIR) {
-            event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_USE, event));
+            if (!upstreamCancelled) {
+                upstreamCancelled = AstralFlow.getInstance().callHooks(HookType.ITEM_USE, event);
+                event.setCancelled(upstreamCancelled);
+            }
         }
-        event.setCancelled(AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT_BLOCK, event));
+        if (!upstreamCancelled)
+            event.setCancelled(AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT_BLOCK, event));
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH) // some rpg-plugins like MythicMobs use this
     public void onInteractEntity(PlayerInteractAtEntityEvent event) {
         if (event.getPlayer().getEquipment() == null) {
             return;

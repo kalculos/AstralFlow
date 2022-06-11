@@ -53,13 +53,6 @@ public final class BlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        event.setCancelled(
-                flow.callHooks(
-                        HookType.BLOCK_PLACE,
-                        event
-                )
-        );
-
         if (flow.getMachineManager().isMachine(event.getBlockPlaced()) && !event.isCancelled()) {
             event.setCancelled(flow.callHooks(
                     HookType.MACHINE_PLACE,
@@ -70,6 +63,16 @@ public final class BlockListener implements Listener {
                     )
             ));
         }
+        event.setCancelled(flow.callHooks(HookType.BLOCK_PLACE_LOW, event));
+        if (event.isCancelled()) {
+            return;
+        }
+        event.setCancelled(
+                flow.callHooks(
+                        HookType.BLOCK_PLACE,
+                        event
+                )
+        );
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -110,6 +113,10 @@ public final class BlockListener implements Listener {
                 AstralFlow.getInstance().getMachineManager().terminateAndRemoveMachine(machine);
             }
             event.setDropItems(evt.isDropItem());
+        }
+        event.setCancelled(flow.callHooks(HookType.BLOCK_BREAK_LOW, event));
+        if (!event.isCancelled()) {
+            flow.callHooks(HookType.BLOCK_BREAK, event);
         }
     }
 
