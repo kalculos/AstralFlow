@@ -36,10 +36,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -76,6 +78,17 @@ public final class BlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onInvOpen(InventoryOpenEvent event) {
+        var invHolder = event.getInventory().getHolder();
+        if (invHolder instanceof Container container) {
+            if (AstralHelper.hasMachine(container.getBlock())) {
+                event.setCancelled(true); // ISSUE-209
+                return;
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     // plugins like residence may cancell this event
     public void onBlockInteraction(PlayerInteractEvent event) {
         if (!event.hasBlock()) {
@@ -91,7 +104,6 @@ public final class BlockListener implements Listener {
                     .player(event.getPlayer())
                     .build();
             Bukkit.getPluginManager().callEvent(evt);
-            evt.setCancelled(true); // ISSUE-209: Machines with Container Material will open its gui SO we make it cancelled as a default.
             event.setCancelled(evt.isCancelled());
         }
     }
