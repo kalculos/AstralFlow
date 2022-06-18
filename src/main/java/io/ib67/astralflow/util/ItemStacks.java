@@ -24,6 +24,9 @@ package io.ib67.astralflow.util;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Util for working with ItemStacks.
@@ -38,6 +41,22 @@ public final class ItemStacks {
      */
     public static ItemStackBuilder builder(Material material) {
         return new ItemStackBuilder().material(material);
+    }
+
+    /**
+     * A quicker way to create sample itemstacks.
+     *
+     * @param material material of the item
+     * @param name     display name of the item
+     * @param lores    lore of the item
+     * @return itemstack
+     */
+    @NotNull
+    public static ItemStack of(Material material, String name, String... lores) {
+        requireNonNull(material);
+        if (material.isAir()) throw new IllegalArgumentException("Material cannot be air");
+        requireNonNull(name);
+        return builder(material).displayName(name).lore(lores == null ? new String[0] : lores).build();
     }
 
     public static ItemStack consumeOrNull(ItemStack itemStack, int amount) {
