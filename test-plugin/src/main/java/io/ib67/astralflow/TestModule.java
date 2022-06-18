@@ -29,6 +29,7 @@ import io.ib67.astralflow.item.SimpleStatelessCategory;
 import io.ib67.astralflow.item.SimpleStatelessUnstackableCategory;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import io.ib67.astralflow.item.recipe.kind.Shapeless;
+import io.ib67.astralflow.machines.InteractiveBarrel;
 import io.ib67.astralflow.machines.JebWool;
 import io.ib67.astralflow.util.ItemStacks;
 import org.bukkit.Material;
@@ -73,6 +74,16 @@ public final class TestModule extends AstralExtension {
         item(new SimpleStatefulCategory())
                 .prototype(TestItems.STATEFUL_ITEM)
                 .register();
+        itemMachine()
+                .prototype(
+                        new MachineItem(
+                                TestItems.INTERACTIVE_BARREL,
+                                ItemStacks.builder(Material.BARREL)
+                                        .displayName("Explosing Barrel!")
+                                        .build(),
+                                InteractiveBarrel.class
+                        )
+                ).register();
         item(new SimpleStatelessUnstackableCategory())
                 .recipe(Shapeless.of(TestItems.CANT_STACK.toNamespacedKey(), null)
                         .addIngredients(materialChoice(Material.GOLD_INGOT))

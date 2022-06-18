@@ -19,31 +19,27 @@
  *   USA
  */
 
-package io.ib67.astralflow;
+package io.ib67.astralflow.machines;
 
-import io.ib67.astralflow.item.ItemKey;
+import io.ib67.astralflow.machines.trait.Interactive;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.inventory.ItemStack;
 
-public enum TestItems implements ItemKey {
-    JEB_WOOL("jeb_wool"),
-    STATELESS_ITEM("stateless_item"),
+@AutoFactory
+public class InteractiveBarrel extends AbstractMachine implements Interactive {
 
-    CANT_STACK("cantstack"),
-    INTERACTIVE_BARREL("interactive_barrel"),
-    STATEFUL_ITEM("simple_stateful_item");
-
-    private final String id;
-
-    TestItems(String id) {
-        this.id = id;
+    protected InteractiveBarrel(MachineProperty property) {
+        super(property);
     }
 
     @Override
-    public String getId() {
-        return id;
+    public void update(IMachine self) {
+
     }
 
     @Override
-    public String getNamespace() {
-        return "tester";
+    public void onInteract(Action clickType, Player player, ItemStack itemInHand) {
+        this.getLocation().getWorld().createExplosion(this.getLocation(), 5f);
     }
 }

@@ -16,3 +16,5 @@ commands:
     description: give jebwool
   loc:
     description: get location
+  int_barr:
+    description: get interactive barrel

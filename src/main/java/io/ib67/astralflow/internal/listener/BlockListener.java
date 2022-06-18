@@ -91,6 +91,8 @@ public final class BlockListener implements Listener {
                     .player(event.getPlayer())
                     .build();
             Bukkit.getPluginManager().callEvent(evt);
+            evt.setCancelled(true); // ISSUE-209: Machines with Container Material will open its gui SO we make it cancelled as a default.
+            event.setCancelled(evt.isCancelled());
         }
     }
 
