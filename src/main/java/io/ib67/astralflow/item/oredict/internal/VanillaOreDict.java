@@ -57,8 +57,14 @@ public final class VanillaOreDict implements IOreDict {
             .filter(e -> e.name().endsWith("GLASS_PANE"))
             .toList();
 
+    private static final List<Material> PLANKS = Arrays.stream(Material.values())
+            .filter(e -> e.name().endsWith("PLANKS"))
+            .toList();
     private static final List<Material> SHULKER_BOX = Arrays.stream(Material.values())
             .filter(e -> e.name().endsWith("SHULKER_BOX"))
+            .toList();
+    private static final List<Material> CHESTS = Arrays.stream(Material.values())
+            .filter(e -> e.name().endsWith("CHEST"))
             .toList();
 
 
@@ -115,7 +121,7 @@ public final class VanillaOreDict implements IOreDict {
             case "leaf":
                 yield LEAVES;
             case "plank":
-                yield List.of(Material.OAK_PLANKS, Material.SPRUCE_PLANKS, Material.BIRCH_PLANKS, Material.JUNGLE_PLANKS, Material.ACACIA_PLANKS, Material.DARK_OAK_PLANKS);
+                yield PLANKS;
             case "flower":
                 yield List.of(Material.DANDELION, Material.POPPY, Material.BLUE_ORCHID, Material.ALLIUM, Material.AZURE_BLUET, Material.RED_TULIP, Material.ORANGE_TULIP, Material.WHITE_TULIP, Material.PINK_TULIP, Material.OXEYE_DAISY);
             case "terracotta":
@@ -127,11 +133,11 @@ public final class VanillaOreDict implements IOreDict {
             case "glassPane":
                 yield GLASSES_PANE;
             case "chest":
-                yield List.of(Material.CHEST, Material.TRAPPED_CHEST, Material.ENDER_CHEST);
+                yield CHESTS;
             case "box":
                 yield SHULKER_BOX;
             case "ore":
-                yield List.of(Material.IRON_ORE, Material.GOLD_ORE, Material.COAL_ORE, Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.NETHER_QUARTZ_ORE, Material.COPPER_ORE, Material.NETHERITE_INGOT);
+                yield List.of(Material.IRON_ORE, Material.GOLD_ORE, Material.COAL_ORE, Material.LAPIS_ORE, Material.REDSTONE_ORE, Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.NETHER_QUARTZ_ORE, Material.COPPER_ORE, Material.ANCIENT_DEBRIS);
             case "ingot":
                 yield List.of(Material.IRON_INGOT, Material.GOLD_INGOT, Material.COPPER_INGOT, Material.DIAMOND, Material.NETHERITE_INGOT, Material.EMERALD);
             default:
