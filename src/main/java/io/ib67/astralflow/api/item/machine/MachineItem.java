@@ -29,6 +29,8 @@ import io.ib67.astralflow.api.item.machine.internal.SimpleMachineItemState;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.ItemKey;
+import io.ib67.astralflow.item.ItemState;
+import io.ib67.astralflow.item.StateScope;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.machines.IMachine;
 import io.ib67.astralflow.machines.MachineContext;
@@ -51,6 +53,7 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * <p>The machine blockItem, which creates your machine when placed and destroys {@literal &} save it when broken.</p>
+ * Machines using this class should use a {@link ItemState} instead of {@link io.ib67.astralflow.machines.IState}.
  */
 @ApiStatus.AvailableSince("0.1.0")
 @Getter
@@ -96,6 +99,7 @@ public class MachineItem extends ItemBase {
             return;
         }
         var state = (SimpleMachineItemState) item.getState().get();
+        var machineState = AstralFlow.getInstance().getItemRegistry().getState(item.asItemStack(), StateScope.USER_MACHINE);
         if (typeOfMachine.getName().equals(state.getMachineType())) {
             // setup machine.
             var machineLoc = event.getBlock().getLocation();
@@ -112,7 +116,7 @@ public class MachineItem extends ItemBase {
                                     .reason(MachineContext.Reason.PLAYER)
                                     .build()
                             )
-                            .state(state.getData())
+                            .state(machineState)
                             .manager(AstralFlow.getInstance().getMachineManager())
                             .build()
             );
@@ -132,11 +136,14 @@ public class MachineItem extends ItemBase {
         if (!typeOfMachine.isInstance(event.getMachine())) {
             return;
         }
-        var state = new SimpleMachineItemState(machine.getState(), machine.getType().getName());
         var item = AstralFlow.getInstance().getItemRegistry().createItem(getId());
         var emptyState = (SimpleMachineItemState) item.getState().get();
-        emptyState.setData(state.getData());
         emptyState.setMachineType(machine.getType().getName());
+        item.saveState(emptyState);
+        if (!(machine.getState() instanceof ItemState)) {
+            throw new IllegalArgumentException("Machine state must be an ItemState!");
+        }
+        AstralFlow.getInstance().getItemRegistry().saveState(item.asItemStack(), StateScope.USER_MACHINE, (ItemState) machine.getState());
         var loc = event.getBlock().getLocation();
         var actuallyDroppedItems = List.of(loc.getWorld().dropItemNaturally(loc, item.asItemStack()));
         var itemToDrop = new ArrayList<>(actuallyDroppedItems);
