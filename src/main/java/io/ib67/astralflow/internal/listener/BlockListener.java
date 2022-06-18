@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Container;
@@ -41,6 +42,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
@@ -110,12 +112,18 @@ public final class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+        underly_onBlockBreak(event);
+    }
+
+    private MachineBlockBreakEvent underly_onBlockBreak(BlockBreakEvent event) {
         var clickedBlock = event.getBlock();
+        event.setCancelled(flow.callHooks(HookType.BLOCK_BREAK_LOW, event));
         if (flow.getMachineManager().isMachine(clickedBlock)) {
+            event.setDropItems(false);
             var machine = flow.getMachineManager().getAndLoadMachine(clickedBlock.getLocation());
             var evt = MachineBlockBreakEvent.builder()
                     .cancelled(false)
-                    .dropItem(false)
+                    .dropItem(true)
                     .block(clickedBlock)
                     .player(event.getPlayer())
                     .machine(machine)
@@ -126,12 +134,12 @@ public final class BlockListener implements Listener {
             } else {
                 AstralFlow.getInstance().getMachineManager().terminateAndRemoveMachine(machine);
             }
-            event.setDropItems(evt.isDropItem());
+            return evt;
         }
-        event.setCancelled(flow.callHooks(HookType.BLOCK_BREAK_LOW, event));
         if (!event.isCancelled()) {
             flow.callHooks(HookType.BLOCK_BREAK, event);
         }
+        return null;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -155,12 +163,22 @@ public final class BlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onEntityExplode(EntityExplodeEvent event) { // TNT Explosions, etc.
+        onBlockExplode(new BlockExplodeEvent(event.getLocation().getBlock(), event.blockList(), event.getYield()));
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent event) {
         var it = event.blockList().iterator();
         while (it.hasNext()) {
             var block = it.next();
             var evt = new BlockBreakEvent(block, null);
-            onBlockBreak(evt);
+            var mb = underly_onBlockBreak(evt);
+            if (mb != null && mb.isDropItem()) {
+                it.remove();
+                block.setType(Material.AIR);
+                continue;
+            }
             if (evt.isCancelled()) {
                 it.remove();
             }
