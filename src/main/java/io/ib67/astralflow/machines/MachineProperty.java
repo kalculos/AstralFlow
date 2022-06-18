@@ -47,7 +47,8 @@ public final class MachineProperty {
      * The context when creating the machine
      */
     @NotNull
-    private final MachineContext<?> context;
+    @Builder.Default
+    private final MachineContext<?> context = MachineContext.UNKNOWN_CONTEXT;
     /**
      * The unique machine ID.
      */

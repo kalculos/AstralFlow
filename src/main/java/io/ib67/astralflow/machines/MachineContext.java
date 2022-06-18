@@ -26,8 +26,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 /**
  * MachineContext explains why the machine is created and what are involved in.
  *
@@ -47,9 +45,12 @@ public record MachineContext<T>(
         @Nullable
         T parameter
 ) {
+    public static final MachineContext<?> UNKNOWN_CONTEXT = new MachineContext<>(Reason.UNKNOWN, null, null, null);
+
     @Builder
+    @SuppressWarnings("all")
     public MachineContext {
-        Objects.requireNonNull(reason);
+        if (reason == null) reason = Reason.UNKNOWN;
     }
 
     public boolean hasPlayer() {
