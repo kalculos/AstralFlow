@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -42,6 +43,11 @@ public final class MachineProperty {
      * The related machine manager.
      */
     private final IMachineManager manager;
+    /**
+     * The context when creating the machine
+     */
+    @NotNull
+    private final MachineContext<?> context;
     /**
      * The unique machine ID.
      */

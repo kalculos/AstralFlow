@@ -31,6 +31,7 @@ import io.ib67.astralflow.item.AstralItem;
 import io.ib67.astralflow.item.ItemKey;
 import io.ib67.astralflow.item.builder.ItemBuilder;
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.MachineContext;
 import io.ib67.astralflow.machines.MachineProperty;
 import io.ib67.astralflow.machines.Tickless;
 import io.ib67.astralflow.util.Blocks;
@@ -105,6 +106,12 @@ public class MachineItem extends ItemBase {
                     MachineProperty.builder()
                             .location(machineLoc)
                             .uuid(machineUUID)
+                            .context(MachineContext.builder()
+                                    .owningMachine(null)
+                                    .owningPlayer(event.getPlayer())
+                                    .reason(MachineContext.Reason.PLAYER)
+                                    .build()
+                            )
                             .state(state.getData())
                             .manager(AstralFlow.getInstance().getMachineManager())
                             .build()
