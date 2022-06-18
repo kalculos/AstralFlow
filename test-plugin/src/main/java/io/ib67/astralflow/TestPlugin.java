@@ -83,6 +83,10 @@ public final class TestPlugin extends JavaPlugin {
             var resultX = chunk.getX() * 16 + offsetX;
             var resultZ = chunk.getZ() * 16 + offsetZ;
             player.sendMessage("Infer: " + "x: " + resultX + ChatColor.GRAY + loc.getBlockX() + ChatColor.RESET + " y: " + resultZ + ChatColor.GRAY + loc.getBlockZ());
+        } else if (label.equalsIgnoreCase("int_barr")) {
+            if (!(sender instanceof Player)) return false;
+            var player = (Player) sender;
+            player.getInventory().addItem(TestItems.INTERACTIVE_BARREL.createNewItem().asItemStack());
         }
         return true;
     }
