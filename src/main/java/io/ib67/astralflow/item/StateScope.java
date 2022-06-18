@@ -33,6 +33,7 @@ import org.jetbrains.annotations.ApiStatus;
 public enum StateScope {
     INTERNAL_ITEM(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "internal.item.state")),
     USER_ITEM(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "user.item.state")),
+    SERVICE(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "internal.service.state")),
     USER_MACHINE(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "user.machine.state")),
     INTERNAL_MACHINE(new NamespacedKey(AstralFlow.getInstance().asPlugin(), "internal.machine.state"));
     private final NamespacedKey tagKey;

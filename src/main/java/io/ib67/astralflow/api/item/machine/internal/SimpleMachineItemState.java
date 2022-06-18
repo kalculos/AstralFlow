@@ -22,7 +22,6 @@
 package io.ib67.astralflow.api.item.machine.internal;
 
 import io.ib67.astralflow.item.ItemState;
-import io.ib67.astralflow.machines.IState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,7 +32,5 @@ import org.jetbrains.annotations.ApiStatus;
 @AllArgsConstructor
 @Data
 public final class SimpleMachineItemState extends ItemState {
-    private IState data;
     private String machineType;
-
 }
