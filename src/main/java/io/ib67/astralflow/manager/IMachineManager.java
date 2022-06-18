@@ -22,6 +22,7 @@
 package io.ib67.astralflow.manager;
 
 import io.ib67.astralflow.machines.IMachine;
+import io.ib67.astralflow.machines.Tickless;
 import io.ib67.astralflow.machines.exception.MachineNotPushableException;
 import io.ib67.astralflow.scheduler.TickReceipt;
 import org.bukkit.Location;
@@ -48,8 +49,8 @@ public interface IMachineManager {
             if (update) activateMachine(machine);
             registerMachine(machine);
             machine.onLoad();
-        }catch(Throwable t){
-            throw new IllegalStateException("Failed to setup machine "+machine.getClass()+" (t: "+machine.getType()+", s:"+ machine +" )", t);
+        } catch (Throwable t) {
+            throw new IllegalStateException("Failed to setup machine " + machine.getClass() + " (t: " + machine.getType() + ", s:" + machine + " )", t);
         }
     }
 
@@ -138,7 +139,9 @@ public interface IMachineManager {
      */
     default void terminateAndRemoveMachine(IMachine machine) {
         removeMachine(machine);
-        deactivateMachine(machine);
+        if (!machine.getClass().isAnnotationPresent(Tickless.class)) {
+            deactivateMachine(machine);
+        }
         unregisterMachine(machine);
     }
 }

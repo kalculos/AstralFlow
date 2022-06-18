@@ -103,7 +103,7 @@ public final class MachineManagerImpl implements IMachineManager {
 
     private void terminateMachine(IMachine machine) {
         Objects.requireNonNull(machine, "Machine cannot be null");
-        if (getReceiptByMachine(machine) != null) {
+        if (getReceiptByMachine(machine) != null && !machine.getClass().isAnnotationPresent(Tickless.class)) {
             deactivateMachine(machine);
         }
         unregisterMachine(machine);
