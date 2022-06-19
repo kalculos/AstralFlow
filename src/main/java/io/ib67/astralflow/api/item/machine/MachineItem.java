@@ -140,10 +140,12 @@ public class MachineItem extends ItemBase {
         var emptyState = (SimpleMachineItemState) item.getState().get();
         emptyState.setMachineType(machine.getType().getName());
         item.saveState(emptyState);
-        if (!(machine.getState() instanceof ItemState)) {
-            throw new IllegalArgumentException("Machine state must be an ItemState!");
+        if (machine.getState() != null) {
+            if (!(machine.getState() instanceof ItemState)) {
+                throw new IllegalArgumentException("Machine state must be an ItemState!");
+            }
+            AstralFlow.getInstance().getItemRegistry().saveState(item.asItemStack(), StateScope.USER_MACHINE, (ItemState) machine.getState());
         }
-        AstralFlow.getInstance().getItemRegistry().saveState(item.asItemStack(), StateScope.USER_MACHINE, (ItemState) machine.getState());
         var loc = event.getBlock().getLocation();
         var actuallyDroppedItems = List.of(loc.getWorld().dropItemNaturally(loc, item.asItemStack()));
         var itemToDrop = new ArrayList<>(actuallyDroppedItems);
