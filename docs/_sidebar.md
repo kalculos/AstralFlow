@@ -10,6 +10,7 @@
 - 机器
   - [机器工厂](./spec/machine/machine_factory.md)
   - [有状态与无状态](./spec/machine/stateful_and_stateless.md)
+  - [机器物品](./spec/machine/machine_item.md)
   - 机器能力与特质
     - [能力: 无线通信与发现](./spec/machine/wireless_communication.md)
     - [特质: 交互式机器](./spec/machine/interactive.md)
