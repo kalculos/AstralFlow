@@ -45,7 +45,7 @@ import static io.ib67.astralflow.util.LogCategory.UPDATE_CHECKER;
 @RequiredArgsConstructor
 public final class UpdateChecker extends BukkitRunnable {
     private static final HttpClient httpClient = HttpClient.newHttpClient();
-    private static final int BUILD = 5;
+    private static final int BUILD = 6;
     private static final Pattern REGEX = Pattern.compile("build\\+(?=\\d+)(\\d+)");
     public static List<String> updateMessages;
     private final String sourceUrl;
