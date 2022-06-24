@@ -24,6 +24,7 @@ package io.ib67.astralflow.internal.listener;
 import io.ib67.astralflow.AstralFlow;
 import io.ib67.astralflow.hook.HookType;
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -43,9 +44,15 @@ public final class ItemListener implements Listener {
         event.setCancelled(AstralFlow.getInstance().callHooks(HookType.ITEM_DAMAGE, event));
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
     public void onInteractBlock(PlayerInteractEvent event) {
-        boolean upstreamCancelled = AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT, event);
+        boolean upstreamCancelled = false;
+        if (event.useItemInHand() != Event.Result.DENY) {
+            upstreamCancelled = AstralFlow.getInstance().callHooks(HookType.PLAYER_INTERACT, event);
+        }
+        if (event.useInteractedBlock() == Event.Result.DENY || event.useItemInHand() == Event.Result.DENY) {
+            return;
+        }
         event.setCancelled(upstreamCancelled);
         if (event.getItem() == null || event.getItem().getType() == Material.AIR) {
             return;
