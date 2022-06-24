@@ -8,7 +8,7 @@
 
 A Powerful Framework that provides all you need in creating a modpack but for Bukkit.
 
-Based on Spigot API.
+Based on Spigot API. *Still during Moving-fast phase*
 
 [Channel @ Telegram (@AstralFlows)](https://t.me/AstralFlows)  
 [Discuss @ Discord](https://discord.gg/fSkxjB4z6A)
