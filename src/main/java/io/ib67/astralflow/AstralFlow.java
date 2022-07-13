@@ -232,13 +232,8 @@ public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {
                     Log.info(LogCategory.DEBUG, "Update Checker has been disabled since you're in debug mode");
                 } else {
                     var isZhCn = Locale.getDefault().toString().equals("zh_CN");
-                    var sourceUrl = isZhCn
-                            ? "https://api.bukkit.rip/gh/AstralFlow/releases"
-                            : "https://api.github.com/repos/InlinedLambdas/AstralFlow/releases";
+                    var sourceUrl = "https://api.github.com/repos/InlinedLambdas/AstralFlow/releases";
                     new UpdateChecker(sourceUrl, getDescription().getVersion()).runTaskTimerAsynchronously(this, 0L, 3 * 600 * 20L); // 30 minutes.
-                    if (isZhCn) {
-                        Log.info(LogCategory.UPDATE_CHECKER, "检测到系统语言为中文，已经自动使用了更新镜像源。");
-                    }
                 }
             }
             metric = new Metrics(this, 15179);
