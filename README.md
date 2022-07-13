@@ -29,7 +29,7 @@ And we recommend Lombok.
 
 # Getting Started
 
-[Documentation](https://flow.bukkit.rip/docs#/) only Chinese at present.
+[Documentation](https://inlinedlambdas.codeberg.page/astralflow/docs#/) only Chinese at present.
 
 # Sponsor
 
