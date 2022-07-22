@@ -26,6 +26,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
+/**
+ * A wool that changes its color every 10 ticks.
+ */
 @AutoFactory
 public final class JebWool extends AbstractMachine implements Pushable {
     private static final Material[] WOOLS = new Material[]{

@@ -23,12 +23,16 @@ package io.ib67.astralflow;
 
 import io.ib67.astralflow.item.ItemKey;
 
-public enum TestItems implements ItemKey {
+/**
+ * You should always put your item keys into such an enum since Java supports enum implementing interfaces.
+ */
+public enum TestItems implements ItemKey { // An ItemKey is an interface that binds to your Item.
     JEB_WOOL("jeb_wool"),
     STATELESS_ITEM("stateless_item"),
 
     CANT_STACK("cantstack"),
     INTERACTIVE_BARREL("interactive_barrel"),
+    EX_CALIBUR("ex_calibur"),
     STATEFUL_ITEM("simple_stateful_item");
 
     private final String id;

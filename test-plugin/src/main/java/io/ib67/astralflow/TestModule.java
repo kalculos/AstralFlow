@@ -24,9 +24,9 @@ package io.ib67.astralflow;
 import io.ib67.astralflow.api.external.AstralExtension;
 import io.ib67.astralflow.api.external.ExtensionInfo;
 import io.ib67.astralflow.api.item.machine.MachineItem;
-import io.ib67.astralflow.item.SimpleStatefulCategory;
-import io.ib67.astralflow.item.SimpleStatelessCategory;
-import io.ib67.astralflow.item.SimpleStatelessUnstackableCategory;
+import io.ib67.astralflow.api.item.weapon.MeleeItem;
+import io.ib67.astralflow.api.item.weapon.WeaponProperty;
+import io.ib67.astralflow.item.*;
 import io.ib67.astralflow.item.recipe.kind.Shaped;
 import io.ib67.astralflow.item.recipe.kind.Shapeless;
 import io.ib67.astralflow.machines.InteractiveBarrel;
@@ -39,7 +39,7 @@ public final class TestModule extends AstralExtension {
     private final NamespacedKey jebWoolKey = new NamespacedKey("tester", "jeb_wool");
 
     public TestModule() {
-        super(ExtensionInfo.builder()
+        super(ExtensionInfo.builder() // describe your extension.
                 .extensionAuthors(new String[]{"iceBear67"})
                 .extensionName("TestModule")
                 .extensionVersion("0.0.1")
@@ -53,22 +53,22 @@ public final class TestModule extends AstralExtension {
     @Override
     public void init() {
         // register items.
-        itemMachine()
-                .oreDict("wool")
+        itemMachine() // register a machine item. A machine item, just like block item in forge, can be used to place a machine. ItemBuilder<MachineCategory,MachineItem>
+                .oreDict("wool") // oredict id, can be called for multiple times to add more IDs
                 .recipe(Shaped.of(jebWoolKey)
-                        .shape("AAA", "A A", "AAA")
+                        .shape("AAA", "A A", "AAA") // the shape of item. like bukkit's recipe API
                         .setIngredient('A', materialChoice(Material.BLACK_WOOL, Material.WHITE_WOOL))
                         .build()
-                ).prototype(new MachineItem(
-                        TestItems.JEB_WOOL,
-                        ItemStacks.builder(Material.WHITE_WOOL)
+                ).prototype(new MachineItem( // The "prototype" of your item, where you handle events from players who are using your items
+                        TestItems.JEB_WOOL, // A ItemKey.
+                        ItemStacks.builder(Material.WHITE_WOOL) // Our utility
                                 .displayName("&aJeb Wool!")
                                 .lore("&b Such a colorful woooooool")
                                 .build(),
-                        JebWool.class
+                        JebWool.class // Class of your Machine. We'll create it later (via IMachineFactory<M>)
                 ))
                 .register();
-        item(new SimpleStatelessCategory())
+        item(new SimpleStatelessCategory()) // You can define it's category by yourself. A category specifies the type of prototype. It can be used to make API typesafe.
                 .prototype(TestItems.STATELESS_ITEM)
                 .register();
         item(new SimpleStatefulCategory())
@@ -91,5 +91,22 @@ public final class TestModule extends AstralExtension {
                 )
                 .prototype(TestItems.CANT_STACK)
                 .register();
+
+        // an example for custom item logics. See item.ExCalibur
+        item().prototype(new ExCalibur(TestItems.EX_CALIBUR)).register();
+
+        // ... which is equal to:
+        itemSimpleWeapon().prototype(
+                MeleeItem.builder()
+                        .prototype(ItemStacks.of(Material.GOLDEN_SWORD, "name", "lores", "lores"))
+                        .id(ItemKey.from("tester", "anotherExcalibur"))
+                        .property(WeaponProperty.builder()
+                                .criticalChance(0.6)
+                                .damage(1000)
+                                .clearOriginalDamage(true)
+                                .build())
+                        .entitySelector(entity -> true)
+                        .build()
+        ).register();
     }
 }

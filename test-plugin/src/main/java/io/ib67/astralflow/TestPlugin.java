@@ -37,20 +37,23 @@ import java.util.UUID;
 public final class TestPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
-        new TestModule();
+        new TestModule(); // initialize the module
     }
 
+    /**
+     * Some debug-purpose command.
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (label.equalsIgnoreCase("stateless_item")) {
             if (!(sender instanceof Player)) return false;
             var player = (Player) sender;
-            player.getInventory().addItem(TestItems.STATELESS_ITEM.createNewItem().asItemStack());
+            player.getInventory().addItem(TestItems.STATELESS_ITEM.createNewItem().asItemStack()); // that's how we create Item. {ItemKey#createNewItem() -> AstralItem}
         } else if (label.equalsIgnoreCase("random_state_item")) {
             if (!(sender instanceof Player)) return false;
             var player = (Player) sender;
             var item = TestItems.STATEFUL_ITEM.createNewItem();
-            var simpleState = item.getState().map(e -> (AnotherSimpleState) e).orElseThrow();
+            var simpleState = item.getState().map(e -> (AnotherSimpleState) e).orElseThrow(); // get a state of item. States are defined by your plugin.
             simpleState.setData(UUID.randomUUID().toString());
             Bukkit.getLogger().info("testplug" + " Created state: " + new GsonBuilder().setPrettyPrinting().create().toJson(simpleState));
             item.saveState(simpleState);
@@ -60,7 +63,7 @@ public final class TestPlugin extends JavaPlugin {
             var player = (Player) sender;
             var itemInHand = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
             if (itemInHand.getType() == Material.AIR) return false;
-            var simpleState = AstralFlow.getInstance().getItemRegistry().getState(itemInHand);
+            var simpleState = AstralFlow.getInstance().getItemRegistry().getState(itemInHand); // or use this.
             if (simpleState == null) return false;
             player.sendMessage(new GsonBuilder().setPrettyPrinting().create().toJson(simpleState));
         } else if (label.equalsIgnoreCase("jbwool")) {

@@ -21,7 +21,7 @@
 
 package io.ib67.astralflow.item;
 
-public final class AnotherSimpleState extends ItemState {
+public final class AnotherSimpleState extends ItemState { // States are just data classes that can be serialized by Gson.
     private String data;
 
     public AnotherSimpleState(String data) {

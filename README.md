@@ -29,14 +29,17 @@ And we recommend Lombok.
 
 # Getting Started
 
-[Documentation](https://inlinedlambdas.codeberg.page/astralflow/docs#/) only Chinese at present.
+[Documentation](https://inlinedlambdas.codeberg.page/astralflow/docs#/) only Chinese at present.  
+For English Speakers who want to take some examples,
+see [TestPlugin](./test-plugin/src/main/java/io/ib67/astralflow/TestPlugin.java)  
+~~Typos warning~~
 
 # Sponsor
 
 Maintaining AstralFlow isn't an easy work, it takes maintainers tons of time and effort to make it feature-rich and
 reliable.    
 If you meet any problems, feeling free
-to [submit an issue here](https://github.com/iceBear67/AstralFlow/issues/new/choose)  
+to [submit an issue here](https://codeberg.org/InlinedLambdas/AstralFlow/issues/new)  
 If you want to support our work, please consider donate us by clicking the sponsor button above or leave your star!
 
 Proudly sponsored by JetBrains, and it's worthy to try their amazing productions!

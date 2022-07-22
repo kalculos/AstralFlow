@@ -26,16 +26,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 
-@AutoFactory
+@AutoFactory // MachineFactory will be generated automatically.
 public class InteractiveBarrel extends AbstractMachine implements Interactive {
 
-    protected InteractiveBarrel(MachineProperty property) {
+    protected InteractiveBarrel(MachineProperty property) { // some basic information, such as location, context.
         super(property);
     }
 
     @Override
     public void update(IMachine self) {
-
+        // executed for every tick.
     }
 
     @Override
