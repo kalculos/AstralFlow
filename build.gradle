@@ -24,11 +24,12 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id 'java-library'
     id 'io.franzbecker.gradle-lombok' version '5.0.0'
+    id("me.him188.maven-central-publish") version "1.0.0-dev-3"
 }
 
 apply plugin: "maven-publish"
 
-group = 'io.ib67'
+group = 'io.ib67.astralflow'
 version = properties.get("version")
 allprojects {
     repositories {
@@ -47,7 +48,25 @@ allprojects {
         maven { url "https://repo.dmulloy2.net/repository/public/" }
     }
 }
+mavenCentralPublish {
+    useCentralS01()
+    // If different from that from project, specify manually:
+    projectName = "AstralFlow"
+    artifactId = project.name
+    groupId = this.group
+    ///this.
+    //projectName = "Kiwi"
+    //  archivesBaseName("Kiwi-${this.name}-${this.version}")
+    // description from project.description by default
+    description("AstralFlow allows you to create custom block/item/machines in Spigot Servers.")
+    projectUrl("https://codeberg.org/InlinedLambdas/AstralFlow")
+    workingDir = file("/tmp/a")
 
+    connection = "scm:git:git://codeberg.org/InlinedLambdas/AstralFlow"
+    license("LGPLv2.1", "https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html")
+
+    developer("InlinedLambdas")
+}
 def getCheckedOutGitCommitHash() {
     def gitFolder = "$projectDir/.git/"
     def takeFromHash = 7
@@ -173,28 +192,4 @@ jar {
 }
 shadowJar {
     from("build/resources/i18n")
-}
-
-/*
-  Publish
- */
-if (System.getProperty("user.name").equals("icybear")) {
-    publishing {
-        repositories {
-            maven {
-                name = "bukkit.rip"
-                url = uri("https://mvn.bukkit.rip/releases")
-                credentials {
-                    username = bkrip_user
-                    password = bkrip_token
-                }
-            }
-        }
-        publications {
-            ilrepo(MavenPublication) {
-                artifactId 'astralflow'
-                from components.java
-            }
-        }
-    }
 }
