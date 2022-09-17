@@ -24,7 +24,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id 'java-library'
     id 'io.franzbecker.gradle-lombok' version '5.0.0'
-    id("me.him188.maven-central-publish") version "1.0.0-dev-3"
+    id("me.him188.maven-central-publish") version "1.0.0"
 }
 
 apply plugin: "maven-publish"
