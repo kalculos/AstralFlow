@@ -31,45 +31,33 @@ AstralFlow 应该作为外部代码库被导入您的插件项目中，本文假
 
 ```groovy
 repositories {
-    maven {
-        url "https://mvn.bukkit.rip/releases"
-    }
+    mavenCentral()
 }
 
 dependencies {
-    compileOnly group: "io.ib67", name: "astralflow", version: "版本"
+    compileOnly group: "io.ib67.astralflow", name: "astralflow", version: "版本"
 }
  ```
 
 2. Maven     
-   将下列代码添加到 `pom.xml` 里。
-
- ```xml
-<repositories>
-    <repository>
-        <id>Bukkit.RIP Releases</id>
-        <name>Bukkit.RIP</name>
-        <url>https://mvn.bukkit.rip/releases</url>
-    </repository>
-</repositories>
-```
+   将下列代码添加到 `pom.xml` 里。(我们使用 Maven Central 托管)
 
 ```xml
 <dependencies>
     <dependency>
-        <groupId>io.ib67</groupId>
+        <groupId>io.ib67。astralflow</groupId>
         <artifactId>astralflow</artifactId>
         <version>版本</version>
     </dependency>
 </dependencies>
 ```
 
-> 注意：`https://mvn.bukkit.rip/releases` 即代表您使用 **正式发布版本**，若您需要使用 **预览开发版本** 请更换为 `https://mvn.bukkit.rip/snapshots`  
+> ~~注意：`https://mvn.bukkit.rip/releases` 即代表您使用 **正式发布版本**，若您需要使用 **预览开发版本** 请更换为 `https://mvn.bukkit.rip/snapshots`~~ **旧仓库已经不再使用**   
 > 所有以 `-RC-X`, `-M-X` 结尾的版本号均为预览版本，关于版本命名请参见: [版本演进](https://github.com/saltedfishclub/documents/blob/main/Evolution.md)
 
 ### 通过 IDE 的依赖导入功能
 
-您可以直接在 Inlined Lambdas 的仓库中下载到 AstralFlow 作为依赖，只需在 https://mvn.bukkit.rip/releases 搜寻片刻即可。  
+您可以直接在 Inlined Lambdas 的仓库中下载到 AstralFlow 作为依赖，只需在 https://search.maven.org 搜寻片刻即可。  
 对于如何通过 IDE 自带依赖管理功能导入，已经有类似的[文章](https://blog.csdn.net/qq_26525215/article/details/53239123)，本文不过赘述。
 
 ## 添加依赖
