@@ -3,7 +3,7 @@
 ![](https://img.shields.io/github/license/iceBear67/AstralFlow?style=flat-square)
 ![](https://img.shields.io/github/v/release/iceBear67/AstralFlow?style=flat-square)
 ![](https://img.shields.io/tokei/lines/github/iceBear67/AstralFlow?style=flat-square)
-![](https://img.shields.io/github/workflow/status/InlinedLambdas/AstralFlow/Unit%20Tests?style=flat-square)
+![](https://img.shields.io/github/actions/workflow/status/InlinedLambdas/AstralFlow/unittest.yml?style=flat-square)
 ![](https://img.shields.io/github/commit-activity/m/inlinedlambdas/astralflow.svg?label=commits&style=flat-square)
 
 A Powerful Framework that provides all you need in creating a modpack but for Bukkit.
