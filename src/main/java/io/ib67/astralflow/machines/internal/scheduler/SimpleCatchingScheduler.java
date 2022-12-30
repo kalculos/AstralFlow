@@ -29,8 +29,8 @@ import io.ib67.astralflow.scheduler.TickReceipt;
 import io.ib67.astralflow.scheduler.exception.TickTaskException;
 import io.ib67.astralflow.util.LogCategory;
 import io.ib67.internal.util.bukkit.Log;
+import io.ib67.kiwi.WeakHashSet;
 import lombok.RequiredArgsConstructor;
-import org.inlambda.kiwi.WeakHashSet;
 
 import java.util.LinkedList;
 import java.util.Queue;

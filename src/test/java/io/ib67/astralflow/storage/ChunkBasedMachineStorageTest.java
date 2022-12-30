@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.inlambda.kiwi.Kiwi.pairOf;
+import static io.ib67.kiwi.Kiwi.pairOf;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

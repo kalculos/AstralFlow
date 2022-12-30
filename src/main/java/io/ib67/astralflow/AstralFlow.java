@@ -89,7 +89,7 @@ import java.util.zip.ZipFile;
 import static io.ib67.astralflow.internal.config.AstralFlowConfiguration.CONFIG_CURRENT_VERSION;
 import static io.ib67.astralflow.util.LogCategory.INIT;
 import static io.ib67.astralflow.util.LogCategory.MIGRATOR;
-import static org.inlambda.kiwi.Kiwi.fromAny;
+import static io.ib67.kiwi.Kiwi.fromAny;
 
 @ApiStatus.Internal
 public final class AstralFlow extends JavaPlugin implements AstralFlowAPI {

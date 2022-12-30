@@ -34,7 +34,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
-import static org.inlambda.kiwi.Kiwi.fromAny;
+import static io.ib67.kiwi.Kiwi.fromAny;
 
 @ApiStatus.Internal
 @RequiredArgsConstructor

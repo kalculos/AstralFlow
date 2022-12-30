@@ -37,7 +37,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.inlambda.kiwi.Kiwi.byLazy;
+import static io.ib67.kiwi.Kiwi.byLazy;
 
 /**
  * This class represents an item choice for astral items.<br />

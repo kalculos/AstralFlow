@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Type;
 
-import static org.inlambda.kiwi.Kiwi.fromAny;
+import static io.ib67.kiwi.Kiwi.fromAny;
 
 @RequiredArgsConstructor
 public final class StateSerializer implements JsonSerializer<IState>, JsonDeserializer<IState> {

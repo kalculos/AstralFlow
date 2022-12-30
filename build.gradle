@@ -173,7 +173,7 @@ sourceSets {
     }
 }
 shadowJar {
-    relocate 'org.inlambda.kiwi', 'io.ib67.astralflow.relocate.kiwi'
+    relocate 'io.ib67.kiwi', 'io.ib67.astralflow.relocate.kiwi'
     relocate 'org.bstats', 'io.ib67.astralflow.relocate.bstats'
 }
 /*

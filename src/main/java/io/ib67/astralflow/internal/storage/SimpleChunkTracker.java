@@ -22,8 +22,8 @@
 package io.ib67.astralflow.internal.storage;
 
 import io.ib67.astralflow.internal.IChunkTracker;
+import io.ib67.kiwi.WeakHashSet;
 import org.bukkit.Chunk;
-import org.inlambda.kiwi.WeakHashSet;
 
 import java.util.Collection;
 import java.util.Collections;

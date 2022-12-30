@@ -24,19 +24,19 @@ package io.ib67.astralflow.internal.storage.impl.chunk.tag;
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
 import io.ib67.astralflow.internal.storage.impl.chunk.MachineData;
 import io.ib67.internal.util.bukkit.Log;
+import io.ib67.kiwi.tuple.Pair;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Location;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
-import org.inlambda.kiwi.tuple.Pair;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
 import static io.ib67.astralflow.internal.storage.impl.chunk.BufferUtil.*;
-import static org.inlambda.kiwi.Kiwi.pairOf;
+import static io.ib67.kiwi.Kiwi.pairOf;
 
 @ApiStatus.Internal
 public final class MachineDataTag implements PersistentDataType<byte[], MachineData> {

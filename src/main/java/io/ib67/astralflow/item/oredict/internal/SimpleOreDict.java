@@ -26,15 +26,15 @@ import com.google.common.collect.Multimap;
 import io.ib67.astralflow.hook.HookType;
 import io.ib67.astralflow.internal.AstralConstants;
 import io.ib67.astralflow.item.oredict.IOreDict;
+import io.ib67.kiwi.tuple.Pair;
 import org.bukkit.inventory.ItemStack;
-import org.inlambda.kiwi.tuple.Pair;
 
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static io.ib67.kiwi.Kiwi.pairOf;
 import static java.util.Objects.requireNonNull;
-import static org.inlambda.kiwi.Kiwi.pairOf;
 
 public class SimpleOreDict implements IOreDict {
     private final Multimap<String, Pair<ItemStack, Predicate<ItemStack>>> items = ArrayListMultimap.create();

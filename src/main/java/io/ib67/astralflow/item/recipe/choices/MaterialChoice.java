@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-import static org.inlambda.kiwi.Kiwi.byLazy;
+import static io.ib67.kiwi.Kiwi.byLazy;
 
 /**
  * A {@link IngredientChoice} that matches {@link Material}<br />

@@ -34,7 +34,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.inlambda.kiwi.Kiwi.byLazy;
+import static io.ib67.kiwi.Kiwi.byLazy;
 
 /**
  * An {@link IngredientChoice} that chooses an item from a list of items. (ore dict)<br />

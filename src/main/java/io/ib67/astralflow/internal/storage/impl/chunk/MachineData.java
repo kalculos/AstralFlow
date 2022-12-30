@@ -22,10 +22,10 @@
 package io.ib67.astralflow.internal.storage.impl.chunk;
 
 import io.ib67.astralflow.internal.storage.impl.MachineStorageType;
+import io.ib67.kiwi.tuple.Pair;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
-import org.inlambda.kiwi.tuple.Pair;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;

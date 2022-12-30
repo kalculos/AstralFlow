@@ -24,7 +24,7 @@ package io.ib67.astralflow.internal;
 
 import org.jetbrains.annotations.ApiStatus;
 
-import static org.inlambda.kiwi.Kiwi.fromAny;
+import static io.ib67.kiwi.Kiwi.fromAny;
 
 @ApiStatus.Internal
 public final class AstralConstants {
