@@ -1,9 +1,9 @@
-我们引入了 [ILeakTracker](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/security/mem/ILeakTracker.html)
+我们引入了 [ILeakTracker](https://af.ib67.io/javadoc/io/ib67/astralflow/security/mem/ILeakTracker.html)
 来帮助我们追踪没有被正确卸载掉的对象，并且把他们在控制台打印出来。
 
 # 注册内存泄漏检测
 
-`ILeakTracker` 属于 [SecurityService](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/security/ISecurityService.html)
+`ILeakTracker` 属于 [SecurityService](https://af.ib67.io/javadoc/io/ib67/astralflow/security/ISecurityService.html)
 的一部分。
 
 ```java

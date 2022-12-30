@@ -21,7 +21,7 @@
 ## 一个简单机器
 
 在 AstralFlow
-中，一个 [IMachine](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/machines/IMachine.html)
+中，一个 [IMachine](https://af.ib67.io/javadoc/io/ib67/astralflow/machines/IMachine.html)
 代表了一个机器。但我们不推荐开发者直接实现这个接口，我们推荐你继承 `AbstractMachine` 。
 
 ```java
@@ -124,7 +124,7 @@ AstralFlow 提供了注册自定义物品以及绑定逻辑的 API。
 
 ## 注册物品
 
-注册过程很简单，只需要借助 [ItemBuilder](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/item/builder/ItemBuilder.html)
+注册过程很简单，只需要借助 [ItemBuilder](https://af.ib67.io/javadoc/io/ib67/astralflow/item/builder/ItemBuilder.html)
 即可。但是物品的注册过程最好在模块的 `init` 中进行，否则可能会遇到某些东西（矿物辞典）已经被锁定的情况。
 
 ```java
@@ -239,7 +239,7 @@ public enum TestItems implements ItemKey {
 但我们发现变色羊毛变得有点太快了（20 changes/s) ，感觉眼睛要瞎。
 
 AstralFlow 也提供了一些 API 用于 Tick
-时的附加行为控制，也就是 [TickReceipt](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/scheduler/TickReceipt.html)
+时的附加行为控制，也就是 [TickReceipt](https://af.ib67.io/javadoc/io/ib67/astralflow/scheduler/TickReceipt.html)
 
 借助 TickReceipt 和一些内建的工具类，我们可以控制他的变化速度。
 
@@ -251,7 +251,7 @@ AstralFlow 也提供了一些 API 用于 Tick
     }
 ```
 
-对于 `TickReceipt` 和更多模块，我们将会在以后介绍，你也可以在 [Javadoc](https://flow.bukkit.rip/javadoc/) 上看到它的介绍。
+对于 `TickReceipt` 和更多模块，我们将会在以后介绍，你也可以在 [Javadoc](https://af.ib67.io/javadoc/) 上看到它的介绍。
 
 ## 注册配方
 

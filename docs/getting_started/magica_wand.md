@@ -52,11 +52,12 @@ AstralFlow 并没有改变这个流程，但是我们把一些过程简化了。
 
 ## 钩子系统
 
-在 AstralFlow 里，你不需要为了物品专门去注册一个 Listener 然后大费功夫得把事件传到 `LogicalHolder` 的手上......大可不必！其实我们已经帮你做好了。
+在 AstralFlow 里，你不需要为了物品专门去注册一个 Listener 然后大费功夫得把事件传到 `LogicalHolder`
+的手上......大可不必！其实我们已经帮你做好了。
 
-[HookType / 钩子](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/hook/HookType.html) 提供了订阅事件的能力，并且 AstralFlow
+[HookType / 钩子](https://af.ib67.io/javadoc/io/ib67/astralflow/hook/HookType.html) 提供了订阅事件的能力，并且 AstralFlow
 内置了很多已经对接到 Bukkit Events 上的 `HookType`
-。你可以在 [Javadoc](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/hook/HookType.html) 上看到完整的列表
+。你可以在 [Javadoc](https://af.ib67.io/javadoc/io/ib67/astralflow/hook/HookType.html) 上看到完整的列表
 
 使用钩子很简单：
 

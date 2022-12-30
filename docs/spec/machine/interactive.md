@@ -2,7 +2,7 @@
 
 # Interactive
 
-[Interactive](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/machines/trait/Interactive.html) 代表你的机器能够与玩家交互。
+[Interactive](https://af.ib67.io/javadoc/io/ib67/astralflow/machines/trait/Interactive.html) 代表你的机器能够与玩家交互。
 
 ```java
 /**

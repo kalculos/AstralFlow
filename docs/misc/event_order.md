@@ -11,8 +11,8 @@ AstralFlow 内置了一些事件监听器以驱动 [Hook 系统](./spec/universa
 
 同时，还有一些特殊情况：
 
-- [手持物品和实体交互](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/hook/HookType.html#PLAYER_INTERACT_ENTITY)
+- [手持物品和实体交互](https://af.ib67.io/javadoc/io/ib67/astralflow/hook/HookType.html#PLAYER_INTERACT_ENTITY)
   使用的优先级为 `EventPriority.HIGH`，此优先级低于一般监听器
 - 如果你需要绕过被机器方块阻止的事件，可以用带有后缀 `_LOW` 的 Hook,
-  例如 [PLAYER_INTERACT_BLOCK_LOW](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/hook/HookType.html#PLAYER_INTERACT_BLOCK_LOW)
+  例如 [PLAYER_INTERACT_BLOCK_LOW](https://af.ib67.io/javadoc/io/ib67/astralflow/hook/HookType.html#PLAYER_INTERACT_BLOCK_LOW)
   ，同时这类 Hook 的优先级通常都高于同类型的其他 Hook.
