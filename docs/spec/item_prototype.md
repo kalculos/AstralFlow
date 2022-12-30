@@ -11,7 +11,7 @@
 # ItemPrototypeFactory
 
 ItemPrototypeFactory
-的定义在 [io.ib67.astralflow.item.factory](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/item/factory/ItemPrototypeFactory.html)
+的定义在 [io.ib67.astralflow.item.factory](https://af.ib67.io/javadoc/io/ib67/astralflow/item/factory/ItemPrototypeFactory.html)
 内。
 
 ```java
@@ -85,7 +85,7 @@ ItemPrototype.builder()
 
 ## LogicalHolder
 
-[LogicalHolder](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/item/LogicalHolder.html) 是一个接口，它指的是这个物品的逻辑持有者。
+[LogicalHolder](https://af.ib67.io/javadoc/io/ib67/astralflow/item/LogicalHolder.html) 是一个接口，它指的是这个物品的逻辑持有者。
 
 逻辑持有者的意思就是，"操作这个物品的人"。比如说 `MachineItem`
 就是一个逻辑持有者，因为其本身掌管了这一类物品的 [所有逻辑](https://github.com/InlinedLambdas/AstralFlow/blob/main/src/main/java/io/ib67/astralflow/api/item/machine/MachineItem.java)

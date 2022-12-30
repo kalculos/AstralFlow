@@ -4,7 +4,7 @@
 
 # Pushable
 
-为了让你的机器方块能够推动，我们需要实现 [Pushable](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/machines/trait/Pushable.html).
+为了让你的机器方块能够推动，我们需要实现 [Pushable](https://af.ib67.io/javadoc/io/ib67/astralflow/machines/trait/Pushable.html).
 
 ```java
 /**

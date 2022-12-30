@@ -1,6 +1,6 @@
 # 物品类别
 
-[物品类别](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/item/builder/ItemCategory.html)
+[物品类别](https://af.ib67.io/javadoc/io/ib67/astralflow/item/builder/ItemCategory.html)
 用于规定一类物品的行为和定义，它主要为了 `ItemBuilder` 服务，并非核心组件。
 
 ```java

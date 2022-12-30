@@ -1,4 +1,4 @@
-在 AstralFlow 中，每个注册的 [IMachine](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/machines/IMachine.html)
+在 AstralFlow 中，每个注册的 [IMachine](https://af.ib67.io/javadoc/io/ib67/astralflow/machines/IMachine.html)
 都被严格规定了生命周期，这是为了避免潜在的内存泄漏以及安全问题。
 
 # 生命周期
@@ -11,7 +11,7 @@
 
 ## 内存泄漏检测
 
-当**注册过的机器**被对应的 [IMachineManager](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/manager/IMachineManager.html)
+当**注册过的机器**被对应的 [IMachineManager](https://af.ib67.io/javadoc/io/ib67/astralflow/manager/IMachineManager.html)
 标注为卸载后，将会被同时纳入内存泄漏检器的目标之内。
 
 关于内存泄漏检测，请参考 [内存泄漏检测](./misc/memleakcheck.md)

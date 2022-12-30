@@ -5,7 +5,7 @@
   - [变色羊毛](./getting_started/jeb_wool.md)
   - [色色手杖](./getting_started/magica_wand.md)
 - 通用组件
-  - [AstralHelper](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/api/AstralHelper.html)
+  - [AstralHelper](https://af.ib67.io/javadoc/io/ib67/astralflow/api/AstralHelper.html)
   - [Hook 系统](./spec/universal/hook.md)
 - 机器
   - [机器工厂](./spec/machine/machine_factory.md)

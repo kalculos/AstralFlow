@@ -2,7 +2,7 @@ Hook 是 AstralFlow 中主要提供信息通知的组件，你可以通过 Hook 
 
 # HookType
 
-[io.ib67.astralflow.hook.HookType](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/hook/HookType.html) 是 Hook
+[io.ib67.astralflow.hook.HookType](https://af.ib67.io/javadoc/io/ib67/astralflow/hook/HookType.html) 是 Hook
 系统里的核心类，你可以通过 HookType 对象来注册你的监听器。
 
 > 你也可以通过自己创建一个 HookType 用于广播你的自定义信息，这可以简化扩展之间的交互。
@@ -45,4 +45,4 @@ HookType 本身提供了大量已经支持的常量 hook, 如果遇到符合需�
 
 ## 所有已经支持的 HookType
 
-请查阅 [Javadoc](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/hook/HookType.html)
+请查阅 [Javadoc](https://af.ib67.io/javadoc/io/ib67/astralflow/hook/HookType.html)

@@ -4,7 +4,7 @@
 - 跟他们联系上
 
 因此 AstralFlow
-提供了 [IWirelessPeer](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/capability/wireless/IWirelessPeer.html) 来解决这个问题。
+提供了 [IWirelessPeer](https://af.ib67.io/javadoc/io/ib67/astralflow/capability/wireless/IWirelessPeer.html) 来解决这个问题。
 
 不过，虽说是 *机器能力* ，但是未必只有机器可以用。只要符合被搜索的条件就可以被找到，搜索其他节点更不需要任何条件了。
 
@@ -12,7 +12,7 @@
 
 我们规定，所有希望被发现的节点都应该实现 `IWirelessPeer` 接口，并且注册到 `WirelessRegistry` 中。
 
-无线通信和发现服务是机器能力的一部分，你可以通过 [CapabilityService](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/capability/ICapabilityService.html)
+无线通信和发现服务是机器能力的一部分，你可以通过 [CapabilityService](https://af.ib67.io/javadoc/io/ib67/astralflow/capability/ICapabilityService.html)
 得到他们:
 
 ```java
@@ -82,7 +82,7 @@ false，在与其他机器无线通信的时候也应该考虑到这种情况。
 
 # 节点通信
 
-[IWirelessPeer](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/capability/wireless/IWirelessPeer.html)
+[IWirelessPeer](https://af.ib67.io/javadoc/io/ib67/astralflow/capability/wireless/IWirelessPeer.html)
 提供了三个重要的方法用于节点之间的通信：
 
 ```java
@@ -116,7 +116,7 @@ false，在与其他机器无线通信的时候也应该考虑到这种情况。
 
 ## 使用 SimplePeer
 
-你可以使用 [SimplePeer](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/capability/wireless/SimplePeer.html)
+你可以使用 [SimplePeer](https://af.ib67.io/javadoc/io/ib67/astralflow/capability/wireless/SimplePeer.html)
 来避免实现 `IWirelessPeer` 的各种方法。
 
 ```java

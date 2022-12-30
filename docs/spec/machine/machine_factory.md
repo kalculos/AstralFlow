@@ -1,5 +1,5 @@
 在 AstralFlow
-中，你可以注册自己的 [MachineFactory](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/machines/factories/IMachineFactory.html)
+中，你可以注册自己的 [MachineFactory](https://af.ib67.io/javadoc/io/ib67/astralflow/machines/factories/IMachineFactory.html)
 来定义机器的创建方式。
 
 # 机器工厂
@@ -23,5 +23,6 @@ flow.getFactories().register(classOfMachine, factory)
 使用 `@AutoFactory` 需要满足以下条件：
 
 - 必须有公开的构造器
-- 且构造器参数只能有一个，而且必须是 [MachineProperty](https://flow.bukkit.rip/javadoc/io/ib67/astralflow/machines/MachineProperty.html)
+-
+且构造器参数只能有一个，而且必须是 [MachineProperty](https://af.ib67.io/javadoc/io/ib67/astralflow/machines/MachineProperty.html)
 
