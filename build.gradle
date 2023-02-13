@@ -95,7 +95,7 @@ dependencies {
     compileOnly 'org.jetbrains:annotations:24.0.0'
     compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 
-    implementation 'org.bstats:bstats-bukkit:3.0.0'
+    implementation 'org.bstats:bstats-bukkit:3.0.1'
 }
 
 dependencies {
