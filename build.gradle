@@ -90,7 +90,7 @@ def buildBy = System.getProperty("user.name")
 def commitHash = getCheckedOutGitCommitHash()
 
 dependencies {
-    compileOnly 'io.netty:netty-all:4.1.75.Final'
+    compileOnly 'io.netty:netty-all:4.1.91.Final'
     implementation 'io.ib67.kiwi:core:0.3.0'
     compileOnly 'org.jetbrains:annotations:24.0.0'
     compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
@@ -99,7 +99,7 @@ dependencies {
 }
 
 dependencies {
-    testRuntimeOnly 'io.netty:netty-all:4.1.68.Final'
+    testRuntimeOnly 'io.netty:netty-all:4.1.91.Final'
     testCompileOnly 'org.jetbrains:annotations:24.0.0'
     testImplementation 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
